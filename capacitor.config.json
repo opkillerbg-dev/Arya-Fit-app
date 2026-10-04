@@ -1,1 +1,14 @@
-{"appId":"com.arya.fit","appName":"Arya Fit","webDir":"www","server":{"androidScheme":"https"}}
+{
+ "appId": "com.arya.fit",
+ "appName": "Arya Fit",
+ "webDir": "www",
+ "server": {
+  "androidScheme": "https"
+ },
+ "plugins": {
+  "LocalNotifications": {
+   "smallIcon": "ic_stat_run",
+   "iconColor": "#2F5BFF"
+  }
+ }
+}

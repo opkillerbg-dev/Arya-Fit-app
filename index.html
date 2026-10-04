@@ -214,6 +214,20 @@ button:active,.c:active,.tile:active{transform:scale(.95)}
 @keyframes pop{50%{transform:scale(1.3)}}
 .dock:not([hidden]){animation:dup .5s cubic-bezier(.2,.9,.3,1.1)}
 @keyframes dup{from{transform:translateY(60px);opacity:0}}
+/* perf */
+html{scroll-behavior:auto}
+body::before{animation:none!important}
+.hero::before{display:none!important}
+.ring{filter:none!important}
+*{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+.panel,.cal,.tile{box-shadow:0 3px 12px rgba(0,0,0,.18)!important;transition:none!important}
+@keyframes swp{from{opacity:0;transform:translateY(12px)}}
+.view.vin>*{animation-duration:.3s!important}
+.dm b,.dock[data-ph=jog] .dm b,.dock[data-ph=walk] .dm b{text-shadow:none!important;animation:none!important}
+.c.done,.tabbar button.on,.btn.pri,.qr .sw,.bdg.on{box-shadow:none!important}
+.c.today::after{animation:none!important}
+button,.c,.t,.tile,.lg{transition:transform .15s,opacity .15s!important}
+.tabbar,.dock{background-color:rgba(11,20,50,.97)!important}
 </style><link rel="manifest" href="manifest.webmanifest">
 </head>
 <body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
@@ -419,7 +433,7 @@ function begin(o,keep){trkOff();endT();TM=o;if(keep){TM.last=Date.now();TM.run=f
   $("gsw").hidden=!o.trk;$("dsv").hidden=TM.mode=="cd";$("dsv").textContent=TM.mode=="iv"?"Save run time":"Save time";
   $("drs").hidden=false;$("dsw").hidden=TM.mode!="iv";tk=setInterval(step,250);step()}
 function endT(){clearInterval(tk);tk=null;try{wlk&&wlk.release()}catch(e){}wlk=null}
-function closeT(){if(TM)clrRun();trkOff();endT();TM=null;$("dock").hidden=true;document.body.classList.remove("td")}
+function closeT(){if(TM){clrRun();nclr()}trkOff();endT();TM=null;$("dock").hidden=true;document.body.classList.remove("td")}
 function startCD(sec,lab){begin({mode:"cd",total:sec,label:lab})}
 function startSW(d){begin({mode:"sw",label:"Workout stopwatch",day:d})}
 function startIV(d){if(!JKM)return;d=d==null?cur:d;var q=IVS[Math.min(Math.floor(d/7),IVS.length-1)];begin({mode:"iv",seq:q[1]?[q[0],q[1]]:[86400,86400],label:JL,day:d,trk:PR.gps!==0,dist:0,steps:0,base:st["g"+d]||0});if(TM.trk)trkOn()}
@@ -427,6 +441,11 @@ function wl(){try{if(!navigator.wakeLock||(wlk&&!wlk.released))return;navigator.
 var RK="aryaRun1",LK="aryaLast1",lps=0,PRUN=null,LAST=null;
 function clrRun(){try{localStorage.removeItem(RK)}catch(e){}}
 function persist(){if(!TM||TM.done||TM.mode=="cd"||!APP)return;try{var o={};["mode","label","day","trk","dist","steps","ph","hold","round","pstart","seq","hit","jt","wt","base"].forEach(function(q){o[q]=TM[q]});o.acc=Math.round(el_()*1000);localStorage.setItem(RK,JSON.stringify({pid:APP.active,t:Date.now(),s:o}))}catch(e){}}
+var NAT=window.Capacitor&&Capacitor.isNativePlatform&&Capacitor.isNativePlatform(),LN=NAT&&Capacitor.Plugins.LocalNotifications,lnt=0,lnr=0;
+function nfy(){if(!LN||!TM||TM.mode!="iv"||Date.now()-lnt<2000)return;lnt=Date.now();
+  try{if(!lnr){lnr=1;LN.requestPermissions();LN.createChannel({id:"run",name:"Run progress",importance:2,vibration:false})}
+  LN.schedule({notifications:[{id:7,channelId:"run",title:((TM.hold||TM.ph)?"Walking ":"Jogging ")+fmt(el_()),body:((TM.dist+(TM.base||0))/1000).toFixed(2)+" km"+(JKM?" of "+JKM+" km":"")+(TM.run?"":" | paused"),ongoing:true,autoCancel:false}]})}catch(e){}}
+function nclr(){try{LN&&LN.cancel({notifications:[{id:7}]})}catch(e){}}
 function hav(a,b){var R=6371000,r=Math.PI/180,dl=(b.la-a.la)*r,dn=(b.lo-a.lo)*r,x=Math.sin(dl/2)*Math.sin(dl/2)+Math.cos(a.la*r)*Math.cos(b.la*r)*Math.sin(dn/2)*Math.sin(dn/2);return 2*R*Math.asin(Math.sqrt(x))}
 var SG=9.8,SF=0,SL=0,SX=0;
 function onMo(e){if(!TM||TM.mode!="iv")return;var a=e.accelerationIncludingGravity;if(!a||a.x==null)return;TM.mev=(TM.mev||0)+1;if(!TM.run)return;
@@ -459,7 +478,7 @@ function paintG(e){if(!TM||!TM.trk)return;var km=TM.dist/1000;
 function step(){
   if(!TM)return;var e=el_(),d=$("dock");
   if(TM.mode=="iv"){var dd=e-(TM.lt||0);TM.lt=e;if(dd>0){if(TM.hold||TM.ph)TM.wt=(TM.wt||0)+dd;else TM.jt=(TM.jt||0)+dd}}
-  if(Date.now()-lps>3000){lps=Date.now();persist()}
+  if(Date.now()-lps>3000){lps=Date.now();persist()}nfy();
   if(TM.mode=="cd"){var r=TM.total-e;
     if(r<=0){endT();TM.run=false;TM.done=true;d.dataset.ph="done";$("dt").textContent="Done";$("dlab").textContent=TM.label;$("dsub").textContent="Nice. Restart or close.";$("dpg").style.width="100%";$("dpp").textContent="Again";snd("stop");return}
     d.dataset.ph="cd";$("dt").textContent=fmt(Math.ceil(r));$("dlab").textContent=TM.label;$("dsub").textContent=TM.total+"s timer";$("dpg").style.width=(100-r/TM.total*100)+"%";
@@ -739,5 +758,5 @@ $("ld").onclick=function(){var v=$("bt").value.trim();if(!v){toast("Paste backup
 try{PRUN=JSON.parse(localStorage.getItem(RK))}catch(e){PRUN=null}
 try{LAST=JSON.parse(localStorage.getItem(LK))}catch(e){LAST=null}
 try{if("serviceWorker" in navigator&&/^https?:/.test(location.protocol))navigator.serviceWorker.register("sw.js")}catch(e){}
-loadApp();bindApp();bindPlans();bindExtra();go("home");vtWrap();setTimeout(stats,250);
+loadApp();bindApp();bindPlans();bindExtra();go("home");setTimeout(stats,250);
 </script></body></html>

@@ -235,10 +235,6 @@ body{background:var(--bg)!important}
 .hero{background:var(--hero)!important;border:0!important;box-shadow:none!important}
 .btn.pri,.qr .sw{background:var(--blue)!important;box-shadow:none!important}
 .btn,.db button,.dsw{min-height:48px}
-.wks{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:12px}
-.wk{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:14px;padding:8px 0;display:flex;flex-direction:column;align-items:center;font:600 12px "DM Sans",sans-serif}
-.wk b{font-size:17px}.wk i{font-style:normal;height:14px;font-size:12px;color:var(--ok)}
-.wk.d{background:var(--okt)}.wk.t{box-shadow:0 0 0 2px var(--blue) inset}.wk.f{opacity:.5}
 .dfs{display:none}
 .dock.fs:not([hidden]){display:flex;flex-direction:column;justify-content:center;inset:0;bottom:0;padding:calc(env(safe-area-inset-top,0px) + 14px) 18px calc(env(safe-area-inset-bottom,0px) + 18px);background:#000!important;border:0;animation:none}
 .dock.fs>*{max-width:none;margin:0}
@@ -273,6 +269,20 @@ body{background:var(--bg)!important}
 .acc{width:30px;height:30px;border-radius:50%;border:2px solid var(--line);margin-left:6px;padding:0}
 :root.amo:not([data-theme="light"]){--bg:#000;--card:#0b0b0d;--line:#1f1f24;--hero:#000}
 html.amo .tabbar{background-color:#000!important}
+html[data-skin="oldmoney"]:root{--bg:#f2ecdd;--card:#fbf7ec;--ink:#1d2b22;--mut:#6b6a58;--line:#d8cdb2;--blue:#1f4d3a;--bluet:#e4eadf;--ok:#2f7d4f;--okt:#cfe3d0;--sun:#b8923a;--hero:#173626;--hero2:rgba(23,54,38,.95);--bar:#fbf7ec;--glass:#fbf7ec;--gline:#d8cdb2;--cell:#efe8d6}
+html[data-skin="modern"]:root{--bg:#f5f6f8;--card:#fff;--ink:#0f1115;--mut:#6a7280;--line:#e3e6ec;--blue:#6c4cff;--bluet:#ece8ff;--ok:#10b981;--okt:#c8f0e0;--sun:#ff9f1c;--hero:#0f1115;--hero2:rgba(15,17,21,.95);--bar:#fff;--glass:#fff;--gline:#e3e6ec;--cell:#f0f2f6}
+html[data-skin="professional"]:root{--bg:#eef1f5;--card:#fff;--ink:#1b2735;--mut:#5d6b7d;--line:#d5dce6;--blue:#1f5fbf;--bluet:#e2ecfa;--ok:#2a8a5f;--okt:#cfe9dc;--sun:#c7922b;--hero:#1b2a41;--hero2:rgba(27,42,65,.96);--bar:#fff;--glass:#fff;--gline:#d5dce6;--cell:#eef1f5}
+html[data-skin="midnight"]:root{--bg:#000;--card:#0c0d12;--ink:#f2f4ff;--mut:#8b90a8;--line:#1c1e2a;--blue:#00e0b8;--bluet:#06231f;--ok:#00e0b8;--okt:#08332b;--sun:#ffd24a;--hero:#05060a;--hero2:rgba(5,6,10,.96);--bar:#000;--glass:#0c0d12;--gline:#1c1e2a;--cell:#0c0d12}
+html[data-skin="sunset"]:root{--bg:#1a0f14;--card:#2a1820;--ink:#fff1ea;--mut:#c9a59a;--line:#4a2a30;--blue:#ff7a45;--bluet:#3b1e1a;--ok:#ffb347;--okt:#4a3014;--sun:#ffd166;--hero:#3a1522;--hero2:rgba(58,21,34,.96);--bar:#1a0f14;--glass:#2a1820;--gline:#4a2a30;--cell:#2a1820}
+html[data-skin] .tabbar{background-color:var(--bar)!important}
+html[data-skin] .dock:not(.fs){background-color:var(--hero)!important}
+html[data-skin=midnight] .btn.pri{color:#001}
+html[data-skin=oldmoney] *{font-family:Georgia,"Times New Roman",serif!important}
+html[data-skin=professional] *{font-family:system-ui,"Segoe UI",Roboto,Arial,sans-serif!important}
+.skins{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:6px 0 12px}
+.sk{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:14px;padding:10px 4px;font:600 12px sans-serif;display:flex;flex-direction:column;align-items:center;gap:6px}
+.sk i{width:34px;height:34px;border-radius:50%;border:2px solid var(--line)}
+.sk.on{box-shadow:0 0 0 2px var(--blue) inset}
 </style><link rel="manifest" href="manifest.webmanifest">
 </head>
 <body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
@@ -324,6 +334,7 @@ html.amo .tabbar{background-color:#000!important}
 <label class="row"><span><b>Cadence beat</b><em>Beeps while jogging, not walking.</em></span><input class="sw2" type="checkbox" id="t-met"></label>
 <label class="row"><span><b>Beats per minute</b></span><input class="tin" id="spm" type="number" inputmode="numeric" style="width:80px"></label>
 <label class="row"><span><b>Black theme</b><em>Pure black in dark mode.</em></span><input class="sw2" type="checkbox" id="t-amo"></label>
+<div class="row"><span><b>Theme</b></span></div><div class="skins" id="skins"></div>
 <div class="row"><span><b>Accent color</b></span><span id="accs"></span></div>
 <label class="row"><span><b>Voice cues</b><em>Says Jog, Walk and each kilometer.</em></span><input class="sw2" type="checkbox" id="t-voi"></label>
 <div class="row"><span><b>Test voice</b><em>No sound? Check phone volume and that a text-to-speech engine is installed.</em></span><button class="btn" id="vtest">Play</button></div>
@@ -632,7 +643,6 @@ function pextra(){var n=ND,mx=5,g=[],tj=0,tk=0,any=0,best=0,done=0,run=0,bs=0,td
   if(JKM)c+='<line x1="0" x2="280" y1="'+(76-JKM/mx*64)+'" y2="'+(76-JKM/mx*64)+'" style="stroke:var(--mut);stroke-dasharray:4 3;stroke-width:1"/>';
   var B=[["\ud83d\udc5f","First run",any],["\ud83d\udccd","1 km total",tk>=1],["\ud83c\udfc3","5 km day",best>=4.9],["\ud83d\udd1f","10 km total",tk>=10],["\ud83d\ude80","25 km total",tk>=25],["\u23f1\ufe0f","30 min jogged",tj>=1800],["\u2705","First full day",done>=1],["\ud83d\udd25","3 day streak",bs>=3],["\u26a1","7 day streak",bs>=7],["\ud83c\udfaf","Halfway",done>=14],["\ud83d\udcaa","3 weeks",done>=21],["\ud83c\udfc6","Plan done",done>=n]],u=B.filter(function(b){return b[2]}).length;
   return pextra4()+pextra3()+pextra2(g,td)+'<div class="panel"><h3 style="margin-top:0">Distance per day</h3><svg viewBox="0 0 280 80" style="width:100%"><g>'+c+'</g></svg><p class="key">Bars show km logged each day'+(JKM?'. Dashed line is the '+JKM+' km goal':'')+'.</p></div><div class="panel"><h3 style="margin-top:0">Badges '+u+'/'+B.length+'</h3><div class="bgs">'+B.map(function(b){return '<div class="bdg'+(b[2]?' on':'')+'"><i>'+b[0]+'</i>'+b[1]+'</div>'}).join("")+'</div></div>'}
-function wstrip(td){var b=Math.floor(Math.min(td,ND-1)/7)*7,h='<div class="wks">';for(var i=b;i<b+7&&i<ND;i++){var d=dayDone(i);h+='<button data-m="'+i+'" class="wk'+(d?' d':'')+(i==td?' t':'')+(i>td?' f':'')+'"><small>'+DN[dt(i).getDay()].charAt(0)+'</small><b>'+dt(i).getDate()+'</b><i>'+(d?'\u2713':i<td?'\u00b7':'')+'</i></button>'}return h+'</div>'}
 function say(t,f){try{if((!f&&PR.voi===0)||!window.speechSynthesis)return;var y=speechSynthesis;if(y.speaking||y.pending)y.cancel();var u=new SpeechSynthesisUtterance(t);u.lang="en-US";y.speak(u)}catch(e){}}
 function phaseFx(x){var d=$("dock");d.classList.remove("flip");void d.offsetWidth;d.classList.add("flip");setTimeout(function(){d.classList.remove("flip")},600);say(x=="w"?"Walk":"Jog")}
 function cel(dy,msg){var g=(st["g"+dy]||0)/1000,el=document.createElement("div");el.id="cel";el.innerHTML='<svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="24"/><path d="M14 27l9 9 16-18"/></svg><b>'+(g?"0.00":"Saved")+'</b><span>'+(g?"km logged today":"")+'</span>';document.body.appendChild(el);
@@ -667,7 +677,7 @@ function gsess(L){var i=0,t=0,o=document.createElement("div");o.id="gov";documen
   clearInterval(gtm);show();gtm=setInterval(function(){t--;var e=o.querySelector("i");if(e)e.textContent=t;if(t<=0){i++;show()}},1000)}
 function apz(on){if(on&&TM.run){TM.acc+=Date.now()-TM.last;TM.run=false;TM.aps=1;TM.apl=null;$("dpp").textContent="Resume";toast("Auto-paused")}else if(!on&&!TM.run&&TM.aps){TM.last=Date.now();TM.run=true;TM.aps=0;TM.lm=Date.now();$("dpp").textContent="Pause"}}
 function metro(){clearTimeout(mt);try{if(PR.met&&TM&&TM.mode=="iv"&&TM.run&&!(TM.hold||TM.ph))tick()}catch(e){}mt=setTimeout(metro,60000/Math.max(100,Math.min(220,PR.spm||160)))}
-function theme(){var h=document.documentElement;h.classList.toggle("amo",!!PR.amo);if(PR.acc)h.style.setProperty("--blue",PR.acc);else h.style.removeProperty("--blue")}
+function theme(){var h=document.documentElement;if(PR.skin)h.setAttribute("data-skin",PR.skin);else h.removeAttribute("data-skin");document.querySelectorAll(".sk").forEach(function(b){b.classList.toggle("on",(PR.skin||"classic")==b.dataset.k)});h.classList.toggle("amo",!!PR.amo);if(PR.acc)h.style.setProperty("--blue",PR.acc);else h.style.removeProperty("--blue")}
 function rnames(){var o={};for(var i=0;i<7&&i<ND;i++)items(i).forEach(function(x){if(x[0]=="Strength")o[x[2]]=1});return Object.keys(o)}
 function repsUI(){var s=$("rp-n");if(!s)return;if(!s.options.length)s.innerHTML=rnames().map(function(n){return"<option>"+n+"</option>"}).join("");var R=PR.reps||{};
   $("rp-l").innerHTML=Object.keys(R).map(function(n){var a=R[n],b=Math.max.apply(0,a.map(function(x){return x[1]})),l=a[a.length-1][1];return"<b>"+n+"</b>: best "+b+", last "+l+(l>=b?". Try "+(b+1)+" next time.":"")}).join("<br>")}
@@ -700,7 +710,11 @@ function bindExtra(){
   $("spm").value=PR.spm||160;$("spm").onchange=function(){PR.spm=Math.max(100,Math.min(220,+this.value||160));save()};
   $("t-amo").addEventListener("change",function(){setTimeout(theme,0)});
   $("accs").innerHTML=["#2f5bff","#12b27a","#ff7a45","#e0457b","#8a5cff"].map(function(c){return'<button class="acc" data-c="'+c+'" style="background:'+c+'"></button>'}).join("");
-  $("accs").onclick=function(e){var c=e.target.dataset&&e.target.dataset.c;if(c){PR.acc=c;save();theme()}};theme();metro();
+  $("accs").onclick=function(e){var c=e.target.dataset&&e.target.dataset.c;if(c){PR.acc=c;save();theme()}};
+  var SK=[["classic","Classic","#131c36","#ff7a45"],["oldmoney","Old Money","#fbf7ec","#1f4d3a"],["modern","Modern","#ffffff","#6c4cff"],["professional","Professional","#ffffff","#1f5fbf"],["midnight","Midnight","#000000","#00e0b8"],["sunset","Sunset","#2a1820","#ff7a45"]];
+  $("skins").innerHTML=SK.map(function(k){return'<button class="sk" data-k="'+k[0]+'"><i style="background:linear-gradient(135deg,'+k[2]+' 50%,'+k[3]+' 50%)"></i>'+k[1]+'</button>'}).join("");
+  $("skins").onclick=function(e){var b=e.target.closest(".sk");if(!b)return;PR.skin=b.dataset.k=="classic"?null:b.dataset.k;PR.acc=null;save();theme()};
+  theme();metro();
   $("vtest").onclick=function(){unlock();if(!window.speechSynthesis){toast("Voice is not supported on this phone.");return}say("Jog now. Voice test.",1);toast("Playing voice test")};
   $("gw").onclick=function(){unlock();gsess(GW)};$("gcd").onclick=function(){unlock();gsess(GC)};
   $("rp-go").onclick=function(){var n=$("rp-n").value,v=+$("rp-v").value;if(!n||!(v>0)){toast("Pick an exercise and enter reps.");return}PR.reps=PR.reps||{};(PR.reps[n]=PR.reps[n]||[]).push([Dn(),v]);save();$("rp-v").value="";repsUI();toast("Saved")};
@@ -723,7 +737,7 @@ function go(v){VIEWS.forEach(function(x){$("v-"+x).hidden=x!=v});
   if(v=="home")home();if(v=="prog")prog();if(v=="timers")tvu();if(v=="body")body()}
 function home(){runPrompt();runBtn();
   var td0=todayIdx(),ms=[];for(var q=Math.min(td0,ND)-1;q>=0&&ms.length<4;q--)if(!dayDone(q))ms.push(q);
-  $("mdays").innerHTML=wstrip(td0)+(ms.length?'<div class="note">Unfinished earlier days:<br>'+ms.map(function(q){return '<button class="btn" data-m="'+q+'" style="padding:6px 10px;margin:6px 6px 0 0">'+DN[dt(q).getDay()]+' '+dl(q)+'</button>'}).join("")+'</div>':"");
+  $("mdays").innerHTML=(ms.length?'<div class="note">Unfinished earlier days:<br>'+ms.map(function(q){return '<button class="btn" data-m="'+q+'" style="padding:6px 10px;margin:6px 6px 0 0">'+DN[dt(q).getDay()]+' '+dl(q)+'</button>'}).join("")+'</div>':"");
   $("mdays").querySelectorAll("button").forEach(function(b){b.onclick=function(){cur=+b.dataset.m;go("plan");render()}});
   var td=todayIdx(),i=Dn(),t=T[wdk(i)],c=cnt(i),p=Math.round(c[0]/c[1]*100),w=Math.floor(i/7);
   var tag=td<0?"Starts "+DF[START.getDay()]+" "+dl(0)+(td==-1?" (tomorrow)":" (in "+(-td)+" days)"):td>ND-1?"Plan complete. Well done.":"Today";
@@ -872,6 +886,7 @@ function restorePrefs(pr){if(!pr||typeof pr!="object")return;var num=function(x)
   ["snd","auto","gps","hap","voi","ap","met","amo"].forEach(function(k){if(pr[k]===0||pr[k]===1)PR[k]=pr[k]});
   if(Number.isInteger(pr.spm)&&pr.spm>=100&&pr.spm<=220)PR.spm=pr.spm;
   if(typeof pr.acc=="string"&&/^#[0-9a-f]{6}$/i.test(pr.acc))PR.acc=pr.acc;
+  if(typeof pr.skin=="string"&&/^(oldmoney|modern|professional|midnight|sunset)$/.test(pr.skin))PR.skin=pr.skin;
   if(Number.isInteger(pr.lvl)&&pr.lvl>=0&&pr.lvl<=11)PR.lvl=pr.lvl;
   if(Number.isInteger(pr.lrd)&&pr.lrd>=0&&pr.lrd<=400)PR.lrd=pr.lrd;
   if(typeof pr.rmt=="string"&&/^([01]\d|2[0-3]):[0-5]\d$/.test(pr.rmt))PR.rmt=pr.rmt;

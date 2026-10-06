@@ -319,6 +319,7 @@ html[data-skin=professional] *{font-family:system-ui,"Segoe UI",Roboto,Arial,san
 <section class="view" id="v-timers" hidden><h1 class="disp vt">Timers</h1><div id="rprompt2"></div>
 <div class="panel" id="tvpanel"><h3 style="margin-top:0"><svg class="i"><use href="#i-run"/></svg><span id="tvh">5 km run and walk</span></h3><p id="tvtxt" style="margin:4px 0 10px;font-size:13px;color:var(--mut)"></p><button class="btn pri w" id="tvrun">Start run</button><p style="margin:8px 0 0;font-size:12px;color:var(--mut)">Distance from GPS and steps from the motion sensor. Change this in Settings.</p></div>
 <div class="panel"><h3 style="margin-top:0"><svg class="i"><use href="#i-timer"/></svg>Workout stopwatch</h3><p style="margin:4px 0 10px;font-size:13px;color:var(--mut)">Times your whole session and saves it to today.</p><button class="btn pri w" id="tvsw">Start stopwatch</button></div>
+<div class="panel"><h3 style="margin-top:0">Plan tools</h3><div class="qr"><select class="tin" id="ce-d"></select></div><div id="ce-l" style="font-size:13px;margin:6px 0"></div><div class="qr"><input class="tin" id="ce-n" placeholder="exercise name"><input class="tin" id="ce-s" type="number" inputmode="numeric" placeholder="sets"><input class="tin" id="ce-r" placeholder="reps, e.g. 10"></div><button class="btn w" id="ce-go">Add exercise to this day</button><button class="btn w" id="np-go" style="margin-top:8px">Generate next 28 days</button></div>
 <div class="panel"><h3 style="margin-top:0">Guided</h3><div class="qr"><button class="btn" id="gw">Warm-up, 4 min</button><button class="btn" id="gcd">Cool-down, 4 min</button></div></div>
 <div class="panel"><h3 style="margin-top:0">Log reps</h3><div class="qr"><select class="tin" id="rp-n"></select><input class="tin" id="rp-v" type="number" inputmode="numeric" placeholder="reps"></div><button class="btn pri w" id="rp-go">Save reps</button><div id="rp-l" style="margin-top:8px;font-size:13px"></div></div>
 <div class="panel" id="mrp"><h3 style="margin-top:0"><svg class="i"><use href="#i-run"/></svg>Log a run by hand</h3><p style="margin:4px 0 8px;font-size:13px;color:var(--mut)">Adds to the chosen day. Time like 21:02, or just minutes.</p><div class="qr"><select class="tin" id="mr-d"></select><input class="tin" id="mr-k" type="number" step="0.01" inputmode="decimal" placeholder="km"><input class="tin" id="mr-t" placeholder="time 21:02"><input class="tin" id="mr-s" type="number" inputmode="numeric" placeholder="steps (optional)"><input class="tin" id="mr-j" placeholder="jog time (optional)"><input class="tin" id="mr-w" placeholder="walk time (optional)"></div><button class="btn pri w" id="mr-go">Add run</button></div>
@@ -496,7 +497,7 @@ function $(i){return document.getElementById(i)}
 function el_(){return (TM.acc+(TM.run?Date.now()-TM.last:0))/1000}
 function begin(o,keep){trkOff();endT();TM=o;if(keep){TM.last=Date.now();TM.run=false;TM.lt=TM.acc/1000}else{TM.acc=0;TM.last=Date.now();TM.run=true;TM.pstart=0;TM.ph=0;TM.round=1;TM.jt=0;TM.wt=0;TM.lt=0;TM.day=(o.day!=null?o.day:cur)}
   wl();
-  $("dock").hidden=false;$("dock").classList.toggle("fs",TM.mode=="iv"||TM.mode=="sw");document.body.classList.add("td");snd("start");
+  $("dock").hidden=false;$("dock").classList.toggle("fs",TM.mode=="iv"||TM.mode=="sw");$("dx").textContent=TM.mode=="cd"?"Close":"Save & close";document.body.classList.add("td");snd("start");
   $("gsw").hidden=!o.trk;$("dsv").hidden=TM.mode=="cd";$("dsv").textContent=TM.mode=="iv"?"Save run time":"Save time";
   $("drs").hidden=false;$("dsw").hidden=TM.mode!="iv";tk=setInterval(step,250);step()}
 function endT(){clearInterval(tk);tk=null;try{wlk&&wlk.release()}catch(e){}wlk=null}
@@ -509,7 +510,7 @@ var RK="aryaRun1",LK="aryaLast1",lps=0,PRUN=null,LAST=null;
 function clrRun(){try{localStorage.removeItem(RK)}catch(e){}}
 function persist(){if(!TM||TM.done||TM.mode=="cd"||!APP)return;try{var o={};["mode","label","day","trk","dist","steps","ph","hold","round","pstart","seq","hit","jt","wt","base","rt","sk","sdist","sst"].forEach(function(q){o[q]=TM[q]});o.acc=Math.round(el_()*1000);localStorage.setItem(RK,JSON.stringify({pid:APP.active,t:Date.now(),s:o}))}catch(e){}}
 var NAT=window.Capacitor&&Capacitor.isNativePlatform&&Capacitor.isNativePlatform(),LN=NAT&&Capacitor.Plugins.LocalNotifications,lnt=0,lnr=0;
-function nfy(){if(!LN||!TM||TM.mode!="iv"||Date.now()-lnt<2000)return;lnt=Date.now();
+function nfy(){if(!LN||!TM||TM.eng||TM.mode!="iv"||Date.now()-lnt<2000)return;lnt=Date.now();
   try{if(!lnr){lnr=1;LN.requestPermissions();LN.createChannel({id:"run",name:"Run progress",importance:2,vibration:false})}
   LN.schedule({notifications:[{id:7,channelId:"run",title:((TM.hold||TM.ph)?"Walking ":"Jogging ")+fmt(el_()),body:((TM.dist+(TM.base||0))/1000).toFixed(2)+" km"+(JKM?" of "+JKM+" km":"")+(TM.run?"":" | paused"),ongoing:true,autoCancel:false}]})}catch(e){}}
 function nclr(){try{LN&&LN.cancel({notifications:[{id:7}]})}catch(e){}}
@@ -530,13 +531,13 @@ function onFix(p){if(!TM||TM.mode!="iv")return;var c=p.coords,acc=c.accuracy;TM.
   if(!TM.hit&&TM.dist+(TM.base||0)>=JKM*1000){TM.hit=1;beep(3,988);toast(JKM+" km reached. Tap Save run time.")}}
 function onGerr(er){if(!TM)return;TM.gmsg=er.code==1?"Location permission denied. Allow it in site settings, or turn tracking off.":"GPS problem. Timer still works."}
 function trkOn(keep){if(!keep){TM.dist=0;TM.steps=0;TM.hit=0;TM.sdist=0;TM.sst=0;TM.sk=0}TM.lp=null;TM.gmsg="Finding GPS...";SG=9.8;SF=0;SL=0;
-  var BG=window.Capacitor&&Capacitor.Plugins&&Capacitor.Plugins.BackgroundGeolocation;
-  if(BG)try{BG.addWatcher({backgroundTitle:"Arya Fit",backgroundMessage:"Run in progress",requestPermissions:true,stale:false,distanceFilter:2},function(l,e){if(e){onGerr({code:e.code=="NOT_AUTHORIZED"?1:2});return}if(!l)return;onFix({coords:{latitude:l.latitude,longitude:l.longitude,accuracy:l.accuracy},timestamp:l.time});step()}).then(function(id){TM?TM.nid=id:BG.removeWatcher({id:id})})}catch(e){}
+  var BG=ENG?null:(window.Capacitor&&Capacitor.Plugins&&Capacitor.Plugins.BackgroundGeolocation);
+  if(ENG)engStart(keep);else if(BG)try{BG.addWatcher({backgroundTitle:"Arya Fit",backgroundMessage:"Run in progress",requestPermissions:true,stale:false,distanceFilter:2},function(l,e){if(e){onGerr({code:e.code=="NOT_AUTHORIZED"?1:2});return}if(!l)return;onFix({coords:{latitude:l.latitude,longitude:l.longitude,accuracy:l.accuracy},timestamp:l.time});step()}).then(function(id){TM?TM.nid=id:BG.removeWatcher({id:id})})}catch(e){}
   else try{if(navigator.geolocation)TM.wid=navigator.geolocation.watchPosition(onFix,onGerr,{enableHighAccuracy:true,maximumAge:0,timeout:30000});else TM.gmsg="GPS isn't available here."}catch(e){}
   try{var go=function(){window.addEventListener("devicemotion",onMo)};
     if(window.DeviceMotionEvent&&typeof DeviceMotionEvent.requestPermission=="function")DeviceMotionEvent.requestPermission().then(function(r){if(r=="granted")go()}).catch(function(){});
     else if(window.DeviceMotionEvent)go()}catch(e){}}
-function trkOff(){try{if(TM&&TM.nid!=null){Capacitor.Plugins.BackgroundGeolocation.removeWatcher({id:TM.nid});TM.nid=null}}catch(e){}try{if(TM&&TM.wid!=null)navigator.geolocation.clearWatch(TM.wid)}catch(e){}try{window.removeEventListener("devicemotion",onMo)}catch(e){}if(TM)TM.wid=null}
+function trkOff(){try{if(ENG&&TM&&TM.eng){ENG.stop();TM.eng=0}}catch(e){}try{if(TM&&TM.nid!=null){Capacitor.Plugins.BackgroundGeolocation.removeWatcher({id:TM.nid});TM.nid=null}}catch(e){}try{if(TM&&TM.wid!=null)navigator.geolocation.clearWatch(TM.wid)}catch(e){}try{window.removeEventListener("devicemotion",onMo)}catch(e){}if(TM)TM.wid=null}
 function paintG(e){if(!TM||!TM.trk)return;var km=TM.dist/1000;
   $("gd").textContent=((TM.dist+(TM.base||0))/1000).toFixed(2);$("gst").textContent=TM.steps.toLocaleString();
   $("gp").textContent=km>0.2?fmt(e/km):"--";$("gc").textContent=e>30&&TM.steps?Math.round(TM.steps/(e/60)):"--";
@@ -545,8 +546,8 @@ function paintG(e){if(!TM||!TM.trk)return;var km=TM.dist/1000;
   $("gmsg").textContent=m}
 function step(){
   if(!TM)return;var e=el_(),d=$("dock");
-  if(TM.mode=="iv"){if(!TM.lm)TM.lm=Date.now();if(TM.run)TM.aps=0;if(PR.ap&&TM.trk&&TM.run&&e>20&&Date.now()-TM.lm>9000)apz(1);var kx=(TM.hold||TM.ph)?"w":"j";if(TM._k&&TM._k!=kx)phaseFx(kx);TM._k=kx;var k1=Math.floor((TM.dist+(TM.base||0))/1000);if(TM.kk==null)TM.kk=k1;if(k1>TM.kk){TM.kk=k1;say(k1+" kilometer"+(k1>1?"s":""))}var dd=e-(TM.lt||0);TM.lt=e;if(dd>0){if(TM.hold||TM.ph)TM.wt=(TM.wt||0)+dd;else TM.jt=(TM.jt||0)+dd}}
-  if(Date.now()-lps>3000){lps=Date.now();persist()}nfy();
+  if(TM.mode=="iv"){engSync();if(!TM.lm)TM.lm=Date.now();if(TM.run)TM.aps=0;if(PR.ap&&TM.trk&&TM.run&&e>20&&Date.now()-TM.lm>9000)apz(1);var kx=(TM.hold||TM.ph)?"w":"j";if(TM._k&&TM._k!=kx)phaseFx(kx);TM._k=kx;var k1=Math.floor((TM.dist+(TM.base||0))/1000);if(TM.kk==null)TM.kk=k1;if(k1>TM.kk){TM.kk=k1;say(k1+" kilometer"+(k1>1?"s":""))}var dd=e-(TM.lt||0);TM.lt=e;if(dd>0){if(TM.hold||TM.ph)TM.wt=(TM.wt||0)+dd;else TM.jt=(TM.jt||0)+dd}}
+  if(Date.now()-lps>2000){lps=Date.now();persist()}nfy();
   if(TM.mode=="cd"){var r=TM.total-e;
     if(r<=0){endT();TM.run=false;TM.done=true;d.dataset.ph="done";$("dt").textContent="Done";$("dlab").textContent=TM.label;$("dsub").textContent="Nice. Restart or close.";$("dpg").style.width="100%";$("dpp").textContent="Again";snd("stop");return}
     d.dataset.ph="cd";$("dt").textContent=fmt(Math.ceil(r));$("dlab").textContent=TM.label;$("dsub").textContent=TM.total+"s timer";$("dpg").style.width=(100-r/TM.total*100)+"%";
@@ -567,7 +568,10 @@ $("dsw").onclick=function(){unlock();if(!TM||TM.mode!="iv")return;var e=el_();
   else{TM.hold=1;TM.pstart=e;beep(1,520)}
   step()};
 $("drs").onclick=function(){if(!TM)return;TM.hold=0;TM.jt=0;TM.wt=0;TM.lt=0;TM.dist=0;TM.steps=0;TM.sdist=0;TM.sst=0;TM.sk=0;TM.lp=null;TM.hit=0;TM.acc=0;TM.last=Date.now();TM.pstart=0;TM.ph=0;TM.round=1;TM.last3=0;TM.done=false;TM.run=true;if(!tk)tk=setInterval(step,250);step()};
-var dxa=0;$("dx").onclick=function(){if(TM&&TM.mode!="cd"&&!TM.done&&el_()>60&&!dxa){dxa=1;$("dx").textContent="Discard run?";setTimeout(function(){dxa=0;$("dx").textContent="Close"},3500);return}dxa=0;$("dx").textContent="Close";if(TM&&!TM.done)snd("stop");closeT()};
+function autoSaveRun(){var dy=TM.day,iv=TM.mode=="iv",msg="";snd("stop");
+  if(iv)msg=commit(snapS(),dy);else{st["w"+dy]=(st["w"+dy]||0)+Math.round(el_());save()}
+  closeT();render();tvu();toast("Run saved ("+((st["g"+dy]||0)/1000).toFixed(2)+" km today)")}
+$("dx").onclick=function(){if(TM&&TM.mode!="cd"&&!TM.done&&el_()>=30){autoSaveRun();return}if(TM&&!TM.done)snd("stop");closeT()};
 function addRun(dy,o){var a=function(p,v){if(v>0)st[p+dy]=(st[p+dy]||0)+Math.round(v)};
   a("r",o.sec);a("g",o.dist);a("s",o.steps);a("jt",o.jt);a("wk",o.wt);
   var tot=st["g"+dy]||0,msg="";
@@ -598,14 +602,10 @@ function undoSave(){var L=LAST;if(!L||L.pid!=APP.active||TM)return;var d=L.d,dy=
   save();clrLast();unlock();begin(L.s,1);if(TM.trk)trkOn(1);render();tvu();toast("Save undone. Tap Resume to continue.")}
 function runBtn(){var d=Dn(),g=st["g"+d]||0,c=JKM&&g>0&&g<JKM*980,t=$("tvrun"),q=$("qrt");
   if(t)t.textContent=c?"Continue run ("+(g/1000).toFixed(2)+" of "+JKM+" km logged)":"Start run - "+ivt(lvl());if(q)q.textContent=JKM?(c?"Continue run":"Run "+JKM+" km"):"Run"}
-function runPrompt(){var el=$("rprompt");if(!PRUN||!APP||TM||PRUN.pid!=APP.active||Date.now()-PRUN.t>43200000){el.innerHTML=lastCard();bindLast(el);return}
-  var s=PRUN.s;
-  el.innerHTML='<div class="panel"><b>Unsaved run found</b><p style="margin:4px 0 8px;font-size:13px;color:var(--mut)">'+(s.mode=="iv"?((s.dist||0)/1000).toFixed(2)+' km, ':'')+fmt(s.acc/1000)+' recorded when the app closed.</p><div class="qr"><button class="btn pri" id="rp-r">Resume</button><button class="btn" id="rp-s">Save it</button><button class="btn" id="rp-d">Discard</button></div></div>';
-  $("rp-r").onclick=function(){var o=PRUN.s;PRUN=null;unlock();begin(o,1);if(TM.trk)trkOn(1);runPrompt()};
-  $("rp-s").onclick=function(){var o=PRUN.s,msg="";PRUN=null;clrRun();
-    if(o.mode=="iv")msg=commit(o,o.day);else{st["w"+o.day]=(st["w"+o.day]||0)+Math.round(o.acc/1000);save()}
-    render();if(msg)toast(msg)};
-  $("rp-d").onclick=function(){PRUN=null;clrRun();runPrompt()}}
+function runPrompt(){var el=$("rprompt");el.innerHTML="";if(!PRUN||!APP||TM||PRUN.pid!=APP.active||Date.now()-PRUN.t>172800000)return;
+  var o=PRUN.s;PRUN=null;clrRun();
+  function fin(){if((o.acc||0)<60000)return;if(o.mode=="iv")commit(o,o.day);else{st["w"+o.day]=(st["w"+o.day]||0)+Math.round(o.acc/1000);save()}setTimeout(function(){render();toast("Your unfinished run was saved automatically")},300)}
+  if(ENG&&o.mode=="iv")ENG.state().then(function(r){if(r&&r.active){o.dist=r.dist;o.acc=r.acc;o.jt=r.jt;o.wt=r.wt;return ENG.route({from:0}).then(function(q){try{o.rt=JSON.parse(q.pts)}catch(e){}return ENG.stop()}).then(fin)}fin()}).catch(fin);else fin()}
 function ptime(v){v=String(v||"").trim();if(!v)return 0;var m=/^(\d+):(\d{1,2})$/.exec(v);if(m)return +m[1]*60+ +m[2];var n=parseFloat(v);return n>0?Math.round(n*60):NaN}
 var MU={chest:["Chest",48],shoulders:["Shoulders",48],biceps:["Biceps",48],triceps:["Triceps",48],abs:["Abs",36],back:["Back",48],quads:["Quads",72],glutes:["Glutes",72],hams:["Hamstrings",72],calves:["Calves",48]},bsel=null;
 var MX=[[/calf/i,{calves:1}],[/pull-?up|chin-?up|lat pull/i,{back:1,biceps:.8}],[/tricep|extension|skull/i,{triceps:1}],[/overhead|shoulder press|military|lateral raise|front raise|arnold/i,{shoulders:1,triceps:.5}],[/bench|chest press|floor press|\bfly\b|flye/i,{chest:1,shoulders:.5,triceps:.6}],[/deadlift|good morning|romanian|rdl|hinge/i,{hams:1,glutes:.9,back:.5}],[/glute kickback|donkey kick|hip thrust/i,{glutes:1,hams:.5}],[/step-?up|split squat|goblet/i,{quads:1,glutes:.8}],[/pike/i,{shoulders:1,triceps:.7}],[/dip/i,{triceps:1,chest:.5,shoulders:.4}],[/push-?up|push up/i,{chest:1,shoulders:.7,triceps:.8,abs:.3}],[/plank|raise|crunch|climber|twist|dead bug/i,{abs:1}],[/squat|lunge|wall sit/i,{quads:1,glutes:.8}],[/bridge/i,{glutes:1,hams:.7}],[/row|superman|snow angel/i,{back:1,shoulders:.3}],[/curl/i,{biceps:1}],[/burpee|bear crawl/i,{quads:.6,chest:.5,shoulders:.5,abs:.5}]];
@@ -642,14 +642,14 @@ function pextra(){var n=ND,mx=5,g=[],tj=0,tk=0,any=0,best=0,done=0,run=0,bs=0,td
   for(i=0;i<n;i++){var hh=Math.max(2,g[i]/mx*64);c+='<rect x="'+(i*bw+1).toFixed(1)+'" y="'+(76-hh).toFixed(1)+'" width="'+(bw-2).toFixed(1)+'" height="'+hh.toFixed(1)+'" rx="2" style="fill:'+(g[i]?(i==td?"var(--acc)":"var(--blue)"):"var(--line)")+'"/>'}
   if(JKM)c+='<line x1="0" x2="280" y1="'+(76-JKM/mx*64)+'" y2="'+(76-JKM/mx*64)+'" style="stroke:var(--mut);stroke-dasharray:4 3;stroke-width:1"/>';
   var B=[["\ud83d\udc5f","First run",any],["\ud83d\udccd","1 km total",tk>=1],["\ud83c\udfc3","5 km day",best>=4.9],["\ud83d\udd1f","10 km total",tk>=10],["\ud83d\ude80","25 km total",tk>=25],["\u23f1\ufe0f","30 min jogged",tj>=1800],["\u2705","First full day",done>=1],["\ud83d\udd25","3 day streak",bs>=3],["\u26a1","7 day streak",bs>=7],["\ud83c\udfaf","Halfway",done>=14],["\ud83d\udcaa","3 weeks",done>=21],["\ud83c\udfc6","Plan done",done>=n]],u=B.filter(function(b){return b[2]}).length;
-  return pextra4()+pextra3()+pextra2(g,td)+'<div class="panel"><h3 style="margin-top:0">Distance per day</h3><svg viewBox="0 0 280 80" style="width:100%"><g>'+c+'</g></svg><p class="key">Bars show km logged each day'+(JKM?'. Dashed line is the '+JKM+' km goal':'')+'.</p></div><div class="panel"><h3 style="margin-top:0">Badges '+u+'/'+B.length+'</h3><div class="bgs">'+B.map(function(b){return '<div class="bdg'+(b[2]?' on':'')+'"><i>'+b[0]+'</i>'+b[1]+'</div>'}).join("")+'</div></div>'}
+  return pextra4()+pextra3()+pextra2(g,td)+'<div class="panel"><h3 style="margin-top:0">Distance per day</h3><svg viewBox="0 0 280 80" style="width:100%"><g>'+c+'</g></svg><p class="key">Bars show km logged each day'+(JKM?'. Dashed line is the '+JKM+' km goal':'')+'.</p></div><div class="panel"><h3 style="margin-top:0">Badges '+u+'/'+B.length+'</h3><div class="bgs">'+B.map(function(b){return '<div class="bdg'+(b[2]?' on':'')+'"><i>'+b[0]+'</i>'+b[1]+'</div>'}).join("")+'</div></div>'+pextra5()}
 function say(t,f){try{if((!f&&PR.voi===0)||!window.speechSynthesis)return;var y=speechSynthesis;if(y.speaking||y.pending)y.cancel();var u=new SpeechSynthesisUtterance(t);u.lang="en-US";y.speak(u)}catch(e){}}
 function phaseFx(x){var d=$("dock");d.classList.remove("flip");void d.offsetWidth;d.classList.add("flip");setTimeout(function(){d.classList.remove("flip")},600);say(x=="w"?"Walk":"Jog")}
 function cel(dy,msg){var g=(st["g"+dy]||0)/1000,el=document.createElement("div");el.id="cel";el.innerHTML='<svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="24"/><path d="M14 27l9 9 16-18"/></svg><b>'+(g?"0.00":"Saved")+'</b><span>'+(g?"km logged today":"")+'</span>';document.body.appendChild(el);
   var b=el.querySelector("b");if(g&&!RM){var t0=performance.now();(function f(n){var q=Math.min(1,(n-t0)/900);b.textContent=(g*(1-Math.pow(1-q,3))).toFixed(2);if(q<1)requestAnimationFrame(f)})(t0)}else if(g)b.textContent=g.toFixed(2);
   if(g&&!msg)burst(innerWidth/2,innerHeight/2,60);hap([20,40,20,40,60]);el.onclick=function(){el.remove()};setTimeout(function(){el.remove()},2600)}
 function remind(q){if(!LN){if(!q)toast("Reminders work in the phone app.");return}try{LN.cancel({notifications:[{id:9}]});var v=PR.rmt;if(!v)return;LN.requestPermissions();LN.createChannel({id:"rem",name:"Daily reminder",importance:3});LN.schedule({notifications:[{id:9,channelId:"rem",title:"Time to move",body:"Your Arya Fit workout is waiting.",schedule:{on:{hour:+v.split(":")[0],minute:+v.split(":")[1]},allowWhileIdle:true}}]});if(!q)toast("Reminder set for "+v)}catch(e){}}
-function pextra2(g,td){var W=Math.floor(Math.min(td,ND-1)/7),sum=function(w){var a=0;for(var i=w*7;i<w*7+7&&i<ND;i++)a+=g[i]||0;return a},dn=0,jt=0,wk=0,i;
+function pextra2(g,td){td=Math.max(0,td);var W=Math.floor(Math.min(td,ND-1)/7),sum=function(w){var a=0;for(var i=w*7;i<w*7+7&&i<ND;i++)a+=g[i]||0;return a},dn=0,jt=0,wk=0,i;
   for(i=W*7;i<W*7+7&&i<ND;i++){if(dayDone(i))dn++;jt+=st["jt"+i]||0;wk+=st["wk"+i]||0}
   var a=sum(W),b=W?sum(W-1):0,df=W&&b?Math.round((a-b)/b*100):null,
   h='<div class="panel"><h3 style="margin-top:0">This week</h3><div class="wsum"><div><b>'+a.toFixed(1)+'</b>km</div><div><b>'+dn+'/7</b>days done</div><div><b>'+(jt+wk?Math.round(jt/(jt+wk)*100)+"%":"--")+'</b>jog share</div></div>'+(df==null?'':'<p class="key">'+(df>=0?'Up ':'Down ')+Math.abs(df)+'% in distance vs last week.</p>')+'</div>',pts=[];
@@ -697,12 +697,46 @@ function pextra4(){var h="",b=null,i;
   return h}
 function bindProg(){var g=$("bl-go");if(g)g.onclick=function(){var w=+$("bl-w").value,c=+$("bl-c").value;if(!(w>0||c>0)){toast("Enter weight or waist.");return}(PR.body=PR.body||[]).push([Date.now(),w||0,c||0]);save();prog();toast("Saved")};
   g=$("ft-go");if(g)g.onclick=function(){var t=ptime($("ft-t").value),p=Math.round(+$("ft-p").value);if(!(t>0)||!(p>=0)){toast("Enter a 1 km time like 5:30 and push-ups.");return}(PR.fit=PR.fit||[]).push([Date.now(),t,p,Math.round(Math.min(60,Math.max(0,(540-t)/5))+Math.min(40,p*1.3))]);save();prog();toast("Saved")};
-  g=$("sh-go");if(g)g.onclick=shareCard}
+  g=$("sh-go");if(g)g.onclick=shareCard;
+  var rh=$("rhist");if(rh){var pend=null;rh.onclick=function(e){var b=e.target.closest("button");if(!b)return;
+    if(b.id=="ex-csv"){shareFile("arya-runs.csv",runsCSV());return}
+    if(b.id=="ex-gpx"){var x=runsGPX();if(x.indexOf("<trk>")<0){toast("No routes recorded yet.");return}shareFile("arya-runs.gpx",x);return}
+    if(b.dataset.rm!=null){if(pend!==b.dataset.rm){pend=b.dataset.rm;b.textContent="Sure?";setTimeout(function(){pend=null;if(b.isConnected)b.textContent="Delete"},3000);return}var d=+b.dataset.rm;["g","r","s","jt","wk"].forEach(function(p){delete st[p+d]});delete st[k(d,"j")];if(PR.routes)delete PR.routes[d];save();prog();toast("Run deleted");return}
+    if(b.dataset.ed!=null){var d2=+b.dataset.ed;$("redit").innerHTML='<p class="key">Edit '+dl(d2)+'</p><div class="qr"><input class="tin" id="re-k" type="number" step="0.01" inputmode="decimal" value="'+((st["g"+d2]||0)/1000).toFixed(2)+'"><input class="tin" id="re-t" value="'+fmt(st["r"+d2]||0)+'"></div><button class="btn pri w" id="re-go">Save changes</button>';
+      $("re-go").onclick=function(){var km=parseFloat($("re-k").value),t=ptime($("re-t").value);if(!(km>=0)||!(t>=0)){toast("Check the km and time.");return}st["g"+d2]=Math.round(km*1000);st["r"+d2]=t;if(JKM&&km*1000>=JKM*980)st[k(d2,"j")]=1;save();prog();toast("Run updated")}}}}}
 function shareCard(){var R=PR.routes||{},ds=Object.keys(R).map(Number).sort(function(a,b){return a-b}),dk=ds[ds.length-1];if(dk==null)return;var pts=R[dk][R[dk].length-1],c=document.createElement("canvas");c.width=1080;c.height=1350;var x=c.getContext("2d"),gr=x.createLinearGradient(0,0,0,1350);gr.addColorStop(0,"#0b1b3f");gr.addColorStop(1,"#000");x.fillStyle=gr;x.fillRect(0,0,1080,1350);
   var kx=Math.cos(pts[0][0]*Math.PI/180),xs=pts.map(function(p){return p[1]*kx}),ys=pts.map(function(p){return -p[0]}),a=Math.min.apply(0,xs),b=Math.max.apply(0,xs),d0=Math.min.apply(0,ys),e=Math.max.apply(0,ys),sc=Math.min(860/((b-a)||1e-6),620/((e-d0)||1e-6)),ox=(1080-(b-a)*sc)/2,oy=250+(620-(e-d0)*sc)/2;
   x.strokeStyle="#ff7a45";x.lineWidth=12;x.lineCap="round";x.lineJoin="round";x.beginPath();pts.forEach(function(p,i){var px=ox+(xs[i]-a)*sc,py=oy+(ys[i]-d0)*sc;i?x.lineTo(px,py):x.moveTo(px,py)});x.stroke();
   var km=(st["g"+dk]||0)/1000,t=st["r"+dk]||0;x.fillStyle="#fff";x.font="700 56px sans-serif";x.fillText("Arya Fit | "+dl(dk),70,130);x.font="700 200px sans-serif";x.fillText(km.toFixed(2),70,1060);x.font="600 56px sans-serif";x.fillText("km",70,1130);x.fillText(fmt(t)+"   "+(km?fmt(t/km)+" /km":""),70,1230);
   c.toBlob(function(bl){var f=new File([bl],"run.png",{type:"image/png"});if(navigator.canShare&&navigator.canShare({files:[f]}))navigator.share({files:[f],title:"My run"}).catch(function(){});else{var u=URL.createObjectURL(bl),o=document.createElement("div");o.id="gov";o.innerHTML='<img src="'+u+'" style="max-width:92%;max-height:75%;border-radius:12px"><p class="key">Take a screenshot to share it.</p><button class="btn">Close</button>';document.body.appendChild(o);o.querySelector("button").onclick=function(){o.remove()}}})}
+function escp(x){return String(x).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function pextra5(){var rows="",i;for(i=ND-1;i>=0;i--){var g=st["g"+i]||0,r=st["r"+i]||0;if(!g&&!r)continue;rows+='<div class="lg"><span><b>'+dl(i)+'</b></span><span>'+(g/1000).toFixed(2)+' km | '+fmt(r)+'</span><span><button class="btn" data-ed="'+i+'">Edit</button> <button class="btn" data-rm="'+i+'">Delete</button></span></div>'}
+  return rows?'<div class="panel" id="rhist"><h3 style="margin-top:0">Run history</h3>'+rows+'<div id="redit"></div><div class="qr" style="margin-top:10px"><button class="btn" id="ex-csv">Export CSV</button><button class="btn" id="ex-gpx">Export GPX</button></div></div>':""}
+function shareFile(name,txt){var PL=window.Capacitor&&Capacitor.Plugins||{},FS=PL.Filesystem,SH=PL.Share;if(!FS||!SH){copyText(txt,"Copied. Paste it into a file or message.");return}
+  FS.writeFile({path:name,data:txt,directory:"CACHE",encoding:"utf8"}).then(function(r){return SH.share({title:name,url:r.uri})}).catch(function(){copyText(txt,"Couldn't open share. Copied instead.")})}
+function runsCSV(){var o="day,date,km,seconds,steps,jog_seconds,walk_seconds\n";for(var i=0;i<ND;i++){var g=st["g"+i]||0,r=st["r"+i]||0;if(g||r)o+=[i+1,dl(i),(g/1000).toFixed(3),r,st["s"+i]||0,st["jt"+i]||0,st["wk"+i]||0].join(",")+"\n"}return o}
+function runsGPX(){var R=PR.routes||{},o='<?xml version="1.0" encoding="UTF-8"?>\n<gpx version="1.1" creator="Arya Fit" xmlns="http://www.topografix.com/GPX/1/1">\n';Object.keys(R).sort(function(a,b){return a-b}).forEach(function(d){R[d].forEach(function(pts,j){o+='<trk><name>'+dl(+d)+' run '+(j+1)+'</name><trkseg>\n';pts.forEach(function(p){o+='<trkpt lat="'+p[0]+'" lon="'+p[1]+'"><time>'+new Date(p[2]).toISOString()+'</time></trkpt>\n'});o+='</trkseg></trk>\n'})});return o+'</gpx>\n'}
+function ceUI(){var sl=$("ce-d");if(!sl)return;var v=sl.value;sl.innerHTML=KEYS.filter(function(k2){return P.days[k2].type!="rest"}).map(function(k2){return'<option value="'+k2+'">'+escp(P.days[k2].title)+'</option>'}).join("");if(v)sl.value=v;if(!sl.value&&sl.options.length)sl.selectedIndex=0;
+  var d=P.days[sl.value];$("ce-l").innerHTML=d?d.exercises.map(function(e,i){return'<div class="lg"><span>'+escp(e.name)+' <small>'+(e.sets&&d.type=="strength"?e.sets+' x ':'')+escp(e.reps)+'</small></span><button class="btn" data-x="'+i+'">Remove</button></div>'}).join(""):""}
+function nextPlan(){var n=JSON.parse(JSON.stringify(P)),L=lvl(),b=IVS[L]||[360,60],last=L>=IVS.length-1,d=dt(ND),pad=function(x){return(x<10?"0":"")+x};
+  n.start=d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());n.name=String(P.name||"Plan").replace(/ \(next.*$/,"")+" (next 28 days)";
+  if(n.jog){n.jog.km=JKM+(last?1:0);n.jog.weeks=[0,1,2,3].map(function(w){return[Math.min(1500,b[0]+w*120+(last?120:0)),Math.max(30,Math.round((b[1]||60)-w*15))]})}
+  KEYS.forEach(function(k2){var x=n.days[k2];if(x.type=="strength")x.exercises.forEach(function(e){e.sets=Math.min(5,(e.sets||2)+1)})});
+  var r=vplan(n);if(!r.plan){toast("Couldn't build the next plan.");return}
+  var id="n"+Date.now().toString(36).slice(-6);APP.plans[id]={plan:r.plan,st:{}};PR.lvl=null;PR.lrd=null;save();activate(id);save();toast("New plan ready: next 28 days")}
+var ENG=window.Capacitor&&Capacitor.isNativePlatform&&Capacitor.isNativePlatform()&&Capacitor.Plugins&&Capacitor.Plugins.RunEngine;
+function engStart(keep){if(!ENG||!TM)return;var sq=TM.seq||[0,0],cn=sq[0]>=86400;TM.eng=1;TM.erev=0;TM.rn=0;
+  var o={jog:cn?0:sq[0],walk:cn?0:sq[1],trk:true,voice:PR.voi!==0,acc:Math.round(el_()*1000),paused:!TM.run,phase:TM.ph||0,hold:!!TM.hold,pstart:TM.pstart||0,round:TM.round||1,jt:TM.jt||0,wt:TM.wt||0,dist:keep?(TM.dist||0):0};
+  ENG.requestPermissions().catch(function(){}).then(function(){return ENG.start(o)}).catch(function(){if(TM)TM.eng=0})}
+function engPush(x){if(!ENG||!TM||!TM.eng)return;var o={elapsed:Math.round(el_()*1000),paused:!TM.run,phase:TM.ph||0,hold:!!TM.hold,pstart:TM.pstart||0,round:TM.round||1};if(x)for(var q in x)o[q]=x[q];try{ENG.setState(o)}catch(e){}}
+function engSync(){if(!ENG||!TM||!TM.eng||TM.sy||Date.now()-(TM.sat||0)<700)return;TM.sat=Date.now();TM.sy=1;
+  ENG.state().then(function(r){if(!TM)return;TM.sy=0;if(!r||!r.active)return;
+    TM.dist=r.dist;TM.jt=r.jt;TM.wt=r.wt;TM.gmsg="GPS tracking (background engine)";
+    if(!TM.hit&&TM.dist+(TM.base||0)>=JKM*1000){TM.hit=1;beep(3,988);toast(JKM+" km reached. Tap Save run time.")}
+    if(r.rev!==TM.erev){TM.erev=r.rev;TM.acc=r.acc;TM.last=Date.now();TM.run=!r.paused;TM.ph=r.phase;TM.hold=r.hold;TM.pstart=r.pstart;TM.round=r.round;TM.lt=r.acc/1000;$("dpp").textContent=r.paused?"Resume":"Pause"}
+    if(r.rn>(TM.rn||0)){var f=TM.rn||0;TM.rn=r.rn;ENG.route({from:f}).then(function(q){try{if(TM)TM.rt=(TM.rt||[]).concat(JSON.parse(q.pts))}catch(e){}})}
+  }).catch(function(){if(TM)TM.sy=0})}
+var _apz=apz;apz=function(o){_apz(o);engPush()};
 function hap(p){try{if(PR.hap!==0&&navigator.vibrate)navigator.vibrate(p)}catch(e){}}
 function rip(e,t){if(RM||!t.matches(".btn,.tile,.qr button,.db button,.dsw,.tabbar button,.c,.t,.pl"))return;var r=t.getBoundingClientRect(),d=Math.max(r.width,r.height)*1.6,i=document.createElement("i");i.className="rp";i.style.cssText="width:"+d+"px;height:"+d+"px;left:"+(e.clientX-r.left-d/2)+"px;top:"+(e.clientY-r.top-d/2)+"px";t.appendChild(i);setTimeout(function(){i.remove()},600)}
 function cup(root){if(RM)return;root.querySelectorAll(".tile b").forEach(function(b){var m=/^([\d,]+(?:\.\d+)?)(%?)$/.exec(b.textContent);if(!m)return;var to=parseFloat(m[1].replace(/,/g,"")),dec=(m[1].split(".")[1]||"").length,t0=performance.now();(function f(n){var q=Math.min(1,(n-t0)/700),v=to*(1-Math.pow(1-q,3));b.textContent=(dec?v.toFixed(dec):Math.round(v).toLocaleString())+m[2];if(q<1)requestAnimationFrame(f)})(t0)})}
@@ -718,6 +752,15 @@ function bindExtra(){
   $("vtest").onclick=function(){unlock();if(!window.speechSynthesis){toast("Voice is not supported on this phone.");return}say("Jog now. Voice test.",1);toast("Playing voice test")};
   $("gw").onclick=function(){unlock();gsess(GW)};$("gcd").onclick=function(){unlock();gsess(GC)};
   $("rp-go").onclick=function(){var n=$("rp-n").value,v=+$("rp-v").value;if(!n||!(v>0)){toast("Pick an exercise and enter reps.");return}PR.reps=PR.reps||{};(PR.reps[n]=PR.reps[n]||[]).push([Dn(),v]);save();$("rp-v").value="";repsUI();toast("Saved")};
+  $("dpp").addEventListener("click",function(){engPush()});
+  $("dsw").addEventListener("click",function(){engPush()});
+  $("drs").addEventListener("click",function(){if(TM&&TM.eng)setTimeout(function(){engStart(0)},0)});
+  document.addEventListener("visibilitychange",function(){if(!ENG||!TM||!TM.eng)return;if(document.hidden)engPush({fg:false});else{TM.erev=-1;ENG.setState({fg:true})}});
+  $("ce-d").onchange=ceUI;
+  $("ce-l").onclick=function(e){var b=e.target.closest("button");if(!b)return;P.days[$("ce-d").value].exercises.splice(+b.dataset.x,1);setPlan(P);save();render();ceUI()};
+  $("ce-go").onclick=function(){var d=P.days[$("ce-d").value],n=$("ce-n").value.trim().slice(0,40);if(!d||!n){toast("Enter an exercise name.");return}
+    d.exercises.push({name:n,sets:Math.max(1,Math.min(8,Math.round(+$("ce-s").value)||3)),reps:$("ce-r").value.trim().slice(0,20)||"10",note:""});setPlan(P);save();render();["ce-n","ce-s","ce-r"].forEach(function(i){$(i).value=""});ceUI();toast("Exercise added")};
+  var npa=0;$("np-go").onclick=function(){var b=this;if(!npa){npa=1;b.textContent="Tap again to create the next plan";setTimeout(function(){npa=0;b.textContent="Generate next 28 days"},3500);return}npa=0;b.textContent="Generate next 28 days";nextPlan()};
   $("dfs").onclick=function(){$("dock").classList.remove("fs")};
   $("rm-t").value=PR.rmt||"";$("rm-t").onchange=function(){PR.rmt=this.value;save();remind()};
   $("dock").addEventListener("click",function(e){if(!this.classList.contains("fs")&&e.target.closest(".dm")&&TM&&TM.mode!="cd")this.classList.add("fs")});
@@ -765,7 +808,7 @@ function prog(){
     h+='<div class="pbar"><span style="width:58px;color:var(--ink)">Week '+(w+1)+'</span><i><u style="width:'+pp+'%"></u></i><span>'+pp+'%</span></div>'}
   h+='</div><div class="panel" style="margin-top:12px"><h3 style="margin-top:0">'+ic("run")+'Run log</h3>'+(rows.length?rows.reverse().join(""):'<p style="margin:6px 0;font-size:13px;color:var(--mut)">No runs saved yet. Finish a 5 km run and tap Save run time.</p>')+'</div>';
   $("pgv").innerHTML=h+pextra();cup($("pgv"));bindProg()}
-function tvu(){repsUI();runBtn();var r2=$("rprompt2");if(r2){r2.innerHTML=lastCard();bindLast(r2)}var sl=$("mr-d");if(sl){var oh="",n0=Math.min(ND-1,Dn());for(var q=0;q<=n0;q++)oh+='<option value="'+q+'">'+DN[dt(q).getDay()]+" "+dl(q)+"</option>";sl.innerHTML=oh;sl.value=n0}$("tvtxt").textContent=JKM?"This week: "+ivt(Math.floor(Dn()/7))+(IVS[Math.min(Math.floor(Dn()/7),IVS.length-1)][1]?", repeat until you reach ":", aim for ")+JKM+" km.":""}
+function tvu(){repsUI();ceUI();runBtn();var r2=$("rprompt2");if(r2){r2.innerHTML=lastCard();bindLast(r2)}var sl=$("mr-d");if(sl){var oh="",n0=Math.min(ND-1,Dn());for(var q=0;q<=n0;q++)oh+='<option value="'+q+'">'+DN[dt(q).getDay()]+" "+dl(q)+"</option>";sl.innerHTML=oh;sl.value=n0}$("tvtxt").textContent=JKM?"This week: "+ivt(Math.floor(Dn()/7))+(IVS[Math.min(Math.floor(Dn()/7),IVS.length-1)][1]?", repeat until you reach ":", aim for ")+JKM+" km.":""}
 function bindApp(){
   document.querySelectorAll("#tabbar button").forEach(function(b){b.onclick=function(){go(b.dataset.v)}});
   $("q-run").onclick=function(){unlock();startIV(Dn())};$("q-sw").onclick=function(){unlock();startSW(Dn())};$("q-rest").onclick=function(){unlock();startCD(60,"Rest")};

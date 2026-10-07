@@ -135,7 +135,7 @@ body.td .wrap{padding-bottom:430px}
 .dpd u{display:block;height:100%;width:0;background:var(--sun)}
 .vt{margin:6px 4px 12px;font-size:34px;line-height:1}
 .view.vin{animation:swp .28s ease-out}
-.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:15;display:grid;grid-template-columns:repeat(6,1fr);gap:2px;padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px));background:var(--bar);border-top:1px solid var(--gline)}
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:15;display:grid;grid-template-columns:repeat(5,1fr);gap:4px;padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px));background:var(--bar);border-top:1px solid var(--gline)}
 .tabbar button{background:none;border:0;color:var(--mut);display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0;border-radius:14px;font:600 11px "DM Sans",sans-serif}
 .tabbar .i{width:23px;height:23px}
 .tabbar button.on{color:var(--blue);background:var(--bluet)}
@@ -236,13 +236,13 @@ body{background:var(--bg)!important}
 .btn.pri,.qr .sw{background:var(--blue)!important;box-shadow:none!important}
 .btn,.db button,.dsw{min-height:48px}
 .dfs{display:none}
-.dock.fs:not([hidden]){display:flex;flex-direction:column;justify-content:center;inset:0;bottom:0;padding:calc(env(safe-area-inset-top,0px) + 14px) 18px calc(env(safe-area-inset-bottom,0px) + 18px);background:#000!important;border:0;animation:none}
+.dock.fs:not([hidden]){display:flex;flex-direction:column;justify-content:center;inset:0;bottom:0;padding:calc(env(safe-area-inset-top,0px) + 14px) 18px calc(env(safe-area-inset-bottom,0px) + 18px);background:#0a0b0e!important;border:0;animation:none}
 .dock.fs>*{max-width:none;margin:0}
 .dock.fs .dfs{display:block;align-self:flex-end;background:none;border:1px solid #333;color:#aaa;border-radius:12px;padding:8px 14px;font:600 13px "DM Sans",sans-serif;margin-bottom:8px}
 .dock.fs .dpg{height:6px;margin-bottom:12px}
 .dock.fs .dm{flex-direction:column;align-items:center;text-align:center;margin-top:8px}
 .dock.fs .dm>div{position:relative;width:min(78vw,330px);aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:50%;background:conic-gradient(var(--acc) var(--p,0%),#1b1b22 0)}
-.dock.fs .dm>div::after{content:"";position:absolute;inset:12px;border-radius:50%;background:#000}
+.dock.fs .dm>div::after{content:"";position:absolute;inset:12px;border-radius:50%;background:#0a0b0e}
 .dock.fs .dm>div>*{position:relative;z-index:1}
 .dock.fs .dm small{font-size:15px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:6px}
 .dock.fs .dm b{font-size:clamp(54px,18vw,88px)}
@@ -264,15 +264,15 @@ body{background:var(--bg)!important}
 #cel path{stroke-dasharray:40;stroke-dashoffset:40;animation:drw .4s .55s forwards}
 #cel b{font-size:56px;margin-top:14px}#cel span{opacity:.7}
 @keyframes drw{to{stroke-dashoffset:0}}
-#gov{position:fixed;inset:0;z-index:55;background:#000;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center}
+#gov{position:fixed;inset:0;z-index:55;background:#0a0b0e;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center}
 #gov b{font-size:30px;padding:0 20px}#gov i{font-style:normal;font-size:96px;font-weight:700;color:var(--ok)}#gov small{opacity:.6}
 .acc{width:30px;height:30px;border-radius:50%;border:2px solid var(--line);margin-left:6px;padding:0}
-:root.amo:not([data-theme="light"]){--bg:#000;--card:#0b0b0d;--line:#1f1f24;--hero:#000}
-html.amo .tabbar{background-color:#000!important}
+:root.amo:not([data-theme="light"]){--bg:#0a0b0e;--card:#111317;--line:#1e2129;--hero:#0a0b0e}
+html.amo .tabbar{background-color:#0a0b0e!important}
 html[data-skin="oldmoney"]:root{--bg:#f2ecdd;--card:#fbf7ec;--ink:#1d2b22;--mut:#6b6a58;--line:#d8cdb2;--blue:#1f4d3a;--bluet:#e4eadf;--ok:#2f7d4f;--okt:#cfe3d0;--sun:#b8923a;--hero:#173626;--hero2:rgba(23,54,38,.95);--bar:#fbf7ec;--glass:#fbf7ec;--gline:#d8cdb2;--cell:#efe8d6}
-html[data-skin="modern"]:root{--bg:#f5f6f8;--card:#fff;--ink:#0f1115;--mut:#6a7280;--line:#e3e6ec;--blue:#6c4cff;--bluet:#ece8ff;--ok:#10b981;--okt:#c8f0e0;--sun:#ff9f1c;--hero:#0f1115;--hero2:rgba(15,17,21,.95);--bar:#fff;--glass:#fff;--gline:#e3e6ec;--cell:#f0f2f6}
+html[data-skin="modern"]:root{--bg:#f5f6f8;--card:#fff;--ink:#0f1115;--mut:#6a7280;--line:#e3e6ec;--blue:#c8294f;--bluet:#fbe7ec;--ok:#10b981;--okt:#c8f0e0;--sun:#ff9f1c;--hero:#0f1115;--hero2:rgba(15,17,21,.95);--bar:#fff;--glass:#fff;--gline:#e3e6ec;--cell:#f0f2f6}
 html[data-skin="professional"]:root{--bg:#eef1f5;--card:#fff;--ink:#1b2735;--mut:#5d6b7d;--line:#d5dce6;--blue:#1f5fbf;--bluet:#e2ecfa;--ok:#2a8a5f;--okt:#cfe9dc;--sun:#c7922b;--hero:#1b2a41;--hero2:rgba(27,42,65,.96);--bar:#fff;--glass:#fff;--gline:#d5dce6;--cell:#eef1f5}
-html[data-skin="midnight"]:root{--bg:#000;--card:#0c0d12;--ink:#f2f4ff;--mut:#8b90a8;--line:#1c1e2a;--blue:#00e0b8;--bluet:#06231f;--ok:#00e0b8;--okt:#08332b;--sun:#ffd24a;--hero:#05060a;--hero2:rgba(5,6,10,.96);--bar:#000;--glass:#0c0d12;--gline:#1c1e2a;--cell:#0c0d12}
+html[data-skin="midnight"]:root{--bg:#0a0b0e;--card:#12141a;--ink:#eceef5;--mut:#8a90a3;--line:#1e2129;--blue:#3fcfae;--bluet:#0f2a26;--ok:#3fcfae;--okt:#12332d;--sun:#e8c15a;--hero:#0a0b0e;--hero2:rgba(10,11,14,.96);--bar:#0a0b0e;--glass:#12141a;--gline:#1e2129;--cell:#12141a}
 html[data-skin="sunset"]:root{--bg:#1a0f14;--card:#2a1820;--ink:#fff1ea;--mut:#c9a59a;--line:#4a2a30;--blue:#ff7a45;--bluet:#3b1e1a;--ok:#ffb347;--okt:#4a3014;--sun:#ffd166;--hero:#3a1522;--hero2:rgba(58,21,34,.96);--bar:#1a0f14;--glass:#2a1820;--gline:#4a2a30;--cell:#2a1820}
 html[data-skin] .tabbar{background-color:var(--bar)!important}
 html[data-skin] .dock:not(.fs){background-color:var(--hero)!important}
@@ -283,6 +283,21 @@ html[data-skin=professional] *{font-family:system-ui,"Segoe UI",Roboto,Arial,san
 .sk{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:14px;padding:10px 4px;font:600 12px sans-serif;display:flex;flex-direction:column;align-items:center;gap:6px}
 .sk i{width:34px;height:34px;border-radius:50%;border:2px solid var(--line)}
 .sk.on{box-shadow:0 0 0 2px var(--blue) inset}
+/* design pass: typography, states, nav, depth */
+body{font-variant-numeric:tabular-nums}
+h1,h2,h3{text-wrap:balance;letter-spacing:-.01em}
+p,.key{text-wrap:pretty}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.acc{width:38px;height:38px;margin-left:4px}
+.dpg u,#gbar{transition:none!important}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;background:var(--cell);border:1px solid var(--line);border-radius:14px;margin:0 0 12px}
+.seg button{border:0;background:none;color:var(--mut);border-radius:10px;min-height:40px;font:600 14px sans-serif}
+.seg button.on{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(10,11,14,.18)}
+.bdg svg{width:26px;height:26px;display:block;margin:0 auto 4px}
+html[data-skin=oldmoney] .panel,html[data-skin=oldmoney] .tile{box-shadow:0 1px 2px rgba(60,48,20,.10)!important}
+html[data-skin=modern] .panel,html[data-skin=modern] .tile{box-shadow:0 1px 2px rgba(15,17,21,.08)!important}
+html[data-skin=professional] .panel,html[data-skin=professional] .tile{box-shadow:0 1px 2px rgba(27,42,65,.10)!important}
+html[data-skin=midnight] .panel,html[data-skin=sunset] .panel,html[data-skin=midnight] .tile{box-shadow:inset 0 1px 0 rgba(255,255,255,.05)!important}
 </style><link rel="manifest" href="manifest.webmanifest">
 </head>
 <body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
@@ -301,6 +316,12 @@ html[data-skin=professional] *{font-family:system-ui,"Segoe UI",Roboto,Arial,san
 <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
 <symbol id="i-chart" viewBox="0 0 24 24"><path d="M5 20v-6M12 20V6M19 20v-10M3 20h18"/></symbol>
 <symbol id="i-body" viewBox="0 0 24 24"><circle cx="12" cy="4.5" r="2"/><path d="M12 7v7M7 9h10M12 14l-3 7M12 14l3 7"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-6-5.2-6-10a6 6 0 1 1 12 0c0 4.8-6 10-6 10z"/><circle cx="12" cy="11" r="2"/></symbol>
+<symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4M5 5h11l-2 3.5L16 12H5"/></symbol>
+<symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 3L5 13h6l-1 8 8-10h-6z"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+<symbol id="i-trophy" viewBox="0 0 24 24"><path d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H5v1a3 3 0 0 0 3 3M16 6h3v1a3 3 0 0 1-3 3M12 13v4M8.5 20h7"/></symbol>
+<symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="M12 12h.01"/></symbol>
 <symbol id="i-set" viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></symbol>
 </defs></svg>
 <div class="wrap"><main>
@@ -324,8 +345,8 @@ html[data-skin=professional] *{font-family:system-ui,"Segoe UI",Roboto,Arial,san
 <div class="panel"><h3 style="margin-top:0">Log reps</h3><div class="qr"><select class="tin" id="rp-n"></select><input class="tin" id="rp-v" type="number" inputmode="numeric" placeholder="reps"></div><button class="btn pri w" id="rp-go">Save reps</button><div id="rp-l" style="margin-top:8px;font-size:13px"></div></div>
 <div class="panel" id="mrp"><h3 style="margin-top:0"><svg class="i"><use href="#i-run"/></svg>Log a run by hand</h3><p style="margin:4px 0 8px;font-size:13px;color:var(--mut)">Adds to the chosen day. Time like 21:02, or just minutes.</p><div class="qr"><select class="tin" id="mr-d"></select><input class="tin" id="mr-k" type="number" step="0.01" inputmode="decimal" placeholder="km"><input class="tin" id="mr-t" placeholder="time 21:02"><input class="tin" id="mr-s" type="number" inputmode="numeric" placeholder="steps (optional)"><input class="tin" id="mr-j" placeholder="jog time (optional)"><input class="tin" id="mr-w" placeholder="walk time (optional)"></div><button class="btn pri w" id="mr-go">Add run</button></div>
 <div class="panel"><h3 style="margin-top:0"><svg class="i"><use href="#i-timer"/></svg>Countdown</h3><div class="qr"><button data-tq="30">30s</button><button data-tq="45">45s</button><button data-tq="60">60s</button><button data-tq="90">90s</button></div><div class="qr"><input class="tin" id="tvn" type="number" inputmode="numeric" min="5" max="3600" placeholder="seconds"><button class="btn pri" id="tvgo">Start</button></div></div></section>
-<section class="view" id="v-body" hidden><h1 class="disp vt">Body</h1><div class="panel" style="margin-top:0"><svg id="bsv" viewBox="0 0 220 230" style="width:100%;max-height:440px"></svg><div style="height:8px;border-radius:6px;margin:6px 8px 4px;background:linear-gradient(90deg,var(--blue),hsl(42,90%,52%),hsl(0,90%,52%))"></div><div style="display:flex;justify-content:space-between;margin:0 8px;font-size:11px;color:var(--mut)"><span>Recovered</span><span>Heavily worked</span></div><p class="key" style="text-align:center">Tap a muscle to see recovery. Yellow dashes mean you marked it sore.</p></div><div class="panel" id="brd"></div><div class="panel" id="bdet"></div><div class="panel" id="blist"></div></section>
-<section class="view" id="v-prog" hidden><h1 class="disp vt">Progress</h1><div id="pgv"></div></section>
+<section class="view" id="v-body" hidden><h1 class="disp vt">Body</h1><div class="seg"><button data-s="prog">Stats</button><button data-s="body">Body</button></div><div class="panel" style="margin-top:0"><svg id="bsv" viewBox="0 0 220 230" style="width:100%;max-height:440px"></svg><div style="height:8px;border-radius:6px;margin:6px 8px 4px;background:linear-gradient(90deg,var(--blue),hsl(42,90%,52%),hsl(0,90%,52%))"></div><div style="display:flex;justify-content:space-between;margin:0 8px;font-size:11px;color:var(--mut)"><span>Recovered</span><span>Heavily worked</span></div><p class="key" style="text-align:center">Tap a muscle to see recovery. Yellow dashes mean you marked it sore.</p></div><div class="panel" id="brd"></div><div class="panel" id="bdet"></div><div class="panel" id="blist"></div></section>
+<section class="view" id="v-prog" hidden><h1 class="disp vt">Progress</h1><div class="seg"><button data-s="prog">Stats</button><button data-s="body">Body</button></div><div id="pgv"></div></section>
 <section class="view" id="v-set" hidden><h1 class="disp vt">Settings</h1>
 <div class="panel" style="margin-top:0"><h3 style="margin-top:0">Plan</h3><div class="row"><span><b id="sp-name"></b><em id="sp-sub"></em></span><button class="btn pri" id="sp-go">Manage</button></div></div>
 <div class="panel" style="margin-top:12px"><h3 style="margin-top:0">Preferences</h3>
@@ -363,7 +384,7 @@ html[data-skin=professional] *{font-family:system-ui,"Segoe UI",Roboto,Arial,san
 </main>
 <div class="toast" id="toast" hidden></div>
 </div>
-<nav class="tabbar" id="tabbar"><button data-v="home" class="on"><svg class="i"><use href="#i-home"/></svg><span>Home</span></button><button data-v="plan"><svg class="i"><use href="#i-cal"/></svg><span>Plan</span></button><button data-v="timers"><svg class="i"><use href="#i-timer"/></svg><span>Timers</span></button><button data-v="body"><svg class="i"><use href="#i-body"/></svg><span>Body</span></button><button data-v="prog"><svg class="i"><use href="#i-chart"/></svg><span>Progress</span></button><button data-v="set"><svg class="i"><use href="#i-set"/></svg><span>Settings</span></button></nav>
+<nav class="tabbar" id="tabbar"><button data-v="home" class="on"><svg class="i"><use href="#i-home"/></svg><span>Home</span></button><button data-v="plan"><svg class="i"><use href="#i-cal"/></svg><span>Plan</span></button><button data-v="timers"><svg class="i"><use href="#i-timer"/></svg><span>Timers</span></button><button data-v="prog"><svg class="i"><use href="#i-chart"/></svg><span>Progress</span></button><button data-v="set"><svg class="i"><use href="#i-set"/></svg><span>Settings</span></button></nav>
 <div class="dock" id="dock" hidden data-ph="cd"><button class="dfs" id="dfs">Minimize</button><div class="dpg"><u id="dpg"></u></div>
 <div class="dm"><div><small id="dlab"></small><b class="disp" id="dt">0:00</b></div><span id="dsub"></span></div>
 <div id="gsw" hidden><div class="gs"><span><b class="disp" id="gd">0.00</b><i id="gkm" style="font-style:normal">km of 5</i></span><span><b class="disp" id="gst">0</b>steps</span><span><b class="disp" id="gp">--</b>min/km</span><span><b class="disp" id="gc">--</b>steps/min</span></div><div class="dpd"><u id="gbar"></u></div><div class="gm" id="gmsg"></div></div>
@@ -641,8 +662,8 @@ function pextra(){var n=ND,mx=5,g=[],tj=0,tk=0,any=0,best=0,done=0,run=0,bs=0,td
   for(var i=0;i<n;i++){var v=(st["g"+i]||0)/1000;g.push(v);tk+=v;if(v>mx)mx=v;if(v>best)best=v;tj+=st["jt"+i]||0;if(v||st["r"+i])any=1;if(dayDone(i)){done++;run++;if(run>bs)bs=run}else run=0}
   for(i=0;i<n;i++){var hh=Math.max(2,g[i]/mx*64);c+='<rect x="'+(i*bw+1).toFixed(1)+'" y="'+(76-hh).toFixed(1)+'" width="'+(bw-2).toFixed(1)+'" height="'+hh.toFixed(1)+'" rx="2" style="fill:'+(g[i]?(i==td?"var(--acc)":"var(--blue)"):"var(--line)")+'"/>'}
   if(JKM)c+='<line x1="0" x2="280" y1="'+(76-JKM/mx*64)+'" y2="'+(76-JKM/mx*64)+'" style="stroke:var(--mut);stroke-dasharray:4 3;stroke-width:1"/>';
-  var B=[["\ud83d\udc5f","First run",any],["\ud83d\udccd","1 km total",tk>=1],["\ud83c\udfc3","5 km day",best>=4.9],["\ud83d\udd1f","10 km total",tk>=10],["\ud83d\ude80","25 km total",tk>=25],["\u23f1\ufe0f","30 min jogged",tj>=1800],["\u2705","First full day",done>=1],["\ud83d\udd25","3 day streak",bs>=3],["\u26a1","7 day streak",bs>=7],["\ud83c\udfaf","Halfway",done>=14],["\ud83d\udcaa","3 weeks",done>=21],["\ud83c\udfc6","Plan done",done>=n]],u=B.filter(function(b){return b[2]}).length;
-  return pextra4()+pextra3()+pextra2(g,td)+'<div class="panel"><h3 style="margin-top:0">Distance per day</h3><svg viewBox="0 0 280 80" style="width:100%"><g>'+c+'</g></svg><p class="key">Bars show km logged each day'+(JKM?'. Dashed line is the '+JKM+' km goal':'')+'.</p></div><div class="panel"><h3 style="margin-top:0">Badges '+u+'/'+B.length+'</h3><div class="bgs">'+B.map(function(b){return '<div class="bdg'+(b[2]?' on':'')+'"><i>'+b[0]+'</i>'+b[1]+'</div>'}).join("")+'</div></div>'+pextra5()}
+  var B=[["run","First run",any],["pin","1 km total",tk>=1],["flag","5 km day",best>=4.9],["target","10 km total",tk>=10],["bolt","25 km total",tk>=25],["timer","30 min jogged",tj>=1800],["check","First full day",done>=1],["flame","3 day streak",bs>=3],["bolt","7 day streak",bs>=7],["sun","Halfway",done>=14],["dumbbell","3 weeks",done>=21],["trophy","Plan done",done>=n]],u=B.filter(function(b){return b[2]}).length;
+  return pextra4()+pextra3()+pextra2(g,td)+'<div class="panel"><h3 style="margin-top:0">Distance per day</h3><svg viewBox="0 0 280 80" style="width:100%"><g>'+c+'</g></svg><p class="key">Bars show km logged each day'+(JKM?'. Dashed line is the '+JKM+' km goal':'')+'.</p></div><div class="panel"><h3 style="margin-top:0">Badges '+u+'/'+B.length+'</h3><div class="bgs">'+B.map(function(b){return '<div class="bdg'+(b[2]?' on':'')+'"><svg class="i"><use href="#i-'+b[0]+'"/></svg>'+b[1]+'</div>'}).join("")+'</div></div>'+pextra5()}
 function say(t,f){try{if((!f&&PR.voi===0)||!window.speechSynthesis)return;var y=speechSynthesis;if(y.speaking||y.pending)y.cancel();var u=new SpeechSynthesisUtterance(t);u.lang="en-US";y.speak(u)}catch(e){}}
 function phaseFx(x){var d=$("dock");d.classList.remove("flip");void d.offsetWidth;d.classList.add("flip");setTimeout(function(){d.classList.remove("flip")},600);say(x=="w"?"Walk":"Jog")}
 function cel(dy,msg){var g=(st["g"+dy]||0)/1000,el=document.createElement("div");el.id="cel";el.innerHTML='<svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="24"/><path d="M14 27l9 9 16-18"/></svg><b>'+(g?"0.00":"Saved")+'</b><span>'+(g?"km logged today":"")+'</span>';document.body.appendChild(el);
@@ -711,7 +732,7 @@ function shareCard(){var R=PR.routes||{},ds=Object.keys(R).map(Number).sort(func
   c.toBlob(function(bl){var f=new File([bl],"run.png",{type:"image/png"});if(navigator.canShare&&navigator.canShare({files:[f]}))navigator.share({files:[f],title:"My run"}).catch(function(){});else{var u=URL.createObjectURL(bl),o=document.createElement("div");o.id="gov";o.innerHTML='<img src="'+u+'" style="max-width:92%;max-height:75%;border-radius:12px"><p class="key">Take a screenshot to share it.</p><button class="btn">Close</button>';document.body.appendChild(o);o.querySelector("button").onclick=function(){o.remove()}}})}
 function escp(x){return String(x).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 function pextra5(){var rows="",i;for(i=ND-1;i>=0;i--){var g=st["g"+i]||0,r=st["r"+i]||0;if(!g&&!r)continue;rows+='<div class="lg"><span><b>'+dl(i)+'</b></span><span>'+(g/1000).toFixed(2)+' km | '+fmt(r)+'</span><span><button class="btn" data-ed="'+i+'">Edit</button> <button class="btn" data-rm="'+i+'">Delete</button></span></div>'}
-  return rows?'<div class="panel" id="rhist"><h3 style="margin-top:0">Run history</h3>'+rows+'<div id="redit"></div><div class="qr" style="margin-top:10px"><button class="btn" id="ex-csv">Export CSV</button><button class="btn" id="ex-gpx">Export GPX</button></div></div>':""}
+  return rows?'<div class="panel" id="rhist"><h3 style="margin-top:0">Run history</h3>'+rows+'<div id="redit"></div><div class="qr" style="margin-top:10px"><button class="btn" id="ex-csv">Export CSV</button><button class="btn" id="ex-gpx">Export GPX</button></div></div>':'<div class="panel"><h3 style="margin-top:0">No runs yet</h3><p class="key">Start a run from Timers. Distance, pace splits and your route appear here after you save it.</p></div>'}
 function shareFile(name,txt){var PL=window.Capacitor&&Capacitor.Plugins||{},FS=PL.Filesystem,SH=PL.Share;if(!FS||!SH){copyText(txt,"Copied. Paste it into a file or message.");return}
   FS.writeFile({path:name,data:txt,directory:"CACHE",encoding:"utf8"}).then(function(r){return SH.share({title:name,url:r.uri})}).catch(function(){copyText(txt,"Couldn't open share. Copied instead.")})}
 function runsCSV(){var o="day,date,km,seconds,steps,jog_seconds,walk_seconds\n";for(var i=0;i<ND;i++){var g=st["g"+i]||0,r=st["r"+i]||0;if(g||r)o+=[i+1,dl(i),(g/1000).toFixed(3),r,st["s"+i]||0,st["jt"+i]||0,st["wk"+i]||0].join(",")+"\n"}return o}
@@ -745,7 +766,7 @@ function bindExtra(){
   $("t-amo").addEventListener("change",function(){setTimeout(theme,0)});
   $("accs").innerHTML=["#2f5bff","#12b27a","#ff7a45","#e0457b","#8a5cff"].map(function(c){return'<button class="acc" data-c="'+c+'" style="background:'+c+'"></button>'}).join("");
   $("accs").onclick=function(e){var c=e.target.dataset&&e.target.dataset.c;if(c){PR.acc=c;save();theme()}};
-  var SK=[["classic","Classic","#131c36","#ff7a45"],["oldmoney","Old Money","#fbf7ec","#1f4d3a"],["modern","Modern","#ffffff","#6c4cff"],["professional","Professional","#ffffff","#1f5fbf"],["midnight","Midnight","#000000","#00e0b8"],["sunset","Sunset","#2a1820","#ff7a45"]];
+  var SK=[["classic","Classic","#131c36","#ff7a45"],["oldmoney","Old Money","#fbf7ec","#1f4d3a"],["modern","Modern","#ffffff","#c8294f"],["professional","Professional","#ffffff","#1f5fbf"],["midnight","Midnight","#0a0b0e","#3fcfae"],["sunset","Sunset","#2a1820","#ff7a45"]];
   $("skins").innerHTML=SK.map(function(k){return'<button class="sk" data-k="'+k[0]+'"><i style="background:linear-gradient(135deg,'+k[2]+' 50%,'+k[3]+' 50%)"></i>'+k[1]+'</button>'}).join("");
   $("skins").onclick=function(e){var b=e.target.closest(".sk");if(!b)return;PR.skin=b.dataset.k=="classic"?null:b.dataset.k;PR.acc=null;save();theme()};
   theme();metro();
@@ -756,6 +777,7 @@ function bindExtra(){
   $("dsw").addEventListener("click",function(){engPush()});
   $("drs").addEventListener("click",function(){if(TM&&TM.eng)setTimeout(function(){engStart(0)},0)});
   document.addEventListener("visibilitychange",function(){if(!ENG||!TM||!TM.eng)return;if(document.hidden)engPush({fg:false});else{TM.erev=-1;ENG.setState({fg:true})}});
+  document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest(".seg button");if(b)go(b.dataset.s)});
   $("ce-d").onchange=ceUI;
   $("ce-l").onclick=function(e){var b=e.target.closest("button");if(!b)return;P.days[$("ce-d").value].exercises.splice(+b.dataset.x,1);setPlan(P);save();render();ceUI()};
   $("ce-go").onclick=function(){var d=P.days[$("ce-d").value],n=$("ce-n").value.trim().slice(0,40);if(!d||!n){toast("Enter an exercise name.");return}
@@ -775,7 +797,7 @@ function bindExtra(){
 var VIEWS=["home","plan","timers","body","prog","set","plans"];
 function Dn(){return Math.max(0,Math.min(ND-1,todayIdx()))}
 function go(v){VIEWS.forEach(function(x){$("v-"+x).hidden=x!=v});
-  document.querySelectorAll("#tabbar button").forEach(function(b){b.classList.toggle("on",b.dataset.v==(v=="plans"?"set":v))});
+  document.querySelectorAll("#tabbar button").forEach(function(b){b.classList.toggle("on",b.dataset.v==(v=="plans"?"set":v=="body"?"prog":v))});document.querySelectorAll(".seg button").forEach(function(b){b.classList.toggle("on",b.dataset.s==v)});
   var e=$("v-"+v);e.classList.remove("vin");void e.offsetWidth;e.classList.add("vin");[].forEach.call(e.children,function(c,i){c.style.animationDelay=i*30+"ms"});window.scrollTo(0,0);
   if(v=="home")home();if(v=="prog")prog();if(v=="timers")tvu();if(v=="body")body()}
 function home(){runPrompt();runBtn();

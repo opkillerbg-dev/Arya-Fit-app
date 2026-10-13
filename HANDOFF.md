@@ -100,5 +100,12 @@ Clone the live repo (or ask the user for current `index.html`, `sw.js`, `package
 ## 10. v37 Progress redesign
 - Updated `index.html` styles and Progress section headers for Stats, Body, History and Badges. The design uses existing stored data only; no new storage keys or native files.
 - Body recovery calculations, muscle selection, soreness toggles, readiness check-in and existing progress/history actions are preserved.
-- `sw.js` cache version is `arya-v37`.
+- `sw.js` cache version is `arya-v38`.
 - JavaScript syntax validation passed. Browser interaction/screenshot and Android build should still be checked after install.
+
+
+## v38 Body atlas rebuild (2026-10-14)
+- Reworked body-map SVG silhouettes and muscle regions while preserving existing `MU`, `calcM()`, `PR.sore`, and storage schema.
+- Increased atlas display height; selected muscle panel now shows an estimated recent-load meter and status pill. Added keyboard activation for SVG muscle regions.
+- Refined glass panel, recovery scale, muscle list, and progress tile interactions. Cache version `arya-v38`.
+- JS syntax checked and browser smoke test attempted; Android build/native code not changed.

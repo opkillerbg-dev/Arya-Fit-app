@@ -493,7 +493,7 @@ html.gls .ax-hero-art .ax-brand-mark,html.gls .ax-hero-art .ax-hero-pill,html.gl
 .ax-body-map-head b{font-size:16px;letter-spacing:-.02em}
 .ax-body-map-head span{font-size:12px;color:var(--mut)}
 .ax-body-map-head .ax-live-dot{font-size:10px;letter-spacing:.12em;font-weight:800;color:var(--ok);border:1px solid color-mix(in srgb,var(--ok) 35%,transparent);background:color-mix(in srgb,var(--ok) 10%,transparent);padding:6px 9px;border-radius:999px}
-#bsv{display:block;max-height:310px!important;min-height:250px;filter:drop-shadow(0 10px 16px #0002)}
+#bsv{display:block;max-height:390px!important;min-height:310px;filter:drop-shadow(0 10px 16px #0002)}
 #bsv text{font-size:9px!important;font-weight:800;letter-spacing:2.2px}
 #bsv path{stroke-linejoin:round;transition:fill .28s ease,fill-opacity .28s ease,stroke .2s ease,filter .2s ease}
 #bsv path:active{filter:brightness(1.25)}
@@ -513,6 +513,25 @@ html.gls .ax-hero-art .ax-brand-mark,html.gls .ax-hero-art .ax-hero-pill,html.gl
 #blist .lg{display:flex;align-items:center}
 #blist .lg>span:last-child{font-size:12px;color:var(--mut);text-align:right;max-width:55%;line-height:1.35}
 #blist .lg b{font-size:14px}
+
+/* v38: anatomy atlas and Progress visual hierarchy */
+.ax-body-map{border-radius:26px!important;padding:18px 13px 15px!important;background:linear-gradient(145deg,color-mix(in srgb,var(--cell) 88%,transparent),color-mix(in srgb,var(--bg) 42%,transparent))!important;box-shadow:inset 0 1px #ffffff16,0 16px 38px #0002}
+#bsv{max-height:390px!important;min-height:310px!important;overflow:visible}
+#bsv path[data-m]{filter:drop-shadow(0 1px 1px #0002)}
+#bsv path[data-m]:focus-visible{outline:none;stroke:#fff!important;stroke-width:2.6!important}
+.ax-body-map-head .ax-live-dot{display:inline-flex;align-items:center;gap:6px}
+.ax-body-map-head .ax-live-dot:before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;box-shadow:0 0 9px currentColor}
+.ax-recovery-scale .ax-scale-line{height:8px;border-radius:99px;background:linear-gradient(90deg,#7388ff 0%,#64cdb3 42%,#f2c15b 70%,#ff655f 100%);box-shadow:0 0 16px #7e8dff18}
+#bdet{border-radius:24px!important;background:linear-gradient(145deg,color-mix(in srgb,var(--acc) 10%,var(--cell)),color-mix(in srgb,var(--cell) 88%,transparent))!important}
+#bdet .ax-muscle-meter{height:7px;border-radius:99px;overflow:hidden;background:color-mix(in srgb,var(--line) 40%,transparent);margin:12px 0 5px}
+#bdet .ax-muscle-meter span{display:block;height:100%;border-radius:inherit;transition:width .35s ease}
+#blist{border-radius:24px!important}
+#blist .lg{padding:14px 4px!important}
+#blist .lg:active{background:color-mix(in srgb,var(--acc) 9%,transparent)}
+#ax-ps-stats .wsum>div{box-shadow:inset 0 1px #ffffff12}
+#ax-ps-hist .lg{border-radius:13px;padding-left:9px!important;padding-right:9px!important}
+#ax-ps-badges .bdg{transition:transform .22s ease,border-color .22s ease,background .22s ease}
+#ax-ps-badges .bdg:active{transform:scale(.97)}
 @media(prefers-reduced-motion:reduce){#ax-v-prog *,#bsv path{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
 
 
@@ -677,7 +696,7 @@ button,summary,[role="button"],.ax-opt,.ax-nav button{touch-action:manipulation}
 <button class="ax-lr" id="ax-rmr"><svg class="ax-ic"><use href="#i-flag"/></svg><span><b>Log a run by hand</b><em>Add km and time to a day</em></span><svg class="ax-ic ax-chv"><use href="#i-chev"/></svg></button>
 </div>
 </section>
-<section class="ax-view" id="ax-v-prog" hidden><div class="ax-section-intro"><span class="ax-kicker">LOOK HOW FAR</span><h1 class="ax-display-title">Your progress<span>.</span></h1><p>Measured against your own starting point.</p></div><div class="ax-pseg" id="ax-psg"><button data-ps="stats" aria-label="Progress statistics">Stats</button><button data-ps="body" aria-label="Body and recovery">Body</button><button data-ps="hist" aria-label="Workout history">History</button><button data-ps="badges" aria-label="Achievements and badges">Badges</button></div><div id="ax-ps-stats"></div><div id="ax-ps-body" hidden><div class="ax-body-intro"><span class="ax-kicker">RECOVERY MAP</span><h2>Know what needs a break.</h2><p>Tap a muscle group to see its current recovery status.</p></div><div class="panel ax-body-map"><div class="ax-body-map-head"><div><b>Muscle recovery</b><span>Front &amp; back view</span></div><span class="ax-live-dot">LIVE</span></div><svg id="bsv" viewBox="0 0 220 230" style="width:100%;max-height:310px"></svg><div class="ax-recovery-scale"><div class="ax-scale-line"></div><div><span>Recovered</span><span>Worked</span><span>Sore</span></div></div><p class="ax-body-hint"><span>ⓘ</span> Colour shows recent workout load. Dashed outlines mark soreness you logged.</p></div><div class="panel ax-readiness-panel" id="brd"></div><div class="panel ax-selected-muscle" id="bdet"></div><div class="panel ax-muscle-list" id="blist"></div><div id="ax-pbody"></div></div><div id="ax-ps-hist" hidden></div><div id="ax-ps-badges" hidden></div><div id="pgv" hidden></div></section>
+<section class="ax-view" id="ax-v-prog" hidden><div class="ax-section-intro"><span class="ax-kicker">LOOK HOW FAR</span><h1 class="ax-display-title">Your progress<span>.</span></h1><p>Measured against your own starting point.</p></div><div class="ax-pseg" id="ax-psg"><button data-ps="stats" aria-label="Progress statistics">Stats</button><button data-ps="body" aria-label="Body and recovery">Body</button><button data-ps="hist" aria-label="Workout history">History</button><button data-ps="badges" aria-label="Achievements and badges">Badges</button></div><div id="ax-ps-stats"></div><div id="ax-ps-body" hidden><div class="ax-body-intro"><span class="ax-kicker">RECOVERY MAP</span><h2>Know what needs a break.</h2><p>Tap a muscle group to see its current recovery status.</p></div><div class="panel ax-body-map"><div class="ax-body-map-head"><div><b>Recovery atlas</b><span>Tap any highlighted muscle to inspect it</span></div><span class="ax-live-dot">LIVE</span></div><svg id="bsv" viewBox="0 0 220 230" style="width:100%;max-height:390px"></svg><div class="ax-recovery-scale"><div class="ax-scale-line"></div><div><span>Recovered</span><span>Worked</span><span>Sore</span></div></div><p class="ax-body-hint"><span>ⓘ</span> Colour shows recent workout load. Dashed outlines mark soreness you logged.</p></div><div class="panel ax-readiness-panel" id="brd"></div><div class="panel ax-selected-muscle" id="bdet"></div><div class="panel ax-muscle-list" id="blist"></div><div id="ax-pbody"></div></div><div id="ax-ps-hist" hidden></div><div id="ax-ps-badges" hidden></div><div id="pgv" hidden></div></section>
 <section class="ax-view" id="ax-v-set" hidden><h1 class="disp vt">Settings</h1>
 <details class="ax-card ax-dt" style="margin-top:0"><summary>Run</summary><label class="row"><span><b>GPS and step tracking</b><em>Used during the 5 km run. Keep the screen on, phone in a pocket.</em></span><input class="sw2" type="checkbox" id="t-gps"></label><label class="row"><span><b>Run goal (km)</b><em>Distance that ticks the run. Empty uses the plan.</em></span><input class="tin" id="goal-km" type="number" step="0.1" min="0.5" max="42" inputmode="decimal" style="width:90px"></label><label class="row"><span><b>Auto-pause</b><em>Pauses the run timer when you stand still.</em></span><input class="sw2" type="checkbox" id="t-apz"></label><label class="row"><span><b>Cadence beat</b><em>Beeps while jogging, not walking.</em></span><input class="sw2" type="checkbox" id="t-met"></label><label class="row"><span><b>Beats per minute</b></span><input class="tin" id="spm" type="number" inputmode="numeric" style="width:80px"></label><label class="row"><span><b>Auto rest timer</b><em>Starts a 60s rest when you tick a strength move.</em></span><input class="sw2" type="checkbox" id="t-auto"></label>
 <div class="row"><span><b>Step counting</b><em id="ax-sline"></em></span></div></details>
@@ -965,21 +984,37 @@ function calcM(){var now=Date.now(),R={};Object.keys(MU).forEach(function(m){R[m
   Object.keys(R).forEach(function(m){R[m].f=Math.min(1,R[m].f);if(PR.sore&&PR.sore[m]){R[m].f=Math.max(R[m].f,.75);R[m].s=PR.sore[m]}});
   return R}
 function lft(x){return x>=48?"about "+Math.round(x/24)+" days":"about "+Math.max(1,Math.round(x))+" h"}
-var SIL="M45 23L45 30L30 33Q20 36 18 46L14 72L11 98L9 110L16 111L20 86L24 66L28 70L30 96L28 114L27 140Q27 152 30 160L28 182L30 202L27 210L42 210L41 200L41 180L43 160Q47 140 50 118L50 23Z",
-SH="M30 33Q20 35 18 46Q18 54 24 56Q30 52 32 42Z",
-BP={shoulders:[SH],chest:["M32 40Q40 38 49 44L49 62Q40 66 31 58Q29 48 32 40Z"],abs:["M38 66L49 66L49 98Q43 100 38 96Z","M30 66L37 66L37 96Q32 98 30 94Z"],biceps:["M18 52Q23 56 25 58L23 76L15 76Q14 64 18 52Z"],quads:["M29 112L49 116Q48 136 44 158L32 158Q28 136 29 112Z"]},
-BB={shoulders:[SH],back:["M46 28L31 34Q33 46 40 52L49 58L49 28Z","M30 52Q36 56 49 60L49 96Q40 98 31 90Q28 70 30 52Z"],triceps:["M18 52Q23 56 25 58L23 78L15 78Q14 64 18 52Z"],glutes:["M29 100Q40 96 49 100L49 120Q38 124 29 118Q27 108 29 100Z"],hams:["M29 121Q38 126 49 123Q48 142 44 160L32 160Q28 140 29 121Z"],calves:["M31 163L43 163Q44 178 41 192L32 192Q29 178 31 163Z"]};
-function hc(f){return f>.03?"hsl("+Math.round(42*(1-f))+",90%,52%)":"var(--blue)"}
-function fig(P,ox,R){var T=["",' transform="matrix(-1 0 0 1 100 0)"'],h='<g transform="translate('+ox+' 0)"><circle cx="50" cy="14" r="10" style="fill:var(--line);opacity:.7"/>';
-  T.forEach(function(t){h+='<path d="'+SIL+'"'+t+' style="fill:var(--line);opacity:.7"/>'});
+var SIL="M45 22L45 30L34 32Q26 34 22 39L16 44L13 59L10 77L7 101L11 105L17 104L21 82L25 63L28 70L28 96L27 113L24 137Q23 148 28 160L26 181L27 202L23 209L42 210L43 204L40 181L43 160L48 136L50 119L50 22Z",
+SH="M31 33Q22 34 18 42Q15 48 19 55L27 59L34 47Z",
+BP={
+ shoulders:[SH,"M31 35Q39 33 49 39L49 45L37 48L31 42Z"],
+ chest:["M31 41Q39 38 49 43L49 61Q41 65 33 59Q29 51 31 41Z"],
+ abs:["M34 63L49 63L49 97Q42 100 35 96Z","M29 63L33 63L33 95Q29 95 28 91Z"],
+ biceps:["M18 49Q22 52 26 57L23 75L16 79L14 70Q14 59 18 49Z"],
+ triceps:["M25 54L29 60L28 78L23 82L21 76Z"],
+ quads:["M28 111L49 115L47 139L43 159L32 159L28 139Z"],
+ calves:["M29 163L35 164L34 190L39 204L32 205L27 185Z"]
+},
+BB={
+ shoulders:[SH,"M31 34Q39 32 49 39L49 45L37 48L31 42Z"],
+ back:["M46 29L33 34Q32 43 38 50L49 57L49 29Z","M30 51Q37 56 49 59L49 95Q40 99 31 91Q28 72 30 51Z"],
+ triceps:["M18 49Q22 53 26 57L23 77L16 80L14 69Q14 58 18 49Z"],
+ glutes:["M29 98Q39 95 49 99L49 117Q39 123 29 117Q27 108 29 98Z"],
+ hams:["M29 120Q39 124 49 120L47 141L43 160L32 160Q28 141 29 120Z"],
+ calves:["M30 163L42 163L41 188L38 202L31 201L29 184Z"]
+};
+function hc(f){return f>.03?"hsl("+Math.round(42*(1-f))+",90%,56%)":"color-mix(in srgb,var(--line) 82%,var(--cell))"}
+function fig(P,ox,R){var T=["",' transform="matrix(-1 0 0 1 100 0)"'],h='<g transform="translate('+ox+' 0)"><ellipse cx="50" cy="14" rx="10" ry="12" style="fill:var(--line);opacity:.75"/>';
+  T.forEach(function(t){h+='<path d="'+SIL+'"'+t+' style="fill:color-mix(in srgb,var(--cell) 82%,var(--line));stroke:color-mix(in srgb,var(--mut) 45%,transparent);stroke-width:.8;opacity:.96"/>'});
   T.forEach(function(t){Object.keys(P).forEach(function(m){var r=R[m],f=r.f,so=r.s;P[m].forEach(function(d){
-    h+='<path data-m="'+m+'" d="'+d+'"'+t+' style="fill:'+hc(f)+';fill-opacity:'+(f>.03?(.55+.45*f).toFixed(2):.22)+';stroke:'+(so?'#ffc93c':m==bsel?'#fff':'rgba(0,0,0,.4)')+';stroke-width:'+(so||m==bsel?1.6:.6)+(so?';stroke-dasharray:3 2':'')+'"/>'})})});
-  return h+'<text x="50" y="226" text-anchor="middle" style="font:700 10px sans-serif;fill:var(--mut);letter-spacing:3px">'+(P==BP?"FRONT":"BACK")+'</text></g>'}
+    h+='<path role="button" tabindex="0" aria-label="'+MU[m][0]+'" data-m="'+m+'" d="'+d+'"'+t+' style="cursor:pointer;fill:'+hc(f)+';fill-opacity:'+(f>.03?(.62+.38*f).toFixed(2):.34)+';stroke:'+(so?'#ffd166':m==bsel?'#ffffff':'rgba(7,12,24,.72)')+';stroke-width:'+(so||m==bsel?1.8:1.05)+';stroke-linejoin:round'+(so?';stroke-dasharray:3 2':'')+'"/>'})})});
+  return h+'<text x="50" y="226" text-anchor="middle" style="font:800 9px sans-serif;fill:var(--mut);letter-spacing:2.5px">'+(P==BP?"FRONT":"BACK")+'</text></g>'}
 function body(){var R=calcM(),keys=Object.keys(MU).sort(function(a,b){return R[b].f-R[a].f});if(!bsel)bsel=keys[0];
-  var h=fig(BP,0,R)+fig(BB,110,R);$("bsv").innerHTML=h;readiness(R);$("bsv").onclick=function(e){var m=e.target.dataset&&e.target.dataset.m;if(m&&m!="_"){bsel=m;body()}};
+  var h=fig(BP,0,R)+fig(BB,110,R);$("bsv").innerHTML=h;readiness(R);$("bsv").onclick=function(e){var m=e.target.dataset&&e.target.dataset.m;if(m&&m!="_"){bsel=m;body()}};$("bsv").onkeydown=function(e){if((e.key==="Enter"||e.key===" ")&&e.target.dataset&&e.target.dataset.m){e.preventDefault();bsel=e.target.dataset.m;body()}};
   function stx(m){var r=R[m];if(r.s)return"Still sore (you marked it "+Math.max(0,Math.floor((Date.now()-r.s)/864e5))+" d ago)";if(r.f>.03)return(r.f>.6?"Heavily worked":r.f>.25?"Worked":"Lightly worked")+", recovers in "+lft(Math.max(1,r.left));return"Recovered"}
   var r=R[bsel];
-  $("bdet").innerHTML='<b style="font-size:17px">'+MU[bsel][0]+'</b><p style="margin:4px 0 10px;font-size:13px;color:var(--mut)">'+stx(bsel)+'. Typical recovery is about '+MU[bsel][1]/24+' days after a hard session.</p><button class="btn w'+(r.s?'':' warn')+'" id="bsr">'+(r.s?"Feels recovered now":"Still sore / not relaxed")+'</button><p style="margin:10px 0 0;font-size:12px;color:var(--mut)">Times are typical averages from your ticked workouts and runs, not medical advice. Sharp or joint pain, or soreness lasting over a week, is worth getting checked.</p>';
+  var loadPct=Math.round(r.f*100),status=r.s?"SORE":r.f>.6?"HIGH LOAD":r.f>.25?"WORKED":r.f>.03?"LIGHT LOAD":"RECOVERED";
+  $("bdet").innerHTML='<div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><div><span class="ax-kicker">SELECTED MUSCLE</span><b style="font-size:20px;margin-top:5px">'+MU[bsel][0]+'</b></div><span style="font-size:10px;font-weight:850;letter-spacing:.09em;padding:7px 9px;border-radius:999px;border:1px solid color-mix(in srgb,var(--acc) 38%,transparent);background:color-mix(in srgb,var(--acc) 10%,transparent)">'+status+'</span></div><p style="margin:10px 0 0;font-size:13px;color:var(--mut)">'+stx(bsel)+'. Typical recovery is about '+MU[bsel][1]/24+' days after a hard session.</p><div class="ax-muscle-meter"><span style="width:'+loadPct+'%;background:'+hc(r.f)+'"></span></div><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--mut)"><span>Estimated recent load</span><b>'+loadPct+'%</b></div><button class="btn w'+(r.s?'':' warn')+'" id="bsr" style="margin-top:14px">'+(r.s?"✓ Feels recovered":"＋ Mark as sore")+'</button><p style="margin:10px 0 0;font-size:12px;color:var(--mut)">Load is estimated from logged workouts and runs, not a medical measurement. Sharp or joint pain, or soreness lasting over a week, is worth getting checked.</p>';
   $("bsr").onclick=function(){PR.sore=PR.sore||{};if(R[bsel].s)delete PR.sore[bsel];else PR.sore[bsel]=Date.now();save();body()};
   $("blist").innerHTML='<h3 style="margin-top:0">All muscles</h3>'+keys.map(function(m){return '<div class="lg" data-m="'+m+'" style="cursor:pointer"><span><b><i style="display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:8px;background:'+hc(R[m].f)+'"></i>'+MU[m][0]+'</b></span><span>'+stx(m)+'</span></div>'}).join("");$("blist").querySelectorAll("[data-m]").forEach(function(r){r.onclick=function(){bsel=r.dataset.m;body();window.scrollTo(0,0)}})}
 function pextra(){var n=ND,mx=5,g=[],tj=0,tk=0,any=0,best=0,done=0,run=0,bs=0,td=todayIdx(),bw=280/n,c="";

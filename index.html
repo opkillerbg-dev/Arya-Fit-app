@@ -385,6 +385,63 @@ html.gls .ax-card{background:color-mix(in srgb,var(--card) 60%,transparent)!impo
 html.gls .ax-nav{background:color-mix(in srgb,var(--card) 68%,transparent)!important;-webkit-backdrop-filter:blur(18px) saturate(1.5);backdrop-filter:blur(18px) saturate(1.5);border-top-color:color-mix(in srgb,var(--card) 55%,transparent)}
 html.gls .ax-sh{background:color-mix(in srgb,var(--card) 82%,transparent)!important;-webkit-backdrop-filter:blur(22px) saturate(1.4);backdrop-filter:blur(22px) saturate(1.4)}
 }
+
+/* Smart Brain: on-device daily check-in */
+.ax-br-card{display:flex;flex-direction:column;gap:var(--ax-s3)}
+.ax-br-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.ax-br-head h2{margin:0;font:700 var(--ax-t3)/1.2 var(--ax-fd)}
+.ax-br-row{display:flex;flex-direction:column;gap:7px}
+.ax-br-label{font-size:var(--ax-t1);font-weight:650;color:var(--ink)}
+.ax-br-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.ax-br-opt{min-height:42px;border:1px solid var(--line);border-radius:var(--ax-r2);padding:7px 4px;background:var(--card);color:var(--ink);font:600 var(--ax-t1)/1.15 system-ui,sans-serif}
+.ax-br-opt.on{background:var(--blue);border-color:var(--blue);color:var(--ax-onblue)}
+.ax-br-result{border-radius:var(--ax-r2);padding:12px;background:var(--bluet);display:flex;flex-direction:column;gap:5px}
+.ax-br-result b{font:700 var(--ax-t3)/1.2 var(--ax-fd)}
+.ax-br-result p{margin:0;font-size:var(--ax-t1);color:var(--mut);line-height:1.4}
+.ax-br-foot{font-size:11px;color:var(--mut);line-height:1.35}
+
+
+/* Arya Fit v33 — refined glass + high-refresh motion */
+:root{--ax-motion-fast:140ms;--ax-motion:210ms;--ax-motion-slow:280ms;--ax-ease:cubic-bezier(.2,.75,.25,1)}
+html{scroll-behavior:smooth}
+body{background-image:radial-gradient(ellipse at 4% 0%,color-mix(in srgb,var(--blue) 8%,transparent),transparent 46%),radial-gradient(ellipse at 96% 24%,color-mix(in srgb,var(--ok) 5%,transparent),transparent 42%)}
+button,.ax-card,.panel,.tile,.ax-wc,.ax-gc,.ax-nav button,.ax-dt summary,.ax-chip,.ax-br-opt,.ax-ibtn{transition:background-color var(--ax-motion) var(--ax-ease),border-color var(--ax-motion) var(--ax-ease),color var(--ax-motion-fast) ease,box-shadow var(--ax-motion) var(--ax-ease),transform var(--ax-motion-fast) var(--ax-ease),opacity var(--ax-motion-fast) ease}
+button{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+button:active:not(:disabled){transform:scale(.975)}
+button:disabled{cursor:not-allowed}
+.ax-card,.panel,.tile{transform:translateZ(0);backface-visibility:hidden}
+.ax-card{overflow:hidden}
+.ax-nav{padding-top:10px;box-shadow:0 -8px 28px rgba(0,0,0,.045)}
+.ax-nav button{gap:4px;position:relative}
+.ax-nav button.on{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--blue) 18%,transparent)}
+.ax-nav button.on .ax-ic{transform:translateY(-1px)}
+.ax-nav .ax-ic{transition:transform var(--ax-motion) var(--ax-ease)}
+.ax-btn.ax-pri{box-shadow:0 5px 14px color-mix(in srgb,var(--blue) 23%,transparent);transition:transform var(--ax-motion-fast) var(--ax-ease),box-shadow var(--ax-motion) var(--ax-ease),filter var(--ax-motion) ease}
+.ax-btn.ax-pri:active{box-shadow:0 2px 6px color-mix(in srgb,var(--blue) 18%,transparent);filter:saturate(.92)}
+.ax-bar i,.ax-rbar{transition:width 420ms var(--ax-ease),stroke-dashoffset 420ms var(--ax-ease)}
+.ax-br-opt{will-change:transform}
+.ax-br-opt.on{box-shadow:0 3px 10px color-mix(in srgb,var(--blue) 22%,transparent)}
+.ax-br-result{border:1px solid color-mix(in srgb,var(--blue) 16%,transparent)}
+.ax-shbg{backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);animation:ax-v33-fade var(--ax-motion) ease both}
+.ax-sh{transform:translateZ(0);will-change:transform,opacity;animation:ax-v33-sheet 260ms var(--ax-ease) both}
+.ax-view.ax-in>*{animation:ax-v33-enter 240ms var(--ax-ease) both;animation-delay:0ms!important}
+.ax-view.ax-in>*:nth-child(2){animation-delay:22ms!important}
+.ax-view.ax-in>*:nth-child(3){animation-delay:44ms!important}
+.ax-view.ax-in>*:nth-child(4){animation-delay:66ms!important}
+.ax-view.ax-in>*:nth-child(5){animation-delay:88ms!important}
+@keyframes ax-v33-enter{from{opacity:.01;transform:translate3d(0,8px,0)}to{opacity:1;transform:translate3d(0,0,0)}}
+@keyframes ax-v33-fade{from{opacity:0}to{opacity:1}}
+@keyframes ax-v33-sheet{from{opacity:.5;transform:translate3d(0,18px,0)}to{opacity:1;transform:translate3d(0,0,0)}}
+@supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+ html.gls .ax-card,html.gls .panel,html.gls .tile{background:color-mix(in srgb,var(--card) 66%,transparent)!important;-webkit-backdrop-filter:blur(18px) saturate(1.35);backdrop-filter:blur(18px) saturate(1.35);border-color:color-mix(in srgb,var(--line) 72%,transparent);box-shadow:0 8px 24px rgba(0,0,0,.065),inset 0 1px 0 rgba(255,255,255,.22)}
+ html.gls .ax-nav{background:color-mix(in srgb,var(--card) 72%,transparent)!important;-webkit-backdrop-filter:blur(22px) saturate(1.4);backdrop-filter:blur(22px) saturate(1.4);border-top-color:color-mix(in srgb,var(--line) 75%,transparent)}
+ html.gls .ax-sh{background:color-mix(in srgb,var(--card) 84%,transparent)!important;-webkit-backdrop-filter:blur(24px) saturate(1.4);backdrop-filter:blur(24px) saturate(1.4)}
+ html.gls .ax-br-opt:not(.on){background:color-mix(in srgb,var(--card) 72%,transparent)}
+ html.gls .ax-pseg button.on{background:color-mix(in srgb,var(--card) 84%,transparent)}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;transform:none!important}}
+@media (max-width:380px){.ax-card{padding:14px}.ax-nav{gap:2px}.ax-nav button{font-size:11px}}
+
 </style><link rel="manifest" href="manifest.webmanifest">
 </head>
 <body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
@@ -418,7 +475,7 @@ html.gls .ax-sh{background:color-mix(in srgb,var(--card) 82%,transparent)!import
 <div class="ax-nums"><span><b id="ax-done">0</b>days done</span><span><b id="ax-streak">0</b>day streak</span></div></div></div>
 <div id="ax-hmiss"></div><div id="ax-hnote"></div>
 <button class="ax-card ax-stp" id="ax-hsteps" hidden></button>
-<div class="ax-card ax-today" id="ax-htoday"></div></section>
+<div id="ax-hbrain"></div><div class="ax-card ax-today" id="ax-htoday"></div></section>
 <section class="ax-view" id="ax-v-plan" hidden><h1 class="disp vt">Plan</h1>
 <div class="ax-card ax-wk"><div class="ax-wkh"><button class="ax-ibtn" id="ax-wprev" aria-label="Previous week"><svg class="ax-ic ax-flip"><use href="#i-chev"/></svg></button><div class="ax-wkt"><b id="ax-wlab">Week 1</b><span class="ax-cap" id="ax-wrng"></span></div><button class="ax-ibtn" id="ax-wnext" aria-label="Next week"><svg class="ax-ic"><use href="#i-chev"/></svg></button></div><div class="ax-wstrip" id="ax-wstrip"></div></div>
 <details class="ax-card ax-all"><summary>All days</summary><div class="ax-gwd"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div><div class="ax-gall" id="ax-gall"></div></details>
@@ -910,7 +967,35 @@ function go(v){if(v!="home")axGuard();VIEWS.forEach(function(x){$("ax-v-"+x).hid
   document.querySelectorAll("#ax-nav button").forEach(function(b){b.classList.toggle("on",b.dataset.v==(v=="plans"?"set":v=="body"?"prog":v))});
   var e=$("ax-v-"+v);e.classList.remove("ax-in");void e.offsetWidth;e.classList.add("ax-in");[].forEach.call(e.children,function(c,i){c.style.animationDelay=i*30+"ms"});window.scrollTo(0,0);
   if(v=="home")home();if(v=="prog")prog();if(v=="timers")tvu();if(v=="set")axSl()}
-function home(){runPrompt();runBtn();stepsPaint();
+
+function smartBrainPick(i,check){
+  var t=T[wdk(i)],sleep=check.s,energy=check.e,sore=check.o,why="",mode="Full",label="Full session";
+  var muscleSore=false;try{var mr=calcM();muscleSore=Object.keys(mr).some(function(m){return !!mr[m].s})}catch(e){}
+  if(muscleSore&&sore===0)sore=1;
+  if(t.r){mode="Rest";label="Rest / optional easy walk";why="Your plan already has a recovery day today."}
+  else if(sleep===0&&(energy===0||sore===2)){mode="Rest";label="Rest today";why="Poor sleep plus low energy or high soreness is a good reason to recover."}
+  else if(sore===2){mode="Walk-only";label="Walk-only";why="High soreness: skip hard training and choose a comfortable walk, or rest if needed."}
+  else if(sleep===0&&energy===0){mode="Rest";label="Rest today";why="Poor sleep and low energy: recovery is the priority today."}
+  else if(sleep===0||energy===0||sore===1||t.m||isL(Math.floor(i/7))){mode="Light";label="Light session";why=sleep===0?"Poor sleep: keep effort easy and skip intensity.":energy===0?"Low energy: reduce effort and stop if you feel worse.":sore===1?"Some soreness: move gently and avoid pushing sore areas.":t.m?"Your plan calls for mobility, so keep today gentle.":"This is a planned lighter week; keep the effort comfortable."}
+  else {mode="Full";label="Planned session";why="Your check-in looks steady. Follow the planned session at a comfortable effort."}
+  return {mode:mode,label:label,why:why};
+}
+var BR_EDIT=0;
+function smartBrainUI(){
+  var el=$("ax-hbrain");if(!el)return;
+  var td=todayIdx(),today=ymd(),all=PR.brain=PR.brain||{},c=all[today]||{},done=c.s!=null&&c.e!=null&&c.o!=null;
+  var names={s:["Poor","Okay","Good"],e:["Low","Okay","High"],o:["None","Some","High"]};
+  var rows=[ ["s","Sleep"],["e","Energy"],["o","Soreness"] ];
+  var h='<div class="ax-card ax-br-card"><div class="ax-br-head"><div><p class="ax-cap">SMART TODAY</p><h2>How are you feeling?</h2></div><span class="ax-tag">On-device</span></div><p class="ax-cap" style="margin:0">Three quick taps help tailor today. Your answers stay on this phone.</p>';
+  if(!done||BR_EDIT)rows.forEach(function(r){h+='<div class="ax-br-row"><span class="ax-br-label">'+r[1]+'</span><div class="ax-br-options">'+names[r[0]].map(function(n,i){return '<button class="ax-br-opt'+(c[r[0]]===i?' on':'')+'" data-br-k="'+r[0]+'" data-br-v="'+i+'" aria-pressed="'+(c[r[0]]===i)+'">'+n+'</button>'}).join('')+'</div></div>'});
+  if(done){if(!BR_EDIT){var soreLabel=names.o[c.o];try{var ms=calcM();if(c.o===0&&Object.keys(ms).some(function(m){return !!ms[m].s}))soreLabel="Some (muscle log)"}catch(e){}h+='<p class="ax-cap" style="margin:0">Sleep: '+names.s[c.s]+' · Energy: '+names.e[c.e]+' · Soreness: '+soreLabel+'</p>'}var pick=td>ND-1?{label:"Keep it flexible",why:"Your 28-day plan is complete. Choose a comfortable activity based on your sleep, energy and soreness.",mode:"Light"}:smartBrainPick(Math.max(0,Math.min(ND-1,td)),c);h+='<div class="ax-br-result"><span class="ax-cap">TODAY’S RECOMMENDATION</span><b>'+pick.label+'</b><p>'+pick.why+'</p></div><button class="ax-br-opt" id="ax-br-edit">'+(BR_EDIT?'Done':'Change answers')+'</button><p class="ax-br-foot">Suggestion only — your plan is unchanged. You choose what feels right.</p>'}
+  else h+='<p class="ax-br-foot">Complete all three to get a recommendation. You can change answers anytime.</p>';
+  h+='</div>';el.innerHTML=h;
+  el.querySelectorAll('[data-br-k]').forEach(function(b){b.onclick=function(){var a=PR.brain=PR.brain||{},d=a[today]||{};d[b.dataset.brK]=+b.dataset.brV;a[today]=d;var ks=Object.keys(a).sort();while(ks.length>400)delete a[ks.shift()];save();smartBrainUI()}});
+  var edit=$("ax-br-edit");if(edit)edit.onclick=function(){BR_EDIT=BR_EDIT?0:1;smartBrainUI()};
+}
+
+function home(){runPrompt();runBtn();stepsPaint();smartBrainUI();
   var td0=todayIdx(),ms=[];for(var q=Math.min(td0,ND)-1;q>=0&&ms.length<4;q--)if(!dayDone(q)&&!st["x"+q])ms.push(q);
   var mz=$("ax-hmiss");mz.innerHTML=ms.length?'<div class="ax-card"><p class="ax-cap">Catch up</p><div class="ax-chips">'+ms.map(function(q){return '<button class="ax-chip" data-m="'+q+'">'+DN[dt(q).getDay()]+' '+dl(q)+'</button>'}).join("")+'</div></div>':"";
   mz.querySelectorAll("button").forEach(function(b){b.onclick=function(){cur=+b.dataset.m;go("plan");render()}});
@@ -1020,7 +1105,7 @@ function loadApp(){var a=null;try{a=JSON.parse(localStorage.getItem(KEY2))}catch
     var pr={};if(old._snd===0||old._snd===1)pr.snd=old._snd;if(old._auto===0||old._auto===1)pr.auto=old._auto;if(old._gps===0||old._gps===1)pr.gps=old._gps;
     a={v:2,active:"default",prefs:pr,plans:{"default":{plan:defaultPlan(),st:{}}}};
     var pg=clean(old,28);a.plans["default"].st=pg}
-  APP=a;PR=APP.prefs=APP.prefs||{};activate(APP.active)}
+  APP=a;PR=APP.prefs=APP.prefs||{};if(typeof PR.gls!=="boolean")PR.gls=true;activate(APP.active)}
 var PEND=null;
 function ticksOf(e){var n=0;for(var k2 in e.st)if(/^\d+:/.test(k2))n++;return n}
 function plans(){var h="",ids=Object.keys(APP.plans);
@@ -1069,6 +1154,7 @@ function clean(p,nd){var o={};nd=nd||ND;for(var key in p){var v=p[key],m;
   if((m=/^(\d{1,3}):(wu|cd|j|e\d{1,2}|h\d)$/.exec(key))&&+m[1]<nd&&v==1)o[key]=1;
   else if((m=/^(?:[wrgsx]|jt|wk)(\d{1,3})$/.exec(key))&&+m[1]<nd&&typeof v=="number"&&v>0&&v<200000)o[key]=Math.round(v)}return o}
 function restorePrefs(pr){if(!pr||typeof pr!="object")return;var num=function(x){return typeof x=="number"&&isFinite(x)},di=/^\d{1,3}$/;
+  if(pr.brain&&typeof pr.brain=="object"){var Br={};Object.keys(pr.brain).slice(-400).forEach(function(d){var x=pr.brain[d];if(!/^\d{4}-\d{2}-\d{2}$/.test(d)||!x||typeof x!="object")return;var y={};["s","e","o"].forEach(function(k){if(Number.isInteger(x[k])&&x[k]>=0&&x[k]<=2)y[k]=x[k]});if(Object.keys(y).length)Br[d]=y});if(Object.keys(Br).length)PR.brain=Br}
   ["snd","auto","gps","hap","voi","ap","met","amo"].forEach(function(k){if(pr[k]===0||pr[k]===1)PR[k]=pr[k]});
   if(Number.isInteger(pr.spm)&&pr.spm>=100&&pr.spm<=220)PR.spm=pr.spm;
   if(typeof pr.acc=="string"&&/^#[0-9a-f]{6}$/i.test(pr.acc))PR.acc=pr.acc;

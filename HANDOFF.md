@@ -1,7 +1,7 @@
 # Arya Fit: HANDOFF (latest, consolidated)
 
 **Read order:** `ARYA-FIT-VISION.md` (vision + roadmap) -> `ARYA-FIT-BRIEF.md` (user + objectives) -> this file (state + technical map).
-**Last updated:** 2026-10-13. Service worker cache `arya-v34`. Keep this file updated at the end of EVERY change.
+**Last updated:** 2026-10-13. v36 adds animated collapsible settings drawers, chevrons, and disables long-press text selection on app UI while preserving selection in inputs. Service worker cache `arya-v34`. Keep this file updated at the end of EVERY change.
 **Live repo (public, readable):** github.com/opkillerbg-dev/Arya-Fit-app. If you have bash with network, `git clone` it and read the real files. Do not trust pasted copies, because a stale build workflow once hid a whole feature (see section 6).
 
 ## 1. What this is
@@ -95,3 +95,10 @@ Clone the live repo (or ask the user for current `index.html`, `sw.js`, `package
 - Bumped service worker cache to `arya-v34` and precaches the local hero asset.
 - No storage keys, workout logic, Java plugins or build workflow changed.
 - Validation: JavaScript syntax checks and browser rendering still need to be run before treating this pack as fully tested.
+
+
+## 10. v37 Progress redesign
+- Updated `index.html` styles and Progress section headers for Stats, Body, History and Badges. The design uses existing stored data only; no new storage keys or native files.
+- Body recovery calculations, muscle selection, soreness toggles, readiness check-in and existing progress/history actions are preserved.
+- `sw.js` cache version is `arya-v37`.
+- JavaScript syntax validation passed. Browser interaction/screenshot and Android build should still be checked after install.

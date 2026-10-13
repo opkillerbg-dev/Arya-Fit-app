@@ -463,6 +463,165 @@ html.gls .ax-hero-art .ax-brand-mark,html.gls .ax-hero-art .ax-hero-pill,html.gl
 @media (min-width:420px){.ax-hero-art{min-height:284px;padding:18px 20px}.ax-hero-copy{margin-top:36px}.ax-hero-bottom{left:20px;right:20px;bottom:17px}}
 @media (prefers-reduced-motion:reduce){.ax-hero-art,.ax-section-intro{animation:none!important}*,*:before,*:after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}}
 @media (prefers-reduced-transparency:reduce){.ax-brand-mark,.ax-hero-pill,.ax-hero-orbit{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:rgba(15,25,24,.72)!important}}
+
+/* Progress redesign v35 */
+#ax-v-prog .ax-section-intro{padding:8px 4px 18px}
+#ax-v-prog .ax-display-title{letter-spacing:-.045em;line-height:1.02}
+#ax-v-prog .ax-pseg{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;backdrop-filter:blur(24px) saturate(145%);-webkit-backdrop-filter:blur(24px) saturate(145%);border:1px solid color-mix(in srgb,var(--line) 70%,transparent);box-shadow:0 8px 28px #0002}
+#ax-v-prog .ax-pseg button{transition:background .22s ease,color .22s ease,transform .22s ease}
+#ax-v-prog .ax-pseg button:active{transform:scale(.96)}
+#ax-v-prog .panel{border-radius:23px;border:1px solid color-mix(in srgb,var(--line) 82%,transparent);background:linear-gradient(145deg,color-mix(in srgb,var(--cell) 92%,transparent),color-mix(in srgb,var(--bg) 65%,transparent));box-shadow:0 10px 30px #00000012}
+#ax-ps-stats .panel,#ax-ps-hist .panel,#ax-ps-badges .panel,#ax-pbody .panel{padding:18px}
+#ax-ps-stats h3,#ax-ps-hist h3,#ax-ps-badges h3,#ax-pbody h3{font-size:17px;letter-spacing:-.02em}
+#ax-ps-stats .wsum{gap:8px}
+#ax-ps-stats .wsum>div{border:1px solid color-mix(in srgb,var(--line) 60%,transparent);background:color-mix(in srgb,var(--cell) 82%,transparent);border-radius:17px;padding:14px 10px;min-width:0}
+#ax-ps-stats .wsum b{font-size:23px;letter-spacing:-.04em}
+#ax-ps-hist .lg,#ax-pbody .lg{padding:13px 2px;border-bottom:1px solid color-mix(in srgb,var(--line) 55%,transparent);gap:12px}
+#ax-ps-badges .bgs{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+#ax-ps-badges .bdg{border:1px solid var(--line);border-radius:18px;padding:15px 7px;background:color-mix(in srgb,var(--cell) 88%,transparent);font-size:12px;min-height:92px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
+#ax-ps-badges .bdg .i{width:25px;height:25px}
+#ax-ps-badges .bdg.on{opacity:1;filter:none;border-color:color-mix(in srgb,var(--acc) 60%,var(--line));background:linear-gradient(145deg,color-mix(in srgb,var(--acc) 17%,var(--cell)),var(--cell));box-shadow:inset 0 1px #ffffff1c}
+#ax-ps-badges .bdg:not(.on){opacity:.68;filter:saturate(.55)}
+.ax-body-intro{padding:16px 4px 8px}
+.ax-body-intro h2{font-size:25px;line-height:1.1;letter-spacing:-.04em;margin:8px 0}
+.ax-body-intro p{margin:0;color:var(--mut);font-size:14px;line-height:1.45}
+.ax-body-map{padding:17px 14px 14px!important;overflow:hidden;position:relative}
+.ax-body-map:before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 20% 35%,color-mix(in srgb,var(--blue) 13%,transparent),transparent 55%),radial-gradient(ellipse at 85% 58%,color-mix(in srgb,var(--acc) 9%,transparent),transparent 52%)}
+.ax-body-map>*{position:relative}
+.ax-body-map-head{display:flex;align-items:center;justify-content:space-between;padding:2px 3px 8px}
+.ax-body-map-head div{display:flex;flex-direction:column;gap:3px}
+.ax-body-map-head b{font-size:16px;letter-spacing:-.02em}
+.ax-body-map-head span{font-size:12px;color:var(--mut)}
+.ax-body-map-head .ax-live-dot{font-size:10px;letter-spacing:.12em;font-weight:800;color:var(--ok);border:1px solid color-mix(in srgb,var(--ok) 35%,transparent);background:color-mix(in srgb,var(--ok) 10%,transparent);padding:6px 9px;border-radius:999px}
+#bsv{display:block;max-height:310px!important;min-height:250px;filter:drop-shadow(0 10px 16px #0002)}
+#bsv text{font-size:9px!important;font-weight:800;letter-spacing:2.2px}
+#bsv path{stroke-linejoin:round;transition:fill .28s ease,fill-opacity .28s ease,stroke .2s ease,filter .2s ease}
+#bsv path:active{filter:brightness(1.25)}
+.ax-recovery-scale{margin:2px 5px 0}
+.ax-scale-line{height:6px;border-radius:99px;background:linear-gradient(90deg,#6f8dff 0%,#73d6b1 42%,#f4c45f 72%,#ff625f 100%);box-shadow:0 0 14px #6f8dff18}
+.ax-recovery-scale>div:last-child{display:flex;justify-content:space-between;margin-top:7px;font-size:11px;color:var(--mut)}
+.ax-body-hint{display:flex;align-items:flex-start;gap:7px;font-size:12px;line-height:1.45;color:var(--mut);margin:14px 4px 0}
+.ax-body-hint span{color:var(--acc);font-weight:800}
+.ax-readiness-panel{margin-top:12px}
+#brd .qr{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+#brd .qr .btn{min-height:43px;padding:9px 5px;font-size:13px;border-radius:13px}
+#brd h3{display:flex;align-items:center;gap:8px}
+#bdet{position:relative;overflow:hidden}
+#bdet>b{display:block;font-size:20px!important;letter-spacing:-.03em}
+#bdet p{line-height:1.55!important}
+#bdet .btn{width:100%;min-height:46px;border-radius:15px}
+#blist .lg{display:flex;align-items:center}
+#blist .lg>span:last-child{font-size:12px;color:var(--mut);text-align:right;max-width:55%;line-height:1.35}
+#blist .lg b{font-size:14px}
+@media(prefers-reduced-motion:reduce){#ax-v-prog *,#bsv path{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+
+
+/* v37: editorial Progress system — richer, data-led, glass-first */
+#ax-v-prog{--ax-prog-glass:color-mix(in srgb,var(--cell) 76%,transparent)}
+#ax-v-prog .ax-section-intro{position:relative;padding:13px 5px 20px;}
+#ax-v-prog .ax-section-intro:after{content:"";position:absolute;right:0;top:5px;width:96px;height:96px;border-radius:50%;border:1px solid color-mix(in srgb,var(--ok) 23%,transparent);box-shadow:0 0 0 12px color-mix(in srgb,var(--ok) 5%,transparent),0 0 0 25px color-mix(in srgb,var(--blue) 5%,transparent);pointer-events:none}
+#ax-v-prog .ax-section-intro>p{max-width:270px;line-height:1.55}
+#ax-v-prog .ax-pseg{margin-bottom:18px;padding:5px;border-radius:21px;background:color-mix(in srgb,var(--cell) 68%,transparent);border-color:color-mix(in srgb,var(--line) 62%,transparent);box-shadow:0 12px 32px #0002,inset 0 1px #ffffff18}
+#ax-v-prog .ax-pseg button{border-radius:15px;font-size:12px;letter-spacing:-.01em;min-height:47px}
+#ax-v-prog .ax-pseg button.on{background:linear-gradient(145deg,color-mix(in srgb,var(--blue) 24%,var(--cell)),color-mix(in srgb,var(--blue) 9%,var(--cell)));box-shadow:inset 0 1px #ffffff25,0 4px 12px #0001;border:1px solid color-mix(in srgb,var(--blue) 35%,transparent)}
+.ax-prog-overview{display:flex;align-items:center;gap:13px;margin:0 0 15px;padding:16px;border:1px solid color-mix(in srgb,var(--line) 75%,transparent);border-radius:23px;background:linear-gradient(135deg,color-mix(in srgb,var(--blue) 12%,var(--cell)),color-mix(in srgb,var(--ok) 6%,var(--cell)));box-shadow:inset 0 1px #ffffff16,0 12px 26px #0001;animation:axProgIn .34s cubic-bezier(.2,.8,.2,1) both}
+.ax-prog-orbit{width:48px;height:48px;flex:none;border-radius:17px;display:grid;place-items:center;color:var(--ok);background:color-mix(in srgb,var(--ok) 11%,var(--cell));border:1px solid color-mix(in srgb,var(--ok) 25%,var(--line));box-shadow:inset 0 1px #ffffff1b}
+.ax-prog-orbit svg{width:25px;height:25px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ax-prog-overview b{display:block;font-size:16px;letter-spacing:-.035em}
+.ax-prog-overview p{margin:4px 0 0;font-size:12px;line-height:1.45;color:var(--mut)}
+.ax-prog-sectionhead{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin:20px 2px 10px}
+.ax-prog-sectionhead span{font-size:9px;letter-spacing:.15em;text-transform:uppercase;font-weight:800;color:var(--ok)}
+.ax-prog-sectionhead b{display:block;font-size:22px;letter-spacing:-.045em;line-height:1.1;margin-top:4px}
+.ax-prog-sectionhead small{color:var(--mut);font-size:10px;text-align:right;max-width:95px;line-height:1.35}
+#ax-ps-stats>.panel,#ax-ps-hist>.panel,#ax-ps-badges>.panel,#ax-pbody>.panel,#ax-ps-body>.panel{position:relative;overflow:hidden;margin-top:12px;border-radius:24px;border:1px solid color-mix(in srgb,var(--line) 70%,transparent);background:linear-gradient(145deg,color-mix(in srgb,var(--cell) 82%,transparent),color-mix(in srgb,var(--bg) 72%,transparent));box-shadow:inset 0 1px #ffffff12,0 12px 30px #00000012}
+#ax-v-prog .panel h3{font-size:17px;letter-spacing:-.035em}
+#ax-ps-stats .wsum{gap:8px}
+#ax-ps-stats .wsum>div{position:relative;overflow:hidden;border-radius:17px;border:1px solid color-mix(in srgb,var(--line) 65%,transparent);background:linear-gradient(150deg,color-mix(in srgb,var(--cell) 95%,transparent),color-mix(in srgb,var(--blue) 5%,var(--cell)));padding:14px 10px;min-width:0}
+#ax-ps-stats .wsum b{display:block;font-size:clamp(19px,5.5vw,25px);letter-spacing:-.055em;margin-bottom:3px}
+#ax-ps-stats svg,#ax-ps-hist svg,#ax-pbody svg{overflow:visible}
+#ax-ps-stats .panel>svg{display:block;margin:8px 0 3px}
+#ax-ps-stats .key,#ax-ps-hist .key,#ax-pbody .key{font-size:12px;line-height:1.55}
+#ax-ps-stats .ax-sg3{gap:7px}
+#ax-ps-stats .ax-sg3 span{border-radius:13px;padding:9px 7px;background:color-mix(in srgb,var(--cell) 80%,transparent);border:1px solid color-mix(in srgb,var(--line) 55%,transparent);font-size:10px}
+#ax-ps-stats .ax-sg3 b{font-size:15px}
+/* Body: make the map an intentional atlas, not a stretched diagram */
+.ax-body-intro{padding:7px 4px 15px}
+.ax-body-intro .ax-kicker{display:flex;align-items:center;gap:8px;font-size:10px;color:var(--ok)}
+.ax-body-intro .ax-kicker:before{content:"";width:18px;height:2px;background:var(--ok);border-radius:2px}
+.ax-body-intro h2{font-size:clamp(27px,7.5vw,34px);max-width:300px;line-height:1.02;letter-spacing:-.055em;margin:7px 0 9px}
+.ax-body-intro p{font-size:13px;max-width:310px;line-height:1.55}
+.ax-body-map{padding:16px 13px 15px!important;border-radius:27px!important;background:radial-gradient(ellipse at 50% 42%,color-mix(in srgb,var(--blue) 14%,var(--cell)),transparent 65%),linear-gradient(145deg,color-mix(in srgb,var(--cell) 88%,transparent),color-mix(in srgb,var(--bg) 78%,transparent))!important}
+.ax-body-map:before{background:radial-gradient(ellipse at 10% 15%,color-mix(in srgb,var(--ok) 10%,transparent),transparent 45%),radial-gradient(ellipse at 95% 65%,color-mix(in srgb,var(--blue) 15%,transparent),transparent 52%),linear-gradient(90deg,transparent 49.7%,color-mix(in srgb,var(--line) 30%,transparent) 50%,transparent 50.3%)!important}
+.ax-body-map-head{padding:1px 3px 10px}
+.ax-body-map-head b{font-size:17px!important;letter-spacing:-.04em}
+.ax-body-map-head .ax-live-dot{font-size:9px;padding:7px 10px;letter-spacing:.13em}
+#bsv{min-height:260px;max-height:340px!important;width:100%;padding:6px 0;filter:drop-shadow(0 12px 17px #0002)}
+#bsv path{stroke-linejoin:round;stroke-linecap:round;cursor:pointer;transition:fill .28s ease,fill-opacity .28s ease,stroke .2s ease,filter .2s ease,transform .2s ease}
+#bsv path[data-m]:hover{filter:brightness(1.2)}
+#bsv path[data-m]:active{filter:brightness(1.35)}
+.ax-recovery-scale{margin:8px 5px 0;padding-top:12px;border-top:1px solid color-mix(in srgb,var(--line) 55%,transparent)}
+.ax-scale-line{height:7px;background:linear-gradient(90deg,#7791ff 0%,#70d7b2 38%,#f3c75b 69%,#ff605e 100%);box-shadow:0 0 18px #7791ff20}
+.ax-recovery-scale>div:last-child{font-size:10px;letter-spacing:.01em}
+.ax-body-hint{padding:10px 11px;margin:12px 0 0!important;border-radius:13px;background:color-mix(in srgb,var(--cell) 75%,transparent);border:1px solid color-mix(in srgb,var(--line) 45%,transparent);font-size:11px!important}
+.ax-body-hint span{display:grid;place-items:center;width:17px;height:17px;flex:none;border-radius:50%;background:color-mix(in srgb,var(--ok) 15%,transparent)}
+#brd{margin-top:12px;padding:17px!important}
+#brd h3{font-size:18px!important;margin-bottom:4px}
+#brd .key{margin:10px 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:.1em;font-weight:800}
+#brd .qr{gap:7px}
+#brd .qr .btn{font-size:12px;min-height:45px;border-radius:14px;background:color-mix(in srgb,var(--cell) 88%,transparent);border:1px solid var(--line);color:var(--ink)}
+#brd .qr .btn.pri{background:linear-gradient(135deg,var(--blue),color-mix(in srgb,var(--blue) 68%,#101a31));color:var(--ax-onblue);border-color:transparent;box-shadow:0 5px 16px color-mix(in srgb,var(--blue) 25%,transparent)}
+#bdet{padding:19px!important;background:linear-gradient(140deg,color-mix(in srgb,var(--ok) 8%,var(--cell)),color-mix(in srgb,var(--cell) 90%,transparent))!important}
+#bdet:before{content:"SELECTED AREA";display:block;font-size:9px;letter-spacing:.16em;font-weight:800;color:var(--ok);margin-bottom:11px}
+#bdet>b{font-size:25px!important;letter-spacing:-.05em!important}
+#bdet p{font-size:12px!important;line-height:1.55!important}
+#bdet .btn{margin-top:6px;min-height:48px;border-radius:15px}
+#blist{padding:17px!important}
+#blist h3{display:flex;align-items:center;gap:8px}
+#blist h3:before{content:"";width:4px;height:19px;border-radius:4px;background:var(--ok)}
+#blist .lg{padding:13px 0!important;display:flex;align-items:center;gap:10px;border-bottom:1px solid color-mix(in srgb,var(--line) 52%,transparent)}
+#blist .lg:last-child{border-bottom:0}
+#blist .lg>span:first-child{min-width:0}
+#blist .lg>span:last-child{font-size:10px!important;max-width:48%!important}
+#blist .lg b{font-size:13px!important}
+/* History cards and action rows */
+#ax-ps-hist .lg{padding:14px 0;border-bottom:1px solid color-mix(in srgb,var(--line) 52%,transparent);gap:10px}
+#ax-ps-hist .lg:last-child{border-bottom:0}
+#ax-ps-hist button,#ax-ps-stats button,#ax-pbody button{border-radius:14px;transition:transform .18s ease,filter .18s ease}
+#ax-ps-hist button:active,#ax-ps-stats button:active,#ax-pbody button:active{transform:scale(.98)}
+#ax-ps-hist .panel:has(svg){background:radial-gradient(ellipse at 85% 15%,color-mix(in srgb,var(--blue) 10%,transparent),transparent 48%),linear-gradient(145deg,color-mix(in srgb,var(--cell) 88%,transparent),color-mix(in srgb,var(--bg) 80%,transparent))}
+/* Badges become collectible tiles, without inventing achievements */
+#ax-ps-badges .bgs{grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+#ax-ps-badges .bdg{position:relative;min-height:112px;padding:13px 5px;border-radius:19px;border:1px solid color-mix(in srgb,var(--line) 68%,transparent);background:linear-gradient(150deg,color-mix(in srgb,var(--cell) 94%,transparent),color-mix(in srgb,var(--bg) 84%,transparent));font-size:11px;font-weight:700;line-height:1.3;text-align:center;gap:9px;transition:transform .24s cubic-bezier(.2,.8,.2,1),border-color .24s ease,background .24s ease}
+#ax-ps-badges .bdg .i{width:29px;height:29px;padding:6px;border-radius:11px;background:color-mix(in srgb,var(--line) 35%,transparent);color:var(--mut)}
+#ax-ps-badges .bdg.on{border-color:color-mix(in srgb,var(--ok) 52%,var(--line));background:radial-gradient(circle at 50% 0,color-mix(in srgb,var(--ok) 17%,transparent),transparent 75%),linear-gradient(150deg,color-mix(in srgb,var(--cell) 96%,transparent),color-mix(in srgb,var(--ok) 5%,var(--cell)));box-shadow:inset 0 1px #ffffff1e,0 8px 18px #0001;color:var(--ink)}
+#ax-ps-badges .bdg.on .i{color:var(--ok);background:color-mix(in srgb,var(--ok) 13%,transparent)}
+#ax-ps-badges .bdg:not(.on){opacity:.62}
+#ax-ps-badges .bdg:active{transform:scale(.96)}
+#ax-ps-badges .panel>.key{font-size:12px;line-height:1.5}
+.ax-prog-empty{padding:22px 17px;text-align:center;border:1px dashed color-mix(in srgb,var(--line) 80%,transparent);border-radius:22px;background:color-mix(in srgb,var(--cell) 45%,transparent);color:var(--mut);font-size:13px;line-height:1.55}
+@keyframes axProgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@media(min-width:430px){#ax-ps-badges .bgs{grid-template-columns:repeat(4,minmax(0,1fr))}#bsv{max-height:360px!important}}
+@media(prefers-reduced-motion:reduce){.ax-prog-overview{animation:none!important}#ax-ps-badges .bdg{transition:none!important}}
+
+/* v36: animated settings drawers + native-app long-press behaviour */
+.ax-dt{overflow:hidden;transition:border-color 220ms ease,background-color 220ms ease,box-shadow 220ms ease}
+.ax-dt>summary{position:relative;list-style:none;gap:12px;padding-right:30px;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none;touch-action:manipulation}
+.ax-dt>summary::-webkit-details-marker{display:none}
+.ax-dt>summary::after{content:"";position:absolute;right:5px;top:calc(50% - 5px);width:9px;height:9px;border-right:2px solid var(--mut);border-bottom:2px solid var(--mut);transform:rotate(45deg);transition:transform 240ms cubic-bezier(.2,.8,.2,1),border-color 180ms ease}
+.ax-dt[open]>summary::after{transform:rotate(225deg);border-color:var(--blue)}
+.ax-dt[open]{border-color:color-mix(in srgb,var(--blue) 32%,var(--line));box-shadow:0 8px 22px rgba(0,0,0,.07)}
+.ax-dt[open]>:not(summary){animation:ax-drawer-reveal 260ms cubic-bezier(.2,.8,.2,1) both}
+.ax-dt[open]>:nth-child(3){animation-delay:18ms}
+.ax-dt[open]>:nth-child(4){animation-delay:28ms}
+@keyframes ax-drawer-reveal{from{opacity:0;transform:translateY(-7px)}to{opacity:1;transform:translateY(0)}}
+/* The app should not show the browser's blue long-press text-selection box on UI. */
+html,body,body *{-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+input,textarea,select,[contenteditable="true"],[role="textbox"]{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
+::selection{background:transparent;color:inherit}
+input::selection,textarea::selection{background:Highlight;color:HighlightText}
+button,summary,[role="button"],.ax-opt,.ax-nav button{touch-action:manipulation}
+@media(prefers-reduced-motion:reduce){.ax-dt,.ax-dt>summary::after,.ax-dt[open]>:not(summary){animation:none!important;transition:none!important}}
+
 </style><link rel="manifest" href="manifest.webmanifest">
 </head>
 <body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
@@ -518,7 +677,7 @@ html.gls .ax-hero-art .ax-brand-mark,html.gls .ax-hero-art .ax-hero-pill,html.gl
 <button class="ax-lr" id="ax-rmr"><svg class="ax-ic"><use href="#i-flag"/></svg><span><b>Log a run by hand</b><em>Add km and time to a day</em></span><svg class="ax-ic ax-chv"><use href="#i-chev"/></svg></button>
 </div>
 </section>
-<section class="ax-view" id="ax-v-prog" hidden><div class="ax-section-intro"><span class="ax-kicker">LOOK HOW FAR</span><h1 class="ax-display-title">Your progress<span>.</span></h1><p>Measured against your own starting point.</p></div><div class="ax-pseg" id="ax-psg"><button data-ps="stats">Stats</button><button data-ps="body">Body</button><button data-ps="hist">History</button><button data-ps="badges">Badges</button></div><div id="ax-ps-stats"></div><div id="ax-ps-body" hidden><div class="panel" style="margin-top:0"><svg id="bsv" viewBox="0 0 220 230" style="width:100%;max-height:440px"></svg><div style="height:8px;border-radius:6px;margin:6px 8px 4px;background:linear-gradient(90deg,var(--blue),hsl(42,90%,52%),hsl(0,90%,52%))"></div><div style="display:flex;justify-content:space-between;margin:0 8px;font-size:11px;color:var(--mut)"><span>Recovered</span><span>Heavily worked</span></div><p class="key" style="text-align:center">Tap a muscle to see recovery. Yellow dashes mean you marked it sore.</p></div><div class="panel" id="brd"></div><div class="panel" id="bdet"></div><div class="panel" id="blist"></div><div id="ax-pbody"></div></div><div id="ax-ps-hist" hidden></div><div id="ax-ps-badges" hidden></div><div id="pgv" hidden></div></section>
+<section class="ax-view" id="ax-v-prog" hidden><div class="ax-section-intro"><span class="ax-kicker">LOOK HOW FAR</span><h1 class="ax-display-title">Your progress<span>.</span></h1><p>Measured against your own starting point.</p></div><div class="ax-pseg" id="ax-psg"><button data-ps="stats" aria-label="Progress statistics">Stats</button><button data-ps="body" aria-label="Body and recovery">Body</button><button data-ps="hist" aria-label="Workout history">History</button><button data-ps="badges" aria-label="Achievements and badges">Badges</button></div><div id="ax-ps-stats"></div><div id="ax-ps-body" hidden><div class="ax-body-intro"><span class="ax-kicker">RECOVERY MAP</span><h2>Know what needs a break.</h2><p>Tap a muscle group to see its current recovery status.</p></div><div class="panel ax-body-map"><div class="ax-body-map-head"><div><b>Muscle recovery</b><span>Front &amp; back view</span></div><span class="ax-live-dot">LIVE</span></div><svg id="bsv" viewBox="0 0 220 230" style="width:100%;max-height:310px"></svg><div class="ax-recovery-scale"><div class="ax-scale-line"></div><div><span>Recovered</span><span>Worked</span><span>Sore</span></div></div><p class="ax-body-hint"><span>ⓘ</span> Colour shows recent workout load. Dashed outlines mark soreness you logged.</p></div><div class="panel ax-readiness-panel" id="brd"></div><div class="panel ax-selected-muscle" id="bdet"></div><div class="panel ax-muscle-list" id="blist"></div><div id="ax-pbody"></div></div><div id="ax-ps-hist" hidden></div><div id="ax-ps-badges" hidden></div><div id="pgv" hidden></div></section>
 <section class="ax-view" id="ax-v-set" hidden><h1 class="disp vt">Settings</h1>
 <details class="ax-card ax-dt" style="margin-top:0"><summary>Run</summary><label class="row"><span><b>GPS and step tracking</b><em>Used during the 5 km run. Keep the screen on, phone in a pocket.</em></span><input class="sw2" type="checkbox" id="t-gps"></label><label class="row"><span><b>Run goal (km)</b><em>Distance that ticks the run. Empty uses the plan.</em></span><input class="tin" id="goal-km" type="number" step="0.1" min="0.5" max="42" inputmode="decimal" style="width:90px"></label><label class="row"><span><b>Auto-pause</b><em>Pauses the run timer when you stand still.</em></span><input class="sw2" type="checkbox" id="t-apz"></label><label class="row"><span><b>Cadence beat</b><em>Beeps while jogging, not walking.</em></span><input class="sw2" type="checkbox" id="t-met"></label><label class="row"><span><b>Beats per minute</b></span><input class="tin" id="spm" type="number" inputmode="numeric" style="width:80px"></label><label class="row"><span><b>Auto rest timer</b><em>Starts a 60s rest when you tick a strength move.</em></span><input class="sw2" type="checkbox" id="t-auto"></label>
 <div class="row"><span><b>Step counting</b><em id="ax-sline"></em></span></div></details>
@@ -1285,7 +1444,15 @@ function axPg(){var P={stats:$("ax-ps-stats"),hist:$("ax-ps-hist"),badges:$("ax-
   else if(/^Badges/.test(t))P.badges.appendChild(n);
   else if(/^(Run history|No runs yet|Run map)/.test(t))P.hist.appendChild(n);
   else{P.stats.appendChild(n);if(/tiles/.test(n.className))P.stats.insertAdjacentHTML("beforeend",axStp())}});
- $("pgv").innerHTML="";axPs(AXPS);body()}
+  $("pgv").innerHTML="";
+ /* Editorial section headers use only real locally stored records. */
+ var head=function(target,kicker,title,note,icon){var el=$(target);if(!el)return;var subhead={stats:'The numbers',hist:'Run history',badges:'Unlocked milestones'}[icon]||title;var svg={stats:'<path d="M4 19V5M4 19H21M8 15v-4M13 15V7M18 15V3"/>',hist:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',badges:'<path d="M8 4h8l2 4-6 3-6-3 2-4Z"/><path d="m6 8-2 7 8-4 8 4-2-7M8 17l4 2 4-2"/>',body:'<path d="M12 3a3 3 0 1 0 0 6 3 3 0 0 0 0-6ZM6 12l3-2h6l3 2M9 10l-1 5 2 6M15 10l1 5-2 6M8 15h8"/>'}[icon]||'';el.insertAdjacentHTML('afterbegin','<div class="ax-prog-overview"><div class="ax-prog-orbit"><svg viewBox="0 0 24 24" aria-hidden="true">'+svg+'</svg></div><div><b>'+title+'</b><p>'+note+'</p></div></div><div class="ax-prog-sectionhead"><div><span>'+kicker+'</span><b>'+title+'</b></div><small>'+note+'</small></div>')};
+ head('ax-ps-stats','YOUR BASELINE','Progress, in context','Your logged activity, not guesses','stats');
+ head('ax-ps-hist','YOUR JOURNEY','Every session counts','Review, edit or share recorded runs','hist');
+ head('ax-ps-badges','MILESTONES','Small wins, earned','Only achievements you actually unlock','badges');
+ /* Body has its own editorial intro; give it a compact status strip above the map. */
+ var bd=$("ax-ps-body");if(bd&&!$("ax-body-overview")){var bdo=document.createElement('div');bdo.id='ax-body-overview';bdo.className='ax-prog-overview';bdo.innerHTML='<div class="ax-prog-orbit"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a3 3 0 1 0 0 6 3 3 0 0 0 0-6ZM6 12l3-2h6l3 2M9 10l-1 5 2 6M15 10l1 5-2 6M8 15h8"/></svg></div><div><b>Recovery atlas</b><p>Choose a muscle group to inspect recent load and soreness.</p></div>';bd.insertBefore(bdo,bd.firstChild)}
+ axPs(AXPS);body()}
 $("ax-psg").onclick=function(e){var b=e.target.closest("button");if(b)axPs(b.dataset.ps)};
 
 /* Step 8b: Android back button (history guard entry; native app only) */

@@ -1,7 +1,7 @@
 # Arya Fit: HANDOFF (latest, consolidated)
 
 **Read order:** `ARYA-FIT-VISION.md` (vision + roadmap) -> `ARYA-FIT-BRIEF.md` (user + objectives) -> this file (state + technical map).
-**Last updated:** 2026-10-13. v36 adds animated collapsible settings drawers, chevrons, and disables long-press text selection on app UI while preserving selection in inputs. Service worker cache `arya-v34`. Keep this file updated at the end of EVERY change.
+**Last updated:** 2026-10-14. Service worker cache `arya-v44`.
 **Live repo (public, readable):** github.com/opkillerbg-dev/Arya-Fit-app. If you have bash with network, `git clone` it and read the real files. Do not trust pasted copies, because a stale build workflow once hid a whole feature (see section 6).
 
 ## 1. What this is
@@ -109,3 +109,61 @@ Clone the live repo (or ask the user for current `index.html`, `sw.js`, `package
 - Increased atlas display height; selected muscle panel now shows an estimated recent-load meter and status pill. Added keyboard activation for SVG muscle regions.
 - Refined glass panel, recovery scale, muscle list, and progress tile interactions. Cache version `arya-v38`.
 - JS syntax checked and browser smoke test attempted; Android build/native code not changed.
+
+
+## v39 Body Atlas redesign (2026-10-14)
+- `index.html` uses bundled `arya-anatomy-atlas.webp` for a detailed front/back anatomy visual. The illustration is neutral reference art; it does not falsely encode activity data.
+- Live workout load and soreness remain computed by existing `calcM()` / `body()` logic. Select a muscle group from the accessible button grid to inspect its real stored status and use existing soreness controls.
+- `sw.js` cache is `arya-v39` and precaches `arya-anatomy-atlas.webp` for offline use.
+- No localStorage keys, plan data, native Java files, or build workflow changed.
+- Validation performed: JavaScript syntax checks. Browser screenshot/interaction and Android build still require on-device verification.
+
+
+## v40 theme update (2026-10-14)
+- Old Money is now the default for users with no saved skin, and is first in Settings > Look.
+- Updated Old Money palette: parchment, deep forest green, muted brass, soft olive; headings use restrained editorial serif with clean sans-serif UI text. Glass cards and navigation use warm translucent surfaces.
+- Classic is stored explicitly as `classic`, so selecting it remains possible after restart. Existing explicit theme preferences are preserved.
+- No storage keys or workout logic changed. Cache bumped to `arya-v40`.
+
+
+## Update v41 — Theme system
+- Refined palettes for Old Money, Modern, Professional, Midnight and Sunset.
+- Old Money is the default when no theme preference is saved; explicit theme selection is preserved.
+- Fixed Black theme (`PR.amo`) so each theme gets its own coherent dark palette instead of inheriting a generic black override.
+- Applied palette tokens consistently to cards, navigation, form controls and primary actions.
+- Added reduced-motion fallback. No storage keys or native files changed.
+- Cache version: `arya-v41`.
+- Validation: JavaScript syntax checked; Android build/browser screenshot still needs device verification.
+
+
+## v42 timer refinement (2026-10-14)
+- Refined minimized run dock and full-screen timer for clearer hierarchy, larger legible numeric values, improved button feedback, and glass surfaces.
+- Full-screen timer now uses theme tokens for background, text, controls, ring and More sheet rather than hard-coded black/grey, fixing contrast across Old Money and other themes in both dark/light modes.
+- No timer JavaScript logic, storage keys, native files or build workflow changed. Service worker cache: arya-v42.
+- Validation performed: JS syntax check pending after packaging; Android/browser visual testing not claimed.
+
+
+## v43 schedule + workout editing
+- Day detail has `Edit sets / reps` with +/- controls. Values are stored in `PR.workoutEdits` by calendar day and exercise index; base plan is not mutated.
+- `Preview schedule` displays the current and proposed next days. Apply inserts a planned recovery day at the selected future day, shifts the schedule map forward, and shifts indexed day records in `st` to preserve day association.
+- Schedule mapping is stored in `PR.schedMap`; `-1` means a planned recovery day. Verify date mapping, all day data, and repeated shifts on device before relying on it.
+- Cache is `arya-v43`. No build workflow or native Java files changed.
+
+
+## v44 update (2026-10-14)
+- Smart Brain remains fully on-device. Its recommendation now uses the shifted schedule mapping, and when today's check-in recommends **Rest** or **Walk-only** on a workout day, it offers **Preview recovery reschedule**. The preview shows current vs proposed schedule; nothing changes unless the user taps Apply.
+- Fixed schedule-shift indexing so day-indexed checklist ticks, closed-day flags, run totals, and workout-edit overrides at/after the insertion move forward together. Existing plan storage keys remain unchanged.
+- Progress > History now includes **Daily steps history**, showing dated daily totals (including today's current reading) and goal status.
+- Backup export now awaits the native step counter's latest status and historical map before serializing `PR.ds`. Import validates and restores the per-date `PR.ds` map; it remains inside the existing `prefs` backup object, preserving compatibility with version-2 backups.
+- Tests run for v44: inline JavaScript syntax; Smart Brain mode decisions (Full/Light/Walk-only/Rest); schedule-shift movement of checklist/run/closed-day records and workout edits; static wiring for steps history, pre-export sync, import restoration, and service-worker cache version.
+- Not tested here: full browser interaction, actual Android native sensor behavior, Android APK build, and end-to-end export/import on the phone. Back up current data before installing/testing.
+
+
+## v45 workflow audit and fixes (2026-10-14)
+- Schedule mappings, workout overrides, and run routes are stored per plan instead of globally, preventing a schedule change in one plan from affecting another plan.
+- Schedule insertion shifts day-indexed checklist/progress, run totals, workout overrides, and route history together. Applying a schedule change is blocked during an active run or when the selected day already contains recorded activity, avoiding moving completed work into a different date.
+- Version-2 backups now serialize per-plan `schedMap`, `workoutEdits`, and `routes`; import validates those records and allows progress through extended schedule days. Legacy global schedule/edit/route fields are migrated to the active plan.
+- Restored the glass-look preference (`gls`) from backups.
+- Daily steps history is in Progress > History. Export awaits a fresh native step status and native history before serializing `PR.ds`; daily totals remain in the existing preferences backup object.
+- Tests completed for v45: JavaScript syntax; no duplicate HTML IDs; schedule shift moves checklist/progress, workout overrides and route data; schedule/edit/route import validators; extended-day progress validation; backup serialization retaining per-plan metadata and step history.
+- Not completed: full interactive browser test (headless browser did not finish startup in this environment), physical Android step-sensor test, real file export/import on Android, and GitHub Actions APK build. Do not describe these as passed.

@@ -2,7 +2,7 @@ name: Build APK
 on: [push, workflow_dispatch]
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -13,6 +13,20 @@ jobs:
       - run: npm install
       - run: mkdir -p www && cp index.html manifest.webmanifest sw.js icon-*.png www/
       - run: npx cap add android && npx cap sync android
+      - run: cp RunService.java RunEnginePlugin.java StepsPlugin.java android/app/src/main/java/com/arya/fit/
+      - run: |
+          R=android/app/src/main/res
+          mkdir -p $R/drawable-nodpi $R/mipmap-anydpi-v26
+          cp icon-512-maskable.png $R/drawable-nodpi/ic_bg.png
+          for n in ic_launcher ic_launcher_round; do
+          cat > $R/mipmap-anydpi-v26/$n.xml <<'X'
+          <?xml version="1.0" encoding="utf-8"?>
+          <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+            <background android:drawable="@drawable/ic_bg"/>
+            <foreground android:drawable="@android:color/transparent"/>
+          </adaptive-icon>
+          X
+          done
       - run: |
           cat > android/app/src/main/java/com/arya/fit/MainActivity.java <<'J'
           package com.arya.fit;
@@ -20,12 +34,16 @@ jobs:
           import android.view.WindowManager;
           import com.getcapacitor.BridgeActivity;
           public class MainActivity extends BridgeActivity {
-            @Override public void onCreate(Bundle b){ super.onCreate(b);
+            @Override public void onCreate(Bundle b){ registerPlugin(RunEnginePlugin.class); registerPlugin(StepsPlugin.class); super.onCreate(b);
               WindowManager.LayoutParams p=getWindow().getAttributes(); p.preferredRefreshRate=120f; getWindow().setAttributes(p); }
           }
           J
       - run: |
-          sed -i 's#<application#<uses-permission android:name="android.permission.POST_NOTIFICATIONS"/><uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION"/><uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/><uses-permission android:name="android.permission.VIBRATE"/><uses-permission android:name="android.permission.WAKE_LOCK"/><application#' android/app/src/main/AndroidManifest.xml
+          sed -i 's#<application#<uses-permission android:name="android.permission.POST_NOTIFICATIONS"/><uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION"/><uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/><uses-permission android:name="android.permission.VIBRATE"/><uses-permission android:name="android.permission.WAKE_LOCK"/><uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/><uses-permission android:name="android.permission.FOREGROUND_SERVICE"/><uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/><uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/><application#' android/app/src/main/AndroidManifest.xml
+          sed -i 's#</application>#<service android:name=".RunService" android:exported="false" android:foregroundServiceType="location"/></application>#' android/app/src/main/AndroidManifest.xml
+          sed -i 's#<application#<uses-permission android:name="android.permission.ACTIVITY_RECOGNITION"/><uses-permission android:name="android.permission.FOREGROUND_SERVICE_HEALTH"/><uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/><uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/><application#' android/app/src/main/AndroidManifest.xml
+          sed -i 's#</application>#<service android:name=".StepsPlugin$Svc" android:exported="false" android:foregroundServiceType="health"/><receiver android:name=".StepsPlugin$Boot" android:exported="true"><intent-filter><action android:name="android.intent.action.BOOT_COMPLETED"/><action android:name="android.intent.action.MY_PACKAGE_REPLACED"/></intent-filter></receiver></application>#' android/app/src/main/AndroidManifest.xml
+          grep -q 'StepsPlugin.Svc' android/app/src/main/AndroidManifest.xml
           cd android && ./gradlew assembleDebug
       - uses: actions/upload-artifact@v4
         with:

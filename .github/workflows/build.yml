@@ -11,7 +11,7 @@ jobs:
         with: {distribution: temurin, java-version: 17}
       - run: mkdir -p ~/.android && cp debug.keystore ~/.android/debug.keystore
       - run: npm install
-      - run: mkdir -p www && cp index.html manifest.webmanifest sw.js icon-*.png www/
+      - run: mkdir -p www && cp index.html manifest.webmanifest sw.js icon-*.png arya-*.webp www/
       - run: npx cap add android && npx cap sync android
       - name: Set increasing Android version code
         env:

@@ -378,6 +378,13 @@ html[data-skin] .ax-dk:not(.ax-fs){background:var(--hero)}
 .ax-dt{margin-top:var(--ax-s3)}.ax-dt summary{min-height:var(--ax-tap);display:flex;align-items:center;font-weight:700;font-size:var(--ax-t3);cursor:pointer}
 .ax-sg3{display:flex;justify-content:space-between;font-size:var(--ax-t1);color:var(--mut)}.ax-sg3 b{color:var(--ink);font-size:var(--ax-t3)}
 .qr button,.tin{min-height:48px}.accs{display:flex;flex-wrap:wrap;gap:8px;padding:6px 2px 12px}.accs .acc{width:48px;height:48px;margin:0}
+/* Glass look (optional) */
+@supports (background:color-mix(in srgb,red 50%,transparent)) and ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){
+html.gls body::before{content:"";display:block!important;animation:none!important;position:fixed;left:0;right:0;top:0;bottom:0;z-index:-1;pointer-events:none;background:radial-gradient(60% 38% at 10% 6%,color-mix(in srgb,var(--blue) 46%,transparent),transparent 72%),radial-gradient(56% 36% at 95% 34%,color-mix(in srgb,var(--ok) 36%,transparent),transparent 72%),radial-gradient(64% 38% at 28% 98%,color-mix(in srgb,var(--sun) 34%,transparent),transparent 72%)}
+html.gls .ax-card{background:color-mix(in srgb,var(--card) 60%,transparent)!important;-webkit-backdrop-filter:blur(16px) saturate(1.5);backdrop-filter:blur(16px) saturate(1.5);border-color:color-mix(in srgb,var(--card) 55%,transparent);box-shadow:0 8px 26px rgba(0,0,0,.09),inset 0 1px 0 rgba(255,255,255,.28)}
+html.gls .ax-nav{background:color-mix(in srgb,var(--card) 68%,transparent)!important;-webkit-backdrop-filter:blur(18px) saturate(1.5);backdrop-filter:blur(18px) saturate(1.5);border-top-color:color-mix(in srgb,var(--card) 55%,transparent)}
+html.gls .ax-sh{background:color-mix(in srgb,var(--card) 82%,transparent)!important;-webkit-backdrop-filter:blur(22px) saturate(1.4);backdrop-filter:blur(22px) saturate(1.4)}
+}
 </style><link rel="manifest" href="manifest.webmanifest">
 </head>
 <body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
@@ -433,7 +440,7 @@ html[data-skin] .ax-dk:not(.ax-fs){background:var(--hero)}
 <details class="ax-card ax-dt" style="margin-top:0"><summary>Run</summary><label class="row"><span><b>GPS and step tracking</b><em>Used during the 5 km run. Keep the screen on, phone in a pocket.</em></span><input class="sw2" type="checkbox" id="t-gps"></label><label class="row"><span><b>Run goal (km)</b><em>Distance that ticks the run. Empty uses the plan.</em></span><input class="tin" id="goal-km" type="number" step="0.1" min="0.5" max="42" inputmode="decimal" style="width:90px"></label><label class="row"><span><b>Auto-pause</b><em>Pauses the run timer when you stand still.</em></span><input class="sw2" type="checkbox" id="t-apz"></label><label class="row"><span><b>Cadence beat</b><em>Beeps while jogging, not walking.</em></span><input class="sw2" type="checkbox" id="t-met"></label><label class="row"><span><b>Beats per minute</b></span><input class="tin" id="spm" type="number" inputmode="numeric" style="width:80px"></label><label class="row"><span><b>Auto rest timer</b><em>Starts a 60s rest when you tick a strength move.</em></span><input class="sw2" type="checkbox" id="t-auto"></label>
 <div class="row"><span><b>Step counting</b><em id="ax-sline"></em></span></div></details>
 <details class="ax-card ax-dt"><summary>Voice &amp; alerts</summary><label class="row"><span><b>Sound effects</b><em>Plays a chime when a timer starts and when it stops.</em></span><input class="sw2" type="checkbox" id="t-snd"></label><label class="row"><span><b>Voice cues</b><em>Says Jog, Walk and each kilometer.</em></span><input class="sw2" type="checkbox" id="t-voi"></label><div class="row"><span><b>Test voice</b><em>No sound? Check phone volume and that a text-to-speech engine is installed.</em></span><button class="btn" id="vtest">Play</button></div><label class="row"><span><b>Daily reminder</b><em>Phone app only. Leave empty for none.</em></span><input type="time" id="rm-t" class="tin" style="width:112px"></label><label class="row"><span><b>Haptics</b><em>Small vibrations on taps, ticks and finishes.</em></span><input class="sw2" type="checkbox" id="t-hap"></label></details>
-<details class="ax-card ax-dt"><summary>Look</summary><label class="row"><span><b>Black theme</b><em>Pure black in dark mode.</em></span><input class="sw2" type="checkbox" id="t-amo"></label><div class="row"><span><b>Theme</b></span></div><div class="skins" id="skins"></div><div class="row"><span><b>Accent color</b></span></div><div class="accs" id="accs"></div></details>
+<details class="ax-card ax-dt"><summary>Look</summary><label class="row"><span><b>Black theme</b><em>Pure black in dark mode.</em></span><input class="sw2" type="checkbox" id="t-amo"></label><label class="row"><span><b>Glass look</b><em>Frosted cards over a soft color glow.</em></span><input class="sw2" type="checkbox" id="t-gls"></label><div class="row"><span><b>Theme</b></span></div><div class="skins" id="skins"></div><div class="row"><span><b>Accent color</b></span></div><div class="accs" id="accs"></div></details>
 <details class="ax-card ax-dt"><summary>Data &amp; backup</summary><div class="bk"><h3 style="margin:0 0 4px;font-size:15px">Backup and restore</h3><p>Export saves your ticks, times and settings to a file. Import restores them here or on another device and replaces what is currently saved.</p>
 <div class="qr"><button class="sw" id="ex">Export backup</button><button id="im">Import backup</button><input type="file" id="fi" accept=".json,application/json" hidden></div>
 <details id="dt2"><summary>Copy or paste backup text</summary><textarea id="bt" rows="4" spellcheck="false" placeholder="Backup text appears here. Paste a backup here to load it."></textarea><div class="qr"><button id="cp">Copy text</button><button id="ld">Load from text</button></div></details></div>
@@ -597,7 +604,10 @@ function endT(){clearInterval(tk);tk=null;try{wlk&&wlk.release()}catch(e){}wlk=n
 function closeT(){if(TM){clrRun();nclr()}trkOff();endT();TM=null;$("dock").hidden=true;document.body.classList.remove("td")}
 function startCD(sec,lab){begin({mode:"cd",total:sec,label:lab})}
 function startSW(d){begin({mode:"sw",label:"Workout stopwatch",day:d})}
-function startIV(d){if(!JKM)return;d=d==null?cur:d;brk();var q=IVS[lvl()];begin({mode:"iv",seq:q[1]?[q[0],q[1]]:[86400,86400],label:JL,day:d,trk:PR.gps!==0,dist:0,steps:0,base:st["g"+d]||0});if(TM.trk)trkOn()}
+function startIV0(d){if(!JKM)return;d=d==null?cur:d;brk();var q=IVS[lvl()];begin({mode:"iv",seq:q[1]?[q[0],q[1]]:[86400,86400],label:JL,day:d,trk:PR.gps!==0,dist:0,steps:0,base:st["g"+d]||0});if(TM.trk)trkOn()}
+function startIV(d){if(!JKM)return;axSheet("How today?",'<button class="ax-opt" id="ax-ivj"><b>Jog and walk</b><span>Follow the plan</span></button><button class="ax-opt" id="ax-ivw"><b>Walk only</b><span>Easy pace, no jogging</span></button>');
+  $("ax-ivj").onclick=function(){axSheetX();startIV0(d)};
+  $("ax-ivw").onclick=function(){axSheetX();startIV0(d);if(TM){TM.hold=1;TM.ph=1;TM.pstart=0;engPush()}}}
 function wl(){try{if(!navigator.wakeLock||(wlk&&!wlk.released))return;navigator.wakeLock.request("screen").then(function(l){wlk=l}).catch(function(){})}catch(e){}}
 var RK="aryaRun1",LK="aryaLast1",lps=0,PRUN=null,LAST=null;
 function clrRun(){try{localStorage.removeItem(RK)}catch(e){}}
@@ -736,7 +746,7 @@ function pextra(){var n=ND,mx=5,g=[],tj=0,tk=0,any=0,best=0,done=0,run=0,bs=0,td
   if(JKM)c+='<line x1="0" x2="280" y1="'+(76-JKM/mx*64)+'" y2="'+(76-JKM/mx*64)+'" style="stroke:var(--mut);stroke-dasharray:4 3;stroke-width:1"/>';
   var B=[["run","First run",any],["pin","1 km total",tk>=1],["flag","5 km day",best>=4.9],["target","10 km total",tk>=10],["bolt","25 km total",tk>=25],["timer","30 min jogged",tj>=1800],["check","First full day",done>=1],["flame","3 day streak",bs>=3],["bolt","7 day streak",bs>=7],["sun","Halfway",done>=14],["dumbbell","3 weeks",done>=21],["trophy","Plan done",done>=n]],u=B.filter(function(b){return b[2]}).length;
   return pextra4()+pextra3()+pextra2(g,td)+'<div class="panel"><h3 style="margin-top:0">Distance per day</h3><svg viewBox="0 0 280 80" style="width:100%"><g>'+c+'</g></svg><p class="key">Bars show km logged each day'+(JKM?'. Dashed line is the '+JKM+' km goal':'')+'.</p></div><div class="panel"><h3 style="margin-top:0">Badges '+u+'/'+B.length+'</h3><div class="bgs">'+B.map(function(b){return '<div class="bdg'+(b[2]?' on':'')+'"><svg class="i"><use href="#i-'+b[0]+'"/></svg>'+b[1]+'</div>'}).join("")+'</div></div>'+pextra5()}
-function say(t,f){try{if((!f&&PR.voi===0)||!window.speechSynthesis)return;var y=speechSynthesis;if(y.speaking||y.pending)y.cancel();var u=new SpeechSynthesisUtterance(t);u.lang="en-US";y.speak(u)}catch(e){}}
+function say(t,f){try{if(!f&&PR.voi===0)return;if(ENG&&ENG.speak){if(TM&&TM.eng&&!f)return;ENG.speak({text:t}).catch(function(){});return}if(!window.speechSynthesis)return;var y=speechSynthesis;if(y.speaking||y.pending)y.cancel();var u=new SpeechSynthesisUtterance(t);u.lang="en-US";y.speak(u)}catch(e){}}
 function phaseFx(x){var d=$("dock");d.classList.remove("ax-dflip");void d.offsetWidth;d.classList.add("ax-dflip");setTimeout(function(){d.classList.remove("ax-dflip")},600);say(x=="w"?"Walk":"Jog")}
 function cel(dy,msg){var g=(st["g"+dy]||0)/1000,el=document.createElement("div");el.id="cel";el.innerHTML='<svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="24"/><path d="M14 27l9 9 16-18"/></svg><b>'+(g?"0.00":"Saved")+'</b><span>'+(g?"km logged today":"")+'</span>';document.body.appendChild(el);
   var b=el.querySelector("b");if(g&&!RM){var t0=performance.now();(function f(n){var q=Math.min(1,(n-t0)/900);b.textContent=(g*(1-Math.pow(1-q,3))).toFixed(2);if(q<1)requestAnimationFrame(f)})(t0)}else if(g)b.textContent=g.toFixed(2);
@@ -770,7 +780,7 @@ function gsess(L){var i=0,t=0,o=document.createElement("div");o.id="gov";documen
   clearInterval(gtm);show();gtm=setInterval(function(){t--;var e=o.querySelector("i");if(e)e.textContent=t;if(t<=0){i++;show()}},1000)}
 function apz(on){if(on&&TM.run){TM.acc+=Date.now()-TM.last;TM.run=false;TM.aps=1;TM.apl=null;$("dpp").textContent="Resume";toast("Auto-paused")}else if(!on&&!TM.run&&TM.aps){TM.last=Date.now();TM.run=true;TM.aps=0;TM.lm=Date.now();$("dpp").textContent="Pause"}}
 function metro(){clearTimeout(mt);try{if(PR.met&&TM&&TM.mode=="iv"&&TM.run&&!(TM.hold||TM.ph))tick()}catch(e){}mt=setTimeout(metro,60000/Math.max(100,Math.min(220,PR.spm||160)))}
-function theme(){var h=document.documentElement;if(PR.skin)h.setAttribute("data-skin",PR.skin);else h.removeAttribute("data-skin");document.querySelectorAll(".sk").forEach(function(b){b.classList.toggle("on",(PR.skin||"classic")==b.dataset.k)});h.classList.toggle("amo",!!PR.amo);if(PR.acc)h.style.setProperty("--blue",PR.acc);else h.style.removeProperty("--blue")}
+function theme(){var h=document.documentElement;if(PR.skin)h.setAttribute("data-skin",PR.skin);else h.removeAttribute("data-skin");document.querySelectorAll(".sk").forEach(function(b){b.classList.toggle("on",(PR.skin||"classic")==b.dataset.k)});h.classList.toggle("amo",!!PR.amo);h.classList.toggle("gls",!!PR.gls);if(PR.acc)h.style.setProperty("--blue",PR.acc);else h.style.removeProperty("--blue")}
 function rnames(){var o={};for(var i=0;i<7&&i<ND;i++)items(i).forEach(function(x){if(x[0]=="Strength")o[x[2]]=1});return Object.keys(o)}
 function repsUI(){var s=$("ax-rpn");if(!s)return;if(!s.options.length)s.innerHTML=rnames().map(function(n){return"<option>"+n+"</option>"}).join("");var R=PR.reps||{};
   $("ax-rpl").innerHTML=Object.keys(R).map(function(n){var a=R[n],b=Math.max.apply(0,a.map(function(x){return x[1]})),l=a[a.length-1][1];return"<b>"+n+"</b>: best "+b+", last "+l+(l>=b?". Try "+(b+1)+" next time.":"")}).join("<br>")}
@@ -863,14 +873,14 @@ function rip(e,t){if(RM||!t.matches(".btn,.tile,.qr button,.ax-db button,.ax-dsw
 function cup(root){if(RM)return;root.querySelectorAll(".tile b").forEach(function(b){var m=/^([\d,]+(?:\.\d+)?)(%?)$/.exec(b.textContent);if(!m)return;var to=parseFloat(m[1].replace(/,/g,"")),dec=(m[1].split(".")[1]||"").length,t0=performance.now();(function f(n){var q=Math.min(1,(n-t0)/700),v=to*(1-Math.pow(1-q,3));b.textContent=(dec?v.toFixed(dec):Math.round(v).toLocaleString())+m[2];if(q<1)requestAnimationFrame(f)})(t0)})}
 function bindExtra(){
   $("spm").value=PR.spm||160;$("spm").onchange=function(){PR.spm=Math.max(100,Math.min(220,+this.value||160));save()};
-  $("t-amo").addEventListener("change",function(){setTimeout(theme,0)});
+  $("t-amo").addEventListener("change",function(){setTimeout(theme,0)});$("t-gls").addEventListener("change",function(){setTimeout(theme,0)});
   $("accs").innerHTML=[["#2f5bff","Blue"],["#12b27a","Green"],["#ff7a45","Orange"],["#e0457b","Pink"],["#8a5cff","Purple"]].map(function(c){return'<button class="acc" data-c="'+c[0]+'" aria-label="'+c[1]+' accent" style="background:'+c[0]+'"></button>'}).join("");
   $("accs").onclick=function(e){var c=e.target.dataset&&e.target.dataset.c;if(c){PR.acc=c;save();theme()}};
   var SK=[["classic","Classic","#131c36","#ff7a45"],["oldmoney","Old Money","#fbf7ec","#1f4d3a"],["modern","Modern","#ffffff","#c8294f"],["professional","Professional","#ffffff","#1f5fbf"],["midnight","Midnight","#0a0b0e","#3fcfae"],["sunset","Sunset","#2a1820","#ff7a45"]];
   $("skins").innerHTML=SK.map(function(k){return'<button class="sk" data-k="'+k[0]+'"><i style="background:linear-gradient(135deg,'+k[2]+' 50%,'+k[3]+' 50%)"></i>'+k[1]+'</button>'}).join("");
   $("skins").onclick=function(e){var b=e.target.closest(".sk");if(!b)return;PR.skin=b.dataset.k=="classic"?null:b.dataset.k;PR.acc=null;save();theme()};
   theme();metro();
-  $("vtest").onclick=function(){unlock();if(!window.speechSynthesis){toast("Voice is not supported on this phone.");return}say("Jog now. Voice test.",1);toast("Playing voice test")};
+  $("vtest").onclick=function(){unlock();if(ENG&&ENG.speak){ENG.speak({text:"Jog now. Voice test."}).then(function(){toast("Playing voice test")}).catch(function(){toast("No text-to-speech engine found. Install Google Speech Services.")});return}if(!window.speechSynthesis){toast("Voice is not supported on this phone.");return}say("Jog now. Voice test.",1);toast("Playing voice test")};
   $("gw").onclick=function(){unlock();gsess(GW)};$("gcd").onclick=function(){unlock();gsess(GC)};$("ax-rcd").onclick=axCd;$("ax-rrp").onclick=axReps;$("ax-rmr").onclick=axMr;
   applyGoal();
   var gi=$("goal-km");gi.value=PR.goal||"";gi.placeholder=P&&P.jog?String(P.jog.km):"";
@@ -948,7 +958,7 @@ function axMr(){
 function bindApp(){
   document.querySelectorAll("#ax-nav button").forEach(function(b){b.onclick=function(){go(b.dataset.v)}});
     $("tvrun").onclick=function(){unlock();startIV(Dn())};$("ax-rsw").onclick=function(){unlock();startSW(Dn())};
-  var M={"t-snd":["snd",1],"t-gps":["gps",1],"t-auto":["auto",0],"t-hap":["hap",1],"t-voi":["voi",1],"t-apz":["ap",0],"t-met":["met",0],"t-amo":["amo",0]};
+  var M={"t-snd":["snd",1],"t-gps":["gps",1],"t-auto":["auto",0],"t-hap":["hap",1],"t-voi":["voi",1],"t-apz":["ap",0],"t-met":["met",0],"t-amo":["amo",0],"t-gls":["gls",0]};
   Object.keys(M).forEach(function(id){var e=$(id),k=M[id][0];e.checked=M[id][1]?PR[k]!==0:!!PR[k];e.onchange=function(){PR[k]=this.checked?1:0;save()}});
 }
 
@@ -1077,7 +1087,7 @@ function restorePrefs(pr){if(!pr||typeof pr!="object")return;var num=function(x)
   if(pr.ds&&typeof pr.ds=="object"){var Ds={};Object.keys(pr.ds).slice(0,500).forEach(function(d){var v=pr.ds[d];if(/^\d{4}-\d{2}-\d{2}$/.test(d)&&Number.isInteger(v)&&v>=0&&v<=200000)Ds[d]=v});if(Object.keys(Ds).length)PR.ds=Ds}
   if(Number.isInteger(pr.sg)&&pr.sg>=1000&&pr.sg<=50000)PR.sg=pr.sg;
   syncPrefs()}
-function syncPrefs(){var M={"t-snd":["snd",1],"t-gps":["gps",1],"t-auto":["auto",0],"t-hap":["hap",1],"t-voi":["voi",1],"t-apz":["ap",0],"t-met":["met",0],"t-amo":["amo",0]};
+function syncPrefs(){var M={"t-snd":["snd",1],"t-gps":["gps",1],"t-auto":["auto",0],"t-hap":["hap",1],"t-voi":["voi",1],"t-apz":["ap",0],"t-met":["met",0],"t-amo":["amo",0],"t-gls":["gls",0]};
   Object.keys(M).forEach(function(id){var e=$(id);if(e)e.checked=M[id][1]?PR[M[id][0]]!==0:!!PR[M[id][0]]});
   var q=$("spm");if(q)q.value=PR.spm||160;q=$("rm-t");if(q)q.value=PR.rmt||"";theme();metro();remind(1)}
 function doImport(txt){var d;try{d=JSON.parse(txt)}catch(e){d=null}

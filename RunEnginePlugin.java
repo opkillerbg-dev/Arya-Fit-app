@@ -3,6 +3,8 @@ package com.arya.fit;
 import android.Manifest;
 import android.content.Intent;
 import android.os.Build;
+import android.speech.tts.TextToSpeech;
+import java.util.Locale;
 import com.getcapacitor.JSObject;
 import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
@@ -15,6 +17,33 @@ import com.getcapacitor.annotation.Permission;
   @Permission(strings = {Manifest.permission.POST_NOTIFICATIONS}, alias = "notifications")
 })
 public class RunEnginePlugin extends Plugin {
+  private TextToSpeech tts;
+  private boolean ttsOk = false;
+
+  @Override
+  public void load() {
+    try {
+      tts = new TextToSpeech(getContext(), new TextToSpeech.OnInitListener() {
+        public void onInit(int s) {
+          ttsOk = (s == TextToSpeech.SUCCESS);
+          if (ttsOk) tts.setLanguage(Locale.US);
+        }
+      });
+    } catch (Exception e) {
+    }
+  }
+
+  @PluginMethod
+  public void speak(PluginCall call) {
+    String t = call.getString("text", "");
+    if (ttsOk && tts != null && t.length() > 0) {
+      tts.speak(t, TextToSpeech.QUEUE_FLUSH, null, "u");
+      call.resolve();
+    } else {
+      call.reject("tts");
+    }
+  }
+
   @PluginMethod
   public void start(PluginCall call) {
     RunService.configure(call.getData());

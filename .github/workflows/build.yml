@@ -13,6 +13,13 @@ jobs:
       - run: npm install
       - run: mkdir -p www && cp index.html manifest.webmanifest sw.js icon-*.png www/
       - run: npx cap add android && npx cap sync android
+      - name: Set increasing Android version code
+        env:
+          VERSION_CODE: ${{ github.run_number }}
+        run: |
+          sed -i -E "s/versionCode[[:space:]]+[0-9]+/versionCode ${VERSION_CODE}/" android/app/build.gradle
+          grep -q "versionCode ${VERSION_CODE}" android/app/build.gradle
+          echo "Android versionCode=${VERSION_CODE}; versionName stays 1.0"
       - run: cp RunService.java RunEnginePlugin.java StepsPlugin.java android/app/src/main/java/com/arya/fit/
       - run: |
           R=android/app/src/main/res
@@ -46,6 +53,10 @@ jobs:
           grep -q 'StepsPlugin.Svc' android/app/src/main/AndroidManifest.xml
           sed -i 's#<application#<queries><intent><action android:name="android.intent.action.TTS_SERVICE"/></intent></queries><application#' android/app/src/main/AndroidManifest.xml
           cd android && ./gradlew assembleDebug
+          APK=app/build/outputs/apk/debug/app-debug.apk
+          APKSIGNER=$(find "$ANDROID_HOME/build-tools" -type f -name apksigner | sort -V | tail -n 1)
+          test -n "$APKSIGNER"
+          "$APKSIGNER" verify --print-certs "$APK"
       - uses: actions/upload-artifact@v4
         with:
           name: arya-fit-apk

@@ -44,6 +44,7 @@ jobs:
           sed -i 's#<application#<uses-permission android:name="android.permission.ACTIVITY_RECOGNITION"/><uses-permission android:name="android.permission.FOREGROUND_SERVICE_HEALTH"/><uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/><uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/><application#' android/app/src/main/AndroidManifest.xml
           sed -i 's#</application>#<service android:name=".StepsPlugin$Svc" android:exported="false" android:foregroundServiceType="health"/><receiver android:name=".StepsPlugin$Boot" android:exported="true"><intent-filter><action android:name="android.intent.action.BOOT_COMPLETED"/><action android:name="android.intent.action.MY_PACKAGE_REPLACED"/></intent-filter></receiver></application>#' android/app/src/main/AndroidManifest.xml
           grep -q 'StepsPlugin.Svc' android/app/src/main/AndroidManifest.xml
+          sed -i 's#<application#<queries><intent><action android:name="android.intent.action.TTS_SERVICE"/></intent></queries><application#' android/app/src/main/AndroidManifest.xml
           cd android && ./gradlew assembleDebug
       - uses: actions/upload-artifact@v4
         with:

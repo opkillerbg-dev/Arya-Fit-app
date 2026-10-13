@@ -1,7 +1,7 @@
 # Arya Fit: HANDOFF (latest, consolidated)
 
 **Read order:** `ARYA-FIT-VISION.md` (vision + roadmap) -> `ARYA-FIT-BRIEF.md` (user + objectives) -> this file (state + technical map).
-**Last updated:** 2026-10-13. Service worker cache `arya-v33`. Keep this file updated at the end of EVERY change.
+**Last updated:** 2026-10-13. Service worker cache `arya-v34`. Keep this file updated at the end of EVERY change.
 **Live repo (public, readable):** github.com/opkillerbg-dev/Arya-Fit-app. If you have bash with network, `git clone` it and read the real files. Do not trust pasted copies, because a stale build workflow once hid a whole feature (see section 6).
 
 ## 1. What this is
@@ -85,4 +85,13 @@ Clone the live repo (or ask the user for current `index.html`, `sw.js`, `package
 - Refined glassmorphism for app cards, legacy panels/tiles, navigation and sheets; glass is enabled by default only when no saved user preference exists. A saved opt-out is preserved.
 - Added restrained high-refresh-friendly transitions for taps, tab content, sheets, navigation and progress. Uses transform/opacity and respects `prefers-reduced-motion`.
 - This is a rendering/style update; no storage keys, workout records, native Java, or build workflow changed.
-- Service worker cache bumped to `arya-v33`. CSS animations are optimized for a 120 Hz display but do not force the device refresh rate or guarantee 120 FPS.
+- Service worker cache bumped to `arya-v34`. CSS animations are optimized for a 120 Hz display but do not force the device refresh rate or guarantee 120 FPS.
+
+
+## v34 visual refresh (2026-10-13)
+- Added locally bundled `arya-run-hero.webp` (custom-generated image, no runtime image fetch) and a branded Home hero panel.
+- Added stronger editorial section headers to Plan, Run and Progress; refined Smart Today, stat card and primary action surfaces.
+- Added reduced-motion and reduced-transparency fallbacks.
+- Bumped service worker cache to `arya-v34` and precaches the local hero asset.
+- No storage keys, workout logic, Java plugins or build workflow changed.
+- Validation: JavaScript syntax checks and browser rendering still need to be run before treating this pack as fully tested.

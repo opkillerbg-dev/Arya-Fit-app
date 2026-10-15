@@ -1,0 +1,28 @@
+name: Setup images (run once)
+on: workflow_dispatch
+permissions:
+  contents: write
+jobs:
+  setup:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Unpack images and move hero and atlas
+        run: |
+          test -f arya-images.zip
+          unzip -o -q arya-images.zip
+          mkdir -p images/hero images/anatomy images/exercises
+          if [ -f arya-run-hero.webp ]; then git mv -f arya-run-hero.webp images/hero/arya-run-hero.webp; fi
+          if [ -f arya-anatomy-atlas.webp ]; then git mv -f arya-anatomy-atlas.webp images/anatomy/arya-anatomy-atlas.webp; fi
+          rm -f arya-images.zip
+          test -f images/hero/arya-run-hero.webp
+          test -f images/anatomy/arya-anatomy-atlas.webp
+          echo "exercise pictures: $(ls images/exercises | wc -l)"
+          test "$(ls images/exercises | wc -l)" -ge 62
+      - name: Commit
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          git commit -m "Move images into images/ folders"
+          git push

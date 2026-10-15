@@ -237,3 +237,21 @@ Upload `index.html` and `sw.js` to the repo root, replace `HANDOFF.md`, install 
 - The owner had not uploaded anything since v44, so this index.html contains ALL changes v45 to v52, `package.json` carries the Haptics plugin, and the 62 exercise pictures are new to the repo.
 - Upload order: 1) `arya-images.zip` to the root, 2) create `.github/workflows/setup-images.yml`, 3) run it from the Actions tab, 4) upload index.html, sw.js, package.json, HANDOFF.md, 5) edit build.yml last. Builds started in between may fail; only the last one counts.
 - Verified: build.yml YAML parses, the new copy step and the setup workflow were simulated in a scratch git repo, index.html inline script syntax check passed, and headless Chromium loaded the exercise pictures from `images/exercises/` for six exercises. NOT verified: the hero and atlas files themselves (not in the container), a real APK build, anything on a phone.
+
+
+## v53 body atlas redesign (2026-10-16, headless-tested, not run on a phone)
+- Replaced the 34 hand-drawn polygons with real anatomy paths from **react-native-body-highlighter** (MIT, notice in `THIRD-PARTY-NOTICES.md`, credit line in the Body tab). Male front and back, one view at a time with a Front/Back toggle (`bside`, `bsd` buttons). Data in `BHF`, `BHB`, `BHOF` (outline), `BHOB`; library slug to app muscle map in `BHM` (deltoids to shoulders; abs + obliques to abs; trapezius, upper-back, lower-back to back; quadriceps to quads; gluteal to glutes; hamstring to hams; chest, biceps, triceps, calves unchanged). Head, hair, neck, forearms, hands, knees, tibialis, adductors, ankles and feet are drawn as neutral non-tappable parts because the app does not track them.
+- Selecting a muscle (tap or the list) switches the side automatically (`bsync`; back, glutes and hamstrings always go to Back). Selected = gold outline (`--sun`), sore = amber fill, load = green ramp from `--card` to `--blue` so it works in every skin (Midnight checked visually).
+- Legend is now cream to green (no rainbow); amber key line added. Subtitle now says "Tap a muscle to see its load and recovery".
+- Fixed: FRONT/BACK labels were swapped (old caption row); the faint vertical line through the whole card (`.ax-body-map:before` center gradient, now hidden); the muddy stage box.
+- `sw.js` cache `arya-v53`; `images/anatomy/arya-anatomy-atlas.webp` removed from SHELL (unused). The file stays in the repo because `build.yml` still checks that it exists; it can be deleted together with that `test -f` line later.
+- Old `fig`, `BB`, `BP`, `SIL`, `SH` code is now dead (kept to keep the change small). Safe to delete in a cleanup.
+- Verified in headless Chromium (390x844): front and back render, real tap on quads selects quads, toggle works, picking Hamstrings in the list flips to Back, no JS errors. NOT verified: on a phone, tap accuracy on small muscles with a thumb, scrolling feel.
+- Not touched: the odd cream blob around the sticky Progress tab bar and the half-hidden "recovery status." text behind it (seen in the owner's screenshot).
+
+
+## v54 credits section (2026-10-16, headless-tested, not run on a phone)
+- Removed the "Body art: react-native-body-highlighter" credit line from the Body tab hint (the owner did not want it there).
+- Added Settings > **About and credits** (`<details id="ax-credits">`, last card in `#ax-v-set`): app name and version text, "Created by Arya Sheladiya" (name taken from the plan's `athlete` field; edit the literal text in that block if the credit should say something else), "Built with" (Capacitor, MIT, and its plugins), and "Body map art" (react-native-body-highlighter, MIT, ELABBASSI Hicham). This satisfies the MIT notice together with `THIRD-PARTY-NOTICES.md` in the repo.
+- The version text in that block ("v54") is a literal string. Update it on each release together with the `sw.js` cache name (`arya-v54`).
+- Verified in headless Chromium: the section renders and expands, no JS errors. Not verified on a phone.

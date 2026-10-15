@@ -11,7 +11,14 @@ jobs:
         with: {distribution: temurin, java-version: 17}
       - run: mkdir -p ~/.android && cp debug.keystore ~/.android/debug.keystore
       - run: npm install
-      - run: mkdir -p www && cp index.html manifest.webmanifest sw.js icon-*.png arya-*.webp www/
+      - run: |
+          mkdir -p www
+          cp index.html manifest.webmanifest sw.js icon-*.png www/
+          cp -r images www/images
+          test -f www/images/hero/arya-run-hero.webp
+          test -f www/images/anatomy/arya-anatomy-atlas.webp
+          test -f www/images/exercises/arya-ex-push-ups-a.webp
+          echo "exercise pictures: $(ls www/images/exercises | wc -l)"
       - run: npx cap add android && npx cap sync android
       - name: Set increasing Android version code
         env:

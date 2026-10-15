@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>Arya Sheladiya - 28-Day Workout Tracker</title>
 <meta name="theme-color" content="#0b1b3f">
 <meta name="color-scheme" content="light dark">
@@ -444,7 +444,7 @@ button:disabled{cursor:not-allowed}
 
 
 /* ===== v34 visual story: custom hero, brand marks and editorial hierarchy ===== */
-.ax-hero-art{position:relative;isolation:isolate;min-height:258px;overflow:hidden;border-radius:26px;padding:15px 17px 14px;color:#fff;background:#18231e url("arya-run-hero.webp") 58% 50%/cover no-repeat;box-shadow:0 14px 34px rgba(8,18,20,.18);animation:axHeroIn .65s cubic-bezier(.2,.75,.25,1) both}
+.ax-hero-art{position:relative;isolation:isolate;min-height:258px;overflow:hidden;border-radius:26px;padding:15px 17px 14px;color:#fff;background:#18231e url("images/hero/arya-run-hero.webp") 58% 50%/cover no-repeat;box-shadow:0 14px 34px rgba(8,18,20,.18);animation:axHeroIn .65s cubic-bezier(.2,.75,.25,1) both}
 .ax-hero-art:before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(7,17,17,.82) 0%,rgba(7,17,17,.48) 47%,rgba(7,17,17,.05) 100%),linear-gradient(0deg,rgba(6,13,12,.46),transparent 52%)}
 .ax-hero-top{display:flex;align-items:center;gap:8px;position:relative;z-index:1}
 .ax-brand-mark{width:29px;height:29px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.52);border-radius:10px;background:rgba(255,255,255,.12);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
@@ -647,6 +647,7 @@ button,summary,[role="button"],.ax-opt,.ax-nav button{touch-action:manipulation}
 .ax-atlas-stage{position:relative;display:flex;align-items:center;justify-content:center;min-height:290px;margin:8px -2px 12px;overflow:hidden;border-radius:22px;background:radial-gradient(ellipse at 50% 44%,rgba(92,116,190,.15),transparent 65%),linear-gradient(145deg,rgba(11,17,35,.48),rgba(20,30,51,.16));border:1px solid color-mix(in srgb,var(--line) 55%,transparent)}
 .ax-atlas-stage:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,transparent 49.8%,color-mix(in srgb,var(--line) 40%,transparent) 50%,transparent 50.2%);opacity:.35}
 .ax-atlas-art{display:block;width:100%;max-width:520px;height:auto;max-height:450px;object-fit:contain;position:relative;z-index:1;filter:drop-shadow(0 12px 22px rgba(0,0,0,.22));}
+.ax-atlas-svg{display:block;width:100%;max-width:520px;height:auto;max-height:450px;position:relative;z-index:1;overflow:visible;touch-action:manipulation}.ax-atlas-svg [data-m]{outline:none;transition:fill .18s ease,fill-opacity .18s ease,stroke .18s ease}.ax-atlas-svg [data-m]:focus-visible{stroke:var(--acc)!important;stroke-width:2.5!important}.ax-atlas-stage{min-height:0!important;padding:8px 6px 2px}
 .ax-atlas-caption{display:flex;justify-content:space-around;padding:0 12px 7px;color:var(--mut);font-size:10px;font-weight:850;letter-spacing:.2em}
 .ax-muscle-pick-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}
 .ax-muscle-pick{display:flex;align-items:center;gap:9px;min-width:0;padding:11px 10px;border-radius:14px;border:1px solid color-mix(in srgb,var(--line) 68%,transparent);background:color-mix(in srgb,var(--cell) 70%,transparent);color:var(--text);text-align:left;transition:transform .18s ease,border-color .18s ease,background .18s ease;touch-action:manipulation}
@@ -782,6 +783,40 @@ html[data-skin="oldmoney"] button,html[data-skin="oldmoney"] input,html[data-ski
  .ax-dk,.ax-dk *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
 }
 
+/* v47: opaque nav + opaque sticky Progress tabs (no text bleeding through) */
+html:not(.gls) .ax-nav,html[data-skin="oldmoney"]:not(.gls) .ax-nav{background:var(--bg)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;border-top:1px solid var(--line);box-shadow:0 -1px 0 var(--line),0 -14px 22px -10px color-mix(in srgb,var(--bg) 100%,transparent)}
+html.gls .ax-nav,html.gls[data-skin="oldmoney"] .ax-nav{background:color-mix(in srgb,var(--bg) 97%,transparent)!important;-webkit-backdrop-filter:blur(20px)!important;backdrop-filter:blur(20px)!important}
+#ax-v-prog .ax-pseg{position:sticky;top:6px;z-index:6;background:var(--bg)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;box-shadow:0 0 0 8px var(--bg),0 8px 18px 8px color-mix(in srgb,var(--bg) 70%,transparent)!important}
+#ax-v-prog .ax-pseg button.on{background:color-mix(in srgb,var(--blue) 14%,var(--bg))!important}
+.ax-pbar{background:linear-gradient(transparent,var(--bg) 22px)!important}
+.ax-pbar .ax-btn:not(.ax-pri){background:var(--bg)!important}
+.ax-atlas-svg text{display:none}
+.ax-atlas-stage{background:color-mix(in srgb,var(--ink) 11%,var(--bg))!important;border:1px solid var(--line)}
+.ax-atlas-stage:after{display:none}
+.ax-atlas-caption{color:var(--ink);opacity:.75;padding-bottom:10px}
+.ax-atlas-stage{overflow:visible!important;padding-bottom:16px!important;margin-bottom:18px}
+
+/* v48 no-zoom */
+html{touch-action:pan-x pan-y;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+input,select,textarea{touch-action:manipulation}
+.ax-lbk{margin:8px 2px 0;font-size:13px;opacity:.8}
+
+/* v48b bottom bars: opaque nav, bars follow the real nav height so no page text shows through or between them */
+html:root .ax-nav,html:root.gls .ax-nav,html:root[data-skin] .ax-nav,html:root.gls[data-skin] .ax-nav,html:root.amo .ax-nav{background:var(--bg)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+.ax-pbar{bottom:calc(var(--ax-navh,66px) - 1px)!important;margin-bottom:-1px;background:var(--bg)!important;border-top:1px solid var(--line);box-shadow:0 -10px 18px -12px color-mix(in srgb,var(--ink) 22%,transparent)}
+html:root .ax-sh,html:root.gls .ax-sh,html:root[data-skin] .ax-sh{background:var(--bg)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+.ax-dk:not(.ax-fs){bottom:calc(var(--ax-navh,66px) - 1px)!important}
+.ax-wrap{padding-bottom:calc(var(--ax-navh,66px) + 96px)}
+body.td .ax-wrap{padding-bottom:430px}
+
+/* v50 exercise pictures: swipe or tap to step through A, B, C, D */
+.ax-exi{margin:2px 0 14px}
+.ax-exs{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;border-radius:18px;background:#faf6eb;border:1px solid var(--line);cursor:pointer}
+.ax-exs::-webkit-scrollbar{display:none}
+.ax-exs img{flex:0 0 100%;width:100%;aspect-ratio:1/1;max-height:340px;object-fit:contain;image-rendering:auto;scroll-snap-align:center;scroll-snap-stop:always;background:#faf6eb;display:block;-webkit-user-drag:none;user-select:none}
+.ax-exd{display:flex;justify-content:center;gap:8px;margin-top:9px}
+.ax-exd i{width:8px;height:8px;border-radius:50%;background:var(--line);transition:background .2s,transform .2s}
+.ax-exd i.on{background:var(--ink);transform:scale(1.25)}
 </style><link rel="manifest" href="manifest.webmanifest">
 </head>
 <body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
@@ -837,14 +872,14 @@ html[data-skin="oldmoney"] button,html[data-skin="oldmoney"] input,html[data-ski
 <button class="ax-lr" id="ax-rmr"><svg class="ax-ic"><use href="#i-flag"/></svg><span><b>Log a run by hand</b><em>Add km and time to a day</em></span><svg class="ax-ic ax-chv"><use href="#i-chev"/></svg></button>
 </div>
 </section>
-<section class="ax-view" id="ax-v-prog" hidden><div class="ax-section-intro"><span class="ax-kicker">LOOK HOW FAR</span><h1 class="ax-display-title">Your progress<span>.</span></h1><p>Measured against your own starting point.</p></div><div class="ax-pseg" id="ax-psg"><button data-ps="stats" aria-label="Progress statistics">Stats</button><button data-ps="body" aria-label="Body and recovery">Body</button><button data-ps="hist" aria-label="Workout history">History</button><button data-ps="badges" aria-label="Achievements and badges">Badges</button></div><div id="ax-ps-stats"></div><div id="ax-ps-body" hidden><div class="ax-body-intro"><span class="ax-kicker">RECOVERY MAP</span><h2>Know what needs a break.</h2><p>Tap a muscle group to see its current recovery status.</p></div><div class="panel ax-body-map"><div class="ax-body-map-head"><div><b>Recovery atlas</b><span>Detailed anatomy · choose a muscle group below</span></div><span class="ax-live-dot">LIVE</span></div><div id="bsv" class="ax-atlas-stage" aria-label="Front and back muscle anatomy"><img class="ax-atlas-art" src="arya-anatomy-atlas.webp" alt="Detailed front and back muscle anatomy illustration" loading="eager"/></div><div class="ax-atlas-caption"><span>FRONT</span><span>BACK</span></div><div class="ax-recovery-scale"><div class="ax-scale-line"></div><div><span>Recovered</span><span>Worked</span><span>Sore</span></div></div><p class="ax-body-hint"><span>ⓘ</span> Live load and soreness are shown in the muscle list and selected-muscle panel below.</p></div><div class="panel ax-readiness-panel" id="brd"></div><div class="panel ax-selected-muscle" id="bdet"></div><div class="panel ax-muscle-list" id="blist"></div><div id="ax-pbody"></div></div><div id="ax-ps-hist" hidden></div><div id="ax-ps-badges" hidden></div><div id="pgv" hidden></div></section>
+<section class="ax-view" id="ax-v-prog" hidden><div class="ax-section-intro"><span class="ax-kicker">LOOK HOW FAR</span><h1 class="ax-display-title">Your progress<span>.</span></h1><p>Measured against your own starting point.</p></div><div class="ax-pseg" id="ax-psg"><button data-ps="stats" aria-label="Progress statistics">Stats</button><button data-ps="body" aria-label="Body and recovery">Body</button><button data-ps="hist" aria-label="Workout history">History</button><button data-ps="badges" aria-label="Achievements and badges">Badges</button></div><div id="ax-ps-stats"></div><div id="ax-ps-body" hidden><div class="ax-body-intro"><span class="ax-kicker">RECOVERY MAP</span><h2>Know what needs a break.</h2><p>Tap a muscle group to see its current recovery status.</p></div><div class="panel ax-body-map"><div class="ax-body-map-head"><div><b>Recovery atlas</b><span>Detailed anatomy · choose a muscle group below</span></div><span class="ax-live-dot">LIVE</span></div><div id="bsv" class="ax-atlas-stage" aria-label="Front and back muscle anatomy"><img class="ax-atlas-art" src="images/anatomy/arya-anatomy-atlas.webp" alt="Detailed front and back muscle anatomy illustration" loading="eager"/></div><div class="ax-atlas-caption"><span>FRONT</span><span>BACK</span></div><div class="ax-recovery-scale"><div class="ax-scale-line"></div><div><span>Recovered</span><span>Worked</span><span>Sore</span></div></div><p class="ax-body-hint"><span>ⓘ</span> Live load and soreness are shown in the muscle list and selected-muscle panel below.</p></div><div class="panel ax-readiness-panel" id="brd"></div><div class="panel ax-selected-muscle" id="bdet"></div><div class="panel ax-muscle-list" id="blist"></div><div id="ax-pbody"></div></div><div id="ax-ps-hist" hidden></div><div id="ax-ps-badges" hidden></div><div id="pgv" hidden></div></section>
 <section class="ax-view" id="ax-v-set" hidden><h1 class="disp vt">Settings</h1>
 <details class="ax-card ax-dt" style="margin-top:0"><summary>Run</summary><label class="row"><span><b>GPS and step tracking</b><em>Used during the 5 km run. Keep the screen on, phone in a pocket.</em></span><input class="sw2" type="checkbox" id="t-gps"></label><label class="row"><span><b>Run goal (km)</b><em>Distance that ticks the run. Empty uses the plan.</em></span><input class="tin" id="goal-km" type="number" step="0.1" min="0.5" max="42" inputmode="decimal" style="width:90px"></label><label class="row"><span><b>Auto-pause</b><em>Pauses the run timer when you stand still.</em></span><input class="sw2" type="checkbox" id="t-apz"></label><label class="row"><span><b>Cadence beat</b><em>Beeps while jogging, not walking.</em></span><input class="sw2" type="checkbox" id="t-met"></label><label class="row"><span><b>Beats per minute</b></span><input class="tin" id="spm" type="number" inputmode="numeric" style="width:80px"></label><label class="row"><span><b>Auto rest timer</b><em>Starts a 60s rest when you tick a strength move.</em></span><input class="sw2" type="checkbox" id="t-auto"></label>
 <div class="row"><span><b>Step counting</b><em id="ax-sline"></em></span></div></details>
-<details class="ax-card ax-dt"><summary>Voice &amp; alerts</summary><label class="row"><span><b>Sound effects</b><em>Plays a chime when a timer starts and when it stops.</em></span><input class="sw2" type="checkbox" id="t-snd"></label><label class="row"><span><b>Voice cues</b><em>Says Jog, Walk and each kilometer.</em></span><input class="sw2" type="checkbox" id="t-voi"></label><div class="row"><span><b>Test voice</b><em>No sound? Check phone volume and that a text-to-speech engine is installed.</em></span><button class="btn" id="vtest">Play</button></div><label class="row"><span><b>Daily reminder</b><em>Phone app only. Leave empty for none.</em></span><input type="time" id="rm-t" class="tin" style="width:112px"></label><label class="row"><span><b>Haptics</b><em>Small vibrations on taps, ticks and finishes.</em></span><input class="sw2" type="checkbox" id="t-hap"></label></details>
+<details class="ax-card ax-dt"><summary>Voice &amp; alerts</summary><label class="row"><span><b>Sound effects</b><em>Plays a chime when a timer starts and when it stops.</em></span><input class="sw2" type="checkbox" id="t-snd"></label><label class="row"><span><b>Voice cues</b><em>Says Jog, Walk and each kilometer.</em></span><input class="sw2" type="checkbox" id="t-voi"></label><div class="row"><span><b>Test voice</b><em>No sound? Check phone volume and that a text-to-speech engine is installed.</em></span><button class="btn" id="vtest">Play</button></div><label class="row"><span><b>Daily reminder</b><em>Phone app only. Leave empty for none.</em></span><input type="time" id="rm-t" class="tin" style="width:112px"></label><label class="row"><span><b>Exercise pictures</b><em>Shows a picture under each exercise. Tap or swipe to see the next step.</em></span><input class="sw2" type="checkbox" id="t-exi"></label><label class="row"><span><b>Haptics</b><em>Crisp taps, run phase changes, success and finish feedback.</em></span><input class="sw2" type="checkbox" id="t-hap"></label><div class="row"><span><b>Test haptics</b><em>Plays tap, tick, success, jog, walk and finish.</em></span><button class="btn" id="htest">Play</button></div></details>
 <details class="ax-card ax-dt"><summary>Look</summary><label class="row"><span><b>Black theme</b><em>Pure black in dark mode.</em></span><input class="sw2" type="checkbox" id="t-amo"></label><label class="row"><span><b>Glass look</b><em>Frosted cards over a soft color glow.</em></span><input class="sw2" type="checkbox" id="t-gls"></label><div class="row"><span><b>Theme</b></span></div><div class="skins" id="skins"></div><div class="row"><span><b>Accent color</b></span></div><div class="accs" id="accs"></div></details>
-<details class="ax-card ax-dt"><summary>Data &amp; backup</summary><div class="bk"><h3 style="margin:0 0 4px;font-size:15px">Backup and restore</h3><p>Export saves your ticks, times and settings to a file. Import restores them here or on another device and replaces what is currently saved.</p>
-<div class="qr"><button class="sw" id="ex">Export backup</button><button id="im">Import backup</button><input type="file" id="fi" accept=".json,application/json" hidden></div>
+<details class="ax-card ax-dt"><summary>Data &amp; backup</summary><div class="bk"><h3 style="margin:0 0 4px;font-size:15px">Backup and restore</h3><p>Export saves your ticks, run times, routes, daily steps and settings to one file. Import restores them here or on another device and replaces what is currently saved.</p>
+<div class="qr"><button class="sw" id="ex">Export backup</button><button id="im">Import backup</button><input type="file" id="fi" accept=".json,application/json" hidden></div><div class="qr"><button id="ex-stp">Export steps CSV</button></div><p class="ax-lbk" id="ax-lbk"></p>
 <details id="dt2"><summary>Copy or paste backup text</summary><textarea id="bt" rows="4" spellcheck="false" placeholder="Backup text appears here. Paste a backup here to load it."></textarea><div class="qr"><button id="cp">Copy text</button><button id="ld">Load from text</button></div></details></div>
 <div class="bk"><details><summary style="margin-top:0;font-weight:700;color:var(--ink)">Add to your home screen</summary>
 <p><b>iPhone (Safari):</b> tap Share, then Add to Home Screen.<br><b>Android (Chrome):</b> tap the menu, then Add to Home screen or Install app.</p>
@@ -922,6 +957,18 @@ function axEditWorkout(i){
  $('ax-ed-save').onclick=function(){save();axSheetX();render();toast('Workout updated')};
 }
 
+/* v50 exercise pictures. EXI = which files exist (slug -> letters); a missing file just means no picture for that step. */
+var EXI={"push-ups":"ab","pike-push-ups":"ab","chair-dips":"ab","diamond-push-ups":"ab","plank":"a","bodyweight-squats":"ab","reverse-lunges":"abc","glute-bridges":"ab","calf-raises":"ab","wall-sit":"a","leg-raises":"ab","crunches":"ab","mountain-climbers":"ab","russian-twists":"abc","dead-bug":"abc","superman-hold":"a","side-plank":"a","table-rows":"ab","reverse-snow-angels":"ab","backpack-curls":"ab","burpees":"abcd","squat-jumps":"abc","incline-push-ups":"ab","bear-crawls":"ab","plank-to-push-up":"ab","cat-cow":"ab","childs-pose":"a","hamstring-stretch":"a","worlds-greatest-stretch":"abc","backpack-rows":"ab","hip-flexor-stretch":"a"};
+var IMX="images/exercises/";
+var EXA={"Table or towel rows":"table-rows","Backpack bent-over row":"backpack-rows","World's greatest stretch":"worlds-greatest-stretch","Child's pose":"childs-pose","Bodyweight squats":"bodyweight-squats"};
+function exSlug(n){return EXA[n]||String(n).toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"")}
+function axExiHtml(q){if(PR.exi===0||!/^e\d+$/.test(q[1]))return"";var sl=exSlug(q[2]),L=EXI[sl];if(!L)return"";
+  var im="",d="";for(var j=0;j<L.length;j++){im+='<img src="'+IMX+'arya-ex-'+sl+'-'+L[j]+'.webp" alt="'+esc(q[2])+', step '+L[j].toUpperCase()+'" width="1024" height="1024" loading="lazy" decoding="async" draggable="false" onerror="axExiErr(this)">';d+='<i'+(j?'':' class="on"')+'></i>'}
+  return'<div class="ax-exi"><div class="ax-exs" role="group" aria-label="'+esc(q[2])+' pictures. Tap or swipe for the next step.">'+im+'</div>'+(L.length>1?'<div class="ax-exd" aria-hidden="true">'+d+'</div>':'')+'</div>'}
+function axExiDots(box){var s=box.querySelector(".ax-exs"),dd=box.querySelector(".ax-exd");if(!s)return;var n=s.children.length;if(dd){if(n<2){dd.remove();return}var i=Math.max(0,Math.min(n-1,Math.round(s.scrollLeft/Math.max(1,s.clientWidth))));dd.innerHTML=new Array(n+1).join("<i></i>");dd.children[i].className="on"}}
+function axExiErr(im){var box=im.closest(".ax-exi");im.remove();if(!box)return;if(!box.querySelector(".ax-exs").children.length)box.remove();else axExiDots(box)}
+function axExiBind(box){var s=box.querySelector(".ax-exs");if(!s)return;s.addEventListener("scroll",function(){axExiDots(box)},{passive:true});
+  s.addEventListener("click",function(){var n=s.children.length;if(n<2)return;var w=s.clientWidth,i=Math.round(s.scrollLeft/Math.max(1,w));s.scrollTo({left:((i+1)%n)*w,behavior:"smooth"});hx("tick")})}
 function items(i){
   var si=axSrc(i),w=Math.floor(Math.max(0,si)/7),t=si<0?{r:true,x:[]}:T[wdk(si)],L=isL(w),o=[];if(si<0)return [["Recovery","rest","Planned rest","Rest","Recovery day; no workout scheduled."]];
   if(!t.r)o.push(["Warm-up","wu","Warm-up","5 min","Arm circles, hip circles, leg swings, squats, jumping jacks."]);
@@ -982,14 +1029,14 @@ function day(){
     if(m2=/^(\d+)s/.exec(q[3]))sec=+m2[1];else if(m2=/^(\d+) min$/.exec(q[3]))sec=m2[1]*60;
     if(q[1]=="j")bt='<button class="ax-play" data-iv="1" aria-label="Start run and walk timer">'+ic("play","ax-ic")+'</button>';
     else if(sec)bt='<button class="ax-play" data-s="'+sec+'" data-l="'+esc(q[2]+(/side|leg/.test(q[3])?" (each side)":""))+'" aria-label="Start '+sec+' second timer">'+ic("play","ax-ic")+'</button>';
-    h+='<label class="ax-row'+(q[1]=="j"?" ax-jog":"")+(ck?" ax-ck":"")+'"><input type="checkbox" data-g="'+esc(q[0])+'" data-id="'+q[1]+'"'+(ck?" checked":"")+'><span class="ax-bx">'+ic("check","ax-ic")+'</span><span class="ax-tx"><b>'+(IH[q[1]]?ic(IH[q[1]],"ax-ic"):'')+esc(q[2])+'</b><em>'+esc(q[4])+'</em></span><span class="ax-bd">'+esc(q[3])+'</span>'+bt+'</label>';
+    h+='<label class="ax-row'+(q[1]=="j"?" ax-jog":"")+(ck?" ax-ck":"")+'"><input type="checkbox" data-g="'+esc(q[0])+'" data-id="'+q[1]+'"'+(ck?" checked":"")+'><span class="ax-bx">'+ic("check","ax-ic")+'</span><span class="ax-tx"><b>'+(IH[q[1]]?ic(IH[q[1]],"ax-ic"):'')+esc(q[2])+'</b><em>'+esc(q[4])+'</em></span><span class="ax-bd">'+esc(q[3])+'</span>'+bt+'</label>'+axExiHtml(q);
   });
-  var el=$("ax-day");el.innerHTML=h;
+  var el=$("ax-day");el.innerHTML=h;el.querySelectorAll(".ax-exi").forEach(axExiBind);
   var eb=$("ax-edit-workout"),rb=$("ax-reschedule");if(eb)eb.onclick=function(){axEditWorkout(i)};if(rb)rb.onclick=function(){axShiftPreview(i)};
   el.querySelectorAll(".ax-play").forEach(function(b){b.onclick=function(e){e.preventDefault();e.stopPropagation();unlock();b.dataset.iv?startIV():startCD(+b.dataset.s,b.dataset.l)}});
   el.querySelectorAll(".ax-row input").forEach(function(b){b.onchange=function(){
     var wd=dayDone(i),ww=weekDone(w);
-    if(b.checked)st[k(i,b.dataset.id)]=1;else delete st[k(i,b.dataset.id)];hap(b.checked?[10,40,18]:6);
+    if(b.checked)st[k(i,b.dataset.id)]=1;else delete st[k(i,b.dataset.id)];hx(b.checked?"ok":"tick");
     if(b.checked&&PR.auto&&b.dataset.g=="Strength"){unlock();startCD(60,"Rest")}
     save();
     var row=b.closest(".ax-row"),bx=row.querySelector(".ax-bx");row.classList.toggle("ax-ck",b.checked);
@@ -1007,19 +1054,19 @@ function day(){
 function weekDone(w){for(var d=0;d<7;d++)if(!dayDone(w*7+d))return false;return true}
 function allDone(){for(var d=0;d<ND;d++)if(!dayDone(d))return false;return true}
 var RM=window.matchMedia&&matchMedia("(prefers-reduced-motion:reduce)").matches,CC=["#ffc93c","#2f5bff","#12b27a","#ff7a45","#8b5cf6"],tt=null;
-function burst(x,y,n){hap(n>40?[30,40,30,40,80]:[20,30,50]);if(RM)return;for(var j=0;j<n;j++){var e=document.createElement("i");e.className="cf";
+function burst(x,y,n){hx(n>40?"finish":"ok");if(RM)return;for(var j=0;j<n;j++){var e=document.createElement("i");e.className="cf";
   e.style.cssText="left:"+x+"px;top:"+y+"px;background:"+CC[j%5]+";--dx:"+Math.round(Math.random()*300-150)+"px;--dy:"+Math.round(-(Math.random()*200+60))+"px;--r:"+Math.round(Math.random()*720)+"deg";
   document.body.appendChild(e);(function(z){setTimeout(function(){z.remove()},1300)})(e)}}
-function toast(m){var e=$("toast");e.textContent=m;e.hidden=false;e.style.animation="none";void e.offsetWidth;e.style.animation="";clearTimeout(tt);tt=setTimeout(function(){e.hidden=true},3200)}
+function toast(m){if(/couldn't|can't|cannot|isn't|failed|blocked|\benter |no step|finish or close/i.test(m))hx("warn");var e=$("toast");e.textContent=m;e.hidden=false;e.style.animation="none";void e.offsetWidth;e.style.animation="";clearTimeout(tt);tt=setTimeout(function(){e.hidden=true},3200)}
 
 var TM=null,tk=null,ac=null,wlk=null;
 function fmt(n){n=Math.max(0,Math.round(n));var h=Math.floor(n/3600),m=Math.floor(n%3600/60),s=n%60;return (h?h+":"+(m<10?"0":""):"")+m+":"+(s<10?"0":"")+s}
 function unlock(){try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();if(ac.state=="suspended")ac.resume()}catch(e){}try{if(window.speechSynthesis&&!unlock.p){unlock.p=1;speechSynthesis.getVoices();var u=new SpeechSynthesisUtterance(" ");u.volume=0;speechSynthesis.speak(u)}}catch(e){}}
-function beep(n,f){try{var q=$("dt");q.classList.remove("bump");void q.offsetWidth;q.classList.add("bump")}catch(e){}try{if(PR.snd===0)throw 0;unlock();for(var j=0;j<n;j++){var o=ac.createOscillator(),g=ac.createGain(),t=ac.currentTime+j*.22;o.frequency.value=f;g.gain.setValueAtTime(.25,t);g.gain.exponentialRampToValueAtTime(.001,t+.16);o.connect(g);g.connect(ac.destination);o.start(t);o.stop(t+.17)}}catch(e){}hap(n>1?[200,100,200]:200)}
+function beep(n,f){try{var q=$("dt");q.classList.remove("bump");void q.offsetWidth;q.classList.add("bump")}catch(e){}try{if(PR.snd===0)throw 0;unlock();for(var j=0;j<n;j++){var o=ac.createOscillator(),g=ac.createGain(),t=ac.currentTime+j*.22;o.frequency.value=f;g.gain.setValueAtTime(.25,t);g.gain.exponentialRampToValueAtTime(.001,t+.16);o.connect(g);g.connect(ac.destination);o.start(t);o.stop(t+.17)}}catch(e){}hx(n>=3?"finish":n==2?"walk":f>=800?"jog":"med")}
 function tn(f,t,d,ty){var o=ac.createOscillator(),g=ac.createGain();o.type=ty||"triangle";o.frequency.value=f;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.32,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(ac.destination);o.start(t);o.stop(t+d+.03)}
 function snd(k){try{if(PR.snd===0)throw 0;unlock();var t=ac.currentTime+.01;
   if(k=="start"){tn(523,t,.15);tn(784,t+.15,.15);tn(1047,t+.3,.3)}else{tn(1047,t,.15);tn(784,t+.15,.15);tn(523,t+.3,.4)}}catch(e){}
-  hap(k=="start"?120:[200,100,200])}
+  hx(k=="start"?"start":"finish")}
 function tick(){try{if(PR.snd===0)throw 0;unlock();tn(1200,ac.currentTime+.005,.05,"square")}catch(e){}}
 function $(i){return document.getElementById(i)}
 function el_(){return (TM.acc+(TM.run?Date.now()-TM.last:0))/1000}
@@ -1092,7 +1139,7 @@ function step(){
 }
 $("dpp").onclick=function(){unlock();if(!TM)return;
   if(TM.done){TM.done=false;TM.acc=0;TM.last=Date.now();TM.run=true;TM.last3=0;tk=setInterval(step,250);step();return}
-  if(TM.run){TM.acc+=Date.now()-TM.last;TM.run=false}else{TM.last=Date.now();TM.run=true;TM.lp=null}step()};
+  if(TM.run){TM.acc+=Date.now()-TM.last;TM.run=false}else{TM.last=Date.now();TM.run=true;TM.lp=null}hx(TM.run?"jog":"med");step()};
 $("dsw").onclick=function(){unlock();if(!TM||TM.mode!="iv")return;var e=el_();
   if(TM.hold){TM.hold=0;TM.ph=0;TM.round++;TM.pstart=e;beep(1,880)}
   else if(TM.ph==0){TM.hold=1;TM.ph=1;TM.pstart=e;beep(2,520)}
@@ -1174,10 +1221,12 @@ function hc(f){return f>.03?"hsl("+Math.round(42*(1-f))+",90%,56%)":"color-mix(i
 function fig(P,ox,R){var T=["",' transform="matrix(-1 0 0 1 100 0)"'],h='<g transform="translate('+ox+' 0)"><ellipse cx="50" cy="14" rx="10" ry="12" style="fill:var(--line);opacity:.75"/>';
   T.forEach(function(t){h+='<path d="'+SIL+'"'+t+' style="fill:color-mix(in srgb,var(--cell) 82%,var(--line));stroke:color-mix(in srgb,var(--mut) 45%,transparent);stroke-width:.8;opacity:.96"/>'});
   T.forEach(function(t){Object.keys(P).forEach(function(m){var r=R[m],f=r.f,so=r.s;P[m].forEach(function(d){
-    h+='<path role="button" tabindex="0" aria-label="'+MU[m][0]+'" data-m="'+m+'" d="'+d+'"'+t+' style="cursor:pointer;fill:'+hc(f)+';fill-opacity:'+(f>.03?(.62+.38*f).toFixed(2):.34)+';stroke:'+(so?'#ffd166':m==bsel?'#ffffff':'rgba(7,12,24,.72)')+';stroke-width:'+(so||m==bsel?1.8:1.05)+';stroke-linejoin:round'+(so?';stroke-dasharray:3 2':'')+'"/>'})})});
-  return h+'<text x="50" y="226" text-anchor="middle" style="font:800 9px sans-serif;fill:var(--mut);letter-spacing:2.5px">'+(P==BP?"FRONT":"BACK")+'</text></g>'}
+    h+='<path role="button" tabindex="0" aria-label="'+MU[m][0]+'" data-m="'+m+'" d="'+d+'"'+t+' style="cursor:pointer;fill:'+(so?'#f4c95d':hc(f))+';fill-opacity:'+(so?'.96':(f>.03?(.62+.38*f).toFixed(2):.34))+';stroke:'+(so?'#7b5b12':m==bsel?'#ffffff':'rgba(7,12,24,.72)')+';stroke-width:'+(so||m==bsel?1.8:1.05)+';stroke-linejoin:round'+(so?';stroke-dasharray:3 2':'')+'"/>'})})});
+  return h+'<text x="50" y="226" text-anchor="middle" style="font:800 9px sans-serif;fill:var(--mut);letter-spacing:2.5px">'+(P==BB?"FRONT":"BACK")+'</text></g>'}
 function body(){var R=calcM(),keys=Object.keys(MU).sort(function(a,b){return R[b].f-R[a].f});if(!bsel)bsel=keys[0];
   readiness(R);
+  /* Render the anatomy as a real interactive SVG, not a decorative image. */
+  var atlas=$("bsv");if(atlas){atlas.innerHTML='<svg class="ax-atlas-svg" viewBox="0 0 210 232" role="group" aria-label="Interactive front and back muscle map">'+fig(BB,0,R)+fig(BP,110,R)+'</svg>';atlas.querySelectorAll('[data-m]').forEach(function(n){n.setAttribute('aria-label','Select '+MU[n.getAttribute('data-m')][0]);n.setAttribute('tabindex','0');n.setAttribute('role','button');n.addEventListener('click',function(){bsel=this.getAttribute('data-m');body()});n.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();bsel=this.getAttribute('data-m');body()}})})}
   function stx(m){var r=R[m];if(r.s)return"Still sore (you marked it "+Math.max(0,Math.floor((Date.now()-r.s)/864e5))+" d ago)";if(r.f>.03)return(r.f>.6?"Heavily worked":r.f>.25?"Worked":"Lightly worked")+", recovers in "+lft(Math.max(1,r.left));return"Recovered"}
   var r=R[bsel];
   var loadPct=Math.round(r.f*100),status=r.s?"SORE":r.f>.6?"HIGH LOAD":r.f>.25?"WORKED":r.f>.03?"LIGHT LOAD":"RECOVERED";
@@ -1194,7 +1243,7 @@ function say(t,f){try{if(!f&&PR.voi===0)return;if(ENG&&ENG.speak){if(TM&&TM.eng&
 function phaseFx(x){var d=$("dock");d.classList.remove("ax-dflip");void d.offsetWidth;d.classList.add("ax-dflip");setTimeout(function(){d.classList.remove("ax-dflip")},600);say(x=="w"?"Walk":"Jog")}
 function cel(dy,msg){var g=(st["g"+dy]||0)/1000,el=document.createElement("div");el.id="cel";el.innerHTML='<svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="24"/><path d="M14 27l9 9 16-18"/></svg><b>'+(g?"0.00":"Saved")+'</b><span>'+(g?"km logged today":"")+'</span>';document.body.appendChild(el);
   var b=el.querySelector("b");if(g&&!RM){var t0=performance.now();(function f(n){var q=Math.min(1,(n-t0)/900);b.textContent=(g*(1-Math.pow(1-q,3))).toFixed(2);if(q<1)requestAnimationFrame(f)})(t0)}else if(g)b.textContent=g.toFixed(2);
-  if(g&&!msg)burst(innerWidth/2,innerHeight/2,60);hap([20,40,20,40,60]);el.onclick=function(){el.remove()};setTimeout(function(){el.remove()},2600)}
+  if(g&&!msg)burst(innerWidth/2,innerHeight/2,60);hx("finish");el.onclick=function(){el.remove()};setTimeout(function(){el.remove()},2600)}
 function remind(q){if(!LN){if(!q)toast("Reminders work in the phone app.");return}try{LN.cancel({notifications:[{id:9}]});var v=PR.rmt;if(!v)return;LN.requestPermissions();LN.createChannel({id:"rem",name:"Daily reminder",importance:3});LN.schedule({notifications:[{id:9,channelId:"rem",title:"Time to move",body:"Your Arya Fit workout is waiting.",schedule:{on:{hour:+v.split(":")[0],minute:+v.split(":")[1]},allowWhileIdle:true}}]});if(!q)toast("Reminder set for "+v)}catch(e){}}
 function pextra2(g,td){td=Math.max(0,td);var W=Math.floor(Math.min(td,ND-1)/7),sum=function(w){var a=0;for(var i=w*7;i<w*7+7&&i<ND;i++)a+=g[i]||0;return a},dn=0,rs=0,jt=0,wk=0,i;
   for(i=W*7;i<W*7+7&&i<ND;i++){if(dayDone(i)||st["x"+i]==2)dn++;if(st["x"+i]==1)rs++;jt+=st["jt"+i]||0;wk+=st["wk"+i]||0}
@@ -1286,7 +1335,7 @@ function engSync(){if(!ENG||!TM||!TM.eng||TM.sy||Date.now()-(TM.sat||0)<700)retu
 var _apz=apz;apz=function(o){_apz(o);engPush()};
 function axSheet(t,h){axGuard();$("ax-sht").textContent=t;$("ax-shb").innerHTML=h;$("ax-shbg").hidden=false;$("ax-sh").hidden=false}
 function axSheetX(){$("ax-shbg").hidden=true;$("ax-sh").hidden=true;$("ax-shb").innerHTML=""}
-function axPut(i,v,m){st["x"+i]=v;save();axSheetX();render();toast(m)}
+function axPut(i,v,m){st["x"+i]=v;save();axSheetX();render();toast(m);hx("ok")}
 function axClose(){
   var i=cur,td=todayIdx(),x=st["x"+i]||0;if(td<0||i>td)return;
   if(x){delete st["x"+i];save();render();toast("Day reopened");return}
@@ -1312,7 +1361,39 @@ function axAdd(){
 }
 function applyGoal(){var g=PR&&PR.goal,b=(P&&P.jog)?P.jog.km:0;JKM=g>0&&b>0?g:b;if($("gkm"))$("gkm").textContent="km of "+JKM;if(typeof tvu=="function")tvu()}
 var _sp=setPlan;setPlan=function(p){_sp(p);applyGoal()};
-function hap(p){try{if(PR.hap!==0&&navigator.vibrate)navigator.vibrate(p)}catch(e){}}
+/* v48 haptics: native Capacitor Haptics when present, else navigator.vibrate */
+var HXP=(window.Capacitor&&Capacitor.Plugins&&Capacitor.Plugins.Haptics)||null,HXL=0,HXR=0;
+var HXV={tap:10,tick:6,soft:14,med:24,heavy:46,ok:[14,45,26],warn:[32,60,32],err:[42,50,42,50,70],jog:[52,70,26],walk:[16,70,16],start:[70,80,36],finish:[34,60,34,60,100]};
+var HXK={tap:1,tick:1,soft:1,med:2,heavy:3,ok:2,warn:3,err:3,jog:3,walk:2,start:3,finish:4};
+function hx(k){try{
+  if(!PR||PR.hap===0)return;var r=HXK[k];if(!r)return;var n=Date.now();
+  if(r<=1&&n-HXL<70)return;if(r<HXR&&n-HXL<90)return;HXL=n;HXR=r;
+  if(HXP){
+    var I=function(st2,ms){setTimeout(function(){try{HXP.impact({style:st2})}catch(e){}},ms||0)};
+    var N=function(t,ms){setTimeout(function(){try{HXP.notification({type:t})}catch(e){}},ms||0)};
+    switch(k){
+      case "tap":case "soft":I("LIGHT");break;
+      case "tick":try{HXP.vibrate({duration:10})}catch(e){}break;
+      case "med":I("MEDIUM");break;
+      case "heavy":I("HEAVY");break;
+      case "ok":N("SUCCESS");break;
+      case "warn":N("WARNING");break;
+      case "err":N("ERROR");break;
+      case "jog":I("HEAVY");I("MEDIUM",95);break;
+      case "walk":I("LIGHT");I("LIGHT",95);break;
+      case "start":I("HEAVY");N("SUCCESS",130);break;
+      case "finish":N("SUCCESS");I("HEAVY",260);break}
+  }else if(navigator.vibrate)navigator.vibrate(HXV[k])
+}catch(e){}}
+function hap(p){if(typeof p=="string")return hx(p);if(Array.isArray(p))return hx(p.reduce(function(a,b){return a+b},0)>=300?"finish":"ok");hx(p<=10?"tick":p<=30?"soft":p<=100?"med":"heavy")}
+document.addEventListener("change",function(e){var t=e.target;if(t&&t.classList&&t.classList.contains("sw2"))hx("tick")});
+(function(){var b=document.getElementById("htest");if(b)b.onclick=function(){if(PR.hap===0){toast("Haptics are off");return}
+  ["tap","tick","med","ok","jog","walk","finish"].forEach(function(k,i){setTimeout(function(){HXL=0;HXR=0;hx(k)},i*420)})}})();
+/* v48 no zoom (pinch, double tap, ctrl+wheel/keys) */
+["gesturestart","gesturechange","gestureend"].forEach(function(n){document.addEventListener(n,function(e){e.preventDefault()},{passive:false})});
+document.addEventListener("touchmove",function(e){if(e.touches&&e.touches.length>1)e.preventDefault()},{passive:false});
+document.addEventListener("wheel",function(e){if(e.ctrlKey)e.preventDefault()},{passive:false});
+document.addEventListener("keydown",function(e){if((e.ctrlKey||e.metaKey)&&(e.key=="+"||e.key=="-"||e.key=="="||e.key=="0"))e.preventDefault()});
 function rip(e,t){if(RM||!t.matches(".btn,.tile,.qr button,.ax-db button,.ax-dsw,.ax-nav button"))return;var r=t.getBoundingClientRect(),d=Math.max(r.width,r.height)*1.6,i=document.createElement("i");i.className="rp";i.style.cssText="width:"+d+"px;height:"+d+"px;left:"+(e.clientX-r.left-d/2)+"px;top:"+(e.clientY-r.top-d/2)+"px";t.appendChild(i);setTimeout(function(){i.remove()},600)}
 function cup(root){if(RM)return;root.querySelectorAll(".tile b").forEach(function(b){var m=/^([\d,]+(?:\.\d+)?)(%?)$/.exec(b.textContent);if(!m)return;var to=parseFloat(m[1].replace(/,/g,"")),dec=(m[1].split(".")[1]||"").length,t0=performance.now();(function f(n){var q=Math.min(1,(n-t0)/700),v=to*(1-Math.pow(1-q,3));b.textContent=(dec?v.toFixed(dec):Math.round(v).toLocaleString())+m[2];if(q<1)requestAnimationFrame(f)})(t0)})}
 function bindExtra(){
@@ -1344,7 +1425,7 @@ function bindExtra(){
   $("rm-t").value=PR.rmt||"";$("rm-t").onchange=function(){PR.rmt=this.value;save();remind()};
   $("dock").addEventListener("click",function(e){if(!this.classList.contains("ax-fs")&&e.target.closest(".ax-dm")&&TM&&TM.mode!="cd")this.classList.add("ax-fs")});
   setInterval(function(){var d=$("dock");if(!d.hidden&&d.classList.contains("ax-fs"))d.style.setProperty("--p",$("dpg").style.width||"0%")},250);
-  document.addEventListener("pointerdown",function(e){var t=e.target.closest&&e.target.closest("button,.tile,path[data-m],.lg[data-m]");if(!t)return;hap(8);rip(e,t)},{passive:true});
+  document.addEventListener("pointerdown",function(e){var t=e.target.closest&&e.target.closest("button,.tile,path[data-m],.lg[data-m]");if(!t)return;if(!t.disabled)hx(t.closest("#ax-nav")||t.matches("path[data-m],.lg[data-m]")?"tick":"tap");rip(e,t)},{passive:true});
   document.addEventListener("visibilitychange",function(){if(document.hidden)persist();else if(TM)wl()});window.addEventListener("pagehide",persist);
 }
 
@@ -1431,8 +1512,8 @@ function axMr(){
 function bindApp(){
   document.querySelectorAll("#ax-nav button").forEach(function(b){b.onclick=function(){go(b.dataset.v)}});
     $("tvrun").onclick=function(){unlock();startIV(Dn())};$("ax-rsw").onclick=function(){unlock();startSW(Dn())};
-  var M={"t-snd":["snd",1],"t-gps":["gps",1],"t-auto":["auto",0],"t-hap":["hap",1],"t-voi":["voi",1],"t-apz":["ap",0],"t-met":["met",0],"t-amo":["amo",0],"t-gls":["gls",0]};
-  Object.keys(M).forEach(function(id){var e=$(id),k=M[id][0];e.checked=M[id][1]?PR[k]!==0:!!PR[k];e.onchange=function(){PR[k]=this.checked?1:0;save()}});
+  var M={"t-snd":["snd",1],"t-gps":["gps",1],"t-auto":["auto",0],"t-hap":["hap",1],"t-exi":["exi",1],"t-voi":["voi",1],"t-apz":["ap",0],"t-met":["met",0],"t-amo":["amo",0],"t-gls":["gls",0]};
+  Object.keys(M).forEach(function(id){var e=$(id),k=M[id][0];e.checked=M[id][1]?PR[k]!==0:!!PR[k];e.onchange=function(){PR[k]=this.checked?1:0;save();if(k=="exi")render()}});
 }
 
 
@@ -1536,14 +1617,23 @@ rs.onclick=function(){
   st=APP.plans[APP.active].st={};save();arm=0;rs.textContent="Reset all";rs.classList.remove("warn");cur=Math.max(0,Math.min(ND-1,todayIdx()));render();
 };
 function ymd(){var d=new Date();return d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2)}
-function pack(){var o={app:"arya-28day-tracker",version:2,exported:new Date().toISOString(),active:APP.active,prefs:PR,plans:{}};
+function axMeta(){var m={build:"arya-v50",plans:0,ticks:0,runDays:0,stepDays:0,stepsTotal:0},ds=PR.ds||{};
+  Object.keys(APP.plans).forEach(function(id){m.plans++;var s2=APP.plans[id].st||{};Object.keys(s2).forEach(function(k2){if(/^\d+:/.test(k2))m.ticks++;else if(/^g\d+$/.test(k2)&&s2[k2]>0)m.runDays++})});
+  Object.keys(ds).forEach(function(d){m.stepDays++;m.stepsTotal+=ds[d]||0});return m}
+function pack(){var o={app:"arya-28day-tracker",version:2,exported:new Date().toISOString(),active:APP.active,meta:axMeta(),prefs:PR,plans:{}};
   Object.keys(APP.plans).forEach(function(id){o.plans[id]={plan:APP.plans[id].plan,progress:APP.plans[id].st,schedMap:APP.plans[id].schedMap,workoutEdits:APP.plans[id].workoutEdits,routes:APP.plans[id].routes}});return JSON.stringify(o,null,1)}
+/* daily steps already travel in prefs.ds; packFresh only refreshes them from the native counter first */
+async function packFresh(){try{if(STP){await stepsPull();await stepsHist()}}catch(e){}save();return pack()}
+function hm(){var d=new Date();return("0"+d.getHours()).slice(-2)+("0"+d.getMinutes()).slice(-2)}
+function axLbk(){var e=$("ax-lbk");if(!e)return;e.textContent=PR.lbk?"Last export: "+new Date(PR.lbk).toLocaleString([],{month:"short",day:"numeric",hour:"numeric",minute:"2-digit"}):"No export yet. Export now and then."}
+async function axOut(nm,txt){var PL=window.Capacitor&&Capacitor.Plugins||{};if(PL.Filesystem&&PL.Share){shareFile(nm,txt);return 2}return await dlFile(nm,txt)}
+function stepsCSV(){var ds=PR.ds||{},g=sgoal(),o="date,steps,goal,goal_met\n";Object.keys(ds).sort().forEach(function(d){o+=d+","+ds[d]+","+g+","+(ds[d]>=g?"yes":"no")+"\n"});return o}
 function clean(p,nd){var o={};nd=nd||ND;for(var key in p){var v=p[key],m;
   if((m=/^(\d{1,3}):(wu|cd|j|e\d{1,2}|h\d)$/.exec(key))&&+m[1]<nd&&v==1)o[key]=1;
   else if((m=/^(?:[wrgsx]|jt|wk)(\d{1,3})$/.exec(key))&&+m[1]<nd&&typeof v=="number"&&v>0&&v<200000)o[key]=Math.round(v)}return o}
 function restorePrefs(pr){if(!pr||typeof pr!="object")return;var num=function(x){return typeof x=="number"&&isFinite(x)},di=/^\d{1,3}$/;
   if(pr.brain&&typeof pr.brain=="object"){var Br={};Object.keys(pr.brain).slice(-400).forEach(function(d){var x=pr.brain[d];if(!/^\d{4}-\d{2}-\d{2}$/.test(d)||!x||typeof x!="object")return;var y={};["s","e","o"].forEach(function(k){if(Number.isInteger(x[k])&&x[k]>=0&&x[k]<=2)y[k]=x[k]});if(Object.keys(y).length)Br[d]=y});if(Object.keys(Br).length)PR.brain=Br}
-  ["snd","auto","gps","hap","voi","ap","met","amo"].forEach(function(k){if(pr[k]===0||pr[k]===1)PR[k]=pr[k]});
+  ["snd","auto","gps","hap","exi","voi","ap","met","amo"].forEach(function(k){if(pr[k]===0||pr[k]===1)PR[k]=pr[k]});
   if(typeof pr.gls==="boolean")PR.gls=pr.gls;
   if(Number.isInteger(pr.spm)&&pr.spm>=100&&pr.spm<=220)PR.spm=pr.spm;
   if(typeof pr.acc=="string"&&/^#[0-9a-f]{6}$/i.test(pr.acc))PR.acc=pr.acc;
@@ -1562,7 +1652,7 @@ function restorePrefs(pr){if(!pr||typeof pr!="object")return;var num=function(x)
   if(pr.ds&&typeof pr.ds=="object"){var Ds={};Object.keys(pr.ds).slice(0,500).forEach(function(d){var v=pr.ds[d];if(/^\d{4}-\d{2}-\d{2}$/.test(d)&&Number.isInteger(v)&&v>=0&&v<=200000)Ds[d]=v});if(Object.keys(Ds).length)PR.ds=Ds}
   if(Number.isInteger(pr.sg)&&pr.sg>=1000&&pr.sg<=50000)PR.sg=pr.sg;
   syncPrefs()}
-function syncPrefs(){var M={"t-snd":["snd",1],"t-gps":["gps",1],"t-auto":["auto",0],"t-hap":["hap",1],"t-voi":["voi",1],"t-apz":["ap",0],"t-met":["met",0],"t-amo":["amo",0],"t-gls":["gls",0]};
+function syncPrefs(){var M={"t-snd":["snd",1],"t-gps":["gps",1],"t-auto":["auto",0],"t-hap":["hap",1],"t-exi":["exi",1],"t-voi":["voi",1],"t-apz":["ap",0],"t-met":["met",0],"t-amo":["amo",0],"t-gls":["gls",0]};
   Object.keys(M).forEach(function(id){var e=$(id);if(e)e.checked=M[id][1]?PR[M[id][0]]!==0:!!PR[M[id][0]]});
   var q=$("spm");if(q)q.value=PR.spm||160;q=$("rm-t");if(q)q.value=PR.rmt||"";theme();metro();remind(1)}
 function axCleanSched(raw,days){if(!Array.isArray(raw)||raw.length>500)return null;var out=[];for(var i=0;i<raw.length;i++){var v=raw[i];if(!Number.isInteger(v)||v< -1||v>=days)return null;out.push(v)}return out.length>days?out:null}
@@ -1582,11 +1672,18 @@ function doImport(txt){var d;try{d=JSON.parse(txt)}catch(e){d=null}
   if(!d.progress||typeof d.progress!="object"){toast("That isn't a tracker backup file.");return}
   st=APP.plans[APP.active].st=clean(d.progress);save();for(var key in st)if(/^\d+:/.test(key))n++;
   closeT();render();toast("Imported "+n+" ticks into the current plan.")}
-$("ex").onclick=async function(){try{if(STP){await stepsPull();await stepsHist();save()}}catch(e){}var txt=pack();$("bt").value=txt;var nm="arya-tracker-backup-"+ymd()+".json",PL=window.Capacitor&&Capacitor.Plugins||{};if(PL.Filesystem&&PL.Share){shareFile(nm,txt);toast("Choose where to save the backup");return}var r=await dlFile(nm,txt);if(r==1)toast("Backup saved to Downloads");else if(!r){$("dt2").open=true;toast("Couldn't save the file. Copy the text below instead.")}};
+$("ex").onclick=async function(){var txt=await packFresh(),mt;try{mt=JSON.parse(txt).meta}catch(e){mt=null}
+  if(!mt){hx("err");toast("Couldn't build the backup. Try Copy text.");return}
+  $("bt").value=txt;var nm="arya-fit-backup-"+ymd()+"-"+hm()+".json",r=await axOut(nm,txt);
+  if(!r){$("dt2").open=true;toast("Couldn't save the file. Copy the text below instead.");return}
+  PR.lbk=Date.now();save();axLbk();hx("ok");
+  toast((r==2?"Choose where to save. ":"Saved to Downloads. ")+mt.runDays+" run days, "+mt.stepDays+" step days.")};
+$("ex-stp").onclick=async function(){await packFresh();if(!Object.keys(PR.ds||{}).length){toast("No step data yet.");return}
+  var r=await axOut("arya-steps-"+ymd()+".csv",stepsCSV());if(!r)toast("Couldn't save the file.");else{hx("ok");toast(r==2?"Choose where to save the steps file.":"Steps CSV saved to Downloads.")}};
 $("im").onclick=function(){$("fi").click()};
 $("fi").onchange=function(){var f=this.files[0];this.value="";if(!f)return;var r=new FileReader();r.onload=function(){doImport(String(r.result))};r.readAsText(f)};
-$("dt2").ontoggle=function(){if(this.open&&!$("bt").value)$("bt").value=pack()};
-$("cp").onclick=function(){var t=$("bt");if(!t.value)t.value=pack();
+$("dt2").ontoggle=function(){if(this.open&&!$("bt").value)packFresh().then(function(t){$("bt").value=t})};
+$("cp").onclick=async function(){var t=$("bt");t.value=await packFresh();
   try{navigator.clipboard.writeText(t.value).then(function(){toast("Copied")},function(){t.select();toast("Select and copy the text")})}catch(e){t.select();toast("Select and copy the text")}};
 $("ld").onclick=function(){var v=$("bt").value.trim();if(!v){toast("Paste backup text first.");return}doImport(v)};
 
@@ -1688,5 +1785,15 @@ axGuard();
 try{PRUN=JSON.parse(localStorage.getItem(RK))}catch(e){PRUN=null}
 try{LAST=JSON.parse(localStorage.getItem(LK))}catch(e){LAST=null}
 try{if("serviceWorker" in navigator&&/^https?:/.test(location.protocol))navigator.serviceWorker.register("sw.js")}catch(e){}
-loadApp();bindApp();bindPlans();bindExtra();if(!TM)nclr();if(PR.rmt)remind(1);go("home");stepsInit();setTimeout(stats,250);
+/* v48 auto-close: any plan day older than yesterday that is still open gets closed (rest if nothing done, "call it a day" if partly done) */
+function axAutoClose(){try{if(!APP||!st)return 0;var td=todayIdx(),lim=Math.min(td-2,ND-1),n=0;
+  for(var q=0;q<=lim;q++){if(st["x"+q]||dayDone(q))continue;var c=cnt(q),act=c[0]>0||(st["g"+q]||0)>0||(st["r"+q]||0)>0||(st["w"+q]||0)>0;st["x"+q]=act?2:1;n++}
+  if(n)save();return n}catch(e){return 0}}
+var AC_TD=null;
+function axAcRun(){var n=axAutoClose();if(n){render();toast("Auto-closed "+n+(n>1?" past days":" past day"));hx("ok")}}
+setInterval(function(){var t=todayIdx();if(AC_TD!==null&&t!==AC_TD)axAcRun();AC_TD=t},60000);
+document.addEventListener("visibilitychange",function(){if(!document.hidden)axAcRun()});
+function axNavH(){var n=document.getElementById("ax-nav");if(n)document.documentElement.style.setProperty("--ax-navh",Math.round(n.getBoundingClientRect().height)+"px")}
+axNavH();window.addEventListener("resize",axNavH);window.addEventListener("load",axNavH);try{if(window.ResizeObserver)new ResizeObserver(axNavH).observe(document.getElementById("ax-nav"))}catch(e){}
+loadApp();bindApp();bindPlans();bindExtra();if(!TM)nclr();if(PR.rmt)remind(1);go("home");stepsInit();AC_TD=todayIdx();axAcRun();axLbk();setTimeout(stats,250);
 </script></body></html>

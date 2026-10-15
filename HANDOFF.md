@@ -1,7 +1,7 @@
 # Arya Fit: HANDOFF (latest, consolidated)
 
 **Read order:** `ARYA-FIT-VISION.md` (vision + roadmap) -> `ARYA-FIT-BRIEF.md` (user + objectives) -> this file (state + technical map).
-**Last updated:** 2026-10-15. Service worker cache `arya-v50`.
+**Last updated:** 2026-10-16. Service worker cache `arya-v55`.
 **Live repo (public, readable):** github.com/opkillerbg-dev/Arya-Fit-app. If you have bash with network, `git clone` it and read the real files. Do not trust pasted copies, because a stale build workflow once hid a whole feature (see section 6).
 
 ## 1. What this is
@@ -255,3 +255,12 @@ Upload `index.html` and `sw.js` to the repo root, replace `HANDOFF.md`, install 
 - Added Settings > **About and credits** (`<details id="ax-credits">`, last card in `#ax-v-set`): app name and version text, "Created by Arya Sheladiya" (name taken from the plan's `athlete` field; edit the literal text in that block if the credit should say something else), "Built with" (Capacitor, MIT, and its plugins), and "Body map art" (react-native-body-highlighter, MIT, ELABBASSI Hicham). This satisfies the MIT notice together with `THIRD-PARTY-NOTICES.md` in the repo.
 - The version text in that block ("v54") is a literal string. Update it on each release together with the `sw.js` cache name (`arya-v54`).
 - Verified in headless Chromium: the section renders and expands, no JS errors. Not verified on a phone.
+
+
+## UI update v55 (2026-10-16) — Old Money × Liquid Glass 50/50
+- Refined the existing UI in `index.html`; no full rewrite and no changes to workout logic, storage keys, saved records, native Java files, signing key, or build workflow.
+- Strengthened the Old Money palette (warm ivory, forest green, olive, restrained brass), editorial headings, home hero framing, progress ring, card depth, and button feedback.
+- Reworked bottom navigation into a floating, rounded translucent glass bar with a clear active state. Glass is concentrated on selected surfaces; essential workout/settings content remains more opaque for legibility.
+- The existing Glass look setting remains supported; the existing default-on behavior is preserved, and saved user preferences are not overwritten. Reduced-transparency and reduced-motion fallbacks remain.
+- Bumped service-worker cache from `arya-v54` to `arya-v55`.
+- Validation: JavaScript syntax check passed; Python HTML parser passed; CSS parser found no parse errors; service-worker cache is `arya-v55`. Headless browser render/interaction testing was blocked by the environment (`ERR_BLOCKED_BY_ADMINISTRATOR`), so visual browser interaction and Android phone behavior remain unverified. No Android APK build claimed.

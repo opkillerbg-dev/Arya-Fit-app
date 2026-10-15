@@ -845,6 +845,78 @@ body.td .ax-wrap{padding-bottom:430px}
 .ax-cr-hero span{font-size:12px;color:var(--mut)}
 .ax-cr .row em{display:block;line-height:1.35}
 .ax-cr-foot{margin:12px 2px 2px;font-size:12px;color:var(--mut);text-align:center}
+
+
+/* ===== v55: Old Money × Liquid Glass, balanced 50/50 ===== */
+:root{--ax-ease:cubic-bezier(.2,.75,.25,1)}
+html[data-skin="oldmoney"]:root{
+ --bg:#eee7d7;--card:rgba(250,246,235,.94);--ink:#202b22;--mut:#716f60;--line:#d8cdb5;
+ --blue:#28533d;--bluet:#e2e8dc;--ok:#477653;--okt:#dce8d9;--sun:#a98542;
+ --hero:#183a2b;--hero2:rgba(24,58,43,.96);--bar:rgba(250,246,235,.88);
+ --glass:rgba(250,246,235,.62);--gline:rgba(112,104,78,.25);--cell:#e9e1ce;--ax-onblue:#fff
+}
+html[data-skin="oldmoney"] body{
+ background:radial-gradient(ellipse at 0% 0%,rgba(169,133,66,.15),transparent 34%),
+ radial-gradient(ellipse at 100% 24%,rgba(40,83,61,.13),transparent 36%),var(--bg)!important;
+ background-attachment:fixed!important
+}
+.ax-wrap{padding-top:14px}
+.ax-home{gap:14px}
+.ax-hero-art{border-radius:30px;min-height:276px;border:1px solid rgba(255,255,255,.24);box-shadow:0 18px 42px rgba(20,43,30,.2),inset 0 1px 0 rgba(255,255,255,.22)}
+.ax-hero-art:after{content:"";position:absolute;inset:10px;border:1px solid rgba(255,255,255,.16);border-radius:22px;pointer-events:none;z-index:0}
+.ax-hero-top,.ax-hero-copy,.ax-hero-bottom{z-index:1}
+.ax-brand-mark{width:34px;height:34px;border-radius:12px;box-shadow:inset 0 1px rgba(255,255,255,.35),0 5px 14px rgba(0,0,0,.12)}
+.ax-hero-pill{padding:8px 11px;border-radius:999px;letter-spacing:.14em}
+.ax-hero-copy{margin-top:32px;max-width:83%}
+.ax-hero-copy p{letter-spacing:.22em}
+.ax-hero-copy h2{font-size:clamp(31px,8.5vw,42px);line-height:.99;text-shadow:0 2px 18px rgba(0,0,0,.16)}
+.ax-hero-copy>span{font-size:12px}
+.ax-hero-orbit{width:34px;height:34px;border-radius:50%;box-shadow:inset 0 1px rgba(255,255,255,.35)}
+.ax-card{border-radius:24px;padding:17px;border-color:color-mix(in srgb,var(--line) 82%,white);box-shadow:0 7px 22px rgba(53,48,30,.045),inset 0 1px 0 rgba(255,255,255,.72)}
+.ax-h1,.ax-display-title{font-family:Georgia,"Times New Roman",serif!important;font-weight:600;letter-spacing:-.045em}
+.ax-h1{font-size:clamp(25px,6vw,31px)}
+.ax-display-title{font-size:clamp(35px,9vw,46px)}
+.ax-section-intro{padding:9px 5px 8px}
+.ax-section-intro .ax-kicker,.ax-kicker{letter-spacing:.19em}
+.ax-stat{gap:15px;background:linear-gradient(135deg,rgba(255,253,247,.97),rgba(231,236,221,.83));border-color:rgba(112,130,99,.24);box-shadow:0 10px 28px rgba(45,63,42,.08),inset 0 1px 0 rgba(255,255,255,.95)}
+.ax-ring{width:84px;height:84px}
+.ax-ring circle{stroke-width:8}
+.ax-nums{gap:18px}
+.ax-nums b{font-size:27px}
+.ax-today{background:linear-gradient(145deg,rgba(255,253,247,.96),rgba(244,239,224,.91));border-color:rgba(112,104,78,.24);box-shadow:0 12px 30px rgba(53,48,30,.07),inset 0 1px 0 #fff}
+.ax-btn.ax-pri{border-radius:17px;box-shadow:0 8px 20px color-mix(in srgb,var(--blue) 23%,transparent),inset 0 1px 0 rgba(255,255,255,.18);letter-spacing:.01em}
+.ax-dbadge{border-radius:17px}
+.ax-wk,.ax-day,.ax-runc{border-color:color-mix(in srgb,var(--blue) 17%,var(--line))}
+.ax-lr{border-radius:16px;transition:transform .2s var(--ax-ease),background .2s,border-color .2s}
+.ax-lr:active,.ax-btn:active,.ax-chip:active,.ax-nav button:active{transform:scale(.975)}
+.ax-pseg{border-radius:20px!important;padding:5px!important}
+.ax-pseg button{border-radius:15px!important;min-height:42px}
+.ax-dt{border-radius:21px}
+.ax-dt>summary{padding:17px 2px}
+.ax-dt .row{padding-top:13px;padding-bottom:13px}
+/* Floating glass navigation: intentionally translucent while content cards remain mixed solid/glass. */
+.ax-nav{left:12px!important;right:12px!important;bottom:calc(8px + env(safe-area-inset-bottom,0px))!important;width:auto!important;border:1px solid var(--gline)!important;border-radius:24px!important;padding:7px 7px calc(7px + env(safe-area-inset-bottom,0px))!important;gap:4px!important;box-shadow:0 12px 34px rgba(25,39,28,.15),inset 0 1px 0 rgba(255,255,255,.6)!important;overflow:hidden}
+.ax-nav button{border-radius:17px!important;gap:4px!important;min-height:52px!important;font-size:10px!important;letter-spacing:.01em}
+.ax-nav button .ax-ic{width:22px;height:22px}
+.ax-nav button.on{background:color-mix(in srgb,var(--blue) 12%,transparent)!important;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--blue) 16%,transparent)!important}
+.ax-nav button.on:before{content:"";position:absolute;top:4px;width:18px;height:2px;border-radius:2px;background:var(--sun);opacity:.9}
+.ax-pbar{border-radius:22px 22px 0 0}
+.ax-sh{border-radius:28px 28px 0 0!important}
+/* The toggle still controls glass. With it on, only selected surfaces become highly translucent. */
+html.gls .ax-nav{background:color-mix(in srgb,var(--card) 72%,transparent)!important;-webkit-backdrop-filter:blur(28px) saturate(1.55)!important;backdrop-filter:blur(28px) saturate(1.55)!important}
+html.gls .ax-card,html.gls .panel,html.gls .tile{background:color-mix(in srgb,var(--card) 78%,transparent)!important;-webkit-backdrop-filter:blur(18px) saturate(1.25);backdrop-filter:blur(18px) saturate(1.25);border-color:color-mix(in srgb,var(--line) 74%,transparent);box-shadow:0 10px 28px rgba(30,42,29,.07),inset 0 1px 0 rgba(255,255,255,.54)!important}
+html.gls .ax-stat,html.gls .ax-today,html.gls .ax-br-result{background:linear-gradient(135deg,color-mix(in srgb,var(--card) 82%,transparent),color-mix(in srgb,var(--bluet) 54%,transparent))!important}
+html.gls .ax-sh{background:color-mix(in srgb,var(--card) 88%,transparent)!important;-webkit-backdrop-filter:blur(30px) saturate(1.4)!important;backdrop-filter:blur(30px) saturate(1.4)!important}
+html.gls .ax-pseg{background:color-mix(in srgb,var(--card) 80%,transparent)!important;-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px)}
+html.gls .ax-dt{background:color-mix(in srgb,var(--card) 90%,transparent)!important}
+/* Other palettes retain their own colours while sharing the improved depth and controls. */
+html:not([data-skin="oldmoney"]) .ax-nav{border-radius:22px!important}
+html.amo.gls .ax-nav{background:color-mix(in srgb,var(--card) 80%,transparent)!important}
+@media(max-width:380px){.ax-hero-art{min-height:260px}.ax-card{padding:14px}.ax-nav{left:8px!important;right:8px!important}.ax-nav button{font-size:9px!important;min-height:49px!important}}
+@media(min-width:420px){.ax-hero-art{min-height:294px}.ax-hero-copy{margin-top:40px}}
+@media(prefers-reduced-transparency:reduce){html.gls .ax-nav,html.gls .ax-card,html.gls .panel,html.gls .tile,html.gls .ax-sh,html.gls .ax-pseg{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:var(--card)!important}}
+@media(prefers-reduced-motion:no-preference){.ax-nav,.ax-card,.ax-btn,.ax-chip,.ax-lr{transition:transform .2s var(--ax-ease),background-color .24s ease,border-color .24s ease,box-shadow .24s ease}}
+
 </style><link rel="manifest" href="manifest.webmanifest">
 </head>
 <body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>

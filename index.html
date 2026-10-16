@@ -1109,7 +1109,7 @@ html.ax-lite-glass *,html.ax-lite-glass *::before,html.ax-lite-glass *::after {s
 <p>It opens like an app with its own icon and works offline after the first load. Your progress stays saved on the device. Use Export backup now and then.</p></details></div>
 <div class="bk"><p>Reset erases ticks and times for the current plan only.</p><button class="btn w" id="rs">Reset all</button></div></details>
 <details class="ax-card ax-dt"><summary>Plan tools</summary><div class="row"><span><b id="sp-name"></b><em id="sp-sub"></em></span><button class="btn" id="sp-go">Manage plans</button></div><div class="row"><span><b>Next plan</b><em>Create the next 28 days.</em></span></div><button class="ax-btn ax-wide" id="np-go">Generate next 28 days</button></details>
-<details class="ax-card ax-dt" id="ax-credits"><summary>About and credits</summary><div class="ax-cr"><div class="ax-cr-hero"><b>Arya Fit</b><span>v64 · a personal training app</span></div><div class="row"><span><b>Created by</b><em>Arya Sheladiya</em><em>Concept, training plan and design direction.</em></span></div><div class="row"><span><b>Built with</b><em>Capacitor (MIT License) and its Local Notifications, Haptics, Share, Filesystem and Background Geolocation plugins.</em></span></div><div class="row"><span><b>Body map art</b><em>react-native-body-highlighter by ELABBASSI Hicham (MIT License).</em></span></div><p class="ax-cr-foot">Made for my own training. Thanks for using it.</p></div></details>
+<details class="ax-card ax-dt" id="ax-credits"><summary>About and credits</summary><div class="ax-cr"><div class="ax-cr-hero"><b>Arya Fit</b><span>v65 · a personal training app</span></div><div class="row"><span><b>Created by</b><em>Arya Sheladiya</em><em>Concept, training plan and design direction.</em></span></div><div class="row"><span><b>Built with</b><em>Capacitor (MIT License) and its Local Notifications, Haptics, Share, Filesystem and Background Geolocation plugins.</em></span></div><div class="row"><span><b>Body map art</b><em>react-native-body-highlighter by ELABBASSI Hicham (MIT License).</em></span></div><p class="ax-cr-foot">Made for my own training. Thanks for using it.</p></div></details>
 </section>
 
 <section class="ax-view" id="ax-v-plans" hidden><h1 class="disp vt">Plans</h1>
@@ -1870,7 +1870,8 @@ function restorePrefs(pr){if(!pr||typeof pr!="object")return;var num=function(x)
   if(Array.isArray(pr.body)){var bd=pr.body.slice(-400).filter(function(x){return Array.isArray(x)&&num(x[0])}).map(function(x){return[x[0],+x[1]||0,+x[2]||0]});if(bd.length)PR.body=bd}
   if(Array.isArray(pr.fit)){var ft=pr.fit.slice(-100).filter(function(x){return Array.isArray(x)&&num(x[0])&&num(x[1])}).map(function(x){return[x[0],x[1],+x[2]||0,+x[3]||0]});if(ft.length)PR.fit=ft}
   if(pr.rd&&typeof pr.rd=="object"){var D={};Object.keys(pr.rd).slice(0,400).forEach(function(d){var v=pr.rd[d];if(!di.test(d)||!v||typeof v!="object")return;var o={};["s","e"].forEach(function(k){if(v[k]===0||v[k]===1||v[k]===2)o[k]=v[k]});D[d]=o});if(Object.keys(D).length)PR.rd=D}
-  if(pr.ds&&typeof pr.ds=="object"){var Ds={};Object.keys(pr.ds).slice(0,500).forEach(function(d){var v=pr.ds[d];if(/^\d{4}-\d{2}-\d{2}$/.test(d)&&Number.isInteger(v)&&v>=0&&v<=200000)Ds[d]=v});if(Object.keys(Ds).length)PR.ds=Ds}
+  if(pr.rdOv&&typeof pr.rdOv=="object"){var Ro={};Object.keys(pr.rdOv).slice(-60).forEach(function(d){if(/^\d{4}-\d{2}-\d{2}$/.test(d)&&/^(full|light|rest)$/.test(pr.rdOv[d]))Ro[d]=pr.rdOv[d]});if(Object.keys(Ro).length)PR.rdOv=Ro}
+   if(pr.ds&&typeof pr.ds=="object"){var Ds={};Object.keys(pr.ds).slice(0,500).forEach(function(d){var v=pr.ds[d];if(/^\d{4}-\d{2}-\d{2}$/.test(d)&&Number.isInteger(v)&&v>=0&&v<=200000)Ds[d]=v});if(Object.keys(Ds).length)PR.ds=Ds}
   if(Number.isInteger(pr.sg)&&pr.sg>=1000&&pr.sg<=50000)PR.sg=pr.sg;
   syncPrefs()}
 function syncPrefs(){var M={"t-snd":["snd",1],"t-gps":["gps",1],"t-auto":["auto",0],"t-hap":["hap",1],"t-exi":["exi",1],"t-voi":["voi",1],"t-apz":["ap",0],"t-met":["met",0],"t-amo":["amo",0],"t-gls":["gls",0]};
@@ -2118,7 +2119,27 @@ html.ax-lite-glass #ax-nav:before,html.ax-lite-glass #ax-nav:after{display:none!
 #ax-v-plan #ax-pmore{border-radius:16px}
 @media(max-width:380px){#ax-v-home .ax-stat{padding:13px;gap:11px}#ax-v-home .ax-ring{width:64px;height:64px}#ax-v-home .ax-nums{gap:9px}#ax-v-home .ax-nums b{font-size:20px}#ax-v-home .ax-today{padding:14px}#ax-v-plan .ax-day{padding:13px}#ax-v-plan .ax-dayrow{gap:10px}#ax-v-plan .ax-dbadge{width:52px;height:52px;border-radius:16px}#ax-v-plan .ax-row{gap:8px}#ax-v-plan .ax-bd{font-size:10px;padding:6px}}
 @media(prefers-reduced-motion:reduce){#ax-v-home #ax-hopen{transition:none!important}}
-
+/* v65 Readiness 0-100 card */
+.ax-rd-card{display:flex;flex-direction:column;gap:2px;padding:12px 14px}
+.ax-rd-top{display:flex;align-items:center;gap:12px}
+.ax-rd-gauge{position:relative;width:56px;height:56px;flex:none}
+.ax-rd-gauge svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ax-rd-gauge circle{fill:none;stroke-width:6;stroke-linecap:round}
+.ax-rd-gauge .ax-rdt{stroke:color-mix(in srgb,var(--line) 80%,transparent)}
+.ax-rd-gauge b{position:absolute;inset:0;display:grid;place-items:center;font:700 19px/1 var(--ax-fd,Georgia,serif);color:var(--ink)}
+.ax-rd-copy{min-width:0;flex:1}
+.ax-rd-k{display:block;margin:0 0 3px;color:var(--ok);font:700 10px/1.2 system-ui,sans-serif;letter-spacing:.08em}
+.ax-rd-one{margin:0;font-size:13px;line-height:1.4;color:var(--ink)}
+.ax-rd-more>summary{cursor:pointer;list-style:none;font:600 12px system-ui,sans-serif;color:var(--blue);min-height:32px;display:flex;align-items:center}
+.ax-rd-more>summary::-webkit-details-marker{display:none}
+.ax-rd-more[open]>summary{margin-bottom:8px}
+.ax-rd-more .ax-rd-ov{margin-top:10px}
+.ax-rd-meta{display:flex;flex-wrap:wrap;gap:6px}
+.ax-rd-meta span{padding:4px 9px;border-radius:999px;background:color-mix(in srgb,var(--cell) 70%,transparent);border:1px solid color-mix(in srgb,var(--line) 75%,transparent);font-size:11px;color:var(--mut);font-weight:600}
+.ax-rd-ov{display:flex;flex-direction:column;gap:6px;padding-top:8px;border-top:1px solid color-mix(in srgb,var(--line) 65%,transparent)}
+.ax-rd-ov .ax-br-options{display:flex;gap:6px}
+.ax-rd-ov .ax-br-opt{flex:1;min-height:40px}
+.ax-rd-rst{align-self:flex-start;border:0;background:none;padding:6px 0;color:var(--blue);font:600 12px system-ui,sans-serif;text-decoration:underline}
 </style>
-
+<script src="readiness.js"></script>
 </body></html>

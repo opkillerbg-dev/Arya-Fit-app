@@ -1,7 +1,7 @@
 # Arya Fit: HANDOFF (latest, consolidated)
 
 **Read order:** `ARYA-FIT-VISION.md` (vision + roadmap) -> `ARYA-FIT-BRIEF.md` (user + objectives) -> this file (state + technical map).
-**Last updated:** 2026-10-16. Service worker cache `arya-v55`.
+**Last updated:** 2026-10-16. Service worker cache `arya-v57`.
 **Live repo (public, readable):** github.com/opkillerbg-dev/Arya-Fit-app. If you have bash with network, `git clone` it and read the real files. Do not trust pasted copies, because a stale build workflow once hid a whole feature (see section 6).
 
 ## 1. What this is
@@ -264,3 +264,90 @@ Upload `index.html` and `sw.js` to the repo root, replace `HANDOFF.md`, install 
 - The existing Glass look setting remains supported; the existing default-on behavior is preserved, and saved user preferences are not overwritten. Reduced-transparency and reduced-motion fallbacks remain.
 - Bumped service-worker cache from `arya-v54` to `arya-v55`.
 - Validation: JavaScript syntax check passed; Python HTML parser passed; CSS parser found no parse errors; service-worker cache is `arya-v55`. Headless browser render/interaction testing was blocked by the environment (`ERR_BLOCKED_BY_ADMINISTRATOR`), so visual browser interaction and Android phone behavior remain unverified. No Android APK build claimed.
+
+
+## v56 UI rendering correction (2026-10-16)
+- Kept the v55 Old Money × Liquid Glass design and existing app logic.
+- Corrected the sticky Plan action rail: `Close day` now keeps the Close day button 8px above the navigation while the opaque action-rail background meets the floating navigation edge. The Plan screen now reserves the correct bottom space so the rail stays aligned at both mid-scroll and true bottom; other screens retain their prior content clearance. Safe-area insets are included.
+- Updated the About/Credits version label and service-worker cache name to v56 so installed clients can receive the corrected stylesheet.
+- Headless browser checks cover 320×568, 360×640, 393×852, 430×932 and 768×1024 layouts, all five tabs, scroll boundaries, the Close day sheet, Glass Look/theme toggles, the bundled hero/exercise images, and the interactive anatomy SVG. See the delivery test report; Android/device behavior still requires phone testing.
+
+
+## v57 UI phases 5–7 (2026-10-16) — progress motion, sheets, theme consistency
+- Added tabular number styling and short count-up treatment for visible summary numbers only; live run timers/GPS values are not selected by the animation logic. Honors reduced-motion preference.
+- Refined shared bottom sheets with a clearer dim/blur scrim, top handle, sticky translucent header, safe-area padding, bounded height, and internal scrolling. Preserved existing sheet open/close actions and content.
+- Unified focus-visible states, theme-aware border/ink treatment, and glass shadow rules across existing palettes. Added reduced-transparency fallback for sheet scrim/header.
+- Bumped service-worker cache to `arya-v57`.
+- Validation for this phase: Node JavaScript syntax check passed; Python HTML parse passed; duplicate IDs check found none. Full headless-browser rendering/interactions are intentionally deferred until all eight UI steps are implemented, as requested by the user. No Android build/device test claimed.
+
+
+## v58 — adaptive glass performance safeguards (2026-10-16)
+- Added a conservative automatic low-effects mode for devices reporting deviceMemory <= 3 GB, hardwareConcurrency <= 4, or Data Saver enabled; also respects `prefers-reduced-transparency: reduce`.
+- Efficient mode disables costly backdrop filters and heavy surface shadows while preserving the palette, borders, and core glass-inspired layout.
+- Devices that do not report performance capabilities remain in full visual mode; no aggressive frame-rate polling or continuous performance monitoring was added.
+- Service-worker cache bumped to `arya-v58`.
+- Must complete headless browser regression checks after the final UI phase; physical Android performance still requires device verification.
+
+
+## v59 — Heavy Liquid Glass bottom navigation
+- Added a stronger, layered Liquid Glass treatment to the floating bottom navigation when Glass Look is enabled on capable devices: 38px blur, boosted saturation, reflective sheen, bright rim, inner highlights, deeper shadow, and a luminous active-tab capsule.
+- Kept the navigation geometry and safe-area padding unchanged to avoid reintroducing overlap with Close the day.
+- The existing adaptive lightweight mode and reduced-transparency preference explicitly disable the heavy effect and keep an opaque, lightweight navigation surface.
+- Service-worker cache updated to `arya-v59`.
+- Static checks only; full headless-browser and physical-device verification must be run before treating this as fully verified.
+
+
+## v60 — Edge-to-edge display
+- Android window draws edge-to-edge behind transparent status and navigation bars via WindowCompat in the generated MainActivity. Existing build workflow remains the source of the native activity.
+- Added Capacitor StatusBar plugin dependency for theme-aware status icon contrast; the web theme function requests overlay mode and updates icon style where the plugin bridge is exposed.
+- HTML uses `viewport-fit=cover`, paints the canvas background through the system-bar regions, and retains `env(safe-area-inset-*)` spacing for content and bottom navigation. Heavy Liquid Glass bottom navigation is retained.
+- Requires a fresh Android build. Headless browser and physical-device rendering must be checked before treating this as verified; browser-only preview cannot verify native system-bar behavior.
+
+
+## v61 — Home dashboard + workout experience refinement
+- Refined Home's progress summary and Today session card with clearer hierarchy, status/date labels, legible progress percentage, and a more deliberate primary action.
+- Refined Plan workout header, session status, progress module, exercise rows, exercise image frames, and bottom action styling.
+- Session status updates when exercise checkboxes are toggled; existing plan logic, progress keys, edit/reschedule controls, timer controls, and Close/Reopen day behavior remain unchanged.
+- Service worker cache bumped to `arya-v61`.
+- Validation status: source-level checks only unless a separate browser/device test report confirms more. Full headless browser rendering, bottom scrolling, interaction, and Android/device verification must be run before calling this release fully verified.
+
+## v62 — Run and Progress visual refinement
+- Refined Run screen introduction and run-start card with restrained layered surfaces, stronger type hierarchy, clearer primary action, and improved list-row touch states.
+- Refined Progress segmented navigation, statistics tiles, editorial overview cards, weekly progress bars, and recovery map container.
+- Added narrow-screen tuning for widths at or below 360px and forced-colors fallback. Reduced-motion preference is respected.
+- No run tracking logic, stored data keys, native Android code, signing key, or GitHub Actions workflow changed.
+- Service worker cache version advanced to `arya-v62`.
+- Verification must distinguish static source checks from full headless browser rendering/interactions and Android-device testing; do not claim the latter unless run.
+
+
+## v63 — Theme-aware exercise clothing
+- Preserves the original Old Money exercise artwork exactly.
+- Adds one reusable alpha mask for each of the 62 existing WebP exercise illustrations in `images/exercise-masks/`. Masks isolate the saturated dark-green clothing while excluding the pale sage mat and most dark outlines. Small disconnected green accents are filtered out to avoid recoloring shoe details.
+- For Modern, Professional, Midnight, and Sunset skins, visible exercise images are recolored at runtime using canvas HSL color replacement that preserves original lightness/shading. Generated variants are cached in memory for the session.
+- If a mask/canvas operation fails, the original image remains available. No new artwork generation or duplicated per-theme images.
+- Service worker cache version: `arya-v63`.
+- Validation in this update: source syntax and asset/mask consistency checks; full headless-browser rendering remains unverified in the current environment.
+
+
+## v64 — fix pass on v63 (2026-10-16; headless-tested in Chromium 390x844 over http; NOT run on a phone; Java NOT compiled)
+Source: ARYA-FIT-FIX-BRIEF-v63.md. Cache `arya-v64`, About-credits label now `v64` (it was stuck at v56).
+
+**1. Theme clothing is now CSS-only (replaces the v63 canvas recolor).**
+- Removed `AX_TINT_PALETTES`, `axTintExerciseImage`, `axBuildExerciseTint`, `axTintAllExerciseImages` and the call in `theme()`. No canvas, no blobs, no JS on skin change.
+- `axExpHtml(slug,letter,name)` builds `<span class="ax-exp"><img base><span class="ax-ext" style="mask-image:url(images/exercise-masks/...png)"><img same file></span></span>`. `.ax-ext` is hidden in Old Money (so Old Money is pixel-identical to v63: max pixel difference 0). In Modern / Professional / Midnight / Sunset it shows a grayscale, brightened copy of the art, cut out by the clothing mask and multiplied (`mix-blend-mode:multiply`) by the skin colour `--ex-c`. Shading is kept, colour is exactly the skin colour, no muddy dark tones, and it is correct on first paint (no green flash).
+- Colours (`html[data-skin=...] .ax-ext`): modern `#d8335c`, professional `#2f72d6`, midnight `#8d93e8` (periwinkle; clearly different from the green art), sunset `#ff7a45`. Brightness lift is `--ex-k` (default 3.8) in `.ax-ext>img`.
+- `axExiErr` removes the whole `.ax-exp`; swipe, tap-to-advance, dots and scroll-snap were tested and still work.
+- Measured: skin switch to correct colour about 20 to 40 ms (v63: 2.76 s for 13 images on desktop). No JS errors.
+- Cream image background in dark skins (Midnight/Sunset) is unchanged: it reads as a photo card. Originals were not touched.
+- **Mask bugs found and fixed** (6 masks replaced, files in `images/exercise-masks/`): `side-plank-a` and `table-rows-a` were EMPTY (never recolored in v63), `reverse-snow-angels-a/b` and `table-rows-b` covered only a small patch of the clothes, `backpack-rows-b` missed the shirt. New masks were made by colour segmentation (dark green/olive clothing, noise removed) after checking it agrees with the good masks (IoU 0.83 to 0.99). Other 56 masks unchanged.
+
+**2. Edge-to-edge finished (needs a fresh APK build; this is the part most likely to need a fix after the first run).**
+- `package.json`: added `@capacitor/status-bar ^6.0.0`.
+- `build.yml` MainActivity heredoc now: keeps `registerPlugin(RunEnginePlugin/StepsPlugin)` and the 120 Hz request; calls `WindowCompat.setDecorFitsSystemWindows(w,false)`, transparent status and navigation bars, `setNavigationBarContrastEnforced(false)` (API 29+); reads the real insets with `ViewCompat.setOnApplyWindowInsetsListener` and publishes them to the page (`window.axSI(t,r,b,l)` via `evaluateJavascript`, pushed on every change, at +400 ms, +1800 ms and onResume, plus a JS interface `window.AxInsets.get()` / `.style(dark)`). Because edge-to-edge disables `adjustResize`, the activity pads `android.R.id.content` by the keyboard (IME) height so inputs stay visible.
+- `index.html`: all 22 `env(safe-area-inset-top/bottom,0px)` uses now go through `--ax-sat` / `--ax-sab` = `max(env(...), --ax-si-t/-b)`, so it works whether or not the WebView reports env(). `axSI()` also re-runs `axNavH()` (the nav height changes with the inset; without this the Close day bar overlapped the nav). Tested with simulated insets top 48 / bottom 24: header clears the status bar, nav floats above the gesture bar, Close day bar sits 8 px above the nav exactly as with zero insets.
+- **Bug fixed in `syncSystemBarStyle`:** the style was inverted (Capacitor `Style.Dark` means light icons for dark backgrounds). It now sends `DARK` for dark skins and also calls `AxInsets.style(dark)` for status and navigation bar icons.
+- If the CI build fails, ask for the red error text: the only new native code is `MainActivity` (written against androidx.core 1.x APIs; not compiled here, there is no Android SDK or javac in the test container). If edge-to-edge looks wrong on the phone, the quick revert is to restore the old MainActivity heredoc (without the WindowCompat block); the CSS falls back to env() alone.
+
+**3. Housekeeping.** Removed dead old body-map code (`SIL`, `SH`, `BP`, `BB`, `fig`). `hc()` is still used and was kept. `sw.js` SHELL still does not list the images (runtime cache handles them; masks are cached the same way). Still to do by hand: delete `.github/workflows/setup-images.yml` from the repo (one-time workflow, already used). Duplicate HTML id `gov` still exists (minor).
+
+**Verified (headless Chromium, stubbed, over http):** 12-exercise gallery in all 5 skins, Plan screen in Modern and Midnight, strip swipe/click/dots/error handling, Old Money pixel-identical, inset simulation, JS syntax, YAML parse. **NOT verified:** anything on a real phone (colours on the OnePlus screen, scroll feel with masks, real WebView insets, keyboard resize, status/nav icon colours), the GitHub Actions build with the new MainActivity, mix-blend-mode/mask performance in Android WebView (Chrome engine, expected fine).

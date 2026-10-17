@@ -381,3 +381,12 @@ Source: owner screenshot of v65 (ugly pink blur under the status bar, icons unre
 - **Drawer `#ax-drawer`** (slides from the left, scrim `#ax-dscrim`, Back closes it via the existing `axGuard`/`popstate`): Home, Today's plan, Close or Reopen today (`axClose`), Plans (`go("plans")`), Add exercise (`axAdd`), Export backup (clicks `#ex`), Settings, About and credits (opens `#ax-credits`). Built by `axDrawerFill()` each time it opens, so labels follow the day state. Quick actions sheet (`axTopMore`): Close/Reopen today, Smart Today check-in (scrolls to `#ax-hbrain`), Add exercise, Export backup.
 - Tested: drawer open/close, Back closes drawer, Plans, Start, Quick actions, close today, layout (top bar bottom 104 px, first content 110 px, no overlap on Home/Plan/Progress/Settings), no JS errors. NOT verified: on a phone (real insets, glass blur cost, thumb reach), other skins visually (only Modern + glass was looked at).
 - Cache `arya-v67`, credits label v67.
+
+
+## v68 — 1-tap sets, PR pills, progression and deload hints (2026-10-17; drafted by Gemini, rewritten by Claude; headless-tested with stubs, NOT run on a phone)
+- New `progression.js` (copied into `www/` by `build.yml`; loaded after `readiness.js`). Wraps `day()` (adds a strip under each Strength row: 1-tap set chips, PR pill, hint), `axPg()` (Exercise PRs panel under Progress > Badges) and `axShiftSt()` (moves `PR.setLog` keys with the schedule).
+- Data: new `PR.setLog[exercise][dayIdx] = [reps per set]`, sanitised in `restorePrefs` (backup import). `PR.reps` (manual rep log) is read but never written; PR = best of both.
+- Chip tap cycle: target, target+1, target-1, clear. All sets logged auto-ticks the exercise row. Hint "Try N x reps+1" (target hit, or last session met target and not stalled) and "Deload" (no weekly-best gain across two earlier weeks) write the usual `workoutEdits[day][n]={sets,reps}` for that day only, after a tap.
+- Fixed vs Gemini draft: removed the `_manual` flag written into `workoutEdits`; removed mirroring into `PR.reps` (a wrong tap left a phantom PR forever); the broken `wMax` line; one render path. sw.js: version only. Cache `arya-v68`, label v68.
+- Not verified: phone, native build.
+

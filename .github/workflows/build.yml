@@ -13,7 +13,7 @@ jobs:
       - run: npm install
       - run: |
           mkdir -p www
-          cp index.html readiness.js progression.js handsfree.js animate.js weekly.js bodyheat.js swap.js backup.js library.js routemap.js boot.js manifest.webmanifest sw.js icon-*.png www/
+          cp index.html liquid.css readiness.js progression.js handsfree.js animate.js weekly.js bodyheat.js swap.js backup.js library.js settings.js routemap.js boot.js manifest.webmanifest sw.js icon-*.png www/
           cp -r images www/images
           test -f www/images/hero/arya-run-hero.webp
           test -f www/images/anatomy/arya-anatomy-atlas.webp

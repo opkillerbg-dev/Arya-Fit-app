@@ -27,3 +27,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
+
+## Online exercise library (Settings > Online exercise library)
+
+Optional download of exercise names, muscles, equipment and level from **free-exercise-db** (github.com/yuhonas/free-exercise-db), released into the public domain (Unlicense). The data is fetched only when the user taps Download and is stored on the device. Check the project's LICENSE if this changes.
+

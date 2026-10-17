@@ -25,8 +25,13 @@ jobs:
           VERSION_CODE: ${{ github.run_number }}
         run: |
           sed -i -E "s/versionCode[[:space:]]+[0-9]+/versionCode ${VERSION_CODE}/" android/app/build.gradle
+          sed -i -E "s/versionName \"[^\"]*\"/versionName \"1.${VERSION_CODE}\"/" android/app/build.gradle
           grep -q "versionCode ${VERSION_CODE}" android/app/build.gradle
-          echo "Android versionCode=${VERSION_CODE}; versionName stays 1.0"
+          grep -q "versionName \"1.${VERSION_CODE}\"" android/app/build.gradle
+          # New install id so it installs NEXT TO the old app (old key cannot be updated)
+          sed -i -E 's/applicationId "com\.arya\.fit"/applicationId "com.arya.fit2"/' android/app/build.gradle
+          grep -q 'applicationId "com.arya.fit2"' android/app/build.gradle
+          echo "versionCode=${VERSION_CODE}"
       - run: cp RunService.java RunEnginePlugin.java StepsPlugin.java android/app/src/main/java/com/arya/fit/
       - run: |
           R=android/app/src/main/res
@@ -122,3 +127,4 @@ jobs:
         with:
           name: arya-fit-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
+          

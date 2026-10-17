@@ -423,3 +423,12 @@ Source: owner screenshot of v65 (ugly pink blur under the status bar, icons unre
 - `routemap.js`: "Route" button on each run in Progress > History (rows with a saved route); opens a sheet with an offline SVG line map from `axRoutes()[day]` (start/finish dots, km circles, distance/time/pace). No tiles, no internet. Share card does not include the map yet.
 - Not verified: real download, phone layout, IndexedDB on the Android WebView.
 - Cache `arya-v73`, label v73. `build.yml` copies the 3 new files.
+
+## v74 — Smart loading screen + busy pill (2026-10-17; written by Claude; headless-tested at 6x CPU throttle, NOT run on a phone)
+- Cause of the first-open lag was not measurable here: at 1x the startup JS is about 150 ms (hot spots: `axNavH` forced layout, `go`); the rest is parse, style, layout and paint on a big single page. The splash masks the unsettled first frames; it does not make the work smaller.
+- `index.html` body start: `#ax-boot` splash (name, thin bar, message) + inline CSS + a 6 s failsafe script that removes it even if `boot.js` never runs. `html.ax-booting` turns off animations, transitions and backdrop-filter until ready (cheaper first frames).
+- `boot.js` (loaded last): hides the splash after load, fonts and non-lazy images decoded, then 2 animation frames (hard cap 3 s; "Still loading" text after 2 s). `window.axBootDone()`.
+- `axBusy(text)` / `axBusyDone()`: a small pill (`#ax-busy`) that only appears if the job lasts over 400 ms. Used by `packFresh()` (backup) and the library download.
+- Cache `arya-v74`, label v74, `build.yml` copies `boot.js`.
+- If the lag remains: ask the user for a screen recording; consider lazy-building the Progress, Body and Settings views, and trimming `backdrop-filter` layers.
+- Auto Google Drive sync is NOT built. Option found: `@codetrix-studio/capacitor-google-auth` (Capacitor 6, v3.4, returns `accessToken`, accepts `scopes`) with scope `drive.appdata` and the Drive REST API. Needs a Google Cloud project, an Android OAuth client for `com.arya.fit` with the repo debug keystore SHA-1 (65:A6:95:A7:79:B7:39:01:EB:E8:B8:66:A8:AD:B0:F7:2F:CE:A9:BD), package.json change and Java plugin registration. Untestable here; a wrong plugin config can break the APK build, so do it as its own version.

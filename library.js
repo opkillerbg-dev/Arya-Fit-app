@@ -46,13 +46,15 @@
 
   function download(){
     setStatus("Downloading...");
+    if(window.axBusy)axBusy("Downloading library...");
     return fetchOne(0).then(function(raw){
       if(!Array.isArray(raw)||raw.length<50)throw new Error("bad");
       var s=slim(raw);if(s.length<50)throw new Error("bad");
       LIB=s;META={t:Date.now(),n:s.length};
       return Promise.all([kvSet("list",s),kvSet("meta",META)]);
     }).then(function(){refresh();toast("Library ready: "+LIB.length+" exercises")})
-      .catch(function(){setStatus("Couldn't download. Check your internet and try again.")});
+      .catch(function(){setStatus("Couldn't download. Check your internet and try again.")})
+      .then(function(){if(window.axBusyDone)axBusyDone()});
   }
 
   function clearLib(){LIB=[];META=null;return Promise.all([kvDel("list"),kvDel("meta")]).then(refresh).catch(refresh)}

@@ -432,3 +432,18 @@ Source: owner screenshot of v65 (ugly pink blur under the status bar, icons unre
 - Cache `arya-v74`, label v74, `build.yml` copies `boot.js`.
 - If the lag remains: ask the user for a screen recording; consider lazy-building the Progress, Body and Settings views, and trimming `backdrop-filter` layers.
 - Auto Google Drive sync is NOT built. Option found: `@codetrix-studio/capacitor-google-auth` (Capacitor 6, v3.4, returns `accessToken`, accepts `scopes`) with scope `drive.appdata` and the Drive REST API. Needs a Google Cloud project, an Android OAuth client for `com.arya.fit` with the repo debug keystore SHA-1 (65:A6:95:A7:79:B7:39:01:EB:E8:B8:66:A8:AD:B0:F7:2F:CE:A9:BD), package.json change and Java plugin registration. Untestable here; a wrong plugin config can break the APK build, so do it as its own version.
+
+
+## v75 — Settings hub (2026-10-17; headless-tested, NOT run on a phone; no Java changed)
+- Settings was six stacked accordions plus the library card. Now `#ax-v-set` is a menu (`#ax-sm`) of 6 rows with live subtitles: Appearance, Run & tracking, Sound & feedback, Plan & exercises, Data & backup, About. Each opens a page (`#ax-sp-<key>`) with a round back button.
+- New `settings.js` (copied by `build.yml`, loaded after `library.js`). It MOVES the existing nodes into pages, so all ids and handlers are unchanged (`t-gps`, `skins`, `ex`, `rs`, `sp-go` ...). Exercise pictures toggle moved from Voice to Appearance. `#ax-lib` (library.js) is moved into Plan & exercises. If the old markup is not found, it leaves the accordion untouched.
+- `#ax-credits` stays as a hidden anchor (library.js inserts before it); its `open` setter opens the About page, so Drawer > About still works. Android Back closes a page first (`window.axSetBack`, hooked in the popstate handler). Leaving Settings resets to the menu.
+- Cache `arya-v75`, label v75. Not verified: phone layout.
+
+
+## v76 — Liquid Glass layer (2026-10-17; headless-tested in 4 skins at 390x844, NOT run on a phone; no Java changed)
+- New `liquid.css` (`<link>` at the end of `<head>`, copied by `build.yml`, listed in `sw.js` SHELL). Pure paint on top of the existing styles; active only with `html.gls` and NOT `html.ax-lite-glass` (efficient mode) and not `prefers-reduced-transparency`. Glass look off = the old look unchanged.
+- Recipe: richer 5-blob ambient field (`body::before`), translucent fill + specular diagonal highlight, bright top rim (inset 1.5px), inner glow, soft drop shadow, 20 px blur + 1.9 saturation on cards, 30 px on floating chrome (nav, top pill, drawer), 38 px on sheets. Tinted-glass primary button, glass chips/inputs, glass active-tab capsule, press scale .97.
+- Tokens `--lq-f1/f2/spec/rim/rim2/sh/glow` switch for dark skins (midnight, sunset, black theme, classic in OS dark). Nested cards do not blur twice. `.ax-pbar` and `.ax-dk` keep their opaque clarity, gain the rim only.
+- Testing gotcha: headless Chromium trips `ax-lite-glass` (efficient mode), which hides all of this; remove the class in tests.
+- Cache `arya-v76`, label v76. Not verified: phone scroll performance with many backdrop-filter layers; if it janks, lower the 20px card blur or add `contain:paint` to `.ax-card`.

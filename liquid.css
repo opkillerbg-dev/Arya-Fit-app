@@ -1,0 +1,148 @@
+/* Liquid Glass layer (v76). Loaded last. Active only when Glass look is on and the device is not in efficient mode.
+   Pure paint: no geometry, no logic, no ids changed. Off = the old look, untouched. */
+
+:root.gls.gls{
+  --lq-f1:rgba(255,255,255,.62);
+  --lq-f2:color-mix(in srgb,var(--card) 36%,transparent);
+  --lq-spec:rgba(255,255,255,.78);
+  --lq-rim:rgba(255,255,255,.80);
+  --lq-rim2:rgba(255,255,255,.22);
+  --lq-sh:rgba(26,34,30,.17);
+  --lq-glow:rgba(255,255,255,.30);
+  --lq-tint:color-mix(in srgb,var(--blue) 14%,transparent);
+}
+/* dark skins */
+:root.gls.gls[data-skin="midnight"],:root.gls.gls[data-skin="sunset"],:root.gls.gls.amo,:root.gls.gls[data-theme="dark"]{
+  --lq-f1:rgba(255,255,255,.13);
+  --lq-f2:color-mix(in srgb,var(--card) 58%,transparent);
+  --lq-spec:rgba(255,255,255,.20);
+  --lq-rim:rgba(255,255,255,.34);
+  --lq-rim2:rgba(255,255,255,.07);
+  --lq-sh:rgba(0,0,0,.50);
+  --lq-glow:rgba(255,255,255,.07);
+}
+@media (prefers-color-scheme:dark){
+  :root.gls.gls:not([data-skin]):not([data-theme="light"]){
+    --lq-f1:rgba(255,255,255,.13);--lq-f2:color-mix(in srgb,var(--card) 58%,transparent);--lq-spec:rgba(255,255,255,.20);
+    --lq-rim:rgba(255,255,255,.34);--lq-rim2:rgba(255,255,255,.07);--lq-sh:rgba(0,0,0,.50);--lq-glow:rgba(255,255,255,.07);
+  }
+}
+
+@media (prefers-reduced-transparency:no-preference){
+
+/* 1. light to refract: a richer ambient field behind everything */
+:root.gls.gls:not(.ax-lite-glass) body::before{
+  background:
+    radial-gradient(46% 30% at 8% 5%,color-mix(in srgb,var(--blue) 54%,transparent),transparent 70%),
+    radial-gradient(42% 28% at 98% 20%,color-mix(in srgb,var(--sun) 46%,transparent),transparent 70%),
+    radial-gradient(52% 30% at 90% 58%,color-mix(in srgb,var(--ok) 44%,transparent),transparent 72%),
+    radial-gradient(50% 30% at 6% 74%,color-mix(in srgb,var(--sun) 42%,transparent),transparent 72%),
+    radial-gradient(60% 34% at 50% 104%,color-mix(in srgb,var(--blue) 46%,transparent),transparent 72%)!important;
+}
+
+/* 2. content glass: cards, panels, tiles, segmented bars, accordions */
+:root.gls.gls:not(.ax-lite-glass) :is(.ax-card,.panel,.tile,.ax-stat,.ax-today,.ax-br-result,.ax-dt,.ax-pseg){
+  background:
+    linear-gradient(128deg,var(--lq-spec) 0%,transparent 32%),
+    linear-gradient(165deg,var(--lq-f1),var(--lq-f2))!important;
+  -webkit-backdrop-filter:blur(20px) saturate(1.9) brightness(1.04)!important;
+  backdrop-filter:blur(20px) saturate(1.9) brightness(1.04)!important;
+  border:1px solid var(--lq-rim2)!important;
+  box-shadow:
+    inset 0 1.5px 0 var(--lq-rim),
+    inset 0 -1px 0 var(--lq-rim2),
+    inset 1px 0 0 var(--lq-rim2),
+    inset 0 0 26px var(--lq-glow),
+    0 14px 32px -12px var(--lq-sh),
+    0 2px 6px -2px var(--lq-sh)!important;
+  border-radius:26px;
+}
+:root.gls.gls:not(.ax-lite-glass) .ax-dt[open]{
+  box-shadow:inset 0 1.5px 0 var(--lq-rim),inset 0 0 26px var(--lq-glow),0 0 0 1px color-mix(in srgb,var(--blue) 30%,transparent),0 16px 36px -12px var(--lq-sh)!important;
+}
+/* nested cards inside a glass page: lighter, no second blur */
+:root.gls.gls:not(.ax-lite-glass) :is(.ax-card,.panel,.tile) :is(.ax-card,.panel,.tile){
+  -webkit-backdrop-filter:none!important;backdrop-filter:none!important;
+}
+
+/* 3. floating chrome: heaviest glass, specular rim, lens highlight */
+:root.gls.gls:not(.ax-lite-glass) :is(#ax-nav,.ax-top .ax-tp,.ax-top #ax-tmenu,.ax-drawer){
+  background:
+    linear-gradient(180deg,var(--lq-spec) 0%,transparent 46%),
+    linear-gradient(165deg,var(--lq-f1),var(--lq-f2))!important;
+  -webkit-backdrop-filter:blur(30px) saturate(2.1) brightness(1.06)!important;
+  backdrop-filter:blur(30px) saturate(2.1) brightness(1.06)!important;
+  border:1px solid var(--lq-rim2)!important;
+  box-shadow:
+    inset 0 1.5px 0 var(--lq-rim),
+    inset 0 -1.5px 0 var(--lq-rim2),
+    inset 0 0 30px var(--lq-glow),
+    0 18px 40px -10px var(--lq-sh),
+    0 3px 10px -3px var(--lq-sh)!important;
+}
+:root.gls.gls:not(.ax-lite-glass) .ax-top .ax-tb{background:transparent!important;box-shadow:none!important;border:0!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+:root.gls.gls:not(.ax-lite-glass) .ax-top .ax-tb:active{background:color-mix(in srgb,var(--blue) 14%,transparent)!important}
+:root.gls.gls:not(.ax-lite-glass) #ax-nav button.on{
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.55),transparent 60%),
+    color-mix(in srgb,var(--blue) 22%,transparent)!important;
+  box-shadow:inset 0 1.5px 0 var(--lq-rim),inset 0 0 14px color-mix(in srgb,var(--blue) 22%,transparent),0 6px 14px -6px color-mix(in srgb,var(--blue) 55%,transparent)!important;
+  border:1px solid color-mix(in srgb,var(--lq-rim) 70%,transparent)!important;
+}
+
+/* 4. sheets: deep frosted pane, bright top edge */
+:root.gls.gls:not(.ax-lite-glass) .ax-sh{
+  background:
+    linear-gradient(180deg,var(--lq-spec) 0%,transparent 22%),
+    linear-gradient(165deg,color-mix(in srgb,var(--card) 64%,transparent),color-mix(in srgb,var(--card) 46%,transparent))!important;
+  -webkit-backdrop-filter:blur(38px) saturate(2) brightness(1.04)!important;
+  backdrop-filter:blur(38px) saturate(2) brightness(1.04)!important;
+  border-top:1px solid var(--lq-rim)!important;
+  box-shadow:inset 0 1.5px 0 var(--lq-rim),0 -22px 50px -14px var(--lq-sh)!important;
+}
+:root.gls.gls:not(.ax-lite-glass) .ax-shbg{background:rgba(10,14,12,.22)!important;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+:root.gls.gls:not(.ax-lite-glass) .ax-sh :is(.ax-opt,.ax-lr){background:color-mix(in srgb,var(--lq-f1) 70%,transparent)!important;border:1px solid var(--lq-rim2)!important;border-radius:20px!important;box-shadow:inset 0 1px 0 var(--lq-rim)!important}
+
+/* 5. controls: tinted glass buttons, glass chips */
+:root.gls.gls:not(.ax-lite-glass) .ax-btn.ax-pri{
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.34) 0%,rgba(255,255,255,0) 52%),
+    linear-gradient(180deg,color-mix(in srgb,var(--blue) 88%,white),var(--blue))!important;
+  border:1px solid rgba(255,255,255,.34)!important;
+  border-radius:22px!important;
+  box-shadow:inset 0 1.5px 0 rgba(255,255,255,.55),inset 0 -10px 18px rgba(0,0,0,.12),0 14px 26px -8px color-mix(in srgb,var(--blue) 62%,transparent)!important;
+}
+:root.gls.gls:not(.ax-lite-glass) .ax-btn:not(.ax-pri),:root.gls.gls:not(.ax-lite-glass) .ax-chip,:root.gls.gls:not(.ax-lite-glass) .btn,:root.gls.gls:not(.ax-lite-glass) .ax-ibtn{
+  background:linear-gradient(165deg,var(--lq-f1),var(--lq-f2))!important;
+  -webkit-backdrop-filter:blur(12px) saturate(1.6);backdrop-filter:blur(12px) saturate(1.6);
+  border:1px solid var(--lq-rim2)!important;
+  box-shadow:inset 0 1.5px 0 var(--lq-rim),0 6px 14px -8px var(--lq-sh)!important;
+  border-radius:20px;
+}
+:root.gls.gls:not(.ax-lite-glass) .ax-pseg button.on{
+  background:linear-gradient(180deg,rgba(255,255,255,.5),transparent 70%),color-mix(in srgb,var(--blue) 20%,transparent)!important;
+  box-shadow:inset 0 1.5px 0 var(--lq-rim),0 5px 12px -6px color-mix(in srgb,var(--blue) 55%,transparent)!important;
+  border-radius:18px;
+}
+:root.gls.gls:not(.ax-lite-glass) :is(.ax-field,.tin,textarea,select){
+  background:color-mix(in srgb,var(--lq-f1) 60%,transparent)!important;
+  border:1px solid var(--lq-rim2)!important;
+  box-shadow:inset 0 2px 5px color-mix(in srgb,var(--lq-sh) 55%,transparent),inset 0 -1px 0 var(--lq-rim)!important;
+  border-radius:16px;
+}
+/* switches: glass thumb */
+:root.gls.gls:not(.ax-lite-glass) .sw2:checked{box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 0 14px -2px color-mix(in srgb,var(--blue) 55%,transparent)}
+
+/* 6. dock (run mini-player) and sticky Close-day rail keep their clarity, gain the rim */
+:root.gls.gls:not(.ax-lite-glass) .ax-dk:not(.ax-fs){
+  box-shadow:inset 0 1.5px 0 var(--lq-rim),0 -14px 34px -12px var(--lq-sh)!important;
+}
+:root.gls.gls:not(.ax-lite-glass) .ax-pbar{
+  box-shadow:inset 0 1.5px 0 var(--lq-rim),0 -16px 30px -16px var(--lq-sh)!important;
+}
+
+/* 7. press feedback: glass compresses slightly */
+@media (prefers-reduced-motion:no-preference){
+  :root.gls.gls:not(.ax-lite-glass) :is(.ax-btn,.btn,.ax-chip,.ax-lr,.ax-top .ax-tb,.ax-pseg button):active{transform:scale(.97)}
+}
+}

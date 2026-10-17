@@ -390,3 +390,23 @@ Source: owner screenshot of v65 (ugly pink blur under the status bar, icons unre
 - Fixed vs Gemini draft: removed the `_manual` flag written into `workoutEdits`; removed mirroring into `PR.reps` (a wrong tap left a phantom PR forever); the broken `wMax` line; one render path. sw.js: version only. Cache `arya-v68`, label v68.
 - Not verified: phone, native build.
 
+## v69 — Hands-free workout mode (2026-10-17; drafted by Gemini, reviewed and fixed by Claude; headless-tested with stubs, NOT run on a phone; no Java changed)
+- New `handsfree.js` (copied into `www/` by `build.yml`; loaded after `progression.js`; runtime-cached, not in SHELL). Wraps `day()` to add a "Hands-free workout" button above Edit sets / reps on any day with steps (warm-up, strength/mobility, cool-down; habits and run excluded). Steps come from `items()`, so readiness-adjusted plans and manual edits are respected.
+- Full-screen player in the existing `#gov` overlay (class `ax-hf`): picture strip, set pills, one big Done button, Skip, Prev, Exit, 60 s rest timer (-15/+15), auto countdown for timed moves and warm-up/cool-down, voice via `say()`, wake lock via `wl()`. Blocked while a run is active.
+- Done Set logs target reps into `PR.setLog[name][day]` (Strength only); finishing the last set ticks the row. Skip does NOT tick. Exit adds elapsed seconds (15 s or more) to `st["w"+day]`. Back button clicks Exit (popstate branch in index.html).
+- Fixed vs Gemini draft: `#gov b`/`#gov i` CSS (id specificity) was overriding hands-free fonts; Skip used to tick the exercise; paused state leaked across steps; Back used a wrong id; removed an unused init call. Cache `arya-v69`, label v69.
+- Not verified: phone (picture height, native TTS between sets, wake lock).
+
+## v70 — Animated exercise pictures (2026-10-17; drafted by Gemini, reviewed by Claude; headless-tested, NOT run on a phone; no Java changed)
+- New `animate.js` (copied into `www/` by `build.yml`; loaded after `handsfree.js`; runtime-cached). Wraps `axExiBind()` and `axExiErr()`. Multi-frame exercises cross-fade A/B/C/D (1150 ms per frame, .48 s opacity) with a glass Play/Pause pill (`.ax-ex-play`). Single-frame exercises get no pill. Works in Plan cards and Hands-free (`#gov.ax-hf`); clothing tint masks (`.ax-ext`) sit inside each frame, so they are unchanged.
+- While playing, tapping the picture advances one frame; paused = the old swipe/tap strip. Preference `PR.exAnim` (0 = paused, default playing; skipped when reduced motion is on); added to the `restorePrefs` list (backup import).
+- Fixed vs Gemini draft: the per-box timer was never cleared after a re-render (leaked one interval per render); simplified the play/pause markup into `setBtn`.
+- Known: every box on a day plays at once; pausing one stops the others only after the next render.
+- Not verified: phone (smoothness, pill covering the art).
+
+## v71 — Weekly review share card (2026-10-17; drafted by Gemini, reviewed and fixed by Claude; headless-tested, NOT run on a phone; no Java changed)
+- New `weekly.js` (copied into `www/` by `build.yml`; loaded after `animate.js`; runtime-cached). Adds "Share weekly review card" under the "This week" panel (Progress > Stats, via wrapped `axPg`) and in the Quick actions sheet (wrapped `axTopMore`, appended to `#ax-shb`).
+- Draws a 1080x1350 canvas PNG with the active skin's CSS variables: 7-day strip, days done, km, steps (PR.ds / SS.today / st["s"+i]), streak (read from `#ax-streak`), strength moves, jog share. Shares through Capacitor Filesystem (CACHE) + Share, else `navigator.share({files})`, else a preview overlay in `#gov`.
+- Fixed vs Gemini draft: tile and header text overflowed the card (added `fit()` shrink-to-width and a measured header pill); "done" now uses `dayDone()` like the "This week" panel; the "strength sets" label counted ticked exercises, so it now says strength moves; no hard-coded athlete name (uses `P.athlete` if set); removed a fake Save button that did nothing in the WebView.
+- Not verified: phone share sheet, how it looks on the OnePlus.
+

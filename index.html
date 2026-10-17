@@ -1109,7 +1109,7 @@ html.ax-lite-glass *,html.ax-lite-glass *::before,html.ax-lite-glass *::after {s
 <p>It opens like an app with its own icon and works offline after the first load. Your progress stays saved on the device. Use Export backup now and then.</p></details></div>
 <div class="bk"><p>Reset erases ticks and times for the current plan only.</p><button class="btn w" id="rs">Reset all</button></div></details>
 <details class="ax-card ax-dt"><summary>Plan tools</summary><div class="row"><span><b id="sp-name"></b><em id="sp-sub"></em></span><button class="btn" id="sp-go">Manage plans</button></div><div class="row"><span><b>Next plan</b><em>Create the next 28 days.</em></span></div><button class="ax-btn ax-wide" id="np-go">Generate next 28 days</button></details>
-<details class="ax-card ax-dt" id="ax-credits"><summary>About and credits</summary><div class="ax-cr"><div class="ax-cr-hero"><b>Arya Fit</b><span>v68 · a personal training app</span></div><div class="row"><span><b>Created by</b><em>Arya Sheladiya</em><em>Concept, training plan and design direction.</em></span></div><div class="row"><span><b>Built with</b><em>Capacitor (MIT License) and its Local Notifications, Haptics, Share, Filesystem and Background Geolocation plugins.</em></span></div><div class="row"><span><b>Body map art</b><em>react-native-body-highlighter by ELABBASSI Hicham (MIT License).</em></span></div><p class="ax-cr-foot">Made for my own training. Thanks for using it.</p></div></details>
+<details class="ax-card ax-dt" id="ax-credits"><summary>About and credits</summary><div class="ax-cr"><div class="ax-cr-hero"><b>Arya Fit</b><span>v71 · a personal training app</span></div><div class="row"><span><b>Created by</b><em>Arya Sheladiya</em><em>Concept, training plan and design direction.</em></span></div><div class="row"><span><b>Built with</b><em>Capacitor (MIT License) and its Local Notifications, Haptics, Share, Filesystem and Background Geolocation plugins.</em></span></div><div class="row"><span><b>Body map art</b><em>react-native-body-highlighter by ELABBASSI Hicham (MIT License).</em></span></div><p class="ax-cr-foot">Made for my own training. Thanks for using it.</p></div></details>
 </section>
 
 <section class="ax-view" id="ax-v-plans" hidden><h1 class="disp vt">Plans</h1>
@@ -1897,7 +1897,7 @@ function clean(p,nd){var o={};nd=nd||ND;for(var key in p){var v=p[key],m;
   else if((m=/^(?:[wrgsx]|jt|wk)(\d{1,3})$/.exec(key))&&+m[1]<nd&&typeof v=="number"&&v>0&&v<200000)o[key]=Math.round(v)}return o}
 function restorePrefs(pr){if(!pr||typeof pr!="object")return;var num=function(x){return typeof x=="number"&&isFinite(x)},di=/^\d{1,3}$/;
   if(pr.brain&&typeof pr.brain=="object"){var Br={};Object.keys(pr.brain).slice(-400).forEach(function(d){var x=pr.brain[d];if(!/^\d{4}-\d{2}-\d{2}$/.test(d)||!x||typeof x!="object")return;var y={};["s","e","o"].forEach(function(k){if(Number.isInteger(x[k])&&x[k]>=0&&x[k]<=2)y[k]=x[k]});if(Object.keys(y).length)Br[d]=y});if(Object.keys(Br).length)PR.brain=Br}
-  ["snd","auto","gps","hap","exi","voi","ap","met","amo"].forEach(function(k){if(pr[k]===0||pr[k]===1)PR[k]=pr[k]});
+  ["snd","auto","gps","hap","exi","exAnim","voi","ap","met","amo"].forEach(function(k){if(pr[k]===0||pr[k]===1)PR[k]=pr[k]});
   if(typeof pr.gls==="boolean")PR.gls=pr.gls;
   if(Number.isInteger(pr.spm)&&pr.spm>=100&&pr.spm<=220)PR.spm=pr.spm;
   if(typeof pr.acc=="string"&&/^#[0-9a-f]{6}$/i.test(pr.acc))PR.acc=pr.acc;
@@ -2042,7 +2042,7 @@ window.addEventListener("popstate",function(){AXG=0;
  if($("ax-drawer").classList.contains("on")){axDrawer(false);axGuard();return}
  if(!$("ax-sh").hidden){axSheetX();axGuard();return}
  if(c){c.remove();axGuard();return}
- if($("gov")){axGuard();return}
+ if($("gov")){var hx_=$("ax-hf-exit");if(hx_)hx_.click();axGuard();return}
  if(!d.hidden&&d.classList.contains("ax-mo")){d.classList.remove("ax-mo");axGuard();return}
  if(!d.hidden&&d.classList.contains("ax-fs")){d.classList.remove("ax-fs");axGuard();return}
  var v=axView();
@@ -2234,7 +2234,48 @@ body.ax-drawer-open{overflow:hidden}
 .ax-prog-nudge.warn span{color:var(--ax-warn,#d0432f);font-weight:600}
 .ax-prog-nudge.up span{color:var(--ok);font-weight:600}
 .ax-nudge-btn{min-height:34px;padding:4px 11px;border-radius:9px;border:1px solid var(--blue);background:var(--bluet);color:var(--ink);font:700 11.5px/1 system-ui,sans-serif}
+/* v69 Hands-free workout mode */
+.ax-hf-launch{display:flex;align-items:center;justify-content:center;gap:8px;margin:10px 0 0;width:100%}
+.ax-hf-launch .ax-ic{width:20px;height:20px;color:currentColor}
+#gov.ax-hf{background:var(--bg);color:var(--ink);justify-content:space-between;padding:calc(var(--ax-sat) + 12px) 16px calc(var(--ax-sab) + 16px);gap:10px;overflow-y:auto}
+#gov.ax-hf b{font-size:inherit;padding:0}
+#gov.ax-hf small{opacity:1}
+.ax-hf-top{width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.ax-hf-ib{min-height:42px;padding:0 14px;border-radius:12px}
+.ax-hf-prog{font:800 11px/1 system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
+.ax-hf-stage{width:100%;flex:1;min-height:200px;max-height:46vh;display:flex;align-items:center;justify-content:center}
+.ax-hf-exi{width:100%;max-width:340px;margin:0!important}
+.ax-hf-exi .ax-exp{max-height:40vh}
+.ax-hf-noimg,.ax-hf-rnext{width:100%;max-width:340px;aspect-ratio:4/3;border-radius:22px;background:var(--card);border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:18px}
+.ax-hf-noimg .ax-ic{width:48px;height:48px;color:var(--blue)}
+.ax-hf-rnext small,.ax-hf-rest small{font:800 10px/1 system-ui,sans-serif;letter-spacing:.14em;color:var(--ok)}
+#gov.ax-hf .ax-hf-rnext b{font-size:24px;color:var(--ink)}
+.ax-hf-rnext span{font-size:14px;color:var(--mut)}
+.ax-hf-info{width:100%;display:flex;flex-direction:column;align-items:center;gap:6px}
+.ax-hf-title{margin:0;font-size:clamp(24px,6.5vw,32px);line-height:1.08;color:var(--ink)}
+.ax-hf-sub{margin:0;font-size:13px;color:var(--mut);max-width:38ch}
+.ax-hf-sets{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:4px}
+.ax-hf-sdot{padding:5px 11px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--mut);font:700 11.5px/1 system-ui,sans-serif}
+.ax-hf-sdot.cur{border-color:var(--blue);background:var(--bluet);color:var(--ink)}
+.ax-hf-sdot.done{border-color:var(--ok);background:var(--ok);color:var(--ax-onblue)}
+.ax-hf-rest{display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:4px;padding:10px 18px;border-radius:18px;background:var(--card);border:1px solid var(--line);width:100%;max-width:340px}
+#gov.ax-hf .ax-hf-rest b{font:700 44px/1 var(--ax-fd);color:var(--ink);font-variant-numeric:tabular-nums}
+.ax-hf-rbtns{display:flex;gap:8px}
+.ax-hf-rbtns .ax-btn,.ax-hf-rest .ax-btn{min-height:36px;padding:0 12px}
+.ax-hf-bar{width:100%;display:grid;grid-template-columns:1fr 1.6fr;gap:10px}
+.ax-hf-bar .ax-btn{min-height:64px;font-size:17px;border-radius:18px}
+/* v70 Animated exercises (cross-fade loop + Play/Pause pill) */
+.ax-exi{position:relative}
+.ax-exi.ax-anim .ax-exs{position:relative;display:block;overflow:hidden;scroll-snap-type:none}
+.ax-exi.ax-anim .ax-exp{position:absolute;inset:0;width:100%;height:100%;opacity:0;pointer-events:none;transition:opacity .48s ease-in-out}
+.ax-exi.ax-anim .ax-exp:first-child{position:relative}
+.ax-exi.ax-anim .ax-exp.ax-on{opacity:1;pointer-events:auto;z-index:1}
+.ax-ex-play{position:absolute;right:16px;top:16px;z-index:3;min-height:32px;padding:0 11px;border-radius:999px;border:1px solid var(--gline);background:color-mix(in srgb,var(--card) 84%,transparent);color:var(--ink);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);display:inline-flex;align-items:center;gap:5px;font:700 11px/1 system-ui,sans-serif;box-shadow:0 4px 12px rgba(0,0,0,.14)}
+.ax-ex-play svg{width:13px;height:13px;flex:none}
 </style>
 <script src="readiness.js"></script>
 <script src="progression.js"></script>
+<script src="handsfree.js"></script>
+<script src="animate.js"></script>
+<script src="weekly.js"></script>
 </body></html>

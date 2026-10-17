@@ -1,9 +1,19 @@
-/* Arya Fit v65: Readiness score (0-100) on Home + non-destructive session adjustment + override.
-   Standalone file. Stores only PR.rdOv (per-date override). Never writes to workoutEdits. */
+/* Arya Fit v66: Readiness score (0-100) on Home + real plan adjustment + override.
+   The adjusted plan is what counts: Light = 1 fewer set; Easy = fewer exercises, 1 set, easy 20 min walk/jog instead of the km run.
+   The applied mode is remembered per plan day (PR.rdAp) so finished days keep their adjusted total. Never writes to workoutEdits. */
 (function(){
   "use strict";
   var CACHE=null,OPEN=false;      /* locks today's score/tier so finishing a workout does not flip the advice */
   var AUTO={on:false,mode:"full",day:-1};   /* read by the axEdits wrapper (no recursion into calcM) */
+  var HEAVY=/burpee|jump|mountain climber/i;
+  function apKey(i){return String(APP&&APP.active)+":"+i}
+  /* mode applied to plan day i: today = live readiness, other days = what was applied when they were today */
+  function adjMode(i){
+    if(AUTO.on&&i===AUTO.day)return AUTO.mode;
+    var m=PR.rdAp&&PR.rdAp[apKey(i)];
+    return (m==="light"||m==="rest")?m:"full";
+  }
+  window.axRdActive=function(){return !!(AUTO.on&&AUTO.mode!=="full")};
 
   function streakNow(){
     try{
@@ -72,36 +82,68 @@
     else if(active==="full")sentence="Recovery looks good. Today's session stays at full volume.";
     else if(active==="light"){
       var wl=slp===0?"short sleep":eng===0?"low energy":(soreCnt||bSore)?"muscle soreness":"recent training load";
-      sentence="Eased: 1 fewer set per strength exercise because of "+wl+".";
+      sentence="Plan eased for today: 1 fewer set per strength exercise because of "+wl+". Finish it and the day counts as complete.";
     }else{
       var wr=(slp===0&&eng===0)?"poor sleep and low energy":(bSore===2||soreCnt>=2)?"high soreness":"low readiness";
-      sentence="Easy day: 1 set per strength exercise because of "+wr+". A walk instead of a run is fine.";
+      sentence="Plan shortened for today because of "+wr+": fewer exercises, 1 set each, and an easy 20 min walk or jog instead of the run. Finish it and the day counts as complete.";
     }
     return {score:score,tier:tier,rec:rec,active:active,ov:ov,sentence:sentence,checked:checked,
             soreCnt:soreCnt,avgStp:avgStp,runKm3:runKm3,strk:strk,isRest:isRest};
   }
 
-  /* Non-destructive adjustment: today's workout is shown trimmed; stored plan/edits are untouched.
-     The person's own +/- edits (stored in workoutEdits) always win, field by field. */
+  /* Plan adjustment. Stored plan and the person's own +/- edits (workoutEdits) are untouched; the person's edits win field by field. */
   var _axEdits=window.axEdits;
   if(typeof _axEdits==="function"){
     window.axEdits=function(){
-      var base=_axEdits();
-      if(!AUTO.on||AUTO.mode==="full"||AUTO.day<0)return base;
+      var base=_axEdits(),out=null;
       try{
-        var di=AUTO.day,si=axSrc(di);if(si<0)return base;
-        var t=T[wdk(si)];if(!t||!t.x||!t.x.length||t.c)return base;
-        var key=String(di),man=base[key]||{},day={};
-        t.x.forEach(function(e,k){
-          if(!(e[1]>0))return;                         /* timed/count exercises stay as planned */
-          var m=man[k]||{},o={};
-          o.sets=Number.isFinite(m.sets)?m.sets:(AUTO.mode==="light"?Math.max(1,e[1]-1):1);
-          if(Number.isFinite(m.reps))o.reps=m.reps;
-          else if(AUTO.mode==="rest"&&/^\d+$/.test(String(e[2])))o.reps=Math.max(4,Math.round(parseInt(e[2],10)*0.7));
-          day[k]=o;
+        var days=[];if(AUTO.on&&AUTO.day>=0)days.push(AUTO.day);
+        var ap=PR.rdAp||{},pre=String(APP&&APP.active)+":";
+        Object.keys(ap).forEach(function(k){if(k.indexOf(pre)===0){var d=+k.slice(pre.length);if(d>=0&&days.indexOf(d)<0)days.push(d)}});
+        days.forEach(function(di){
+          var mode=adjMode(di);if(mode==="full")return;
+          var si=axSrc(di);if(si<0)return;
+          var t=T[wdk(si)];if(!t||!t.x||!t.x.length||t.c)return;
+          var key=String(di),man=base[key]||{},day={};
+          t.x.forEach(function(e,k){
+            if(!(e[1]>0))return;                         /* timed/count exercises stay as planned */
+            var m=man[k]||{},o={};
+            o.sets=Number.isFinite(m.sets)?m.sets:(mode==="light"?Math.max(1,e[1]-1):1);
+            if(Number.isFinite(m.reps))o.reps=m.reps;
+            else if(mode==="rest"&&/^\d+$/.test(String(e[2])))o.reps=Math.max(4,Math.round(parseInt(e[2],10)*0.7));
+            day[k]=o;
+          });
+          if(!out)out=Object.create(base);out[key]=day;
         });
-        var out=Object.create(base);out[key]=day;return out;
       }catch(err){return base}
+      return out||base;
+    };
+  }
+
+  /* Easy mode also changes WHAT is on the list, so doing less still completes the day.
+     Ids stay stable (e0, e1, j ...), so ticks already stored keep working. */
+  var _items=window.items;
+  if(typeof _items==="function"){
+    window.items=function(i){
+      var a=_items.apply(this,arguments);
+      try{
+        if(adjMode(i)!=="rest")return a;
+        var si=axSrc(i);if(si<0)return a;
+        var t=T[wdk(si)];if(!t||t.r)return a;
+        var ex=a.filter(function(r){return /^e\d+$/.test(r[1])}),keep=null;
+        if(!t.m&&!t.c){var n=Math.max(2,Math.ceil(ex.length*0.6));keep=ex.slice(0,n).map(function(r){return r[1]})}
+        var out=[];
+        a.forEach(function(r){
+          if(/^e\d+$/.test(r[1])){
+            if(t.c){if(HEAVY.test(r[2]))return}
+            else if(keep&&keep.indexOf(r[1])<0)return;
+            out.push(r);return;
+          }
+          if(r[1]==="j"){out.push([r[0],"j","Easy 20 min walk or jog","20 min","Readiness is low today. Any easy pace counts; the full run can wait."]);return}
+          out.push(r);
+        });
+        return out;
+      }catch(err){return a}
     };
   }
 
@@ -114,9 +156,15 @@
         hb.parentNode.insertBefore(box,hb);
       }
       var r=calc();
-      var nOn=!r.isRest&&(r.checked||!!r.ov),nDay=Dn();
+      var tdx=todayIdx(),inPlan=tdx>=0&&tdx<ND;
+      var nOn=inPlan&&!r.isRest&&(r.checked||!!r.ov),nDay=Dn();
       var changed=AUTO.on!==nOn||AUTO.mode!==r.active||AUTO.day!==nDay;
       AUTO.on=nOn;AUTO.mode=r.active;AUTO.day=nDay;
+      /* remember what was applied to this plan day so it keeps the same total after midnight */
+      if(inPlan){
+        var want=(nOn&&r.active!=="full")?r.active:null,ap=PR.rdAp=PR.rdAp||{},kk=apKey(nDay);
+        if((ap[kk]||null)!==want){if(want)ap[kk]=want;else delete ap[kk];save();changed=true}
+      }
 
       var col=r.score>=75?"var(--ok)":r.score>=45?"var(--sun)":"#d0432f";
       var modes=[["full","Full"],["light","Light"],["rest","Easy"]];
@@ -139,7 +187,7 @@
           if(m===r.rec)delete o[today];else o[today]=m;
           var ks=Object.keys(o).sort();while(ks.length>60)delete o[ks.shift()];
           save();hx("tick");refresh();
-          toast(m==="full"?"Full session":m==="light"?"Light session: 1 fewer set":"Easy session: 1 set each");
+          toast(m==="full"?"Full plan restored":m==="light"?"Plan eased: 1 fewer set each":"Plan shortened: fewer exercises, easy run");
         };
       });
       var rst=$("ax-rd-reset");

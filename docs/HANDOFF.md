@@ -1,7 +1,7 @@
 # Arya Fit: HANDOFF (latest, consolidated)
 
 **Read order:** `ARYA-FIT-VISION.md` (vision + roadmap) -> `ARYA-FIT-BRIEF.md` (user + objectives) -> this file (state + technical map).
-**Last updated:** 2026-10-16. Service worker cache `arya-v57`.
+**Last updated:** 2026-10-18. Service worker cache `arya-v81`. **Repo layout changed in v81: see section 2. File names in older log entries below are the pre-v81 flat names; map them with the table in section 2.**
 **Live repo (public, readable):** github.com/opkillerbg-dev/Arya-Fit-app. If you have bash with network, `git clone` it and read the real files. Do not trust pasted copies, because a stale build workflow once hid a whole feature (see section 6).
 
 ## 1. What this is
@@ -9,15 +9,31 @@ Single-file workout app for one user (`index.html`, plain HTML/CSS/JS, no framew
 
 User purpose: get back in shape (never jogged, about 1.5 years inactive). 28-day home plan from 2026-10-04: strength days plus jog/walk run days. Current run goal about 3.5 km. Their schedule is irregular (late nights in festival season), so missed days must be treated as normal rest, not failure.
 
-## 2. Files in the repo root
-`index.html` app | `sw.js` service worker | `arya-run-hero.webp`, `arya-anatomy-atlas.webp` (images; `build.yml` must copy `arya-*.webp` into `www/`, and `sw.js` SHELL must only list files that exist) | `manifest.webmanifest`, `icon-192/512/512-maskable.png` | `package.json` (Capacitor 6, background-geolocation, local-notifications, filesystem, share) | `capacitor.config.json` | `debug.keystore` (NEVER delete or replace) | `StepsPlugin.java` | `RunService.java` | `RunEnginePlugin.java` | `HANDOFF.md` | `.github/workflows/build.yml`.
+## 2. Repo layout (since v81)
+```
+web/                     the app, served as-is. Capacitor webDir is "web"; CI no longer copies a file list
+  index.html  sw.js  manifest.webmanifest
+  css/liquid.css
+  js/boot.js             loaded last
+  js/ui/                 settings.js home.js motion.js
+  js/features/           readiness progression handsfree animate weekly bodyheat swap backup library routemap builder
+  icons/                 icon-192.png icon-512.png icon-512-maskable.png
+  images/                hero anatomy exercise-masks exercises
+native/java/             MainActivity.java RunService.java RunEnginePlugin.java StepsPlugin.java (CI copies into com/arya/fit/)
+native/res/              arya_splash.xml, arya_splash_icon.xml, ic_launcher(_round).xml (adaptive icon)
+tools/                   check-web.py  android-setup.sh  patch-manifest.sh  patch_splash.py
+signing/debug.keystore   NEVER delete or replace (new key = old app cannot be updated)
+docs/                    HANDOFF.md  THIRD-PARTY-NOTICES.md
+package.json  capacitor.config.json  .gitignore  README.md  .github/workflows/build.yml
+```
+Old flat name -> new path: `*.js` features -> `web/js/features/`; `settings.js home.js motion.js` -> `web/js/ui/`; `boot.js` -> `web/js/boot.js`; `liquid.css` -> `web/css/`; `icon-*.png` -> `web/icons/`; `images/` -> `web/images/`; `index.html sw.js manifest.webmanifest` -> `web/`; `*.java` -> `native/java/`; `debug.keystore` -> `signing/`; docs -> `docs/`. The old "copy list into www/" in `build.yml` is gone: Capacitor reads `web/` directly.
 
-**build.yml must contain all of these** (check the live file every time):
-- Pins `ubuntu-24.04`.
-- `cp RunService.java RunEnginePlugin.java StepsPlugin.java` into `android/app/src/main/java/com/arya/fit/`.
-- Overwrites `MainActivity.java` and calls `registerPlugin(RunEnginePlugin.class)` and `registerPlugin(StepsPlugin.class)` (also requests 120 Hz).
-- Manifest seds: permissions (location, foreground service location + health, ACTIVITY_RECOGNITION, notifications, boot, battery-optimisation request, exact alarm), services (`RunService`, `StepsPlugin$Svc` type `health`), boot receiver (`StepsPlugin$Boot`), and `<queries>` for `android.intent.action.TTS_SERVICE` (needed for native speech on Android 11+).
-- Adaptive icon from the maskable PNG, copies `debug.keystore`, `./gradlew assembleDebug`, uploads artifact `arya-fit-apk`.
+**build.yml must still do all of these** (now implemented by the scripts; check the live files every time):
+- Pins `ubuntu-24.04`; copies `signing/debug.keystore` to `~/.android/`.
+- `python3 tools/check-web.py` (fails fast if index.html / sw.js SHELL / manifest reference a missing file, or hero/atlas/push-ups images are missing).
+- `npx cap add android && npx cap sync android`; version code = run number; `applicationId` com.arya.fit2.
+- `tools/android-setup.sh`: blank native splash (`patch_splash.py`), copies `native/java/*.java` (incl. MainActivity: transparent bars, insets bridge, 120 Hz, `registerPlugin(RunEnginePlugin)` and `registerPlugin(StepsPlugin)`), adaptive icon from the maskable PNG, manifest seds (`tools/patch-manifest.sh`: permissions, `RunService`, `StepsPlugin$Svc` type health, `StepsPlugin$Boot` receiver, TTS `<queries>`).
+- `./gradlew assembleDebug`, apksigner verify, upload artifact `arya-fit-apk`.
 
 ## 3. Current app state
 **UI (redesign finished):** 5 bottom tabs Home, Plan, Run (view id `timers`), Progress, Settings. All new UI uses the `ax-` prefix. Home = status ring card, optional Catch-up chips, Steps card `#ax-hsteps` (only in the APK), and a Today card pinned to the bottom with ONE primary button. Plan = week strip + "All days" grid + day checklist + sticky Close day. Progress = segmented Stats | Body | History | Badges. Settings = 5 collapsible groups (Run, Voice & alerts, Look, Data & backup, Plan tools). Bottom-sheet helper: `axSheet(title,html)` / `axSheetX()`, option rows `.ax-opt`.
@@ -65,9 +81,9 @@ User purpose: get back in shape (never jogged, about 1.5 years inactive). 28-day
 9. Test files (`test/plan.py run.py dock.py steps.py prog.py set.py back.py`) were in earlier zips but are not in the repo; ask for them or recreate from the stub pattern.
 
 ## 7. Delivery workflow
-User sends nothing but screenshots and results. You deliver ONE zip per change with only changed files plus a one-line "where each goes" list:
-- `index.html`, `sw.js`, `*.java`, `package.json` -> repo root via GitHub "Add file > Upload files".
-- `build.yml` -> `.github/workflows/build.yml` via the pencil icon (select all, paste, commit).
+User sends nothing but screenshots and results. Deliver ONE zip per change with only changed files, kept in their repo folders (the zip's folder structure IS the destination), plus a one-line "where each goes" list:
+- `web/...`, `native/...`, `tools/...`, `docs/...`, `package.json` -> same path in the repo via GitHub "Add file > Upload files" (drag the folders) or the pencil icon.
+- `.github/workflows/build.yml` -> pencil icon (select all, paste, commit). GitHub's token cannot edit workflows, so this one is always manual.
 - Then Actions > top run > Artifacts > `arya-fit-apk` > install over the old app (export a backup first in Settings > Data & backup).
 Do not re-explain these steps; the user knows them.
 
@@ -486,3 +502,12 @@ Source: owner screenshot of v65 (ugly pink blur under the status bar, icons unre
 - Settings pages slide in from the right, the menu returns from the left; the Home check-in unfolds. Shared easing for toggles/chips/rows.
 - liquid.css fix: `.btn.pri` (Use this plan, Add and use this plan, Build, Download) is now tinted-glass primary; before it got the neutral glass and white-on-light text was unreadable.
 - Cache `arya-v80`, label v80. Not verified on a phone: slide timing feel, ghost sheet on slow devices.
+
+
+## v81 — Repo reorganized (2026-10-18; headless-tested; CI scripts proven equal to the old inline steps in a dry run, NOT built on real CI yet)
+- Moved everything into `web/ native/ tools/ signing/ docs/` (section 2). `index.html` script/link paths, `sw.js` SHELL, manifest icon paths and `capacitor.config.json` (`webDir` "web") updated. No app code changed. Script order in `index.html` is unchanged.
+- `build.yml` shrank from about 130 lines to about 50: the inline MainActivity, splash, icon and manifest heredocs became real files (`native/`, `tools/`). A dry run against a fake Android project produced a byte-identical `android/` tree to the old inline steps.
+- New `tools/check-web.py` guard (a module loaded by index.html but never uploaded, like the missing `home.js` in v80, now fails the build with the file name).
+- Added `.gitignore` (android/, www/, node_modules/, apk), a real `README.md`.
+- Cache `arya-v81`, label v81.
+- FIRST BUILD WATCH: if CI fails, the likely places are `tools/android-setup.sh` paths or `webDir`. Send the log.

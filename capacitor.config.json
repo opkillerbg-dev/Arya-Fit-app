@@ -1,7 +1,7 @@
 {
  "appId": "com.arya.fit",
  "appName": "Arya Fit",
- "webDir": "www",
+ "webDir": "web",
  "server": {
   "androidScheme": "https"
  },

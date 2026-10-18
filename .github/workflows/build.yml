@@ -13,7 +13,7 @@ jobs:
       - run: npm install
       - run: |
           mkdir -p www
-          cp index.html liquid.css readiness.js progression.js handsfree.js animate.js weekly.js bodyheat.js swap.js backup.js library.js settings.js routemap.js boot.js manifest.webmanifest sw.js icon-*.png www/
+          cp index.html liquid.css home.js builder.js motion.js readiness.js progression.js handsfree.js animate.js weekly.js bodyheat.js swap.js backup.js library.js settings.js routemap.js boot.js manifest.webmanifest sw.js icon-*.png www/
           cp -r images www/images
           test -f www/images/hero/arya-run-hero.webp
           test -f www/images/anatomy/arya-anatomy-atlas.webp
@@ -32,6 +32,30 @@ jobs:
           sed -i -E 's/applicationId "com\.arya\.fit"/applicationId "com.arya.fit2"/' android/app/build.gradle
           grep -q 'applicationId "com.arya.fit2"' android/app/build.gradle
           echo "versionCode=${VERSION_CODE}"
+      - name: Blank native splash (Android 12+ shows launcher icon otherwise)
+        run: |
+          R=android/app/src/main/res
+          mkdir -p $R/values $R/drawable
+          cat > $R/values/arya_splash.xml <<'X'
+          <?xml version="1.0" encoding="utf-8"?>
+          <resources><color name="arya_splash_bg">#eee7d7</color></resources>
+          X
+          cat > $R/drawable/arya_splash_icon.xml <<'X'
+          <?xml version="1.0" encoding="utf-8"?>
+          <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle"><solid android:color="#00000000"/><size android:width="1dp" android:height="1dp"/></shape>
+          X
+          python3 - <<'P'
+          import re,sys
+          p="android/app/src/main/res/values/styles.xml"
+          s=open(p).read()
+          m=re.search(r'<style name="AppTheme\.NoActionBarLaunch"[^>]*>',s)
+          if not m or "Theme.SplashScreen" not in m.group(0):
+              print("::warning::splash style not found or unexpected, native splash left as is"); print(s); sys.exit(0)
+          add='<item name="windowSplashScreenBackground">@color/arya_splash_bg</item><item name="windowSplashScreenAnimatedIcon">@drawable/arya_splash_icon</item><item name="windowSplashScreenAnimationDuration">0</item>'
+          s=s[:m.end()]+add+s[m.end():]
+          s=s.replace('@drawable/splash','@color/arya_splash_bg')
+          open(p,"w").write(s); print(s)
+          P
       - run: cp RunService.java RunEnginePlugin.java StepsPlugin.java android/app/src/main/java/com/arya/fit/
       - run: |
           R=android/app/src/main/res

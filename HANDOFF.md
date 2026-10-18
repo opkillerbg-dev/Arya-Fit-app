@@ -447,3 +447,42 @@ Source: owner screenshot of v65 (ugly pink blur under the status bar, icons unre
 - Tokens `--lq-f1/f2/spec/rim/rim2/sh/glow` switch for dark skins (midnight, sunset, black theme, classic in OS dark). Nested cards do not blur twice. `.ax-pbar` and `.ax-dk` keep their opaque clarity, gain the rim only.
 - Testing gotcha: headless Chromium trips `ax-lite-glass` (efficient mode), which hides all of this; remove the class in tests.
 - Cache `arya-v76`, label v76. Not verified: phone scroll performance with many backdrop-filter layers; if it janks, lower the 20px card blur or add `contain:paint` to `.ax-card`.
+
+
+## v77 — Startup: no native splash flash (2026-10-18; build step dry-run only, NOT built or run on a phone; no Java changed)
+- Problem: Android 12+ always shows its own splash (dark window + launcher icon) before the WebView, then our `#ax-boot` loading screen, then the app.
+- `build.yml` new step "Blank native splash" (after `cap add android`): writes `values/arya_splash.xml` (`arya_splash_bg` #eee7d7 = Old Money bg) and a 1dp transparent `drawable/arya_splash_icon.xml`, then python-patches `AppTheme.NoActionBarLaunch` in `values/styles.xml` (items `windowSplashScreenBackground`, `windowSplashScreenAnimatedIcon`, `windowSplashScreenAnimationDuration=0`, and `android:background` -> the colour). If the style is not found or its parent is not `Theme.SplashScreen` it prints styles.xml and warns, leaving the native splash as is (read the log). Android cannot remove the system splash window itself; this makes it a blank cream frame.
+- `index.html`: tiny script at the top of `<head>` sets `data-skin` from `localStorage aryaApp2.prefs.skin` (default oldmoney), so `#ax-boot` already uses the saved theme colour instead of the classic/dark `--bg` (it used to flash the wrong colour).
+- Limit: native splash colour is fixed cream, so users on Midnight/Sunset still see cream for ~0.2 s. Fix later via a Java-set window background if it bothers.
+- Cache `arya-v77`, label v77.
+
+
+## v78 — Smarter Home order (2026-10-18; headless-tested at 390x844, NOT run on a phone; no Java changed)
+- Home was 7 stacked cards with the actual Today card last (~1100 px down). New `home.js` (copied by `build.yml`, loaded after `settings.js`) MOVES the existing nodes into this order: compact hero (176 px, tagline/bottom row hidden) > `#ax-hnote` run prompt > `#ax-htoday` (Today + Start button) > `#ax-hmiss` catch up > `.ax-stat` progress ring > `#ax-hsteps` > `#ax-readiness-card` > `#ax-hbar` (new toggle bar) > `#ax-hbrain` (Smart Today, collapsed by default via `.ax-cl`) > `#ax-bk-nudge` (backup, last).
+- A MutationObserver on `#ax-v-home` re-applies the order when readiness.js / backup.js insert their nodes (they insert before `#ax-hbrain`). No ids or handlers changed.
+- Toggle bar label switches to "Check-in / Done for today" when `#ax-br-edit` exists. Quick actions > Smart Today check-in now expands it (`window.axBrainOpen`, one-line patch in the `ax-q2` handler).
+- Not changed: Plan, Run, Progress tabs, drawer, Quick actions list, Settings (v75).
+- Cache `arya-v78`, label v78.
+
+
+## v79 — Not a "28-day app" anymore (2026-10-18; headless-tested, NOT run on a phone; no Java changed)
+- Plan length was already dynamic (`setPlan`: `ND=weeks*7`, import allows 1-12 weeks), so this is copy/branding only. No logic changed.
+- Renamed: page `<title>` "Arya Fit - Workout Tracker"; `manifest.webmanifest` name "Arya Fit"; Home sub-line placeholder "Your plan"; built-in default plan name "Home Plan"; generated plans end "(next plan)"; button "Generate next plan"; toast "New plan ready"; Plan tools text "Create the next plan from your progress."; plan-complete message "Your plan is complete."; Settings row subtitle "Plans, next plan, library".
+- `loadApp` renames any saved plan named exactly "28-Day Home Plan" to "Home Plan" (display name only; storage keys such as `arya28v1` and the 28-day default schedule content are unchanged). "Steps per day, last 28 days" is a real 28-day window and stays.
+- Still true: the built-in starter plan is 4 weeks; imported plans can be 1-12 weeks.
+- Cache `arya-v79`, label v79.
+
+
+## v80 — Build my plan + one motion language (2026-10-18; headless-tested at 390x844, NOT run on a phone; no Java changed)
+**Build my plan (`builder.js`, copied by build.yml, loaded after `home.js`)**
+- 3-step sheet using the existing `axSheet`/`axSheetX`: (1) goal Strength / Fit and lean / Run further + level, (2) 3-6 workout days, 4/6/8/12 weeks, start Today or Next Monday, (3) running goal None/3/5/8/10 km, habits, plan name. Entry points: Settings > Plan & exercises (row "Build my plan"), Plans view (panel above "Add a plan"). `window.axBuildPlan()` opens it; `axBuildPlan.test(opts)` returns `{ok,E}` for tests.
+- Generates a normal `arya-plan` object -> `vplan()` -> `APP.plans[id]` -> `activate` like "Add and use this plan". All 960 option combinations validate. Exercises are picked by name from `T0`, so pictures, notes, Swap and progression work. Week templates: 3 = Full A / Full B / Circuit (+ Sun stretch); 4 = Push, Legs, Pull, Circuit (+ Wed stretch); 5 = Push, Legs, Core, Pull, Circuit; 6 = adds Sat stretch. Beginner = easier push/core lists, 2-3 sets, 2 circuit rounds; Intermediate = full lists, 3-4 sets (4 for Strength goal), 3 rounds. Deload (`lightWeeks`) every 4th week.
+- Running: 3 (beginner) or 4 (intermediate) run days per week (+1 for Run further, max 5), placed on rest/stretch/circuit days first; other days get `jog:false`. Jog/walk intervals ramp from 1 min (beginner) or 3 min (intermediate) to a goal-based final jog, walk shrinks to 0 at the end for 8-10 km. "No running" omits `jog` entirely (JKM=0; Run tab just hides the run card).
+- Habits: Water 2-3 L, Protein every meal, Sleep 7-9 h (generic, not the old personal numbers). Athlete name is copied from the current plan.
+
+**Motion (`motion.js`, copied by build.yml, loaded last before routemap/boot; skipped entirely under prefers-reduced-motion)**
+- `go()` is wrapped to set `html[data-dir]` (f/b); tab content slides in from the right going forward and the left going back with a 30 ms stagger (overrides the old up-only rise via `!important`).
+- `axSheetX()` in index.html now calls `window.axSheetGhost()` first: a cloned, id-less copy of the sheet and scrim animates out for 220 ms while the real sheet closes instantly (no logic race). Covers scrim taps and back button too.
+- Settings pages slide in from the right, the menu returns from the left; the Home check-in unfolds. Shared easing for toggles/chips/rows.
+- liquid.css fix: `.btn.pri` (Use this plan, Add and use this plan, Build, Download) is now tinted-glass primary; before it got the neutral glass and white-on-light text was unreadable.
+- Cache `arya-v80`, label v80. Not verified on a phone: slide timing feel, ghost sheet on slow devices.

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
+<script>try{var _a=JSON.parse(localStorage.getItem("aryaApp2")),_s=(_a&&_a.prefs&&_a.prefs.skin)||"oldmoney";if(/^(oldmoney|modern|professional|midnight|sunset)$/.test(_s))document.documentElement.setAttribute("data-skin",_s)}catch(e){document.documentElement.setAttribute("data-skin","oldmoney")}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Arya Sheladiya - 28-Day Workout Tracker</title>
+<title>Arya Fit - Workout Tracker</title>
 <meta name="theme-color" content="#0b1b3f">
 <meta name="color-scheme" content="light dark">
 <meta name="mobile-web-app-capable" content="yes">
@@ -1090,7 +1091,7 @@ html.ax-booting *{transition:none!important;animation:none!important;-webkit-bac
   <div class="ax-hero-bottom"><span><b>01</b> BUILD YOUR BASE</span><span class="ax-hero-orbit" aria-hidden="true">↗</span></div>
 </div>
 <div class="ax-card ax-stat"><div class="ax-ring"><svg viewBox="0 0 96 96" aria-hidden="true"><circle class="ax-rtrack" cx="48" cy="48" r="40"/><circle class="ax-rbar" id="ax-ring" cx="48" cy="48" r="40"/></svg><b id="ax-pct">0%</b></div>
-<div class="ax-statx"><h1 class="ax-h1" id="ax-name">Arya Sheladiya</h1><p class="ax-sub" id="ax-plan">28-day home plan</p>
+<div class="ax-statx"><h1 class="ax-h1" id="ax-name">Arya Sheladiya</h1><p class="ax-sub" id="ax-plan">Your plan</p>
 <div class="ax-nums"><span><b id="ax-done">0</b>days done</span><span><b id="ax-streak">0</b>day streak</span></div></div></div>
 <div id="ax-hmiss"></div><div id="ax-hnote"></div>
 <button class="ax-card ax-stp" id="ax-hsteps" hidden></button>
@@ -1124,8 +1125,8 @@ html.ax-booting *{transition:none!important;animation:none!important;-webkit-bac
 <p><b>iPhone (Safari):</b> tap Share, then Add to Home Screen.<br><b>Android (Chrome):</b> tap the menu, then Add to Home screen or Install app.</p>
 <p>It opens like an app with its own icon and works offline after the first load. Your progress stays saved on the device. Use Export backup now and then.</p></details></div>
 <div class="bk"><p>Reset erases ticks and times for the current plan only.</p><button class="btn w" id="rs">Reset all</button></div></details>
-<details class="ax-card ax-dt"><summary>Plan tools</summary><div class="row"><span><b id="sp-name"></b><em id="sp-sub"></em></span><button class="btn" id="sp-go">Manage plans</button></div><div class="row"><span><b>Next plan</b><em>Create the next 28 days.</em></span></div><button class="ax-btn ax-wide" id="np-go">Generate next 28 days</button></details>
-<details class="ax-card ax-dt" id="ax-credits"><summary>About and credits</summary><div class="ax-cr"><div class="ax-cr-hero"><b>Arya Fit</b><span>v76 · a personal training app</span></div><div class="row"><span><b>Created by</b><em>Arya Sheladiya</em><em>Concept, training plan and design direction.</em></span></div><div class="row"><span><b>Built with</b><em>Capacitor (MIT License) and its Local Notifications, Haptics, Share, Filesystem and Background Geolocation plugins.</em></span></div><div class="row"><span><b>Body map art</b><em>react-native-body-highlighter by ELABBASSI Hicham (MIT License).</em></span></div><p class="ax-cr-foot">Made for my own training. Thanks for using it.</p></div></details>
+<details class="ax-card ax-dt"><summary>Plan tools</summary><div class="row"><span><b id="sp-name"></b><em id="sp-sub"></em></span><button class="btn" id="sp-go">Manage plans</button></div><div class="row"><span><b>Next plan</b><em>Create the next plan from your progress.</em></span></div><button class="ax-btn ax-wide" id="np-go">Generate next plan</button></details>
+<details class="ax-card ax-dt" id="ax-credits"><summary>About and credits</summary><div class="ax-cr"><div class="ax-cr-hero"><b>Arya Fit</b><span>v80 · a personal training app</span></div><div class="row"><span><b>Created by</b><em>Arya Sheladiya</em><em>Concept, training plan and design direction.</em></span></div><div class="row"><span><b>Built with</b><em>Capacitor (MIT License) and its Local Notifications, Haptics, Share, Filesystem and Background Geolocation plugins.</em></span></div><div class="row"><span><b>Body map art</b><em>react-native-body-highlighter by ELABBASSI Hicham (MIT License).</em></span></div><p class="ax-cr-foot">Made for my own training. Thanks for using it.</p></div></details>
 </section>
 
 <section class="ax-view" id="ax-v-plans" hidden><h1 class="disp vt">Plans</h1>
@@ -1534,7 +1535,7 @@ function axTopMore(){var td=todayIdx(),inP=td>=0&&td<ND,xs=st["x"+Dn()];
    +'<button class="ax-opt" id="ax-q2"><b>Smart Today check-in</b><span>Sleep, energy and soreness</span></button><button class="ax-opt" id="ax-q3"><b>Add exercise</b><span>To a day of the current plan</span></button><button class="ax-opt" id="ax-q4"><b>Export backup</b><span>Save everything to a file</span></button>');
   var q=function(id,fn){var e=$(id);if(e)e.onclick=function(){axSheetX();setTimeout(fn,60)}};
   q("ax-q1",function(){cur=Dn();go("plan");render();axClose()});
-  q("ax-q2",function(){go("home");var e=$("ax-hbrain");if(e)e.scrollIntoView({behavior:"smooth",block:"center"})});
+  q("ax-q2",function(){go("home");window.axBrainOpen&&axBrainOpen();var e=$("ax-hbrain");if(e)e.scrollIntoView({behavior:"smooth",block:"center"})});
   q("ax-q3",function(){cur=Dn();go("plan");render();axAdd()});q("ax-q4",function(){$("ex").click()})}
 $("ax-tmenu").onclick=function(){axDrawer(true)};$("ax-dscrim").onclick=function(){axDrawer(false)};
 $("ax-tgo").onclick=function(){hx("med");cur=Dn();go("plan");render();window.scrollTo(0,0)};
@@ -1592,11 +1593,11 @@ function runsGPX(){var R=axRoutes(),o='<?xml version="1.0" encoding="UTF-8"?>\n<
 function ceUI(){var sl=$("ax-ced");if(!sl)return;var v=sl.value;sl.innerHTML=KEYS.filter(function(k2){return P.days[k2].type!="rest"}).map(function(k2){return'<option value="'+k2+'">'+escp(P.days[k2].title)+'</option>'}).join("");if(v)sl.value=v;if(!sl.value&&sl.options.length)sl.selectedIndex=0;
   var d=P.days[sl.value];$("ax-cel").innerHTML=d?d.exercises.map(function(e,i){return'<div class="ax-lrow"><span>'+escp(e.name)+' <small>'+(e.sets&&d.type=="strength"?e.sets+' x ':'')+escp(e.reps)+'</small></span><button class="ax-btn" data-x="'+i+'">Remove</button></div>'}).join(""):""}
 function nextPlan(){var n=JSON.parse(JSON.stringify(P)),L=lvl(),b=IVS[L]||[360,60],last=L>=IVS.length-1,d=dt(ND),pad=function(x){return(x<10?"0":"")+x};
-  n.start=d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());n.name=String(P.name||"Plan").replace(/ \(next.*$/,"")+" (next 28 days)";
+  n.start=d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());n.name=String(P.name||"Plan").replace(/ \(next.*$/,"")+" (next plan)";
   if(n.jog){n.jog.km=JKM+(last?1:0);n.jog.weeks=[0,1,2,3].map(function(w){return[Math.min(1500,b[0]+w*120+(last?120:0)),Math.max(30,Math.round((b[1]||60)-w*15))]})}
   KEYS.forEach(function(k2){var x=n.days[k2];if(x.type=="strength")x.exercises.forEach(function(e){e.sets=Math.min(5,(e.sets||2)+1)})});
   var r=vplan(n);if(!r.plan){toast("Couldn't build the next plan.");return}
-  var id="n"+Date.now().toString(36).slice(-6);APP.plans[id]={plan:r.plan,st:{}};PR.lvl=null;PR.lrd=null;save();activate(id);save();toast("New plan ready: next 28 days")}
+  var id="n"+Date.now().toString(36).slice(-6);APP.plans[id]={plan:r.plan,st:{}};PR.lvl=null;PR.lrd=null;save();activate(id);save();toast("New plan ready")}
 var ENG=window.Capacitor&&Capacitor.isNativePlatform&&Capacitor.isNativePlatform()&&Capacitor.Plugins&&Capacitor.Plugins.RunEngine;
 function engStart(keep){if(!ENG||!TM)return;var sq=TM.seq||[0,0],cn=sq[0]>=86400;TM.eng=1;TM.erev=0;TM.rn=0;
   var o={jog:cn?0:sq[0],walk:cn?0:sq[1],trk:true,voice:PR.voi!==0,acc:Math.round(el_()*1000),paused:!TM.run,phase:TM.ph||0,hold:!!TM.hold,pstart:TM.pstart||0,round:TM.round||1,jt:TM.jt||0,wt:TM.wt||0,dist:keep?(TM.dist||0):0};
@@ -1611,7 +1612,7 @@ function engSync(){if(!ENG||!TM||!TM.eng||TM.sy||Date.now()-(TM.sat||0)<700)retu
   }).catch(function(){if(TM)TM.sy=0})}
 var _apz=apz;apz=function(o){_apz(o);engPush()};
 function axSheet(t,h){axGuard();$("ax-sht").textContent=t;$("ax-shb").innerHTML=h;var bg=$("ax-shbg"),sh=$("ax-sh");bg.hidden=false;sh.hidden=false;sh.scrollTop=0;document.body.classList.add("ax-sheet-open");}
-function axSheetX(){var bg=$("ax-shbg"),sh=$("ax-sh");bg.hidden=true;sh.hidden=true;$("ax-shb").innerHTML="";document.body.classList.remove("ax-sheet-open")}
+function axSheetX(){try{window.axSheetGhost&&axSheetGhost()}catch(e){}var bg=$("ax-shbg"),sh=$("ax-sh");bg.hidden=true;sh.hidden=true;$("ax-shb").innerHTML="";document.body.classList.remove("ax-sheet-open")}
 /* Animate only stable summary numbers once; never rewrite live run timers or GPS metrics. */
 function axCountUpVisible(){if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)return;document.querySelectorAll(".ax-nums b,.ax-stat b,[data-count-animate]").forEach(function(el){if(el.dataset.axCounted||!el.getClientRects().length)return;var raw=(el.textContent||"").trim(),m=raw.match(/^([+-]?\d+(?:,\d{3})*(?:\.\d+)?)(.*)$/);if(!m)return;var target=Number(m[1].replace(/,/g,""));if(!Number.isFinite(target)||Math.abs(target)>1e7)return;el.dataset.axCounted="1";var suffix=m[2],start=0,begin=performance.now(),duration=460;function tick(now){var p=Math.min(1,(now-begin)/duration),ease=1-Math.pow(1-p,3),v=start+(target-start)*ease,dec=m[1].includes(".")?(m[1].split(".")[1]||"").length:0;el.textContent=v.toLocaleString(undefined,{minimumFractionDigits:dec,maximumFractionDigits:dec})+suffix;if(p<1)requestAnimationFrame(tick);else el.textContent=raw}requestAnimationFrame(tick)})}
 if("requestAnimationFrame" in window){var axCountQueued=0;function axQueueCountUp(){if(axCountQueued)return;axCountQueued=1;requestAnimationFrame(function(){axCountQueued=0;axCountUpVisible()})}document.addEventListener("DOMContentLoaded",axQueueCountUp);var axCountObserver=new MutationObserver(axQueueCountUp);axCountObserver.observe(document.body,{childList:true,subtree:true});}
@@ -1699,7 +1700,7 @@ function bindExtra(){
   $("ax-wprev").onclick=function(){if(cur>=7){cur-=7;render()}};
   $("ax-wnext").onclick=function(){var n=cur+7;if(n>ND-1)n=ND-1;if(Math.floor(n/7)>Math.floor(cur/7)){cur=n;render()}};
   $("ax-pclose").onclick=axClose;$("ax-pmore").onclick=axMore;$("ax-shbg").onclick=axSheetX;$("ax-shx").onclick=axSheetX;
-  var npa=0;$("np-go").onclick=function(){var b=this;if(!npa){npa=1;b.textContent="Tap again to create the next plan";setTimeout(function(){npa=0;b.textContent="Generate next 28 days"},3500);return}npa=0;b.textContent="Generate next 28 days";nextPlan()};
+  var npa=0;$("np-go").onclick=function(){var b=this;if(!npa){npa=1;b.textContent="Tap again to create the next plan";setTimeout(function(){npa=0;b.textContent="Generate next plan"},3500);return}npa=0;b.textContent="Generate next plan";nextPlan()};
   $("dfs").onclick=function(){$("dock").classList.remove("ax-fs","ax-mo")};
   $("ax-dmore").onclick=function(){$("dock").classList.add("ax-mo")};$("ax-dmx").onclick=function(){$("dock").classList.remove("ax-mo")};$("drs").addEventListener("click",function(){$("dock").classList.remove("ax-mo")});
   $("rm-t").value=PR.rmt||"";$("rm-t").onchange=function(){PR.rmt=this.value;save();remind()};
@@ -1736,7 +1737,7 @@ function smartBrainUI(){
   var rows=[ ["s","Sleep"],["e","Energy"],["o","Soreness"] ];
   var h='<div class="ax-card ax-br-card"><div class="ax-br-head"><div><p class="ax-cap">SMART TODAY</p><h2>How are you feeling?</h2></div><span class="ax-tag">On-device</span></div><p class="ax-cap" style="margin:0">Three quick taps help tailor today. Your answers stay on this phone.</p>';
   if(!done||BR_EDIT)rows.forEach(function(r){h+='<div class="ax-br-row"><span class="ax-br-label">'+r[1]+'</span><div class="ax-br-options">'+names[r[0]].map(function(n,i){return '<button class="ax-br-opt'+(c[r[0]]===i?' on':'')+'" data-br-k="'+r[0]+'" data-br-v="'+i+'" aria-pressed="'+(c[r[0]]===i)+'">'+n+'</button>'}).join('')+'</div></div>'});
-  if(done){if(!BR_EDIT){var soreLabel=names.o[c.o];try{var ms=calcM();if(c.o===0&&Object.keys(ms).some(function(m){return !!ms[m].s}))soreLabel="Some (muscle log)"}catch(e){}h+='<p class="ax-cap" style="margin:0">Sleep: '+names.s[c.s]+' · Energy: '+names.e[c.e]+' · Soreness: '+soreLabel+'</p>'}var pick=td>ND-1?{label:"Keep it flexible",why:"Your 28-day plan is complete. Choose a comfortable activity based on your sleep, energy and soreness.",mode:"Light"}:smartBrainPick(Math.max(0,Math.min(ND-1,td)),c);h+='<div class="ax-br-result"><span class="ax-cap">TODAY’S RECOMMENDATION</span><b>'+pick.label+'</b><p>'+pick.why+'</p></div>';var brainSrc=axSrc(Math.max(0,Math.min(ND-1,td)));if((pick.mode==="Rest"||pick.mode==="Walk-only")&&td>=0&&td<ND&&brainSrc>=0&&!T[wdk(brainSrc)].r)h+='<button class="ax-btn ax-pri" id="ax-br-preview">Preview recovery reschedule</button><p class="ax-cap">Nothing changes until you review and apply the new schedule.</p>';h+='<button class="ax-br-opt" id="ax-br-edit">'+(BR_EDIT?'Done':'Change answers')+'</button><p class="ax-br-foot">'+((window.axRdActive&&axRdActive())?"Today's plan was adjusted by your readiness. Finish it and the day counts as complete.":"Suggestion only — your plan is unchanged. You choose what feels right.")+'</p>'}
+  if(done){if(!BR_EDIT){var soreLabel=names.o[c.o];try{var ms=calcM();if(c.o===0&&Object.keys(ms).some(function(m){return !!ms[m].s}))soreLabel="Some (muscle log)"}catch(e){}h+='<p class="ax-cap" style="margin:0">Sleep: '+names.s[c.s]+' · Energy: '+names.e[c.e]+' · Soreness: '+soreLabel+'</p>'}var pick=td>ND-1?{label:"Keep it flexible",why:"Your plan is complete. Choose a comfortable activity based on your sleep, energy and soreness.",mode:"Light"}:smartBrainPick(Math.max(0,Math.min(ND-1,td)),c);h+='<div class="ax-br-result"><span class="ax-cap">TODAY’S RECOMMENDATION</span><b>'+pick.label+'</b><p>'+pick.why+'</p></div>';var brainSrc=axSrc(Math.max(0,Math.min(ND-1,td)));if((pick.mode==="Rest"||pick.mode==="Walk-only")&&td>=0&&td<ND&&brainSrc>=0&&!T[wdk(brainSrc)].r)h+='<button class="ax-btn ax-pri" id="ax-br-preview">Preview recovery reschedule</button><p class="ax-cap">Nothing changes until you review and apply the new schedule.</p>';h+='<button class="ax-br-opt" id="ax-br-edit">'+(BR_EDIT?'Done':'Change answers')+'</button><p class="ax-br-foot">'+((window.axRdActive&&axRdActive())?"Today's plan was adjusted by your readiness. Finish it and the day counts as complete.":"Suggestion only — your plan is unchanged. You choose what feels right.")+'</p>'}
   else h+='<p class="ax-br-foot">Complete all three to get a recommendation. You can change answers anytime.</p>';
   h+='</div>';el.innerHTML=h;
   el.querySelectorAll('[data-br-k]').forEach(function(b){b.onclick=function(){var a=PR.brain=PR.brain||{},d=a[today]||{};d[b.dataset.brK]=+b.dataset.brV;a[today]=d;var ks=Object.keys(a).sort();while(ks.length>400)delete a[ks.shift()];save();smartBrainUI()}});
@@ -1802,7 +1803,7 @@ function defaultPlan(){var K=["mon","tue","wed","thu","fri","sat","sun"],days={}
   T0.forEach(function(t,i){var ty=t.r?"rest":t.m?"mobility":t.c?"circuit":"strength";
     var d={title:t.n,short:t.a,focus:t.s,icon:["dumbbell","run","flame","dumbbell","flame","stretch","moon"][i],type:ty,jogNote:t.j,exercises:t.x.map(function(e){var o={name:e[0],reps:e[2],note:e[3]};if(ty=="strength")o.sets=e[1];return o})};
     if(t.c)d.rounds=t.c;days[K[i]]=d});
-  return {format:"arya-plan",version:1,name:"28-Day Home Plan",athlete:"Arya Sheladiya",start:"2026-10-04",weeks:4,lightWeeks:[4],lightSets:2,
+  return {format:"arya-plan",version:1,name:"Home Plan",athlete:"Arya Sheladiya",start:"2026-10-04",weeks:4,lightWeeks:[4],lightSets:2,
     jog:{label:"5 km run and walk",km:5,weeks:[[60,120],[120,60],[240,60],[360,60]]},
     habits:[{name:"Water",badge:"3-4 L",note:"More on hot days and jog days.",icon:"drop"},{name:"Protein",badge:"90-115 g",note:"Eggs, paneer, dal, curd, soya chunks, chana, sprouts.",icon:"egg"},{name:"Sleep",badge:"8-9 h",note:"Muscle is built during recovery.",icon:"moon"}],days:days}}
 function vplan(o){var E=[],pl={};
@@ -1854,6 +1855,7 @@ function loadApp(){var a=null;try{a=JSON.parse(localStorage.getItem(KEY2))}catch
     var pr={};if(old._snd===0||old._snd===1)pr.snd=old._snd;if(old._auto===0||old._auto===1)pr.auto=old._auto;if(old._gps===0||old._gps===1)pr.gps=old._gps;
     a={v:2,active:"default",prefs:pr,plans:{"default":{plan:defaultPlan(),st:{}}}};
     var pg=clean(old,28);a.plans["default"].st=pg}
+  Object.keys(a.plans||{}).forEach(function(k){var pp=a.plans[k]&&a.plans[k].plan;if(pp&&pp.name==="28-Day Home Plan")pp.name="Home Plan"});
   APP=a;PR=APP.prefs=APP.prefs||{};if(APP.plans[APP.active]){if(!APP.plans[APP.active].schedMap&&Array.isArray(PR.schedMap))APP.plans[APP.active].schedMap=PR.schedMap.slice();if(!APP.plans[APP.active].workoutEdits&&PR.workoutEdits&&typeof PR.workoutEdits==="object")APP.plans[APP.active].workoutEdits=PR.workoutEdits;delete PR.schedMap;delete PR.workoutEdits;if(!APP.plans[APP.active].routes&&PR.routes&&typeof PR.routes==="object")APP.plans[APP.active].routes=PR.routes;delete PR.routes}if(!PR.skin)PR.skin="oldmoney";if(typeof PR.gls!=="boolean")PR.gls=true;activate(APP.active)}
 var PEND=null;
 function ticksOf(e){var n=0;for(var k2 in e.st)if(/^\d+:/.test(k2))n++;return n}
@@ -2309,6 +2311,9 @@ body.ax-drawer-open{overflow:hidden}
 <script src="backup.js"></script>
 <script src="library.js"></script>
 <script src="settings.js"></script>
+<script src="home.js"></script>
+<script src="builder.js"></script>
+<script src="motion.js"></script>
 <script src="routemap.js"></script>
 <script src="boot.js"></script>
 </body></html>

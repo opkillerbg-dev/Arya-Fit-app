@@ -11,9 +11,9 @@
     {k:"look",t:"Appearance",s:function(){var sk=String((window.PR&&PR.skin)||"oldmoney").toLowerCase();var nm={oldmoney:"Old Money",classic:"Classic",modern:"Modern",professional:"Professional",midnight:"Midnight",sunset:"Sunset"};return (nm[sk]||cap(sk))+(PR.gls===0?"":" · glass")+(PR.amo?" · black":"")}},
     {k:"run",t:"Run & tracking",s:function(){return (PR.gps===0?"GPS off":"GPS on")+" · goal "+(PR.goal?PR.goal+" km":"plan")}},
     {k:"alert",t:"Sound & feedback",s:function(){return (PR.voi===0?"Voice off":"Voice on")+" · "+(PR.hap===0?"haptics off":"haptics on")}},
-    {k:"plan",t:"Plan & exercises",s:function(){var n=$("sp-name");return (n&&n.textContent)||"Plans, next 28 days, library"}},
+    {k:"plan",t:"Plan & exercises",s:function(){var n=$("sp-name");return (n&&n.textContent)||"Plans, next plan, library"}},
     {k:"data",t:"Data & backup",s:function(){return PR.lbk?"Last backup "+Math.floor((Date.now()-PR.lbk)/864e5)+" d ago":"No backup yet"}},
-    {k:"about",t:"About",s:function(){return "Arya Fit · v76"}}
+    {k:"about",t:"About",s:function(){return "Arya Fit · v80"}}
   ];
   function cap(s){return s.charAt(0).toUpperCase()+s.slice(1)}
   function ic(n,c){return '<svg class="ax-ic'+(c?" "+c:"")+'"><use href="#'+n+'"/></svg>'}

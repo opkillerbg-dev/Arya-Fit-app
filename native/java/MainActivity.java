@@ -32,7 +32,7 @@ public class MainActivity extends BridgeActivity {
     } catch(Throwable t){}
   }
   @Override public void onCreate(Bundle b){
-    registerPlugin(RunEnginePlugin.class); registerPlugin(StepsPlugin.class); super.onCreate(b);
+    registerPlugin(RunEnginePlugin.class); registerPlugin(StepsPlugin.class); registerPlugin(AppIconPlugin.class); super.onCreate(b);
     WindowManager.LayoutParams p=getWindow().getAttributes(); p.preferredRefreshRate=120f; getWindow().setAttributes(p);
     try {
       final Window w=getWindow();

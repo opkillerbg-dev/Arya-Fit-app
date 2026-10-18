@@ -13,7 +13,7 @@
     {k:"alert",t:"Sound & feedback",s:function(){return (PR.voi===0?"Voice off":"Voice on")+" · "+(PR.hap===0?"haptics off":"haptics on")}},
     {k:"plan",t:"Plan & exercises",s:function(){var n=$("sp-name");return (n&&n.textContent)||"Plans, next plan, library"}},
     {k:"data",t:"Data & backup",s:function(){return PR.lbk?"Last backup "+Math.floor((Date.now()-PR.lbk)/864e5)+" d ago":"No backup yet"}},
-    {k:"about",t:"About",s:function(){return "Arya Fit · v81"}}
+    {k:"about",t:"About",s:function(){return "Arya Fit · v84"}}
   ];
   function cap(s){return s.charAt(0).toUpperCase()+s.slice(1)}
   function ic(n,c){return '<svg class="ax-ic'+(c?" "+c:"")+'"><use href="#'+n+'"/></svg>'}
@@ -53,6 +53,16 @@
     var exi=$("t-exi"),exiRow=exi&&exi.closest(".row");
     drain(look,pLook);
     if(exiRow)pLook.querySelector(".ax-sp-card").appendChild(exiRow);
+    /* Smooth mode: lighter effects for a steadier frame rate (stored outside the app data, applied before first paint) */
+    var lr=document.createElement("label");lr.className="row";
+    lr.innerHTML='<span><b>Smooth mode</b><em>Lighter effects for a steadier frame rate. Turn on if the app feels laggy.</em></span><input class="sw2" type="checkbox" id="t-lite">';
+    var card0=pLook.querySelector(".ax-sp-card");card0.insertBefore(lr,card0.firstChild);
+    var tl=lr.querySelector("#t-lite");try{tl.checked=localStorage.getItem("axLite")==="1"}catch(e){}
+    tl.addEventListener("change",function(){
+      var r=document.documentElement;
+      try{localStorage.setItem("axLite",tl.checked?"1":"0");localStorage.setItem("axLiteAuto","user")}catch(e){}
+      r.classList.toggle("ax-lite-glass",tl.checked);r.setAttribute("data-glass-mode",tl.checked?"efficient":"full");
+    });
     drain(run,pRun);
     drain(voice,pAl);
     drain(tools,pPl);

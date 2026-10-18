@@ -19,11 +19,16 @@ web/                  the whole app, served as-is (Capacitor webDir)
 native/               Android side, copied into the generated project by CI
   java/               MainActivity, RunService, RunEnginePlugin, StepsPlugin
   res/                splash and adaptive-icon resources
-tools/                CI helpers: check-web.py, android-setup.sh, patch-manifest.sh, patch_splash.py
+tools/                CI helpers: check-web.py, android-setup.sh, patch-manifest.sh, patch_splash.py, patch_icons.py
+                      icons/ = logo generator (make_icons.py + variants.json), run it to rebuild all icons
 signing/debug.keystore  fixed debug key so every build has the same signature (do not delete or replace)
 docs/                 HANDOFF.md (state, rules, change log), THIRD-PARTY-NOTICES.md
 .github/workflows/build.yml   builds the APK on every push
 ```
+
+## Update the repo (one file)
+
+Upload a single `update.zip` (repo files at the zip root, optional `DELETE.txt` listing paths to remove) to the repo root. `.github/workflows/apply-update.yml` unpacks it into the right folders, commits, deletes the zip and starts the build. Workflow files themselves must still be edited by hand.
 
 ## Build
 

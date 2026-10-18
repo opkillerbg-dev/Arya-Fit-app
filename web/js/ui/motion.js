@@ -32,21 +32,35 @@
   };
 
   /* 3. settings pages push in, menu returns from the left; check-in unfolds */
+  /* storm breaker: if animations are being re-triggered absurdly fast, something is looping. Stop all observers instead of freezing the app. */
+  var obs=[],storm=0,stormT=Date.now(),dead=false;
+  function kill(){dead=true;obs.forEach(function(o){try{o.disconnect()}catch(e){}})}
   function once(el,cls){
+    if(dead)return;
+    var now=Date.now();if(now-stormT>1000){stormT=now;storm=0}
+    if(++storm>60){kill();return}
     el.classList.remove(cls);void el.offsetWidth;el.classList.add(cls);
     var done=function(){el.classList.remove(cls);el.removeEventListener("animationend",done)};
     el.addEventListener("animationend",done);setTimeout(done,500);
   }
-  new MutationObserver(function(ms){
+  var mo1=new MutationObserver(function(ms){
     ms.forEach(function(m){
       var t=m.target;if(!t||t.hidden)return;
       if(t.classList.contains("ax-sp"))once(t,"ax-m-r");
       else if(t.id==="ax-sm")once(t,"ax-m-l");
     });
-  }).observe(document.documentElement,{attributes:true,attributeFilter:["hidden"],subtree:true});
+  });
+  mo1.observe(document.documentElement,{attributes:true,attributeFilter:["hidden"],subtree:true});obs.push(mo1);
   function watchBrain(){
     var b=$("ax-hbrain");if(!b){return}
-    new MutationObserver(function(){if(!b.classList.contains("ax-cl"))once(b,"ax-m-drop")}).observe(b,{attributes:true,attributeFilter:["class"]});
+    /* react only to the collapsed -> open change. (The old version re-fired on its own animation class: an endless loop that froze the app.) */
+    var wasCl=b.classList.contains("ax-cl");
+    var mo2=new MutationObserver(function(){
+      var isCl=b.classList.contains("ax-cl");
+      if(wasCl&&!isCl)once(b,"ax-m-drop");
+      wasCl=isCl;
+    });
+    mo2.observe(b,{attributes:true,attributeFilter:["class"]});obs.push(mo2);
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",watchBrain);else watchBrain();
 
@@ -69,6 +83,9 @@
    "@keyframes ax-m-so{from{opacity:1;transform:none}to{opacity:0;transform:translate3d(0,34px,0)}}@keyframes ax-m-bo{from{opacity:1}to{opacity:0}}"+
    /* small shared polish: toggles, chips, rows ease instead of snapping */
    ".sw2,.ax-chip,.ax-opt,.ax-lr,.ax-btn{transition:background-color .2s ease,border-color .2s ease,box-shadow .2s ease,transform .14s ease,opacity .2s ease}"+
-   ".ax-opt:active,.ax-lr:active{transform:scale(.985)}";
+   ".ax-opt:active,.ax-lr:active{transform:scale(.985)}"+
+   /* Smooth mode: no stagger, shorter slides */
+   "html.ax-lite-glass .ax-view.ax-in>*{animation-delay:0ms!important;animation-duration:.18s!important}"+
+   "html.ax-lite-glass .ax-m-r,html.ax-lite-glass .ax-m-l,html.ax-lite-glass .ax-m-drop{animation-duration:.16s!important}";
   document.head.appendChild(css);
 })();

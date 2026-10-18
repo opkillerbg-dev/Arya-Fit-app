@@ -1,0 +1,15 @@
+{
+  "mark": {
+    "stroke": "M30 80 L52 28 L68 63 Q72 72 81 79",
+    "sw": 9.5,
+    "dot": [74, 33.5, 6.8]
+  },
+  "variants": [
+    {"id": "oldmoney",     "name": "Old Money",    "bg": ["#2f5a46", "#17301f"], "ink": "#f3ead7", "accent": "#d9b76a", "glass": false},
+    {"id": "midnight",     "name": "Midnight",     "bg": ["#0e1c33", "#050a14"], "ink": "#eafff7", "accent": "#4fe3c1", "glass": false},
+    {"id": "sunset",       "name": "Sunset",       "bg": ["#4a1d33", "#241020"], "ink": "#fff1e6", "accent": "#ff8a4c", "glass": false},
+    {"id": "classic",      "name": "Classic",      "bg": ["#17358a", "#091a45"], "ink": "#ffffff", "accent": "#ffc83d", "glass": false},
+    {"id": "professional", "name": "Professional", "bg": ["#ffffff", "#dfe8f5"], "ink": "#1b4bb8", "accent": "#e8793a", "glass": false},
+    {"id": "glass",        "name": "Glass",        "bg": ["#6ea8ff", "#a47bff"], "ink": "#ffffff", "accent": "#ffe9a8", "glass": true}
+  ]
+}

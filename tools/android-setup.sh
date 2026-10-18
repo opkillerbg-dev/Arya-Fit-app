@@ -14,12 +14,24 @@ python3 tools/patch_splash.py "$R/values/styles.xml"
 # 2. Java: the three plugins/services plus our MainActivity (overwrites the template one)
 cp native/java/*.java "$A/java/com/arya/fit/"
 
-# 3. adaptive launcher icon from the maskable PNG
-mkdir -p "$R/drawable-nodpi" "$R/mipmap-anydpi-v26"
-cp web/icons/icon-512-maskable.png "$R/drawable-nodpi/ic_bg.png"
-cp native/res/mipmap-anydpi-v26/ic_launcher.xml "$R/mipmap-anydpi-v26/ic_launcher.xml"
-cp native/res/mipmap-anydpi-v26/ic_launcher_round.xml "$R/mipmap-anydpi-v26/ic_launcher_round.xml"
+# 3. launcher icons: 6 selectable adaptive icons (native/res, made by tools/icons/make_icons.py).
+#    The default @mipmap/ic_launcher is a copy of the first one (Old Money).
+cp -r native/res/drawable-nodpi "$R/"
+mkdir -p "$R/mipmap-anydpi-v26"
+cp native/res/mipmap-anydpi-v26/*.xml "$R/mipmap-anydpi-v26/"
+cp "$R/mipmap-anydpi-v26/ic_launcher_oldmoney.xml" "$R/mipmap-anydpi-v26/ic_launcher.xml"
+cp "$R/mipmap-anydpi-v26/ic_launcher_oldmoney.xml" "$R/mipmap-anydpi-v26/ic_launcher_round.xml"
+for d in mdpi hdpi xhdpi xxhdpi xxxhdpi; do
+  mkdir -p "$R/mipmap-$d"
+  cp native/res/mipmap-$d/ic_launcher_*.png "$R/mipmap-$d/"
+  cp native/res/mipmap-$d/ic_launcher_oldmoney.png "$R/mipmap-$d/ic_launcher.png"
+  cp native/res/mipmap-$d/ic_launcher_oldmoney.png "$R/mipmap-$d/ic_launcher_round.png"
+done
+# Capacitor's template adaptive pieces would clash with ours
+rm -f "$R"/mipmap-*/ic_launcher.webp "$R"/mipmap-*/ic_launcher_round.webp
+rm -f "$R"/drawable*/ic_launcher_foreground.xml "$R"/drawable*/ic_launcher_background.xml "$R"/mipmap-*/ic_launcher_foreground.png
 
 # 4. manifest: permissions, services, boot receiver, TTS queries
 bash tools/patch-manifest.sh "$A/AndroidManifest.xml"
+python3 tools/patch_icons.py "$A/AndroidManifest.xml"
 echo "android-setup: done"

@@ -23,15 +23,21 @@
   function label(){
     var b=$("ax-hbrain"),em=bar&&bar.querySelector("em");if(!b||!em)return;
     var done=!!b.querySelector("#ax-br-edit");
-    em.textContent=open?"Tap to hide":(done?"Done for today · tap to view":"Smart Today · 3 quick taps tailor your session");
-    bar.querySelector("b").textContent=done?"Check-in":"How are you feeling?";
+    var t1=open?"Tap to hide":(done?"Done for today · tap to view":"Smart Today · 3 quick taps tailor your session"),
+        t2=done?"Check-in":"How are you feeling?",bb=bar.querySelector("b");
+    if(em.textContent!==t1)em.textContent=t1;
+    if(bb.textContent!==t2)bb.textContent=t2;
   }
   window.axBrainOpen=function(){setOpen(true)};
 
   var ORDER=["ax-hnote","ax-htoday","ax-hmiss","ax-stat","ax-hsteps","ax-readiness-card","ax-hbar","ax-hbrain","ax-bk-nudge"];
   function node(k){return k==="ax-stat"?home.querySelector(".ax-stat"):$(k)}
+  var calls=0,callT=Date.now(),mo=null;
   function arrange(){
-    if(busy)return;busy=true;
+    if(busy)return;
+    var now=Date.now();if(now-callT>1000){callT=now;calls=0}
+    if(++calls>80){if(mo)mo.disconnect();return}   /* storm breaker */
+    busy=true;
     try{
       var hero=home.querySelector(".ax-hero-art"),prev=hero;
       ensureBar();
@@ -49,10 +55,11 @@
   }
 
   /* re-run after renders / late inserts (readiness card, backup nudge) */
-  new MutationObserver(function(m){
+  mo=new MutationObserver(function(m){
     if(busy)return;
     for(var i=0;i<m.length;i++){if(m[i].target===home){arrange();return}if(m[i].target.id==="ax-hbrain"){label();}}
-  }).observe(home,{childList:true,subtree:true});
+  });
+  mo.observe(home,{childList:true,subtree:true});
 
   var css=document.createElement("style");
   css.textContent=

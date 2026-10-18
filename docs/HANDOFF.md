@@ -80,12 +80,13 @@ Old flat name -> new path: `*.js` features -> `web/js/features/`; `settings.js h
 8. Run-mode steps still use devicemotion/GPS (they stop with the screen off unless the native engine runs). Optional improvement: feed run steps from the hardware counter.
 9. Test files (`test/plan.py run.py dock.py steps.py prog.py set.py back.py`) were in earlier zips but are not in the repo; ask for them or recreate from the stub pattern.
 
-## 7. Delivery workflow
-User sends nothing but screenshots and results. Deliver ONE zip per change with only changed files, kept in their repo folders (the zip's folder structure IS the destination), plus a one-line "where each goes" list:
-- `web/...`, `native/...`, `tools/...`, `docs/...`, `package.json` -> same path in the repo via GitHub "Add file > Upload files" (drag the folders) or the pencil icon.
-- `.github/workflows/build.yml` -> pencil icon (select all, paste, commit). GitHub's token cannot edit workflows, so this one is always manual.
-- Then Actions > top run > Artifacts > `arya-fit-apk` > install over the old app (export a backup first in Settings > Data & backup).
-Do not re-explain these steps; the user knows them.
+## 7. Delivery workflow (since v84)
+Every change is delivered as ONE file: `update.zip`, with the repo files at the zip root in their real folders (`web/...`, `native/...`, `tools/...`, `docs/...`) and an optional `DELETE.txt` (one repo path per line) for files to remove. The user uploads it to the repo root with GitHub "Add file > Upload files". The workflow `.github/workflows/apply-update.yml` then unpacks it over the repo, applies DELETE.txt, commits, removes update.zip and starts the APK build with `gh workflow run build.yml`. Nothing else for the user to do except download the APK from Actions > latest run > Artifacts (export a backup first: Settings > Data & backup).
+- The zip must be named exactly `update.zip`. Files at the root or inside one wrapper folder both work.
+- `.github/` inside the zip is IGNORED (GitHub tokens cannot edit workflow files). If `build.yml` or another workflow changes, give it as a separate file and tell the user to paste it with the pencil icon. Rare.
+- `build.yml` ignores pushes that only touch `update.zip`, `docs/**` or `README.md`, so doc-only updates do not trigger builds.
+- Always build the zip from the repo tree, always include HANDOFF.md changes, always list stale files in DELETE.txt (renamed or removed files), never make the user create folders.
+Do not re-explain this to the user; they know it.
 
 ## 8. Roadmap (see ARYA-FIT-VISION.md for detail)
 1. **Smart brain (no API):** daily check-in (sleep, energy, soreness), "Smart Today" (full / light / walk-only / rest with a one-line reason), Busy mode (date ranges, "late night tonight"; protects streak, shifts plan), auto-reschedule skipped days, sleep-aware nudges, weekly auto-adjust, recovery gate from body-map soreness.
@@ -544,3 +545,8 @@ What shipped:
 - Deleted vs v83: `native/res/mipmap-anydpi-v26/ic_launcher.xml` and `ic_launcher_round.xml` (old maskable-PNG based). Delete them from the repo, otherwise they are copied and then overwritten (harmless but untidy).
 - Known Android behaviour: the launcher can take a few seconds to show the new icon, and some launchers briefly remove the icon. Themed icons (Android 13+) need the user to enable "Themed icons" in wallpaper settings.
 - Cache `arya-v84`, label v84.
+
+
+## Tooling note (after v84): one-file updates (2026-10-18; simulated end to end in a throwaway git repo, never run on real GitHub yet)
+- Added `.github/workflows/apply-update.yml` (trigger: push touching `update.zip`; permissions contents+actions write). Tested by simulation: files copied into their folders, DELETE.txt applied (unsafe paths like `../x` skipped), `.github/` in the zip skipped with a warning, update.zip removed, commit pushed, build started. Pushes made with GITHUB_TOKEN do not trigger other workflows, so the workflow starts the build itself via `gh workflow run build.yml` (build.yml has `workflow_dispatch`).
+- First-time setup by the user: create `.github/workflows/apply-update.yml` once (Add file > Create new file, paste), paste the new `build.yml` (adds `paths-ignore`).

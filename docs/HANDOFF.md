@@ -1,7 +1,7 @@
 # Arya Fit: HANDOFF (latest, consolidated)
 
 **Read order:** `ARYA-FIT-VISION.md` (vision + roadmap) -> `ARYA-FIT-BRIEF.md` (user + objectives) -> this file (state + technical map).
-**Last updated:** 2026-10-18. Service worker cache `arya-v81`. **Repo layout changed in v81: see section 2. File names in older log entries below are the pre-v81 flat names; map them with the table in section 2.**
+**Last updated:** 2026-10-18. Service worker cache `arya-v84`. **Repo layout changed in v81: see section 2. File names in older log entries below are the pre-v81 flat names; map them with the table in section 2.**
 **Live repo (public, readable):** github.com/opkillerbg-dev/Arya-Fit-app. If you have bash with network, `git clone` it and read the real files. Do not trust pasted copies, because a stale build workflow once hid a whole feature (see section 6).
 
 ## 1. What this is
@@ -511,3 +511,36 @@ Source: owner screenshot of v65 (ugly pink blur under the status bar, icons unre
 - Added `.gitignore` (android/, www/, node_modules/, apk), a real `README.md`.
 - Cache `arya-v81`, label v81.
 - FIRST BUILD WATCH: if CI fails, the likely places are `tools/android-setup.sh` paths or `webDir`. Send the log.
+
+
+## v82 — Freeze fix + lighter graphics (2026-10-18; headless-tested; not yet on a phone)
+- BUG (v80/v81): tapping "How are you feeling?" froze the whole app. Cause: `motion.js` watched `#ax-hbrain` class changes and, on every change while open, added the animation class `ax-m-drop`; that class change re-triggered the same watcher, forever (microtask loop, UI thread never returns). Fix: react only to the collapsed -> open transition. Reproduced in headless Chromium before the fix (page unresponsive), 6 taps + 40 rapid toggles fine after.
+- Why restart showed a black screen: the hung WebView process was still alive, so reopening the app resumed the stuck process. Force stop (App info > Force stop) clears it; data is not touched.
+- Safety nets: `motion.js` and `home.js` now have storm breakers (more than 60 / 80 triggers in one second disconnects their observers instead of freezing). `home.js` only writes label text when it changed.
+- Lag: `liquid.css` no longer blurs content cards (backdrop blur over a soft background is invisible and the most expensive thing when scrolling); card shadow stack cut from 5 layers to 3; floating chrome blur 30 -> 18 px, sheets 38 -> 22 px, scrim and chips no blur.
+- New Settings > Appearance > **Smooth mode** (`localStorage axLite`, applied by a tiny head script before first paint, adds `html.ax-lite-glass` which switches the glass layer off and shortens animations). Off by default; independent of app data.
+- Lesson (add to rules): never write a MutationObserver that mutates the attribute it observes. Always compare previous and new state, or add a counter breaker.
+- Cache `arya-v82`, label v82.
+
+
+## v83 — Measured optimization (2026-10-18; headless-profiled at 4x CPU throttle; not yet on a phone)
+Measured first (Playwright + CDP, 390x844 @2x, 4x CPU). Findings: warm boot about 1.4 s at 4x (about 0.35 s on a real phone) so startup is fine; per tab switch about 26 ms real, no layout thrash (one forced layout per `go`); my modules (motion, home) add no measurable cost; no always-running animations or rAF loops; DOM 965 nodes. Headless software rendering cannot show GPU cost, but removing blur on the fixed bars was the one change that visibly cut slow scroll frames on Home (5 -> 0 of 460).
+What shipped:
+- `js/ui/perf.js` (new, zero idle cost): (1) while the page scrolls, `html.ax-scrolling` turns off backdrop blur on `#ax-nav`, the top pill and `#ax-tmenu` (blur over moving content is recomputed every frame) and returns it 160 ms after the scroll stops; closed drawer never holds a blur layer. (2) Governor: samples frame times only during a scroll; if two separate scrolls (30+ frames each) have 15% or more frames slower than 40 ms, Smooth mode switches on once with a toast. Needs 8 s after launch, ignores background. Manual choice in Settings > Appearance sets `axLiteAuto=user` and the governor never touches it again. Stored in `localStorage axLite` / `axLiteAuto`. Test hooks: `axPerf.bursts()`, `axPerf.enable()`.
+- Idle wakeups: metronome timer 2.7/s -> 0.5/s when metronome is off (2 s) and 2/s when on but not running; dock progress poll 250 -> 400 ms and skipped when the app is hidden.
+- Removed `will-change:transform` from the 9 Smart Today option buttons (9 permanent GPU layers).
+- `preconnect` to the Google Fonts hosts.
+- Tried and rejected (measured, no real gain): bundling the 16 scripts into one file (DCL -15% at 4x, not worth a build step; revisit if boot ever matters), `content-visibility:auto` on cards (no change), non-blocking fonts (would make the boot splash end before fonts arrive).
+- Still open: fonts come from Google over the network on every launch. Self-hosting needs the woff2 files (DM Sans 400/500/700, Barlow Condensed 600/700) committed under `web/fonts/` plus an `@font-face` block; I cannot download them from the sandbox. If the user can supply them, it removes the last external request and makes offline launch instant.
+- Cache `arya-v83`, label v83.
+
+
+## v84 — New logo + 6 switchable app icons (2026-10-18; headless-tested incl. a dry run of the native setup; NOT built on CI or seen on a phone)
+- Mark: a bold **A** with a stride leg and a sun/head dot (reads as runner, mountain and sunrise; works as one colour). Geometry lives in `tools/icons/variants.json` (`mark.stroke`, `mark.dot`), the same numbers are copied into `web/js/features/appicon.js`, the hero badge and the loading screen in `index.html`.
+- Six icons, one per theme: oldmoney (default), midnight, sunset, classic (navy + gold), professional, glass. Colours in `variants.json`. `python3 tools/icons/make_icons.py` (needs `pip install playwright`, `playwright install chromium`) regenerates everything: `native/res/drawable-nodpi/ic_bg_*.png ic_fg_*.png ic_mono.png` (adaptive layers, 432 px), `native/res/mipmap-anydpi-v26/ic_launcher_<id>.xml` (adaptive + Android 13 themed `<monochrome>`), `native/res/mipmap-*dpi/ic_launcher_<id>.png` (legacy, API < 26), `web/icons/icon-192/512/512-maskable.png` (PWA, default icon), `tools/icons/preview.png`.
+- Native switching: `native/java/AppIconPlugin.java` (`@CapacitorPlugin(name="AppIcon")`, `get()` / `set({name})`) enables one `<activity-alias>` (com.arya.fit.IconOldMoney ... IconGlass) and disables the rest with DONT_KILL_APP. Registered in `MainActivity` next to the other plugins. `tools/patch_icons.py` (called by `tools/android-setup.sh`) removes MainActivity's MAIN/LAUNCHER filter and adds the 6 aliases (only Old Money enabled). Alias names in Java, the python script and the manifest must stay in sync. `android-setup.sh` copies the res tree, makes `ic_launcher` and `ic_launcher_round` copies of Old Money and deletes Capacitor's template foreground pieces.
+- UI: Settings > Appearance > App icon (3x2 grid) + "Match app theme" (follows `data-skin`, 1.5 s debounce; Modern uses Glass). Choice also stored in `localStorage axIcon` / `axIconMatch`. In a browser (no plugin) it only remembers.
+- Dry run: fake Capacitor-style manifest -> 6 aliases, LAUNCHER filter gone from MainActivity, every referenced resource exists, services/TTS patches intact. Not compiled: `AppIconPlugin.java` (no javac/Android SDK in the sandbox). If CI fails, the error will be in that file or a duplicate-resource clash; send the log.
+- Deleted vs v83: `native/res/mipmap-anydpi-v26/ic_launcher.xml` and `ic_launcher_round.xml` (old maskable-PNG based). Delete them from the repo, otherwise they are copied and then overwritten (harmless but untidy).
+- Known Android behaviour: the launcher can take a few seconds to show the new icon, and some launchers briefly remove the icon. Themed icons (Android 13+) need the user to enable "Themed icons" in wallpaper settings.
+- Cache `arya-v84`, label v84.

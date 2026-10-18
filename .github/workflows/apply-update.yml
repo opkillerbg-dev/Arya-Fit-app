@@ -1,0 +1,50 @@
+name: Apply update
+# Upload ONE file named update.zip to the repo root. This workflow unpacks it into the right folders,
+# deletes files listed in DELETE.txt, commits, removes update.zip and starts the APK build.
+# (.github/ inside the zip is ignored: GitHub does not let this workflow edit workflow files.)
+on:
+  push:
+    paths: ['update.zip']
+permissions:
+  contents: write
+  actions: write
+concurrency: apply-update
+jobs:
+  apply:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply update.zip
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if [ ! -f update.zip ]; then echo "No update.zip, nothing to do."; exit 0; fi
+          rm -rf /tmp/u && mkdir /tmp/u && unzip -q update.zip -d /tmp/u
+          # accept the files at the zip root, or inside one wrapper folder
+          SRC=/tmp/u
+          if [ "$(ls -A /tmp/u | wc -l)" = "1" ]; then
+            d=$(ls -A /tmp/u)
+            case "$d" in web|native|tools|docs|signing|.github|DELETE.txt) ;; *) [ -d "/tmp/u/$d" ] && SRC="/tmp/u/$d";; esac
+          fi
+          test -n "$(ls -A "$SRC")" || { echo "::error::update.zip is empty"; exit 1; }
+          if [ -d "$SRC/.github" ]; then echo "::warning::.github/ in the zip was skipped. Paste workflow files by hand."; rm -rf "$SRC/.github"; fi
+          # deletions: one repo path per line in DELETE.txt
+          if [ -f "$SRC/DELETE.txt" ]; then
+            while IFS= read -r p || [ -n "$p" ]; do
+              p="${p%$'\r'}"
+              [ -z "$p" ] && continue
+              case "$p" in /*|*..*|.git|.git/*|.github|.github/*|update.zip) echo "::warning::skipping unsafe path: $p"; continue;; esac
+              git rm -rq --ignore-unmatch -- "$p"
+              echo "deleted: $p"
+            done < "$SRC/DELETE.txt"
+            rm -f "$SRC/DELETE.txt"
+          fi
+          cp -a "$SRC"/. ./
+          git rm -q update.zip
+          git add -A
+          N=$(git diff --cached --name-only | wc -l)
+          git -c user.name="update-bot" -c user.email="actions@users.noreply.github.com" commit -q -m "Apply update.zip ($N files changed)"
+          git push origin HEAD
+          echo "Applied $N files."
+          gh workflow run build.yml --ref "${GITHUB_REF_NAME}" && echo "APK build started." || echo "::warning::could not start the build; run it from the Actions tab."

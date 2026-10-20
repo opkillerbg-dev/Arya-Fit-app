@@ -50,3 +50,7 @@ Bump the cache name in `web/sw.js` (`arya-vNN`) and the version label in `index.
 ## Licenses
 
 See `docs/THIRD-PARTY-NOTICES.md`.
+
+
+## Tests
+`node tests/store.test.js` (unit, no deps) and `python3 tests/browser_test.py` (needs `pip install playwright` and Chrome). CI runs both; only the unit tests block the APK.

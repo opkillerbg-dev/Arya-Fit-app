@@ -597,3 +597,12 @@ Causes of that Android error: (a) APK signed with a different key than the insta
 - The new fingerprint guard blocked build #70: APK was signed with `571d2a3f...`, not the permanent `3c1ec75f...`. So Gradle never used `signing/debug.keystore`: copying it to `~/.android/` is not enough on CI, and every build got a throwaway key. That is why no build could update the previous one.
 - Fix: `tools/patch_signing.py` adds an explicit `signingConfigs.debug` pointing at `signing/debug.keystore` (marker `ARYA-SIGNING`); `build.yml` runs it after the version step. The guard stays: any APK with another key fails the build.
 - Every APK installed so far has a throwaway key, so the first build signed with the permanent key needs ONE clean install (new `app_id`, e.g. `com.arya.fit3`, backup export/import). After that, updates install in place.
+
+## v88 — Storage versioning, migrations, recovery, tests (2026-10-20; unit + real-browser tested, APK not built here)
+- `web/js/core/store.js` (loads before `sheets-views.js`). `APP.schema` = version of the saved data shape (`AXSCHEMA`, now 1 = baseline). To change the data shape: add `{to:N,name,run(a)}` to `AXMIG`, raise `AXSCHEMA` to N, add a test. A migration that throws leaves the data untouched.
+- `loadApp()` now calls `axStoreRead()`: daily copy `aryaApp2.bak` (kept only if <1.2M chars), copy before any migration `aryaApp2.premig`, a damaged main file is saved to `aryaApp2.bad` and the daily copy is restored (before this, a damaged file silently reset to the default plan and the next save overwrote it). Data from a NEWER schema is never modified and the user is warned.
+- Backups now carry `schema`; importing a backup from a newer app is refused; every import first saves `aryaApp2.preimport` (manual undo).
+- Tests: `node tests/store.test.js` (14 unit tests, no deps) and `python3 tests/browser_test.py` (real browser: old, damaged and newer data, export/import round trip, all views). CI: `test` job gates `build`; `browser-test` is informational.
+- Tick keys are `<day>:<wu|cd|j|e#|h#>` plus `x#`, `w#`, `r#`, `g#`, `s#`, `jt#`, `wk#`; `clean()` drops anything else on import (a test once used `1:0` and correctly lost it).
+- Default `app_id` is now `com.arya.fit3`. Keep it unless a clean install is needed again.
+- Signing: still the permanent DEBUG key (personal use). Keep a private copy of `signing/debug.keystore` outside GitHub. A Play Store release key / AAB is NOT set up and would force another clean install.

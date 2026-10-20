@@ -237,13 +237,13 @@ function setPlan(pl){P=pl;var m=/^(\d+)-(\d+)-(\d+)$/.exec(pl.start);START=new D
   $("sp-name").textContent=pl.name;$("sp-sub").textContent=NW+" weeks, "+rng;
   $("tvh").textContent=JL||"Run";$("gkm").textContent="km of "+JKM;$("tvpanel").hidden=!JKM}
 function activate(id){APP.active=id;var e=APP.plans[id];st=e.st;setPlan(e.plan);if(Array.isArray(e.schedMap)&&e.schedMap.length>ND)ND=e.schedMap.length;cur=Math.max(0,Math.min(ND-1,todayIdx()));$("ax-gall").innerHTML="";closeT();render();plans()}
-function loadApp(){var a=null;try{a=JSON.parse(localStorage.getItem(KEY2))}catch(e){a=null}
+function loadApp(){var a=axStoreRead();
   if(!a||!a.plans||!a.active||!a.plans[a.active]){var old={};try{old=JSON.parse(localStorage.getItem(OLDK)||"{}")||{}}catch(e){old={}}
     var pr={};if(old._snd===0||old._snd===1)pr.snd=old._snd;if(old._auto===0||old._auto===1)pr.auto=old._auto;if(old._gps===0||old._gps===1)pr.gps=old._gps;
     a={v:2,active:"default",prefs:pr,plans:{"default":{plan:defaultPlan(),st:{}}}};
     var pg=clean(old,28);a.plans["default"].st=pg}
   Object.keys(a.plans||{}).forEach(function(k){var pp=a.plans[k]&&a.plans[k].plan;if(pp&&pp.name==="28-Day Home Plan")pp.name="Home Plan"});
-  APP=a;PR=APP.prefs=APP.prefs||{};if(APP.plans[APP.active]){if(!APP.plans[APP.active].schedMap&&Array.isArray(PR.schedMap))APP.plans[APP.active].schedMap=PR.schedMap.slice();if(!APP.plans[APP.active].workoutEdits&&PR.workoutEdits&&typeof PR.workoutEdits==="object")APP.plans[APP.active].workoutEdits=PR.workoutEdits;delete PR.schedMap;delete PR.workoutEdits;if(!APP.plans[APP.active].routes&&PR.routes&&typeof PR.routes==="object")APP.plans[APP.active].routes=PR.routes;delete PR.routes}if(!PR.skin)PR.skin="oldmoney";if(typeof PR.gls!=="boolean")PR.gls=true;activate(APP.active)}
+  APP=a;axStamp(a);PR=APP.prefs=APP.prefs||{};if(APP.plans[APP.active]){if(!APP.plans[APP.active].schedMap&&Array.isArray(PR.schedMap))APP.plans[APP.active].schedMap=PR.schedMap.slice();if(!APP.plans[APP.active].workoutEdits&&PR.workoutEdits&&typeof PR.workoutEdits==="object")APP.plans[APP.active].workoutEdits=PR.workoutEdits;delete PR.schedMap;delete PR.workoutEdits;if(!APP.plans[APP.active].routes&&PR.routes&&typeof PR.routes==="object")APP.plans[APP.active].routes=PR.routes;delete PR.routes}if(!PR.skin)PR.skin="oldmoney";if(typeof PR.gls!=="boolean")PR.gls=true;activate(APP.active)}
 var PEND=null;
 function ticksOf(e){var n=0;for(var k2 in e.st)if(/^\d+:/.test(k2))n++;return n}
 function plans(){var h="",ids=Object.keys(APP.plans);

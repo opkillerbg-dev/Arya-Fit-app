@@ -1,0 +1,70 @@
+#!/usr/bin/env python3
+"""Real-browser tests of the full app. Needs: pip install playwright (+ Chrome, or `playwright install chromium`).
+Run from repo root: python3 tests/browser_test.py"""
+import json, subprocess, sys, time, os
+from playwright.sync_api import sync_playwright
+PORT = "8899"
+root = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "web")
+srv = subprocess.Popen([sys.executable, "-m", "http.server", PORT], cwd=root, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+time.sleep(1); URL = f"http://localhost:{PORT}/index.html"; fails = []
+def check(name, cond, info=""):
+    print(("ok   " if cond else "FAIL ") + name + ("" if cond else "  -> " + str(info)))
+    if not cond: fails.append(name)
+def launch(p):
+    try: return p.chromium.launch(channel="chrome")
+    except Exception: return p.chromium.launch()
+def fresh(b, seed=None):
+    ctx = b.new_context(viewport={"width": 390, "height": 844}); pg = ctx.new_page(); errs = []
+    pg.on("pageerror", lambda e: errs.append(str(e)[:150]))
+    pg.goto(URL, wait_until="load"); pg.wait_for_timeout(800)
+    if seed is not None:
+        pg.evaluate("s=>{localStorage.clear();for(const k in s)localStorage.setItem(k,s[k])}", seed)
+        pg.reload(wait_until="load"); pg.wait_for_timeout(1500)
+    return ctx, pg, errs
+TICKS_JS = r"Object.keys(APP.plans[APP.active].st).filter(k=>/^\d+:/.test(k)).length"
+GOOD = lambda **k: json.dumps(dict({"v": 2, "active": "default", "prefs": {"skin": "oldmoney"}, "plans": {"default": {"plan": None, "st": {"1:wu": 1, "2:j": 1}}}}, **k))
+try:
+    with sync_playwright() as p:
+        b = launch(p)
+        # build a real plan object once, from a clean first run
+        ctx, pg, errs = fresh(b); plan = pg.evaluate("APP.plans[APP.active].plan"); check("clean first run: no page errors", not errs, errs)
+        check("clean first run: schema stamped", pg.evaluate("APP.schema") == 1); ctx.close()
+        mk = lambda **k: json.dumps(dict({"v": 2, "active": "default", "prefs": {"skin": "oldmoney"}, "plans": {"default": {"plan": plan, "st": {"1:wu": 1, "2:j": 1}}}}, **k))
+
+        ctx, pg, errs = fresh(b, {"aryaApp2": mk()})
+        check("old data (no schema): loads, ticks kept", pg.evaluate(TICKS_JS) == 2, pg.evaluate("JSON.stringify(APP.plans.default.st)"))
+        check("old data: stamped schema 1 + premig copy", pg.evaluate("APP.schema") == 1 and pg.evaluate("!!localStorage.getItem('aryaApp2.premig')"))
+        check("old data: no page errors", not errs, errs); ctx.close()
+
+        ctx, pg, errs = fresh(b, {"aryaApp2": '{"plans":{"default":{"plan"', "aryaApp2.bak": mk(marker="from-bak")})
+        check("damaged data: restored from daily backup", pg.evaluate("APP.marker") == "from-bak" and pg.evaluate(TICKS_JS) == 2, pg.evaluate("APP.marker"))
+        check("damaged data: evidence kept in .bad", pg.evaluate("localStorage.getItem('aryaApp2.bad')") == '{"plans":{"default":{"plan"')
+        check("damaged data: user told", pg.evaluate("document.body.innerText.includes('damaged')"))
+        check("damaged data: no page errors", not errs, errs); ctx.close()
+
+        ctx, pg, errs = fresh(b, {"aryaApp2": mk(schema=9, future={"x": 1})})
+        pg.evaluate("save()")
+        saved = json.loads(pg.evaluate("localStorage.getItem('aryaApp2')"))
+        check("newer data: untouched and unknown fields survive a save", saved.get("schema") == 9 and saved.get("future") == {"x": 1}, saved.get("schema"))
+        check("newer data: no page errors", not errs, errs); ctx.close()
+
+        ctx, pg, errs = fresh(b, {"aryaApp2": mk()})
+        txt = pg.evaluate("pack()"); d = json.loads(txt)
+        check("export carries schema", d.get("schema") == 1)
+        pg.evaluate("t=>doImport(t)", txt); pg.wait_for_timeout(500)
+        check("export -> import round trip keeps ticks", pg.evaluate(TICKS_JS) == 2)
+        check("import makes a pre-import safety copy", pg.evaluate("!!localStorage.getItem('aryaApp2.preimport')"))
+        d["schema"] = 99
+        before = pg.evaluate("JSON.stringify(APP.plans)")
+        pg.evaluate("t=>doImport(t)", json.dumps(d)); pg.wait_for_timeout(400)
+        check("backup from a newer app is refused, data unchanged", pg.evaluate("JSON.stringify(APP.plans)") == before)
+        check("round trip: no page errors", not errs, errs); ctx.close()
+
+        ctx, pg, errs = fresh(b, {"aryaApp2": mk()})
+        for v in ["home", "plan", "timers", "prog", "set", "plans", "home"]:
+            pg.evaluate(f"go('{v}')"); pg.wait_for_timeout(250)
+        check("all views render without errors", not errs, errs); ctx.close()
+        b.close()
+finally:
+    srv.kill()
+print("\n%d failure(s)" % len(fails)); sys.exit(1 if fails else 0)

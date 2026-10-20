@@ -7,7 +7,7 @@ function ymd(){var d=new Date();return d.getFullYear()+"-"+("0"+(d.getMonth()+1)
 function axMeta(){var m={build:"arya-v50",plans:0,ticks:0,runDays:0,stepDays:0,stepsTotal:0},ds=PR.ds||{};
   Object.keys(APP.plans).forEach(function(id){m.plans++;var s2=APP.plans[id].st||{};Object.keys(s2).forEach(function(k2){if(/^\d+:/.test(k2))m.ticks++;else if(/^g\d+$/.test(k2)&&s2[k2]>0)m.runDays++})});
   Object.keys(ds).forEach(function(d){m.stepDays++;m.stepsTotal+=ds[d]||0});return m}
-function pack(){var o={app:"arya-28day-tracker",version:2,exported:new Date().toISOString(),active:APP.active,meta:axMeta(),prefs:PR,plans:{}};
+function pack(){var o={app:"arya-28day-tracker",version:2,schema:AXSCHEMA,exported:new Date().toISOString(),active:APP.active,meta:axMeta(),prefs:PR,plans:{}};
   Object.keys(APP.plans).forEach(function(id){o.plans[id]={plan:APP.plans[id].plan,progress:APP.plans[id].st,schedMap:APP.plans[id].schedMap,workoutEdits:APP.plans[id].workoutEdits,routes:APP.plans[id].routes}});return JSON.stringify(o,null,1)}
 /* daily steps already travel in prefs.ds; packFresh only refreshes them from the native counter first */
 async function packFresh(){try{if(STP){await stepsPull();await stepsHist()}}catch(e){}save();return pack()}
@@ -50,11 +50,12 @@ function axCleanEdits(raw,days,plan){if(!raw||typeof raw!=="object"||Array.isArr
 function axCleanRoutes(raw){if(!raw||typeof raw!=="object"||Array.isArray(raw))return null;var out={};Object.keys(raw).slice(0,500).forEach(function(d){if(!/^\d{1,3}$/.test(d)||!Array.isArray(raw[d]))return;var rs=raw[d].slice(0,10).map(function(r){return Array.isArray(r)?r.slice(0,300).filter(function(q){return Array.isArray(q)&&q.length>=3&&typeof q[0]==="number"&&isFinite(q[0])&&typeof q[1]==="number"&&isFinite(q[1])&&typeof q[2]==="number"&&isFinite(q[2])}).map(function(q){return[q[0],q[1],q[2]]}):[]}).filter(function(r){return r.length>=2});if(rs.length)out[d]=rs});return Object.keys(out).length?out:null}
 function doImport(txt){var d;try{d=JSON.parse(txt)}catch(e){d=null}
   if(!d||d.app!="arya-28day-tracker"||typeof d!="object"){toast("That isn't a tracker backup file.");return}
+  if((+d.schema||1)>AXSCHEMA){toast("That backup is from a newer app version. Update the app first.");return}
   var n=0;
   if(d.version==2&&d.plans&&typeof d.plans=="object"){var np={},first=null;
     Object.keys(d.plans).slice(0,12).forEach(function(id){var e=d.plans[id],r=vplan(e&&e.plan);if(!r.plan)return;var sid=String(id).replace(/[^a-z0-9]/gi,"").slice(0,16)||("p"+n);var baseDays=r.plan.weeks*7,sm=axCleanSched(e.schedMap,baseDays);if(!sm&&id===d.active&&Array.isArray(d.prefs&&d.prefs.schedMap))sm=axCleanSched(d.prefs.schedMap,baseDays);var ed=axCleanEdits(e.workoutEdits,sm?sm.length:baseDays,r.plan);np[sid]={plan:r.plan,st:clean(e.progress||{},Math.max(baseDays,sm?sm.length:0)),schedMap:sm||undefined,workoutEdits:ed||undefined,routes:axCleanRoutes(e.routes)||undefined};first=first||sid});
     if(!first){toast("No valid plans in that backup.");return}
-    APP.plans=np;var pr=d.prefs||{};restorePrefs(pr);
+    axSnap("preimport");APP.plans=np;var pr=d.prefs||{};restorePrefs(pr);
     var act=np[String(d.active).replace(/[^a-z0-9]/gi,"").slice(0,16)]?String(d.active).replace(/[^a-z0-9]/gi,"").slice(0,16):first;
     if(PR.routes&&np[act]&&!np[act].routes)np[act].routes=axCleanRoutes(PR.routes);delete PR.routes;
     Object.keys(np).forEach(function(i2){for(var key in np[i2].st)if(/^\d+:/.test(key))n++});

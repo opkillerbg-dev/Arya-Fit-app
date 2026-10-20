@@ -49,6 +49,11 @@ jobs:
           grep -q "versionCode ${VERSION_CODE}" $G
           grep -q "applicationId \"${APP_ID}\"" $G
           echo "applicationId=${APP_ID} versionCode=${VERSION_CODE} run=${GITHUB_RUN_NUMBER}"
+      - name: Sign with the repo key explicitly (Gradle ignored ~/.android on CI)
+        run: |
+          set -euo pipefail
+          python3 tools/patch_signing.py android/app/build.gradle
+          grep -q 'ARYA-SIGNING' android/app/build.gradle
       - name: Apply native setup (splash, plugins, MainActivity, icon, manifest)
         run: bash tools/android-setup.sh
       - name: Build and verify APK

@@ -1,0 +1,32 @@
+/* v58: adaptive glass performance guard. Keep the visual language; reduce costly compositing on constrained devices. */
+html.ax-lite-glass .ax-card,
+html.ax-lite-glass .ax-nav,
+html.ax-lite-glass .ax-sh,
+html.ax-lite-glass .panel,
+html.ax-lite-glass .tile,
+html.ax-lite-glass .ax-dk:not(.ax-fs),
+html.ax-lite-glass .ax-brand-mark,
+html.ax-lite-glass .ax-hero-pill,
+html.ax-lite-glass .ax-dmore,
+html.ax-lite-glass .ax-dgs span,
+html.ax-lite-glass .ax-dsw,
+html.ax-lite-glass .ax-dxp,
+html.ax-lite-glass #ax-v-prog .ax-pseg,
+html.ax-lite-glass .ax-shbg {
+  -webkit-backdrop-filter:none!important; backdrop-filter:none!important;
+}
+html.ax-lite-glass .ax-card,html.ax-lite-glass .panel,html.ax-lite-glass .tile {
+  background:var(--card)!important; border-color:var(--line)!important;
+  box-shadow:0 3px 10px rgba(0,0,0,.07),inset 0 1px 0 rgba(255,255,255,.12)!important;
+}
+html.ax-lite-glass .ax-nav,html.ax-lite-glass .ax-dk:not(.ax-fs),html.ax-lite-glass .ax-sh,html.ax-lite-glass .ax-dxp {
+  background:var(--card)!important; border-color:var(--line)!important;
+  box-shadow:0 -3px 12px rgba(0,0,0,.08)!important;
+}
+html.ax-lite-glass .ax-shbg {background:rgba(0,0,0,.38)!important;animation:none!important}
+html.ax-lite-glass .ax-brand-mark,html.ax-lite-glass .ax-hero-pill {background:rgba(255,255,255,.16)!important}
+html.ax-lite-glass .ax-hero-orbit {filter:none!important}
+html.ax-lite-glass *,html.ax-lite-glass *::before,html.ax-lite-glass *::after {scroll-behavior:auto}
+@media(prefers-reduced-transparency:reduce) {
+ html .ax-card,html .ax-nav,html .ax-sh,html .panel,html .tile,html .ax-dk:not(.ax-fs),html .ax-brand-mark,html .ax-hero-pill,html .ax-dmore,html .ax-dgs span,html .ax-dsw,html .ax-dxp,html #ax-v-prog .ax-pseg,html .ax-shbg { -webkit-backdrop-filter:none!important;backdrop-filter:none!important }
+}

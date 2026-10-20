@@ -573,3 +573,12 @@ What shipped:
 - If CI fails, the error is most likely in `WidgetKit.java` (never compiled) or the XML infos (`targetCellWidth`/`description` need compileSdk 31 or newer). Send the log.
 - Not verified: compile, real fonts (device serif is narrower than the preview font), sizes on the phone's launcher, dark skin colours on a real home screen, battery cost of the step pings.
 - Cache `arya-v86`, label v86. This update also contains v85 (auto sync) if it was not applied yet.
+
+## v87 — Split the monolith (2026-10-20; headless-tested)
+- `index.html` 368 KB -> 48 KB. Inline `<script>` (931 lines) -> `web/js/core/*.js` (12 files + `adaptive-glass.js`); 5 inline `<style>` blocks -> `web/css/*.css`. Same load order and same position in the page, so cascade and global scope are unchanged.
+- Verified: concatenated core files are byte-identical to the old inline script; `node --check` passes; headless Chromium shows zero page errors, zero 404s and pixel-identical screenshots of all 5 tabs vs the old build.
+- Gotcha fixed: CSS moved into `css/` needs `../` for relative `url()` (hero image). Rule: use `../images/...` in anything under `web/css/`.
+- Gotcha: function hoisting no longer spans files. `var _sp=setPlan` (patch of `setPlan`) must load after `setPlan`; that is why `sheets-views.js` holds both. Any new top-level code that calls or patches a function must live in the same file as it or a later one.
+- `lifecycle.js` runs the app init (`loadApp(); bindApp(); ... go("home")`); keep it the last core file.
+- Still classic scripts, not ES modules: inline `onclick=` handlers and cross-file monkey patches need globals. ES-module conversion is a later step, file by file.
+- SW cache `arya-v87`; SHELL now lists the new css/js files.

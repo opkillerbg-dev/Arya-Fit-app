@@ -7,9 +7,12 @@ Plain HTML/CSS/JS (no framework) wrapped as an Android app with Capacitor 6. Git
 
 ```
 web/                  the whole app, served as-is (Capacitor webDir)
-  index.html          markup, core styles, core logic
+  index.html          markup only (+ 2 tiny theme-preload scripts); loads css/ and js/ below
   sw.js, manifest.webmanifest
-  css/                liquid.css (glass look, only paint)
+  css/                base, boot, run-polish, perf-fallback, liquid, heavy-glass-nav (load order = index.html order)
+  js/core/            core app split from the old inline script, in load order: state, exercise-media, plan-ui,
+                      timers-run, body-map, run-extras, native-ui, progress-share, sheets-views, data-io,
+                      steps-progress, lifecycle (runs init), adaptive-glass. Classic scripts, shared global scope.
   js/boot.js          loading screen, loaded last
   js/ui/              settings hub, home layout, motion
   js/features/        one file per feature (readiness, progression, hands-free, animate,

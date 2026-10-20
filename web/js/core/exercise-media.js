@@ -1,0 +1,15 @@
+/* v50 exercise pictures. EXI = which files exist (slug -> letters); a missing file just means no picture for that step. */
+var EXI={"push-ups":"ab","pike-push-ups":"ab","chair-dips":"ab","diamond-push-ups":"ab","plank":"a","bodyweight-squats":"ab","reverse-lunges":"abc","glute-bridges":"ab","calf-raises":"ab","wall-sit":"a","leg-raises":"ab","crunches":"ab","mountain-climbers":"ab","russian-twists":"abc","dead-bug":"abc","superman-hold":"a","side-plank":"a","table-rows":"ab","reverse-snow-angels":"ab","backpack-curls":"ab","burpees":"abcd","squat-jumps":"abc","incline-push-ups":"ab","bear-crawls":"ab","plank-to-push-up":"ab","cat-cow":"ab","childs-pose":"a","hamstring-stretch":"a","worlds-greatest-stretch":"abc","backpack-rows":"ab","hip-flexor-stretch":"a"};
+var IMX="images/exercises/", EXMASK="images/exercise-masks/";
+var EXA={"Table or towel rows":"table-rows","Backpack bent-over row":"backpack-rows","World's greatest stretch":"worlds-greatest-stretch","Child's pose":"childs-pose","Bodyweight squats":"bodyweight-squats"};
+function exSlug(n){return EXA[n]||String(n).toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"")}
+function axExpHtml(sl,l,nm){var src=IMX+'arya-ex-'+sl+'-'+l+'.webp',mk='url('+EXMASK+'arya-ex-'+sl+'-'+l+'.png)';
+  /* v64: base art + a CSS-only recolor layer (see .ax-ext). The base img is never modified; Old Money simply hides the layer. */
+  return'<span class="ax-exp"><img src="'+src+'" alt="'+esc(nm)+', step '+l.toUpperCase()+'" width="1024" height="1024" loading="lazy" decoding="async" draggable="false" onerror="axExiErr(this)"><span class="ax-ext" aria-hidden="true" style="-webkit-mask-image:'+mk+';mask-image:'+mk+'"><img src="'+src+'" alt="" width="1024" height="1024" loading="lazy" decoding="async" draggable="false"></span></span>'}
+function axExiHtml(q){if(PR.exi===0||!/^e\d+$/.test(q[1]))return"";var sl=exSlug(q[2]),L=EXI[sl];if(!L)return"";
+  var im="",d="";for(var j=0;j<L.length;j++){im+=axExpHtml(sl,L[j],q[2]);d+='<i'+(j?'':' class="on"')+'></i>'}
+  return'<div class="ax-exi"><div class="ax-exs" role="group" aria-label="'+esc(q[2])+' pictures. Tap or swipe for the next step.">'+im+'</div>'+(L.length>1?'<div class="ax-exd" aria-hidden="true">'+d+'</div>':'')+'</div>'}
+function axExiDots(box){var s=box.querySelector(".ax-exs"),dd=box.querySelector(".ax-exd");if(!s)return;var n=s.children.length;if(dd){if(n<2){dd.remove();return}var i=Math.max(0,Math.min(n-1,Math.round(s.scrollLeft/Math.max(1,s.clientWidth))));dd.innerHTML=new Array(n+1).join("<i></i>");dd.children[i].className="on"}}
+function axExiErr(im){var box=im.closest(".ax-exi"),w=im.closest(".ax-exp");(w||im).remove();if(!box)return;if(!box.querySelector(".ax-exs").children.length)box.remove();else axExiDots(box)}
+function axExiBind(box){var s=box.querySelector(".ax-exs");if(!s)return;s.addEventListener("scroll",function(){axExiDots(box)},{passive:true});
+  s.addEventListener("click",function(){var n=s.children.length;if(n<2)return;var w=s.clientWidth,i=Math.round(s.scrollLeft/Math.max(1,w));s.scrollTo({left:((i+1)%n)*w,behavior:"smooth"});hx("tick")})}

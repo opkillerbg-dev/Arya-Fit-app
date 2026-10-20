@@ -32,7 +32,7 @@ docs/                 HANDOFF.md (state, rules, change log), THIRD-PARTY-NOTICES
 
 ## Update the repo (one file)
 
-Upload a single `update.zip` (repo files at the zip root, optional `DELETE.txt` listing paths to remove) to the repo root. `.github/workflows/apply-update.yml` unpacks it into the right folders, commits, deletes the zip and starts the build. Workflow files themselves must still be edited by hand.
+Upload a single `update.zip` (repo files at the zip root, optional `DELETE.txt` listing paths to remove) to the repo root. `.github/workflows/apply-update.yml` unpacks it into the right folders, commits, deletes the zip and starts the build with the newest `build.yml`. Workflow files (`.github/workflows/*.yml`) can be inside the zip too: they are validated as YAML first, then applied. This needs the repo secret `ARYA_PAT` (a personal access token with the `workflow` permission); without it, `.github/` in the zip is skipped with a warning. `apply-update.yml` itself can never be deleted by `DELETE.txt`.
 
 ## Build
 

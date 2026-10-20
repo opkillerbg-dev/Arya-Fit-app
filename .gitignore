@@ -5,3 +5,8 @@ www/
 *.apk
 *.aab
 .DS_Store
+
+# release key material: NEVER commit
+arya-release.keystore
+GITHUB-SECRETS.txt
+*.jks

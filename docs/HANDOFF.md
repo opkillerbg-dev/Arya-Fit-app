@@ -606,3 +606,18 @@ Causes of that Android error: (a) APK signed with a different key than the insta
 - Tick keys are `<day>:<wu|cd|j|e#|h#>` plus `x#`, `w#`, `r#`, `g#`, `s#`, `jt#`, `wk#`; `clean()` drops anything else on import (a test once used `1:0` and correctly lost it).
 - Default `app_id` is now `com.arya.fit3`. Keep it unless a clean install is needed again.
 - Signing: still the permanent DEBUG key (personal use). Keep a private copy of `signing/debug.keystore` outside GitHub. A Play Store release key / AAB is NOT set up and would force another clean install.
+
+
+## v89 — Release signing key + Play bundle (2026-10-20; CI logic and Gradle patch tested locally, APK/AAB NOT built here, nothing run on a phone)
+- New permanent RELEASE key (`aryafit` alias, PKCS12, valid to 2126). Public fingerprint is in `signing/EXPECTED_RELEASE_SHA256.txt` (`236bfe2f...d04a`). The keystore and passwords live ONLY in 4 GitHub secrets: `ARYA_KEYSTORE_B64`, `ARYA_STORE_PASS`, `ARYA_KEY_PASS`, `ARYA_KEY_ALIAS`. Never commit `arya-release.keystore` or `GITHUB-SECRETS.txt` (both are in `.gitignore`). Keep a private copy outside GitHub: losing it means a clean install again and no Play updates.
+- `build.yml`: new step "Release key" decodes the secret into `$RUNNER_TEMP`, fails if its fingerprint is not the expected one, sets `BUILD_MODE=release`. Without secrets it falls back to `BUILD_MODE=debug` (old behaviour, with a warning). In release mode CI runs `assembleRelease bundleRelease`, verifies the APK and the AAB are signed with the release key, and uploads artifacts `arya-fit-apk` (`Arya-Fit-build<run>.apk`) and `arya-fit-aab`.
+- `tools/patch_signing.py <gradle> [debug|release]`: release mode adds `signingConfigs.release` reading path and passwords from environment variables (no secret in any file), sets `signingConfig` on `buildTypes.release`, and turns lint off for release builds.
+- Default `app_id` is now `com.arya.fit4` so the new build installs next to the old app. Release keys differ from every earlier key, so this ONE clean install is unavoidable: export a backup in the old app, install the new APK, import the backup, then uninstall the old app. After that every build updates in place.
+- Unverified risks: first real `assembleRelease`/`bundleRelease` run (lint block syntax, R8 is off), WebView behaviour in a non-debuggable build, Play Console upload.
+
+## v89b — update.zip now applies workflow files too (2026-10-20; apply logic simulated in a throwaway git repo with a local remote and a stub `gh`: PAT, no PAT, invalid YAML; NOT run on real GitHub)
+- Why: `build.yml` had to be pasted by hand and kept being forgotten or replaced. Now it travels inside `update.zip` as `.github/workflows/build.yml`.
+- GitHub forbids the built-in token to change workflow files, so `apply-update.yml` uses repo secret `ARYA_PAT` for checkout and push (classic token: `repo` + `workflow`; fine-grained: Contents + Workflows read/write). Without the secret it behaves as before: `.github/` in the zip is skipped with a warning.
+- Order inside the job: unpack -> validate every workflow YAML in the zip (one invalid file aborts everything, nothing is applied) -> DELETE.txt (`.github/workflows/*.yml` may be deleted with the PAT, never `apply-update.yml`) -> copy -> commit with `[skip ci]` -> push -> `gh workflow run build.yml` (retries 3 times), so the build runs the build.yml just pushed. `[skip ci]` prevents a second push-triggered build and a re-trigger of this workflow by the zip deletion.
+- `apply-update.yml` is itself updatable by zip, but a broken version would stop the pipeline: the first install of this version must be pasted by hand.
+- This supersedes the older note "build.yml is NOT applied by update.zip".

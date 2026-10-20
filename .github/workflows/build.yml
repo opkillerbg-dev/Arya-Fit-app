@@ -5,12 +5,29 @@ on:
   workflow_dispatch:
     inputs:
       app_id:
-        description: "Android applicationId. Leave the default. Change only for a one-time clean install (e.g. com.arya.fit3)."
-        default: "com.arya.fit2"
+        description: "Android applicationId. Leave the default. Change only for a one-time clean install (e.g. com.arya.fit4)."
+        default: "com.arya.fit3"
 env:
-  APP_ID: ${{ inputs.app_id || 'com.arya.fit2' }}
+  APP_ID: ${{ inputs.app_id || 'com.arya.fit3' }}
 jobs:
+  test:
+    # Blocks the APK build if the storage/migration unit tests fail
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: 20}
+      - run: node tests/store.test.js
+  browser-test:
+    # Real-browser tests of the whole app. Reported, but never blocks the APK (Chrome is preinstalled on the runner)
+    runs-on: ubuntu-24.04
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 -m venv /tmp/v && /tmp/v/bin/pip install -q playwright
+      - run: /tmp/v/bin/python tests/browser_test.py
   build:
+    needs: test
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4

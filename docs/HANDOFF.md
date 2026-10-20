@@ -592,3 +592,8 @@ Causes of that Android error: (a) APK signed with a different key than the insta
 - `web/js/build-info.js` is a stub; CI overwrites it with `{run, code, id}` and Settings > About shows "build N" (matches the Actions run number).
 - `build.yml` is NOT applied by `update.zip` (workflows must be pasted by hand).
 - One-time recovery if the installed app still refuses updates: Settings > Data & backup > export; run workflow with app_id `com.arya.fit3`; install; import backup; uninstall the old app. After that every build updates in place because the key is guarded.
+
+## v87c — Root cause of the install conflict found (2026-10-20, from a failed CI run #70)
+- The new fingerprint guard blocked build #70: APK was signed with `571d2a3f...`, not the permanent `3c1ec75f...`. So Gradle never used `signing/debug.keystore`: copying it to `~/.android/` is not enough on CI, and every build got a throwaway key. That is why no build could update the previous one.
+- Fix: `tools/patch_signing.py` adds an explicit `signingConfigs.debug` pointing at `signing/debug.keystore` (marker `ARYA-SIGNING`); `build.yml` runs it after the version step. The guard stays: any APK with another key fails the build.
+- Every APK installed so far has a throwaway key, so the first build signed with the permanent key needs ONE clean install (new `app_id`, e.g. `com.arya.fit3`, backup export/import). After that, updates install in place.

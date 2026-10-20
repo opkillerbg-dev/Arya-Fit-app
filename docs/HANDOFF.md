@@ -582,3 +582,13 @@ What shipped:
 - `lifecycle.js` runs the app init (`loadApp(); bindApp(); ... go("home")`); keep it the last core file.
 - Still classic scripts, not ES modules: inline `onclick=` handlers and cross-file monkey patches need globals. ES-module conversion is a later step, file by file.
 - SW cache `arya-v87`; SHELL now lists the new css/js files.
+
+## v87b — Permanent fix for "package conflicts with existing package" (2026-10-20; CI logic tested locally, APK build not run here)
+Causes of that Android error: (a) APK signed with a different key than the installed app, (b) lower versionCode than installed, (c) an old same-named `app-debug.apk` installed by mistake. This update removes all three.
+- `signing/EXPECTED_SHA256.txt` = fingerprint of the permanent key. `build.yml` fails the build if the keystore OR the finished APK is signed with anything else, so a bad-key APK can never be produced.
+- versionCode = minutes since 1970 (always increases, independent of `run_number`, which resets if a workflow is recreated). versionName = `1.<run>`.
+- APK file is now `Arya-Fit-build<run>.apk` (no more `app-debug.apk`). Run summary lists package, versionCode and key fingerprint.
+- `applicationId` comes from env `APP_ID` (default `com.arya.fit2`); manual run (Actions > Build APK > Run workflow) accepts `app_id` for a one-time clean install (e.g. `com.arya.fit3`).
+- `web/js/build-info.js` is a stub; CI overwrites it with `{run, code, id}` and Settings > About shows "build N" (matches the Actions run number).
+- `build.yml` is NOT applied by `update.zip` (workflows must be pasted by hand).
+- One-time recovery if the installed app still refuses updates: Settings > Data & backup > export; run workflow with app_id `com.arya.fit3`; install; import backup; uninstall the old app. After that every build updates in place because the key is guarded.

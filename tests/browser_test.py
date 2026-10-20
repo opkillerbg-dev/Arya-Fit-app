@@ -39,6 +39,7 @@ try:
         ctx, pg, errs = fresh(b, {"aryaApp2": '{"plans":{"default":{"plan"', "aryaApp2.bak": mk(marker="from-bak")})
         check("damaged data: restored from daily backup", pg.evaluate("APP.marker") == "from-bak" and pg.evaluate(TICKS_JS) == 2, pg.evaluate("APP.marker"))
         check("damaged data: evidence kept in .bad", pg.evaluate("localStorage.getItem('aryaApp2.bad')") == '{"plans":{"default":{"plan"')
+        pg.wait_for_timeout(1500)  # the notice appears 1.8 s after start, and only once the splash is gone
         check("damaged data: user told", pg.evaluate("document.body.innerText.includes('damaged')"))
         check("damaged data: no page errors", not errs, errs); ctx.close()
 
@@ -64,6 +65,20 @@ try:
         for v in ["home", "plan", "timers", "prog", "set", "plans", "home"]:
             pg.evaluate(f"go('{v}')"); pg.wait_for_timeout(250)
         check("all views render without errors", not errs, errs); ctx.close()
+
+        # v90 startup: logo splash goes away, the warm-up leaves every tab exactly as it found it
+        ctx = b.new_context(viewport={"width": 390, "height": 844}); pg = ctx.new_page(); errs = []
+        pg.on("pageerror", lambda e: errs.append(str(e)[:150]))
+        pg.goto(URL, wait_until="commit"); pg.wait_for_selector("#ax-boot")
+        check("splash shows the logo", pg.evaluate("!!document.querySelector('#ax-boot svg.ax-bl path')"))
+        pg.wait_for_function("!document.getElementById('ax-boot')", timeout=8000); pg.wait_for_timeout(1500)
+        check("splash is removed and booting class cleared", pg.evaluate("!document.documentElement.classList.contains('ax-booting')"))
+        state = pg.evaluate("VIEWS.map(v=>[v,document.getElementById('ax-v-'+v).hidden,document.getElementById('ax-v-'+v).getAttribute('style')])")
+        check("warm-up: only Home is visible", [x[0] for x in state if not x[1]] == ["home"], state)
+        check("warm-up: no tab keeps an inline style", all(x[2] in (None, "") for x in state if x[0] != "home"), state)
+        check("warm-up: tabs still switch", pg.evaluate("go('prog'),!document.getElementById('ax-v-prog').hidden&&document.getElementById('ax-v-home').hidden"))
+        check("fonts stylesheet does not block rendering", pg.evaluate("document.querySelector('link[data-ax-font]').media")  in ("all", "print"))
+        check("startup: no page errors", not errs, errs); ctx.close()
         b.close()
 finally:
     srv.kill()

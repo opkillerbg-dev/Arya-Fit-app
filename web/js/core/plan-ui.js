@@ -86,5 +86,5 @@ var RM=window.matchMedia&&matchMedia("(prefers-reduced-motion:reduce)").matches,
 function burst(x,y,n){hx(n>40?"finish":"ok");if(RM)return;for(var j=0;j<n;j++){var e=document.createElement("i");e.className="cf";
   e.style.cssText="left:"+x+"px;top:"+y+"px;background:"+CC[j%5]+";--dx:"+Math.round(Math.random()*300-150)+"px;--dy:"+Math.round(-(Math.random()*200+60))+"px;--r:"+Math.round(Math.random()*720)+"deg";
   document.body.appendChild(e);(function(z){setTimeout(function(){z.remove()},1300)})(e)}}
-function toast(m){if(/couldn't|can't|cannot|isn't|failed|blocked|\benter |no step|finish or close/i.test(m))hx("warn");var e=$("toast");e.textContent=m;e.hidden=false;e.style.animation="none";void e.offsetWidth;e.style.animation="";clearTimeout(tt);tt=setTimeout(function(){e.hidden=true},3200)}
+function toast(m){if(document.getElementById("ax-boot")){setTimeout(function(){toast(m)},250);return}/* v90: never show a message behind the splash */if(/couldn't|can't|cannot|isn't|failed|blocked|\benter |no step|finish or close/i.test(m))hx("warn");var e=$("toast");e.textContent=m;e.hidden=false;e.style.animation="none";void e.offsetWidth;e.style.animation="";clearTimeout(tt);tt=setTimeout(function(){e.hidden=true},3200)}
 

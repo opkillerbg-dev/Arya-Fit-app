@@ -18,7 +18,8 @@ window.addEventListener("popstate",function(){AXG=0;
 axGuard();
 try{PRUN=JSON.parse(localStorage.getItem(RK))}catch(e){PRUN=null}
 try{LAST=JSON.parse(localStorage.getItem(LK))}catch(e){LAST=null}
-try{if("serviceWorker" in navigator&&/^https?:/.test(location.protocol))navigator.serviceWorker.register("sw.js")}catch(e){}
+/* v90: register the service worker after the first screen is up (it downloads and caches the whole app, which competed with startup) */
+window.addEventListener("load",function(){setTimeout(function(){try{if("serviceWorker" in navigator&&/^https?:/.test(location.protocol))navigator.serviceWorker.register("sw.js")}catch(e){}},2500)});
 /* v48 auto-close: any plan day older than yesterday that is still open gets closed (rest if nothing done, "call it a day" if partly done) */
 function axAutoClose(){try{if(!APP||!st)return 0;var td=todayIdx(),lim=Math.min(td-2,ND-1),n=0;
   for(var q=0;q<=lim;q++){if(st["x"+q]||dayDone(q))continue;var c=cnt(q),act=c[0]>0||(st["g"+q]||0)>0||(st["r"+q]||0)>0||(st["w"+q]||0)>0;st["x"+q]=act?2:1;n++}

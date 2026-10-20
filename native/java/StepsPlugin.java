@@ -84,6 +84,7 @@ public class StepsPlugin extends Plugin {
       e.putInt(k, p.getInt(k, 0) + (int) delta);
     }
     e.apply();
+    if (delta > 0L) WidgetKit.ping(c);
   }
 
   /** Keeps about 400 days. */

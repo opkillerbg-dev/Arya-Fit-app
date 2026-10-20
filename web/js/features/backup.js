@@ -7,6 +7,7 @@
   function stale(){
     var now=Date.now();
     if(PR.bkz&&now<PR.bkz)return false;
+    if(window.axSyncOk&&axSyncOk())return false;  /* auto sync is keeping a copy */
     if(PR.lbk)return now-PR.lbk>WEEK;
     var td=todayIdx();return td>=3;  /* never backed up and the plan is under way */
   }

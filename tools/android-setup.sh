@@ -34,4 +34,10 @@ rm -f "$R"/drawable*/ic_launcher_foreground.xml "$R"/drawable*/ic_launcher_backg
 # 4. manifest: permissions, services, boot receiver, TTS queries
 bash tools/patch-manifest.sh "$A/AndroidManifest.xml"
 python3 tools/patch_icons.py "$A/AndroidManifest.xml"
+# 5. home-screen widgets: one image layout, three provider infos, strings, manifest receivers (previews live in drawable-nodpi)
+mkdir -p "$R/layout" "$R/xml"
+cp native/res/layout/widget_image.xml "$R/layout/"
+cp native/res/xml/widget_*_info.xml "$R/xml/"
+cp native/res/values/arya_widgets.xml "$R/values/"
+python3 tools/patch_widgets.py "$A/AndroidManifest.xml"
 echo "android-setup: done"

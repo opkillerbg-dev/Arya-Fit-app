@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_cd">Arya Fit widget</string>
+    <string name="widget_steps_desc">Today\'s steps as a progress ring, with your last 7 days.</string>
+    <string name="widget_today_desc">Today\'s workout, your progress and steps.</string>
+    <string name="widget_combo_desc">Workout, steps and streak at a glance.</string>
+</resources>

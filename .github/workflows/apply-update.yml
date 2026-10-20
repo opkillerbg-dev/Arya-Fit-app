@@ -1,7 +1,12 @@
 name: Apply update
-# Upload ONE file named update.zip to the repo root. This workflow unpacks it into the right folders,
-# deletes files listed in DELETE.txt, commits, removes update.zip and starts the APK build.
-# (.github/ inside the zip is ignored: GitHub does not let this workflow edit workflow files.)
+# Upload ONE file named update.zip to the repo root. This workflow:
+#   1. unpacks it into the right folders (including .github/workflows/*.yml, e.g. build.yml),
+#   2. deletes files listed in DELETE.txt,
+#   3. commits and pushes,
+#   4. starts the APK build, which always runs the NEWEST build.yml (the one just pushed).
+# Changing workflow files needs a personal access token: add repo secret ARYA_PAT
+# (classic token with scopes "repo" + "workflow", or fine-grained with Contents + Workflows = read/write).
+# Without ARYA_PAT, .github/ inside the zip is skipped with a warning (GitHub forbids it for the built-in token).
 on:
   push:
     paths: ['update.zip']
@@ -14,9 +19,12 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.ARYA_PAT || github.token }}
       - name: Apply update.zip
         env:
           GH_TOKEN: ${{ github.token }}
+          HAVE_PAT: ${{ secrets.ARYA_PAT != '' }}
         run: |
           set -euo pipefail
           if [ ! -f update.zip ]; then echo "No update.zip, nothing to do."; exit 0; fi
@@ -28,13 +36,40 @@ jobs:
             case "$d" in web|native|tools|docs|signing|.github|DELETE.txt) ;; *) [ -d "/tmp/u/$d" ] && SRC="/tmp/u/$d";; esac
           fi
           test -n "$(ls -A "$SRC")" || { echo "::error::update.zip is empty"; exit 1; }
-          if [ -d "$SRC/.github" ]; then echo "::warning::.github/ in the zip was skipped. Paste workflow files by hand."; rm -rf "$SRC/.github"; fi
+          # workflow files: only with the personal access token, and only if every one is valid YAML
+          if [ -d "$SRC/.github" ]; then
+            if [ "$HAVE_PAT" = "true" ]; then
+              python3 -m pip install -q --break-system-packages pyyaml >/dev/null 2>&1 || true
+              find "$SRC/.github" -type f \( -name '*.yml' -o -name '*.yaml' \) | while IFS= read -r f; do
+                python3 - "$f" <<'PY'
+          import sys
+          try:
+              import yaml
+          except ImportError:
+              print("::warning::PyYAML missing, workflow not validated"); sys.exit(0)
+          try:
+              d = yaml.safe_load(open(sys.argv[1], encoding="utf-8"))
+              assert isinstance(d, dict) and "jobs" in d
+          except Exception as e:
+              print("::error::invalid workflow file %s: %s" % (sys.argv[1], e)); sys.exit(1)
+          PY
+              done
+              echo "Workflow files in the zip are valid and will be applied."
+            else
+              echo "::warning::.github/ in the zip was skipped: add the ARYA_PAT secret so workflow files can be updated."
+              rm -rf "$SRC/.github"
+            fi
+          fi
           # deletions: one repo path per line in DELETE.txt
           if [ -f "$SRC/DELETE.txt" ]; then
             while IFS= read -r p || [ -n "$p" ]; do
               p="${p%$'\r'}"
               [ -z "$p" ] && continue
-              case "$p" in /*|*..*|.git|.git/*|.github|.github/*|update.zip) echo "::warning::skipping unsafe path: $p"; continue;; esac
+              case "$p" in
+                /*|*..*|.git|.git/*|update.zip|.github/workflows/apply-update.yml) echo "::warning::skipping unsafe path: $p"; continue;;
+                .github|.github/*)
+                  if [ "$HAVE_PAT" = "true" ] && [[ "$p" == .github/workflows/*.yml ]]; then :; else echo "::warning::skipping unsafe path: $p"; continue; fi;;
+              esac
               git rm -rq --ignore-unmatch -- "$p"
               echo "deleted: $p"
             done < "$SRC/DELETE.txt"
@@ -44,7 +79,13 @@ jobs:
           git rm -q update.zip
           git add -A
           N=$(git diff --cached --name-only | wc -l)
-          git -c user.name="update-bot" -c user.email="actions@users.noreply.github.com" commit -q -m "Apply update.zip ($N files changed)"
-          git push origin HEAD
+          # [skip ci]: this push must not start a second build; the build is started explicitly below
+          git -c user.name="update-bot" -c user.email="actions@users.noreply.github.com" commit -q -m "Apply update.zip ($N files changed) [skip ci]"
+          git push origin HEAD || { echo "::error::Push rejected. If the zip contains .github/workflows files, ARYA_PAT needs the 'workflow' scope (classic) or Workflows: read/write (fine-grained)."; exit 1; }
           echo "Applied $N files."
-          gh workflow run build.yml --ref "${GITHUB_REF_NAME}" && echo "APK build started." || echo "::warning::could not start the build; run it from the Actions tab."
+          ok=0
+          for i in 1 2 3; do
+            if gh workflow run build.yml --ref "${GITHUB_REF_NAME}"; then ok=1; break; fi
+            sleep 5
+          done
+          if [ "$ok" = 1 ]; then echo "APK build started with the newest build.yml."; else echo "::warning::could not start the build; run it from the Actions tab."; fi

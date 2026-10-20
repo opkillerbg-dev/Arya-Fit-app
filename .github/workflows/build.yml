@@ -3,6 +3,12 @@ on:
   push:
     paths-ignore: ['update.zip', 'docs/**', 'README.md']
   workflow_dispatch:
+    inputs:
+      app_id:
+        description: "Android applicationId. Leave the default. Change only for a one-time clean install (e.g. com.arya.fit3)."
+        default: "com.arya.fit2"
+env:
+  APP_ID: ${{ inputs.app_id || 'com.arya.fit2' }}
 jobs:
   build:
     runs-on: ubuntu-24.04
@@ -12,35 +18,65 @@ jobs:
         with: {node-version: 20}
       - uses: actions/setup-java@v4
         with: {distribution: temurin, java-version: 17}
-      - name: Fixed debug keystore (keeps the app signature stable)
-        run: mkdir -p ~/.android && cp signing/debug.keystore ~/.android/debug.keystore
+      - name: Fixed debug keystore (must match signing/EXPECTED_SHA256.txt)
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.android && cp signing/debug.keystore ~/.android/debug.keystore
+          EXP=$(tr -d ' :\r\n' < signing/EXPECTED_SHA256.txt | tr 'A-F' 'a-f')
+          GOT=$(keytool -list -v -keystore ~/.android/debug.keystore -storepass android 2>/dev/null | grep -m1 'SHA256:' | sed 's/.*SHA256: *//' | tr -d ': ' | tr 'A-F' 'a-f')
+          echo "keystore sha256: $GOT"
+          test -n "$GOT" && test "$EXP" = "$GOT" || { echo "::error::signing/debug.keystore is not the original key. Restore it from git history. Never replace it."; exit 1; }
       - name: Check web files
         run: python3 tools/check-web.py
+      - name: Version numbers and build info
+        run: |
+          set -euo pipefail
+          # Code = minutes since 1970: always increases, never depends on run_number (which resets if a workflow is recreated)
+          VERSION_CODE=$(( $(date +%s) / 60 ))
+          echo "VERSION_CODE=${VERSION_CODE}" >> "$GITHUB_ENV"
+          echo "window.AXBUILD={run:${GITHUB_RUN_NUMBER},code:${VERSION_CODE},id:\"${APP_ID}\"};" > web/js/build-info.js
+          cat web/js/build-info.js
       - run: npm install
       - name: Create Android project from web/
         run: npx cap add android && npx cap sync android
-      - name: Set increasing Android version code
-        env:
-          VERSION_CODE: ${{ github.run_number }}
+      - name: Set version code, version name and application id
         run: |
-          sed -i -E "s/versionCode[[:space:]]+[0-9]+/versionCode ${VERSION_CODE}/" android/app/build.gradle
-          sed -i -E "s/versionName \"[^\"]*\"/versionName \"1.${VERSION_CODE}\"/" android/app/build.gradle
-          grep -q "versionCode ${VERSION_CODE}" android/app/build.gradle
-          grep -q "versionName \"1.${VERSION_CODE}\"" android/app/build.gradle
-          # New install id so it installs NEXT TO the old app (old key cannot be updated)
-          sed -i -E 's/applicationId "com\.arya\.fit"/applicationId "com.arya.fit2"/' android/app/build.gradle
-          grep -q 'applicationId "com.arya.fit2"' android/app/build.gradle
-          echo "versionCode=${VERSION_CODE}"
+          set -euo pipefail
+          G=android/app/build.gradle
+          sed -i -E "s/versionCode[[:space:]]+[0-9]+/versionCode ${VERSION_CODE}/" $G
+          sed -i -E "s/versionName \"[^\"]*\"/versionName \"1.${GITHUB_RUN_NUMBER}\"/" $G
+          sed -i -E "s/applicationId \"com\.arya\.fit\"/applicationId \"${APP_ID}\"/" $G
+          grep -q "versionCode ${VERSION_CODE}" $G
+          grep -q "applicationId \"${APP_ID}\"" $G
+          echo "applicationId=${APP_ID} versionCode=${VERSION_CODE} run=${GITHUB_RUN_NUMBER}"
       - name: Apply native setup (splash, plugins, MainActivity, icon, manifest)
         run: bash tools/android-setup.sh
       - name: Build and verify APK
         run: |
-          cd android && ./gradlew assembleDebug
-          APK=app/build/outputs/apk/debug/app-debug.apk
-          APKSIGNER=$(find "$ANDROID_HOME/build-tools" -type f -name apksigner | sort -V | tail -n 1)
-          test -n "$APKSIGNER"
-          "$APKSIGNER" verify --print-certs "$APK"
+          set -euo pipefail
+          cd android && ./gradlew assembleDebug && cd ..
+          APK=android/app/build/outputs/apk/debug/app-debug.apk
+          BT=$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -n 1)
+          "$BT/apksigner" verify --print-certs "$APK"
+          # 1. signed with the one permanent key
+          EXP=$(tr -d ' :\r\n' < signing/EXPECTED_SHA256.txt | tr 'A-F' 'a-f')
+          GOT=$("$BT/apksigner" verify --print-certs "$APK" | grep -m1 'certificate SHA-256 digest' | awk '{print $NF}' | tr 'A-F' 'a-f')
+          test "$EXP" = "$GOT" || { echo "::error::APK signature $GOT differs from expected $EXP. It would NOT install over the old app."; exit 1; }
+          # 2. package id and version are what we set
+          BADGE=$("$BT/aapt2" dump badging "$APK" | head -n 1)
+          echo "$BADGE"
+          echo "$BADGE" | grep -q "name='${APP_ID}'"
+          echo "$BADGE" | grep -q "versionCode='${VERSION_CODE}'"
+          # 3. unique file name so an old app-debug.apk in Downloads can never be installed by mistake
+          cp "$APK" "Arya-Fit-build${GITHUB_RUN_NUMBER}.apk"
+          {
+            echo "### Arya Fit build ${GITHUB_RUN_NUMBER}"
+            echo "- package: \`${APP_ID}\`"
+            echo "- versionCode: \`${VERSION_CODE}\`"
+            echo "- signing key sha256: \`${GOT}\` (matches expected)"
+            echo "- file: \`Arya-Fit-build${GITHUB_RUN_NUMBER}.apk\`"
+          } >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
         with:
           name: arya-fit-apk
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          path: Arya-Fit-build*.apk

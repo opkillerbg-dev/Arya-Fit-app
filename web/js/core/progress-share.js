@@ -21,7 +21,7 @@ function bindProg(){var g=$("bl-go");if(g)g.onclick=function(){var w=+$("bl-w").
   var rh=$("rhist");if(rh){var pend=null;rh.onclick=function(e){var b=e.target.closest("button");if(!b)return;
     if(b.id=="ex-csv"){shareFile("arya-runs.csv",runsCSV());return}
     if(b.id=="ex-gpx"){var x=runsGPX();if(x.indexOf("<trk>")<0){toast("No routes recorded yet.");return}shareFile("arya-runs.gpx",x);return}
-    if(b.dataset.rm!=null){if(pend!==b.dataset.rm){pend=b.dataset.rm;b.textContent="Sure?";setTimeout(function(){pend=null;if(b.isConnected)b.textContent="Delete"},3000);return}var d=+b.dataset.rm;["g","r","s","jt","wk"].forEach(function(p){delete st[p+d]});delete st[k(d,"j")];delete axRoutes()[d];save();prog();toast("Run deleted");return}
+    if(b.dataset.rm!=null){if(pend!==b.dataset.rm){pend=b.dataset.rm;b.textContent="Sure?";setTimeout(function(){pend=null;if(b.isConnected)b.textContent="Delete"},3000);return}var d=+b.dataset.rm;["g","r","s","jt","wk"].forEach(function(p){delete st[p+d]});delete st[k(d,"j")];delete axRoutes()[d];delete axRsum()[d];save();prog();toast("Run deleted");return}
     if(b.dataset.ed!=null){var d2=+b.dataset.ed;$("redit").innerHTML='<p class="key">Edit '+dl(d2)+'</p><div class="qr"><input class="tin" id="re-k" type="number" step="0.01" inputmode="decimal" value="'+((st["g"+d2]||0)/1000).toFixed(2)+'"><input class="tin" id="re-t" value="'+fmt(st["r"+d2]||0)+'"></div><button class="btn pri w" id="re-go">Save changes</button>';
       $("re-go").onclick=function(){var km=parseFloat($("re-k").value),t=ptime($("re-t").value);if(!(km>=0)||!(t>=0)){toast("Check the km and time.");return}st["g"+d2]=Math.round(km*1000);st["r"+d2]=t;if(JKM&&km*1000>=JKM*980)st[k(d2,"j")]=1;save();prog();toast("Run updated")}}}}}
 function shareCard(){var R=axRoutes(),ds=Object.keys(R).map(Number).sort(function(a,b){return a-b}),dk=ds[ds.length-1];if(dk==null)return;var pts=R[dk][R[dk].length-1],c=document.createElement("canvas");c.width=1080;c.height=1350;var x=c.getContext("2d"),gr=x.createLinearGradient(0,0,0,1350);gr.addColorStop(0,"#0b1b3f");gr.addColorStop(1,"#000");x.fillStyle=gr;x.fillRect(0,0,1080,1350);
@@ -46,12 +46,13 @@ function nextPlan(){var n=JSON.parse(JSON.stringify(P)),L=lvl(),b=IVS[L]||[360,6
   var id="n"+Date.now().toString(36).slice(-6);APP.plans[id]={plan:r.plan,st:{}};PR.lvl=null;PR.lrd=null;save();activate(id);save();toast("New plan ready")}
 var ENG=window.Capacitor&&Capacitor.isNativePlatform&&Capacitor.isNativePlatform()&&Capacitor.Plugins&&Capacitor.Plugins.RunEngine;
 function engStart(keep){if(!ENG||!TM)return;var sq=TM.seq||[0,0],cn=sq[0]>=86400;TM.eng=1;TM.erev=0;TM.rn=0;
-  var o={jog:cn?0:sq[0],walk:cn?0:sq[1],trk:true,voice:PR.voi!==0,acc:Math.round(el_()*1000),paused:!TM.run,phase:TM.ph||0,hold:!!TM.hold,pstart:TM.pstart||0,round:TM.round||1,jt:TM.jt||0,wt:TM.wt||0,dist:keep?(TM.dist||0):0};
+  var o={jog:cn?0:sq[0],walk:cn?0:sq[1],trk:true,voice:PR.voi!==0,acc:Math.round(el_()*1000),paused:!TM.run,phase:TM.ph||0,hold:!!TM.hold,pstart:TM.pstart||0,round:TM.round||1,jt:TM.jt||0,wt:TM.wt||0,dist:keep?(TM.dist||0):0,steps:TM.steps||0};
   ENG.requestPermissions().catch(function(){}).then(function(){return ENG.start(o)}).catch(function(){if(TM)TM.eng=0})}
 function engPush(x){if(!ENG||!TM||!TM.eng)return;var o={elapsed:Math.round(el_()*1000),paused:!TM.run,phase:TM.ph||0,hold:!!TM.hold,pstart:TM.pstart||0,round:TM.round||1};if(x)for(var q in x)o[q]=x[q];try{ENG.setState(o)}catch(e){}}
 function engSync(){if(!ENG||!TM||!TM.eng||TM.sy||Date.now()-(TM.sat||0)<700)return;TM.sat=Date.now();TM.sy=1;
   ENG.state().then(function(r){if(!TM)return;TM.sy=0;if(!r||!r.active)return;
-    TM.dist=r.dist;TM.jt=r.jt;TM.wt=r.wt;TM.gmsg="GPS tracking (background engine)";
+    TM.dist=r.dist;TM.jt=r.jt;TM.wt=r.wt;TM.gavg=r.gavg;if(r.sens){TM.steps=r.steps;TM.nsens=1}if(r.gap)TM.gap=1;
+    TM.gmsg=r.goff?"GPS is off. Turn on Location.":(!r.fx||r.gacc<0)?"Finding GPS...":r.gacc>30?"Weak GPS (about "+Math.round(r.gacc)+" m). Move to open sky.":"GPS good (about "+Math.round(r.gacc)+" m)";
     if(!TM.hit&&TM.dist+(TM.base||0)>=JKM*1000){TM.hit=1;beep(3,988);toast(JKM+" km reached. Tap Save run time.")}
     if(r.rev!==TM.erev){TM.erev=r.rev;TM.acc=r.acc;TM.last=Date.now();TM.run=!r.paused;TM.ph=r.phase;TM.hold=r.hold;TM.pstart=r.pstart;TM.round=r.round;TM.lt=r.acc/1000;$("dpp").textContent=r.paused?"Resume":"Pause"}
     if(r.rn>(TM.rn||0)){var f=TM.rn||0;TM.rn=r.rn;ENG.route({from:f}).then(function(q){try{if(TM)TM.rt=(TM.rt||[]).concat(JSON.parse(q.pts))}catch(e){}})}

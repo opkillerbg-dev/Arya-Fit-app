@@ -14,7 +14,8 @@ import com.getcapacitor.annotation.Permission;
 
 @CapacitorPlugin(name = "RunEngine", permissions = {
   @Permission(strings = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, alias = "location"),
-  @Permission(strings = {Manifest.permission.POST_NOTIFICATIONS}, alias = "notifications")
+  @Permission(strings = {Manifest.permission.POST_NOTIFICATIONS}, alias = "notifications"),
+  @Permission(strings = {Manifest.permission.ACTIVITY_RECOGNITION}, alias = "activity")
 })
 public class RunEnginePlugin extends Plugin {
   private TextToSpeech tts;

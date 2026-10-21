@@ -25,9 +25,11 @@ function axPlan(){return APP&&APP.plans&&APP.plans[APP.active]?APP.plans[APP.act
 function axSched(){var e=axPlan();return e&&Array.isArray(e.schedMap)?e.schedMap:[]}
 function axEdits(){var e=axPlan();return e&&e.workoutEdits&&typeof e.workoutEdits==="object"?e.workoutEdits:{}}
 function axRoutes(){var e=axPlan();if(!e)return {};e.routes=e.routes&&typeof e.routes==="object"?e.routes:{};return e.routes}
+function axRsum(){var e=axPlan();if(!e)return {};e.rsum=e.rsum&&typeof e.rsum==="object"&&!Array.isArray(e.rsum)?e.rsum:{};return e.rsum}
 function axSrc(i){var m=axSched();return m.length?(i<m.length?m[i]:i):i}
 function axShiftSt(at){var out={};Object.keys(st).forEach(function(k){var m=/^(\d+)(?=:)/.exec(k),d=/^([wrgsx]|jt|wk)(\d+)$/.exec(k);if(m&&+m[1]>=at)out[(+m[1]+1)+k.slice(m[1].length)]=st[k];else if(d&&+d[2]>=at)out[d[1]+(+d[2]+1)]=st[k];else out[k]=st[k]});st=out;APP.plans[APP.active].st=st;var plan=axPlan(),edits=plan&&plan.workoutEdits;if(edits&&typeof edits==="object"){var moved={};Object.keys(edits).forEach(function(k){var n=+k;if(/^\d+$/.test(k)&&n>=at)moved[String(n+1)]=edits[k];else moved[k]=edits[k]});plan.workoutEdits=moved}
- var routes=plan&&plan.routes;if(routes&&typeof routes==="object"){var rr={};Object.keys(routes).forEach(function(k){var n=+k;if(/^\d+$/.test(k)&&n>=at)rr[String(n+1)]=routes[k];else rr[k]=routes[k]});plan.routes=rr}}
+ var routes=plan&&plan.routes;if(routes&&typeof routes==="object"){var rr={};Object.keys(routes).forEach(function(k){var n=+k;if(/^\d+$/.test(k)&&n>=at)rr[String(n+1)]=routes[k];else rr[k]=routes[k]});plan.routes=rr}
+ var rsm=plan&&plan.rsum;if(rsm&&typeof rsm==="object"){var r2={};Object.keys(rsm).forEach(function(k){var n=+k;if(/^\d+$/.test(k)&&n>=at)r2[String(n+1)]=rsm[k];else r2[k]=rsm[k]});plan.rsum=r2}}
 function axShiftPreview(i){
  var old=[],neu=[],end=Math.min(ND,i+7);
  for(var j=i;j<end;j++){var os=axSrc(j),ot=os<0?null:T[wdk(os)];old.push((j+1)+'. '+dl(j)+': '+(ot?ot.n:'Rest'))}

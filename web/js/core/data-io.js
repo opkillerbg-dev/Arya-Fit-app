@@ -8,7 +8,7 @@ function axMeta(){var m={build:"arya-v50",plans:0,ticks:0,runDays:0,stepDays:0,s
   Object.keys(APP.plans).forEach(function(id){m.plans++;var s2=APP.plans[id].st||{};Object.keys(s2).forEach(function(k2){if(/^\d+:/.test(k2))m.ticks++;else if(/^g\d+$/.test(k2)&&s2[k2]>0)m.runDays++})});
   Object.keys(ds).forEach(function(d){m.stepDays++;m.stepsTotal+=ds[d]||0});return m}
 function pack(){var o={app:"arya-28day-tracker",version:2,schema:AXSCHEMA,exported:new Date().toISOString(),active:APP.active,meta:axMeta(),prefs:PR,plans:{}};
-  Object.keys(APP.plans).forEach(function(id){o.plans[id]={plan:APP.plans[id].plan,progress:APP.plans[id].st,schedMap:APP.plans[id].schedMap,workoutEdits:APP.plans[id].workoutEdits,routes:APP.plans[id].routes}});return JSON.stringify(o,null,1)}
+  Object.keys(APP.plans).forEach(function(id){o.plans[id]={plan:APP.plans[id].plan,progress:APP.plans[id].st,schedMap:APP.plans[id].schedMap,workoutEdits:APP.plans[id].workoutEdits,routes:APP.plans[id].routes,rsum:APP.plans[id].rsum}});return JSON.stringify(o,null,1)}
 /* daily steps already travel in prefs.ds; packFresh only refreshes them from the native counter first */
 async function packFresh(){try{if(STP){await stepsPull();await stepsHist()}}catch(e){}save();return pack()}
 function hm(){var d=new Date();return("0"+d.getHours()).slice(-2)+("0"+d.getMinutes()).slice(-2)}
@@ -47,13 +47,23 @@ function syncPrefs(){var M={"t-snd":["snd",1],"t-gps":["gps",1],"t-auto":["auto"
   var q=$("spm");if(q)q.value=PR.spm||160;q=$("rm-t");if(q)q.value=PR.rmt||"";theme();metro();remind(1)}
 function axCleanSched(raw,days){if(!Array.isArray(raw)||raw.length>500)return null;var out=[];for(var i=0;i<raw.length;i++){var v=raw[i];if(!Number.isInteger(v)||v< -1||v>=days)return null;out.push(v)}return out.length>days?out:null}
 function axCleanEdits(raw,days,plan){if(!raw||typeof raw!=="object"||Array.isArray(raw))return null;var out={};Object.keys(raw).slice(0,500).forEach(function(k){if(!/^\d{1,3}$/.test(k)||+k>=days||!raw[k]||typeof raw[k]!=="object")return;var day={};Object.keys(raw[k]).slice(0,80).forEach(function(n){if(!/^\d{1,2}$/.test(n)||!raw[k][n]||typeof raw[k][n]!=="object")return;var v=raw[k][n],o={};if(Number.isInteger(v.sets)&&v.sets>=1&&v.sets<=10)o.sets=v.sets;if(Number.isInteger(v.reps)&&v.reps>=1&&v.reps<=50)o.reps=v.reps;if(Object.keys(o).length)day[n]=o});if(Object.keys(day).length)out[k]=day});return out}
+/* run summaries (v92): {day:[{t,d,s,st,jt,wt,km:[],pt:[m,s],pp:[],ga,es,lv,lu,cd,sl}]}, every field range-checked */
+function axCleanRsum(raw){if(!raw||typeof raw!=="object"||Array.isArray(raw))return null;var out={},nn=function(x,mx){return typeof x==="number"&&isFinite(x)&&x>=0&&x<=mx},rd=function(x){return Math.round(x)};
+  Object.keys(raw).slice(0,500).forEach(function(d){if(!/^\d{1,3}$/.test(d)||!Array.isArray(raw[d]))return;
+    var a=raw[d].slice(0,10).map(function(r){if(!r||typeof r!=="object"||!nn(r.t,4e12)||!nn(r.d,1e6)||!nn(r.s,2e5))return null;var o={t:rd(r.t),d:rd(r.d),s:rd(r.s)};
+      ["st","jt","wt","ga","es","cd"].forEach(function(k){if(nn(r[k],1e6))o[k]=rd(r[k])});
+      if(nn(r.sl,3))o.sl=Math.round(r.sl*100)/100;if(typeof r.lv==="string")o.lv=r.lv.slice(0,40);if(r.lu===1||r.lu===-1)o.lu=r.lu;
+      if(Array.isArray(r.km))o.km=r.km.slice(0,100).filter(function(x){return nn(x,20000)}).map(rd);
+      if(Array.isArray(r.pt)&&r.pt.length===2&&nn(r.pt[0],1000)&&nn(r.pt[1],20000))o.pt=[rd(r.pt[0]),rd(r.pt[1])];
+      if(Array.isArray(r.pp))o.pp=r.pp.slice(0,24).filter(function(x){return nn(x,20000)}).map(rd);
+      return o}).filter(Boolean);if(a.length)out[d]=a});return Object.keys(out).length?out:null}
 function axCleanRoutes(raw){if(!raw||typeof raw!=="object"||Array.isArray(raw))return null;var out={};Object.keys(raw).slice(0,500).forEach(function(d){if(!/^\d{1,3}$/.test(d)||!Array.isArray(raw[d]))return;var rs=raw[d].slice(0,10).map(function(r){return Array.isArray(r)?r.slice(0,300).filter(function(q){return Array.isArray(q)&&q.length>=3&&typeof q[0]==="number"&&isFinite(q[0])&&typeof q[1]==="number"&&isFinite(q[1])&&typeof q[2]==="number"&&isFinite(q[2])}).map(function(q){return[q[0],q[1],q[2]]}):[]}).filter(function(r){return r.length>=2});if(rs.length)out[d]=rs});return Object.keys(out).length?out:null}
 function doImport(txt){var d;try{d=JSON.parse(txt)}catch(e){d=null}
   if(!d||d.app!="arya-28day-tracker"||typeof d!="object"){toast("That isn't a tracker backup file.");return}
   if((+d.schema||1)>AXSCHEMA){toast("That backup is from a newer app version. Update the app first.");return}
   var n=0;
   if(d.version==2&&d.plans&&typeof d.plans=="object"){var np={},first=null;
-    Object.keys(d.plans).slice(0,12).forEach(function(id){var e=d.plans[id],r=vplan(e&&e.plan);if(!r.plan)return;var sid=String(id).replace(/[^a-z0-9]/gi,"").slice(0,16)||("p"+n);var baseDays=r.plan.weeks*7,sm=axCleanSched(e.schedMap,baseDays);if(!sm&&id===d.active&&Array.isArray(d.prefs&&d.prefs.schedMap))sm=axCleanSched(d.prefs.schedMap,baseDays);var ed=axCleanEdits(e.workoutEdits,sm?sm.length:baseDays,r.plan);np[sid]={plan:r.plan,st:clean(e.progress||{},Math.max(baseDays,sm?sm.length:0)),schedMap:sm||undefined,workoutEdits:ed||undefined,routes:axCleanRoutes(e.routes)||undefined};first=first||sid});
+    Object.keys(d.plans).slice(0,12).forEach(function(id){var e=d.plans[id],r=vplan(e&&e.plan);if(!r.plan)return;var sid=String(id).replace(/[^a-z0-9]/gi,"").slice(0,16)||("p"+n);var baseDays=r.plan.weeks*7,sm=axCleanSched(e.schedMap,baseDays);if(!sm&&id===d.active&&Array.isArray(d.prefs&&d.prefs.schedMap))sm=axCleanSched(d.prefs.schedMap,baseDays);var ed=axCleanEdits(e.workoutEdits,sm?sm.length:baseDays,r.plan);np[sid]={plan:r.plan,st:clean(e.progress||{},Math.max(baseDays,sm?sm.length:0)),schedMap:sm||undefined,workoutEdits:ed||undefined,routes:axCleanRoutes(e.routes)||undefined,rsum:axCleanRsum(e.rsum)||undefined};first=first||sid});
     if(!first){toast("No valid plans in that backup.");return}
     axSnap("preimport");APP.plans=np;var pr=d.prefs||{};restorePrefs(pr);
     var act=np[String(d.active).replace(/[^a-z0-9]/gi,"").slice(0,16)]?String(d.active).replace(/[^a-z0-9]/gi,"").slice(0,16):first;

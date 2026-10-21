@@ -13,7 +13,7 @@
     {k:"alert",t:"Sound & feedback",s:function(){return (PR.voi===0?"Voice off":"Voice on")+" · "+(PR.hap===0?"haptics off":"haptics on")}},
     {k:"plan",t:"Plan & exercises",s:function(){var n=$("sp-name");return (n&&n.textContent)||"Plans, next plan, library"}},
     {k:"data",t:"Data & backup",s:function(){return PR.lbk?"Last backup "+Math.floor((Date.now()-PR.lbk)/864e5)+" d ago":"No backup yet"}},
-    {k:"about",t:"About",s:function(){var b=window.AXBUILD;return "Arya Fit · v91"+(b&&b.run?" · build "+b.run:"")}}
+    {k:"about",t:"About",s:function(){var b=window.AXBUILD;return "Arya Fit · v92"+(b&&b.run?" · build "+b.run:"")}}
   ];
   function cap(s){return s.charAt(0).toUpperCase()+s.slice(1)}
   function ic(n,c){return '<svg class="ax-ic'+(c?" "+c:"")+'"><use href="#'+n+'"/></svg>'}

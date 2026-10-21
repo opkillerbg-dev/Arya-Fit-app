@@ -8,6 +8,10 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ServiceInfo;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -26,11 +30,15 @@ import com.getcapacitor.JSObject;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class RunService extends Service implements LocationListener {
+public class RunService extends Service implements LocationListener, SensorEventListener {
   static volatile boolean active = false, paused = false, hold = false, trk = true, voice = true, fg = true, dirty = false;
   static volatile int phase = 0, round = 1, rev = 0, kmSaid = 0;
   static volatile double jogSec = 0, walkSec = 0, pstart = 0, jt = 0, wt = 0, lt = 0, dist = 0;
-  static volatile long accMs = 0, lastMs = 0;
+  static volatile long accMs = 0, lastMs = 0, steps = 0;
+  // GPS filter (see RunTrack) and live quality info for the page
+  static volatile RunTrack track = new RunTrack();
+  static volatile double distBase = 0, gpsAcc = -1, kmMark = 0;
+  static volatile boolean gpsOff = false, sens = false, kmValid = true;
   static final ArrayList<double[]> route = new ArrayList<double[]>();
 
   private final Handler h = new Handler(Looper.getMainLooper());
@@ -39,7 +47,8 @@ public class RunService extends Service implements LocationListener {
   private TextToSpeech tts;
   private ToneGenerator tg;
   private boolean ttsOk = false, started = false;
-  private Location last = null;
+  private SensorManager sm;
+  private long stepLast = -1;
   private long lastNotif = 0;
   private final Runnable ticker = new Runnable() {
     public void run() {
@@ -69,6 +78,14 @@ public class RunService extends Service implements LocationListener {
     lt = accMs / 1000.0;
     lastMs = SystemClock.elapsedRealtime();
     kmSaid = (int) (dist / 1000.0);
+    distBase = dist;
+    track = new RunTrack();
+    steps = (long) d.optDouble("steps", 0);
+    sens = false;
+    gpsAcc = -1;
+    gpsOff = false;
+    kmMark = accMs / 1000.0;
+    kmValid = (dist % 1000.0) < 50.0;
     rev = 0;
     fg = true;
     dirty = true;
@@ -123,6 +140,14 @@ public class RunService extends Service implements LocationListener {
       n = route.size();
     }
     o.put("rn", n);
+    o.put("steps", steps);
+    o.put("sens", sens);
+    o.put("gacc", gpsAcc);
+    o.put("gavg", track.avgAcc());
+    o.put("goff", gpsOff);
+    o.put("fx", track.fixes);
+    o.put("fd", track.dropped);
+    o.put("gap", track.gaps);
     return o;
   }
 
@@ -163,8 +188,6 @@ public class RunService extends Service implements LocationListener {
       doPause();
     } else if ("SWITCH".equals(a)) {
       doSwitch();
-    } else if ("START".equals(a)) {
-      last = null;
     }
     if (!active) {
       stopSelf();
@@ -184,6 +207,7 @@ public class RunService extends Service implements LocationListener {
         return START_NOT_STICKY;
       }
       if (trk) startGps();
+      startSteps();
       h.post(ticker);
     }
     return START_NOT_STICKY;
@@ -192,9 +216,33 @@ public class RunService extends Service implements LocationListener {
   private void startGps() {
     try {
       lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+      gpsOff = !lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
       lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000L, 0f, this, Looper.getMainLooper());
     } catch (Exception e) {
     }
+  }
+
+  // Hardware step counter: counts with the screen off, far better than the accelerometer guess in the page.
+  private void startSteps() {
+    try {
+      sm = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+      Sensor s = sm == null ? null : sm.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+      if (s != null) sm.registerListener(this, s, SensorManager.SENSOR_DELAY_UI);
+    } catch (Exception e) {
+    }
+  }
+
+  @Override
+  public void onSensorChanged(SensorEvent ev) {
+    if (!active || ev.values == null || ev.values.length == 0) return;
+    long v = (long) ev.values[0];
+    sens = true;
+    if (stepLast >= 0 && v >= stepLast && !paused) steps += Math.min(v - stepLast, 400L);
+    stepLast = v;
+  }
+
+  @Override
+  public void onAccuracyChanged(Sensor s, int a) {
   }
 
   private void doSwitch() {
@@ -293,39 +341,42 @@ public class RunService extends Service implements LocationListener {
   public void onLocationChanged(Location l) {
     if (!active || !trk) return;
     if (paused) {
-      last = null;
+      track.restart();
       return;
     }
-    if (l.hasAccuracy() && l.getAccuracy() > 30) return;
-    if (last != null) {
-      double dts = (l.getTime() - last.getTime()) / 1000.0;
-      if (dts > 25) {
-        last = l;
-        return;
-      }
-      double d = l.distanceTo(last);
-      if (d < 3) return;
-      if (d / Math.max(dts, 0.001) > 8) return;
-      dist += d;
-      int k = (int) (dist / 1000.0);
-      if (k > kmSaid) {
-        kmSaid = k;
-        if (!fg) say(k + (k > 1 ? " kilometers" : " kilometer"));
-      }
+    gpsOff = false;
+    double acc = l.hasAccuracy() ? l.getAccuracy() : 0;
+    gpsAcc = acc;
+    double spd = l.hasSpeed() ? l.getSpeed() : -1;
+    long tm = l.getElapsedRealtimeNanos() / 1000000L;
+    RunTrack t = track;
+    if (!t.add(l.getLatitude(), l.getLongitude(), acc, spd, tm)) return;
+    dist = distBase + t.dist;
+    int k = (int) (dist / 1000.0);
+    if (k > kmSaid) {
+      kmSaid = k;
+      double e = elapsedSec();
+      String pace = "";
+      int ps = (int) Math.round(e - kmMark);
+      if (kmValid && ps > 60 && ps < 1800) pace = ". Last kilometer, " + (ps / 60) + " minutes " + (ps % 60) + " seconds";
+      kmMark = e;
+      kmValid = true;
+      if (!fg) say(k + (k > 1 ? " kilometers" : " kilometer") + pace);
     }
     synchronized (route) {
-      route.add(new double[]{l.getLatitude(), l.getLongitude(), (double) l.getTime()});
+      route.add(new double[]{t.outLa, t.outLo, (double) l.getTime()});
     }
-    last = l;
   }
 
   public void onStatusChanged(String p, int s, Bundle b) {
   }
 
   public void onProviderEnabled(String p) {
+    if (LocationManager.GPS_PROVIDER.equals(p)) gpsOff = false;
   }
 
   public void onProviderDisabled(String p) {
+    if (LocationManager.GPS_PROVIDER.equals(p)) gpsOff = true;
   }
 
   @Override
@@ -333,6 +384,10 @@ public class RunService extends Service implements LocationListener {
     h.removeCallbacks(ticker);
     try {
       if (lm != null) lm.removeUpdates(this);
+    } catch (Exception e) {
+    }
+    try {
+      if (sm != null) sm.unregisterListener(this);
     } catch (Exception e) {
     }
     try {

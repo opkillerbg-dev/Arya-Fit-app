@@ -30,7 +30,7 @@
   }
   window.axBrainOpen=function(){setOpen(true)};
 
-  var ORDER=["ax-hnote","ax-htoday","ax-hmiss","ax-stat","ax-hsteps","ax-readiness-card","ax-hbar","ax-hbrain","ax-bk-nudge"];
+  var ORDER=["ax-hnote","ax-htoday","ax-hmiss","ax-stat","ax-hsteps","ax-wx-card","ax-readiness-card","ax-hbar","ax-hbrain","ax-bk-nudge"];
   function node(k){return k==="ax-stat"?home.querySelector(".ax-stat"):$(k)}
   var calls=0,callT=Date.now(),mo=null;
   function arrange(){

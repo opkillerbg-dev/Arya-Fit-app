@@ -79,6 +79,44 @@ try:
         check("warm-up: tabs still switch", pg.evaluate("go('prog'),!document.getElementById('ax-v-prog').hidden&&document.getElementById('ax-v-home').hidden"))
         check("fonts stylesheet does not block rendering", pg.evaluate("document.querySelector('link[data-ax-font]').media")  in ("all", "print"))
         check("startup: no page errors", not errs, errs); ctx.close()
+
+        # v91 run weather: mocked Open-Meteo, granted location
+        def forecast(route):
+            import datetime
+            t0 = datetime.datetime.now().replace(minute=0, second=0, microsecond=0) - datetime.timedelta(hours=1)
+            hrs = [t0 + datetime.timedelta(hours=i) for i in range(48)]
+            n = len(hrs)
+            route.fulfill(status=200, content_type="application/json", headers={"access-control-allow-origin": "*"}, body=json.dumps({"hourly": {
+                "time": [h.strftime("%Y-%m-%dT%H:00") for h in hrs], "temperature_2m": [13] * n, "apparent_temperature": [12] * n,
+                "precipitation_probability": [5] * n, "precipitation": [0] * n, "wind_speed_10m": [9] * n, "uv_index": [2] * n, "weather_code": [1] * n}}))
+        ctx = b.new_context(viewport={"width": 390, "height": 844}, geolocation={"latitude": 12.9716, "longitude": 77.5946}, permissions=["geolocation"])
+        pg = ctx.new_page(); errs = []; pg.on("pageerror", lambda e: errs.append(str(e)[:150]))
+        pg.route("**/api.open-meteo.com/**", forecast)
+        pg.goto(URL, wait_until="load"); pg.wait_for_function("!document.getElementById('ax-boot')", timeout=8000); pg.wait_for_timeout(600)
+        check("weather: invite card shows before opt-in", pg.evaluate("!!document.getElementById('ax-wx-on')"))
+        check("weather: nothing asked or fetched before opt-in", pg.evaluate("localStorage.getItem('axWx')") is None)
+        pg.click("#ax-wx-on"); pg.wait_for_function("document.querySelector('#ax-wx-card .ax-wx-pill')", timeout=6000)
+        txt = pg.evaluate("document.getElementById('ax-wx-card').innerText")
+        check("weather: card shows a verdict after opt-in", "Good" in txt.upper() or "GOOD" in txt, txt)
+        saved = json.loads(pg.evaluate("localStorage.getItem('axWx')"))
+        check("weather: location stored rounded to 2 decimals, on this phone only", saved.get("lat") == 12.97 and saved.get("lon") == 77.59 and "aryaApp2" not in json.dumps(saved), saved.get("lat"))
+        check("weather: location is not inside the tracker data/backup", "12.97" not in (pg.evaluate("pack()") or ""))
+        order = pg.evaluate("[...document.getElementById('ax-v-home').children].map(c=>c.id||c.className).findIndex(x=>x==='ax-wx-card')")
+        check("weather: card sits on Home (positioned by the Home order)", order > 0, order)
+        pg.click("#ax-wx-card"); pg.wait_for_selector("#ax-wx-off", timeout=3000)
+        check("weather: sheet credits Open-Meteo", "Open-Meteo" in pg.evaluate("document.getElementById('ax-shb').innerText"))
+        pg.click("#ax-wx-off"); pg.wait_for_timeout(300)
+        check("weather: turning off forgets the location", json.loads(pg.evaluate("localStorage.getItem('axWx')")).get("lat") is None)
+        check("weather: off state is a slim row with Turn on", pg.evaluate("!!document.getElementById('ax-wx-on2')"))
+        check("weather: no page errors", not errs, errs); ctx.close()
+
+        ctx = b.new_context(viewport={"width": 390, "height": 844}, geolocation={"latitude": 12.9716, "longitude": 77.5946}, permissions=["geolocation"])
+        pg = ctx.new_page(); errs = []; pg.on("pageerror", lambda e: errs.append(str(e)[:150]))
+        pg.route("**/api.open-meteo.com/**", lambda r: r.abort())
+        pg.goto(URL, wait_until="load"); pg.evaluate("localStorage.setItem('axWx',JSON.stringify({on:1,lat:12.97,lon:77.59,pt:Date.now()}))")
+        pg.reload(wait_until="load"); pg.wait_for_function("!document.getElementById('ax-boot')", timeout=8000); pg.wait_for_timeout(1500)
+        check("weather: offline with no saved forecast shows a retry card, not an error", "try again" in pg.evaluate("document.getElementById('ax-wx-card').innerText").lower())
+        check("weather: offline: no page errors", not errs, errs); ctx.close()
         b.close()
 finally:
     srv.kill()

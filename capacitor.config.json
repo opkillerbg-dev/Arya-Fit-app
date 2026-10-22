@@ -7,7 +7,7 @@
  },
  "plugins": {
   "LocalNotifications": {
-   "smallIcon": "ic_stat_run",
+   "smallIcon": "ic_stat_arya",
    "iconColor": "#2F5BFF"
   }
  }

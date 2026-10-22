@@ -1,7 +1,7 @@
 # Arya Fit: HANDOFF (latest, consolidated)
 
 **Read order:** `ARYA-FIT-VISION.md` (vision + roadmap) -> `ARYA-FIT-BRIEF.md` (user + objectives) -> this file (state + technical map).
-**Last updated:** 2026-10-18. Service worker cache `arya-v84`. **Repo layout changed in v81: see section 2. File names in older log entries below are the pre-v81 flat names; map them with the table in section 2.**
+**Last updated:** 2026-10-22. Service worker cache `arya-v94`. **Repo layout changed in v81: see section 2. File names in older log entries below are the pre-v81 flat names; map them with the table in section 2.**
 **Live repo (public, readable):** github.com/opkillerbg-dev/Arya-Fit-app. If you have bash with network, `git clone` it and read the real files. Do not trust pasted copies, because a stale build workflow once hid a whole feature (see section 6).
 
 ## 1. What this is
@@ -654,3 +654,20 @@ Causes of that Android error: (a) APK signed with a different key than the insta
 - **Tests**: `node tests/runcalc.test.js` (16 checks), `python3 tests/run_ui_test.py` (stubbed RunEngine, full save flow, summary, card, validator, shift). `build.yml` still only runs `store.test.js`; add the new node test there when `ARYA_PAT` is handy.
 - **Verify on the phone**: Settings > Run step line shows Physical activity allowed; a run shows "GPS good (N m)"; steps after a run are close to distance / stride (not double); compare distance with a known 400 m track lap; summary opens after Save; Share run card. If CI fails, suspects are `RunService.java` / `RunTrack.java` (compiled only against stubs).
 - Cache `arya-v92`, About label v92.
+
+## v93 (2026-10-21)
+- Exercise animations are paused by default; each picture plays only after its Play pill is tapped (per picture, not remembered, no timers running otherwise). `PR.exAnim` is no longer read or written (kept in the backup key list so old backups import).
+- Removed the top-right Start-today's-plan play button (`#ax-tgo`) and its handler; the Plan tab is still one tap away in the bottom bar. v93 includes everything from v92 in the same update.zip.
+
+## v94 — Better notifications + merged v93 / build.yml (2026-10-22; Java compiled against hand-written Android stubs, NotifText unit-tested, node + browser tests pass; NOT built by real CI, NOT run on a phone)
+- **Steps notification redesigned** (`native/java/NotifKit.java`, wording in `NotifText.java`): title `6,284 steps`, line `79% of 8,000 · 1,716 to go`, native progress bar to the goal, sub-text = streak (`4-day streak`) or `Today`, accent colour from the skin (green once the goal is hit). Expanded view adds km walked, today's plan (`Today: Lower body · 2 of 5 done` / `Rest day today`) and `Yesterday X · 7-day avg Y`.
+- **Data source:** goal, stride, plan, streak and colours come from the widget JSON (pref `arya_widget`/`json`), so no new bridge. `widget.js` now also sends `stride` (= `strideM()`). If the JSON is missing or from another day the plan line is hidden and goal defaults to 8000, stride 0.75.
+- **Staleness bug fixed:** the old code dropped any update inside a 5 s window and then stayed stale until the next step. `Svc` now uses a trailing throttle (Handler, 4 s) so the last value is always shown; day rollover also refreshes. Screen-on (`ACTION_SCREEN_ON` receiver) flushes the batched sensor events (`SensorManager.flush`) and refreshes, so the count is current when you open the shade.
+- **Goal-reached alert:** one notification per day when the count crosses the goal while the service is running (own channel `arya_goal`, default importance; mute it in Android settings > Notifications > Goal reached). Never fires for an already-passed goal after a restart (`ga` pref stores the day it was handled). Positive-only: there is no "you are behind" nudge.
+- **Icon:** new monochrome footprints vector `native/res/drawable/ic_stat_arya.xml` (copied by `tools/android-setup.sh`) is the small icon for steps, goal and run notifications. `capacitor.config.json` pointed LocalNotifications (daily reminder, web run) to `ic_stat_run`, which never existed, so Android showed its generic fallback icon; it now points to `ic_stat_arya`.
+- **Run notification** (`RunService.notif`): `2.31 km · 6:12 /km · round 3` (average pace; `--` until 50 m), new icon and accent colour.
+- **Test:** `tests/NotifTextTest.java` (run command in its header; not part of CI).
+- **Merged:** v93 (animations paused by default, top-right play button removed) and the newer `build.yml` (release/debug variant, `com.arya.fit4`, AAB option, runcalc + weather + run_ui tests). The repo copy of build.yml was stale (`com.arya.fit3`, debug only, store.test only).
+- **build.yml needs:** the 4 secrets `ARYA_KEYSTORE_B64`, `ARYA_STORE_PASS`, `ARYA_KEY_ALIAS`, `ARYA_KEY_PASS` (otherwise every release build stops on purpose), and the first release-signed app installs next to the old one as `com.arya.fit4` (export a backup first, import it in the new app). Emergency: Run workflow > variant `debug`.
+- Unverified on a phone: look of the notification on OxygenOS 16, screen-on refresh timing, goal alert, dismiss behaviour (Android 14+ lets users swipe the foreground notification away; the next step update posts it again).
+

@@ -9,6 +9,7 @@ import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ServiceInfo;
@@ -18,7 +19,9 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.os.PowerManager;
 import android.provider.Settings;
 import com.getcapacitor.JSObject;
@@ -194,6 +197,17 @@ public class StepsPlugin extends Plugin {
     private SensorManager sm;
     private long lastNotify = 0L;
     private int lastShown = -1;
+    private String lastDay = "";
+    private boolean pending = false;
+    private BroadcastReceiver screen;
+    private final Handler h = new Handler(Looper.getMainLooper());
+    private final Runnable tick = new Runnable() {
+      @Override
+      public void run() {
+        pending = false;
+        refresh(false);
+      }
+    };
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -203,15 +217,13 @@ public class StepsPlugin extends Plugin {
     @Override
     public void onCreate() {
       super.onCreate();
-      if (Build.VERSION.SDK_INT >= 26) {
-        NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        if (nm != null) nm.createNotificationChannel(new NotificationChannel(CH, "Daily steps", NotificationManager.IMPORTANCE_LOW));
-      }
+      NotifKit.channels(this);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-      Notification n = notif(today(this));
+      int t0 = today(this);
+      Notification n = NotifKit.steps(this, t0, NotifKit.info(this));
       try {
         if (Build.VERSION.SDK_INT >= 34) startForeground(NID, n, ServiceInfo.FOREGROUND_SERVICE_TYPE_HEALTH);
         else startForeground(NID, n);
@@ -232,22 +244,69 @@ public class StepsPlugin extends Plugin {
         }
         sm.registerListener(this, s, SensorManager.SENSOR_DELAY_NORMAL, 30000000);
         running = true;
+        lastShown = t0;
+        lastDay = dayKey(System.currentTimeMillis());
+        lastNotify = System.currentTimeMillis();
         prune(this);
+        watchScreen();
       }
       return START_STICKY;
+    }
+
+    /** The sensor batches readings for up to 30 s. When the screen turns on, flush them so the number is current when you look. */
+    private void watchScreen() {
+      if (screen != null) return;
+      screen = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context c, Intent i) {
+          try {
+            if (sm != null) sm.flush(Svc.this);
+          } catch (Exception ex) {
+            // ignore
+          }
+          refresh(true);
+        }
+      };
+      try {
+        IntentFilter f = new IntentFilter(Intent.ACTION_SCREEN_ON);
+        if (Build.VERSION.SDK_INT >= 33) registerReceiver(screen, f, Context.RECEIVER_NOT_EXPORTED);
+        else registerReceiver(screen, f);
+      } catch (Exception ex) {
+        screen = null;
+      }
     }
 
     @Override
     public void onSensorChanged(SensorEvent e) {
       if (e == null || e.values == null || e.values.length == 0) return;
       credit(this, (long) e.values[0]);
-      long now = System.currentTimeMillis();
+      later();
+    }
+
+    /** Trailing throttle: at most one update per 4 s, and the last value always gets shown (the old code could stay stale). */
+    private void later() {
+      if (pending) return;
+      long wait = Math.max(0L, 4000L - (System.currentTimeMillis() - lastNotify));
+      pending = true;
+      h.postDelayed(tick, wait);
+    }
+
+    private void refresh(boolean force) {
       int t = today(this);
-      if (t != lastShown && now - lastNotify > 5000L) {
-        lastNotify = now;
-        lastShown = t;
-        NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        if (nm != null) nm.notify(NID, notif(t));
+      long now = System.currentTimeMillis();
+      String d = dayKey(now);
+      if (!force && t == lastShown && d.equals(lastDay)) return;
+      NotifKit.Info inf = NotifKit.info(this);
+      boolean crossed = lastShown >= 0 && lastShown < inf.goal && t >= inf.goal && d.equals(lastDay);
+      lastShown = t;
+      lastDay = d;
+      lastNotify = now;
+      NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+      if (nm == null) return;
+      nm.notify(NID, NotifKit.steps(this, t, inf));
+      if (t >= inf.goal && !d.equals(sp(this).getString("ga", ""))) {
+        sp(this).edit().putString("ga", d).apply();
+        if (crossed) nm.notify(NotifKit.NID_GOAL, NotifKit.goal(this, t, inf));
       }
     }
 
@@ -257,22 +316,20 @@ public class StepsPlugin extends Plugin {
 
     @Override
     public void onDestroy() {
+      h.removeCallbacks(tick);
+      pending = false;
+      if (screen != null) {
+        try {
+          unregisterReceiver(screen);
+        } catch (Exception ex) {
+          // ignore
+        }
+        screen = null;
+      }
       if (sm != null) sm.unregisterListener(this);
       sm = null;
       running = false;
       super.onDestroy();
-    }
-
-    private Notification notif(int steps) {
-      Notification.Builder b = Build.VERSION.SDK_INT >= 26 ? new Notification.Builder(this, CH) : new Notification.Builder(this);
-      b.setSmallIcon(getApplicationInfo().icon)
-        .setContentTitle("Arya Fit")
-        .setContentText(String.format(Locale.US, "%,d steps today", steps))
-        .setOngoing(true)
-        .setOnlyAlertOnce(true);
-      Intent li = getPackageManager().getLaunchIntentForPackage(getPackageName());
-      if (li != null) b.setContentIntent(PendingIntent.getActivity(this, 0, li, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT));
-      return b.build();
     }
   }
 

@@ -9,6 +9,7 @@ R=$A/res
 mkdir -p "$R/values" "$R/drawable"
 cp native/res/values/arya_splash.xml "$R/values/"
 cp native/res/drawable/arya_splash_icon.xml "$R/drawable/"
+cp native/res/drawable/ic_stat_arya.xml "$R/drawable/"
 python3 tools/patch_splash.py "$R/values/styles.xml"
 
 # 2. Java: the three plugins/services plus our MainActivity (overwrites the template one)

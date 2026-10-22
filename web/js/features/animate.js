@@ -1,4 +1,4 @@
-/* Arya Fit v70: Animated exercises. Cross-fades the A/B/C/D frames in a loop with a Play/Pause pill.
+/* Arya Fit v70 (v93: paused by default): Animated exercises. Cross-fades the A/B/C/D frames in a loop with a Play/Pause pill.
    Wraps axExiBind() so it works in Plan cards and in Hands-free mode (#gov.ax-hf). Keeps the v64 clothing tint masks. */
 (function(){
   "use strict";
@@ -62,8 +62,8 @@
     btn.addEventListener("click",function(e){
       e.preventDefault();e.stopPropagation();
       hx("tick");
-      if(box.classList.contains("ax-anim")){PR.exAnim=0;save();stopAnim(box,s,btn)}
-      else{PR.exAnim=1;save();startAnim(box,s,btn)}
+      if(box.classList.contains("ax-anim"))stopAnim(box,s,btn);
+      else startAnim(box,s,btn)
     });
     /* While playing, a tap on the picture advances one frame; when paused the original scroll handler runs. */
     s.addEventListener("click",function(e){
@@ -72,7 +72,7 @@
       hx("tick");
       setFrame(box,s,(box._axFi||0)+1);
     },true);
-    if(PR.exAnim!==0&&!RM)startAnim(box,s,btn);else stopAnim(box,s,btn);
+    stopAnim(box,s,btn); /* v93: always paused until the person taps Play on that picture (less lag, nothing keeps animating) */
   }
 
   var _bind=window.axExiBind;

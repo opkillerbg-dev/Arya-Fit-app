@@ -29,7 +29,6 @@ function axTopMore(){var td=todayIdx(),inP=td>=0&&td<ND,xs=st["x"+Dn()];
   q("ax-q2",function(){go("home");window.axBrainOpen&&axBrainOpen();var e=$("ax-hbrain");if(e)e.scrollIntoView({behavior:"smooth",block:"center"})});
   q("ax-q3",function(){cur=Dn();go("plan");render();axAdd()});q("ax-q4",function(){$("ex").click()})}
 $("ax-tmenu").onclick=function(){axDrawer(true)};$("ax-dscrim").onclick=function(){axDrawer(false)};
-$("ax-tgo").onclick=function(){hx("med");cur=Dn();go("plan");render();window.scrollTo(0,0)};
 $("ax-tmore").onclick=axTopMore;
 function axSI(t,r,b,l){var st=document.documentElement.style;try{syncSystemBarStyle()}catch(e){}st.setProperty("--ax-si-t",(+t||0)+"px");st.setProperty("--ax-si-b",(+b||0)+"px");requestAnimationFrame(function(){try{axNavH()}catch(e){}})}
 function axSIPull(){try{if(window.AxInsets){var v=String(AxInsets.get()).split(",");axSI(v[0],v[1],v[2],v[3])}}catch(e){}}

@@ -27,7 +27,8 @@
     var rest=src<0||st["x"+i]==1;
     try{stats()}catch(e){}
     var streak=parseInt((document.getElementById("ax-streak")||{}).textContent,10)||0;
-    return{date:ymd(),goal:sgoal(),title:rest?"Rest day":(t&&t.n)||"Workout",kicker:"TODAY \u00b7 DAY "+(i+1)+" OF "+ND,
+    var sl=0;try{sl=+strideM().toFixed(2)}catch(e){}
+    return{date:ymd(),goal:sgoal(),stride:sl,title:rest?"Rest day":(t&&t.n)||"Workout",kicker:"TODAY \u00b7 DAY "+(i+1)+" OF "+ND,
       done:c[0],total:c[1],rest:rest,streak:streak,c:colors()};
   }
 

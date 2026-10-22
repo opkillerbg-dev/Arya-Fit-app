@@ -294,9 +294,9 @@ public class RunService extends Service implements LocationListener, SensorEvent
   private Notification notif() {
     double e = elapsedSec();
     String title = paused ? "Paused" : ((hold || phase == 1) ? "Walking" : "Jogging");
-    String body = String.format(Locale.US, "%.2f km  |  round %d", dist / 1000.0, round);
+    String body = String.format(Locale.US, "%.2f km", dist / 1000.0) + NotifText.DOT + NotifText.pace(e, dist) + " /km" + NotifText.DOT + "round " + round;
     Notification.Builder b = Build.VERSION.SDK_INT >= 26 ? new Notification.Builder(this, "run_engine") : new Notification.Builder(this);
-    b.setSmallIcon(getApplicationInfo().icon).setContentTitle(title).setContentText(body).setOngoing(true).setOnlyAlertOnce(true);
+    b.setSmallIcon(R.drawable.ic_stat_arya).setColor(NotifKit.accent(this)).setContentTitle(title).setContentText(body).setOngoing(true).setOnlyAlertOnce(true);
     if (!paused) b.setUsesChronometer(true).setShowWhen(true).setWhen(System.currentTimeMillis() - (long) (e * 1000));
     Intent li = getPackageManager().getLaunchIntentForPackage(getPackageName());
     if (li != null) b.setContentIntent(PendingIntent.getActivity(this, 0, li, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT));

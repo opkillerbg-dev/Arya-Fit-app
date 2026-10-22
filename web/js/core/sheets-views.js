@@ -180,7 +180,7 @@ function axMr(){
 function bindApp(){
   document.querySelectorAll("#ax-nav button").forEach(function(b){b.onclick=function(){go(b.dataset.v)}});
     $("tvrun").onclick=function(){unlock();startIV(Dn())};$("ax-rsw").onclick=function(){unlock();startSW(Dn())};
-  var M={"t-snd":["snd",1],"t-gps":["gps",1],"t-auto":["auto",0],"t-hap":["hap",1],"t-exi":["exi",1],"t-voi":["voi",1],"t-apz":["ap",0],"t-met":["met",0],"t-amo":["amo",0],"t-gls":["gls",0]};
+  var M={"t-snd":["snd",1],"t-gps":["gps",1],"t-auto":["auto",0],"t-hap":["hap",1],"t-exi":["exi",1],"t-voi":["voi",1],"t-apz":["ap",0],"t-met":["met",0],"t-amo":["amo",0],"t-gls":["gls",0],"t-nga":["nga",1],"t-ncp":["ncp",0]};
   Object.keys(M).forEach(function(id){var e=$(id),k=M[id][0];e.checked=M[id][1]?PR[k]!==0:!!PR[k];e.onchange=function(){PR[k]=this.checked?1:0;save();if(k=="exi")render()}});
 }
 

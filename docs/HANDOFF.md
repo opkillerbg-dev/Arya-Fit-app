@@ -1,7 +1,7 @@
 # Arya Fit: HANDOFF (latest, consolidated)
 
 **Read order:** `ARYA-FIT-VISION.md` (vision + roadmap) -> `ARYA-FIT-BRIEF.md` (user + objectives) -> this file (state + technical map).
-**Last updated:** 2026-10-22. Service worker cache `arya-v94`. **Repo layout changed in v81: see section 2. File names in older log entries below are the pre-v81 flat names; map them with the table in section 2.**
+**Last updated:** 2026-10-22. Service worker cache `arya-v96`. **Repo layout changed in v81: see section 2. File names in older log entries below are the pre-v81 flat names; map them with the table in section 2.**
 **Live repo (public, readable):** github.com/opkillerbg-dev/Arya-Fit-app. If you have bash with network, `git clone` it and read the real files. Do not trust pasted copies, because a stale build workflow once hid a whole feature (see section 6).
 
 ## 1. What this is
@@ -670,4 +670,19 @@ Causes of that Android error: (a) APK signed with a different key than the insta
 - **Merged:** v93 (animations paused by default, top-right play button removed) and the newer `build.yml` (release/debug variant, `com.arya.fit4`, AAB option, runcalc + weather + run_ui tests). The repo copy of build.yml was stale (`com.arya.fit3`, debug only, store.test only).
 - **build.yml needs:** the 4 secrets `ARYA_KEYSTORE_B64`, `ARYA_STORE_PASS`, `ARYA_KEY_ALIAS`, `ARYA_KEY_PASS` (otherwise every release build stops on purpose), and the first release-signed app installs next to the old one as `com.arya.fit4` (export a backup first, import it in the new app). Emergency: Run workflow > variant `debug`.
 - Unverified on a phone: look of the notification on OxygenOS 16, screen-on refresh timing, goal alert, dismiss behaviour (Android 14+ lets users swipe the foreground notification away; the next step update posts it again).
+
+## v95 — Smart daily reminder + notification settings (2026-10-22; browser-tested with stubbed plugins, Java compiled against stubs, NOT run on a phone)
+- **Smart reminder** (`remind()` in `run-extras.js`): instead of one repeating "Time to move", it schedules the next 7 days one by one (ids 9..15, one-shot `schedule.at`) with that day's workout name (`Lower body. Ready when you are.`). Skipped: rest days (`st["x"+i]==1` or no source day), days already fully ticked, and a time that has already passed today. Because only 7 days are ever scheduled, reminders stop on their own if the app is not opened for a week (no nagging). Re-planned when the app opens, when the time is changed, and when the app is left (`visibilitychange` in `widget.js`).
+- **Settings > Voice & alerts**: new switches "Goal reached alert" (`PR.nga`, default on) and "Compact steps notification" (`PR.ncp`, default off). Both are in the backup key whitelist and in both toggle maps (`sheets-views.js`, `data-io.js syncPrefs`). The step goal itself is still edited in the Steps sheet (`PR.sg`).
+- **Bridge:** `widget.js` payload now also carries `nga` and `ncp`; `NotifKit.Info` reads them (`goalAlert`, `compact`). Compact = no expanded text, same bar. A change reaches the notification on its next refresh (the payload is sent ~2.5 s after any save).
+- **Test:** `tests/reminder_test.py` (added to the non-blocking `browser-test` job in build.yml).
+- Unverified on a phone: that the 7 one-shot reminders fire on time with Doze (`allowWhileIdle` is set), and the look of the new switches in the settings sheet.
+
+## v96 — Android back button fixed (2026-10-22; browser-tested with a stubbed App plugin, NOT run on a phone, NOT built by real CI)
+- **Symptom:** back from any screen closed the app. **Cause:** the old guard in `core/lifecycle.js` (Step 8b) depended on an extra history entry pushed at startup without a tap; the WebView can skip such entries, so `goBack()` had nothing to pop and Capacitor exited. Also, after the first "Press back again" the guard was never re-armed.
+- **Fix:** new dependency `@capacitor/app` (`package.json`, `^6.0.0`; `cap sync` registers it in CI). `web/js/features/backnav.js` listens to its `backButton` event, so Capacitor no longer decides by itself. Behaviour: close what is open (menu, settings sub-page, sheet, celebration, overlay, expanded run dock) -> from any tab go to Home (Plans -> Settings) -> on Home the first press shows "Press back again to exit", a second press within 2.2 s calls `App.exitApp()`.
+- `lifecycle.js` now has one function `axBack()` (returns 1 when it handled the press) used by both the plugin listener and the old history popstate handler, which stays as a fallback if the plugin is missing and now re-arms itself after 2.2 s. `#gov` overlays without the hands-free exit button are now closed by back (before, nothing happened).
+- A run in progress is never stopped by back (it only collapses the dock).
+- **Test:** `tests/backnav_test.py` (in the non-blocking `browser-test` job).
+- Unverified on a phone: that `@capacitor/app` installs and registers in CI, and the feel on Android 13+ gesture navigation.
 

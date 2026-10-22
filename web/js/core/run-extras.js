@@ -3,7 +3,18 @@ function phaseFx(x){var d=$("dock");d.classList.remove("ax-dflip");void d.offset
 function cel(dy,msg){var g=(st["g"+dy]||0)/1000,el=document.createElement("div");el.id="cel";el.innerHTML='<svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="24"/><path d="M14 27l9 9 16-18"/></svg><b>'+(g?"0.00":"Saved")+'</b><span>'+(g?"km logged today":"")+'</span>';document.body.appendChild(el);
   var b=el.querySelector("b");if(g&&!RM){var t0=performance.now();(function f(n){var q=Math.min(1,(n-t0)/900);b.textContent=(g*(1-Math.pow(1-q,3))).toFixed(2);if(q<1)requestAnimationFrame(f)})(t0)}else if(g)b.textContent=g.toFixed(2);
   if(g&&!msg)burst(innerWidth/2,innerHeight/2,60);hx("finish");el.onclick=function(){el.remove()};setTimeout(function(){el.remove()},2600)}
-function remind(q){if(!LN){if(!q)toast("Reminders work in the phone app.");return}try{LN.cancel({notifications:[{id:9}]});var v=PR.rmt;if(!v)return;LN.requestPermissions();LN.createChannel({id:"rem",name:"Daily reminder",importance:3});LN.schedule({notifications:[{id:9,channelId:"rem",title:"Time to move",body:"Your Arya Fit workout is waiting.",schedule:{on:{hour:+v.split(":")[0],minute:+v.split(":")[1]},allowWhileIdle:true}}]});if(!q)toast("Reminder set for "+v)}catch(e){}}
+var rqd=0;
+/* v95: smart reminder. Schedules the next 7 days one by one with that day's workout name. Rest days, finished days and days with no time left are skipped; it stops by itself if the app is not opened for a week. Re-planned whenever the app opens or is left. */
+function remind(q){if(!LN){if(!q)toast("Reminders work in the phone app.");return}
+  try{var ids=[],k;for(k=0;k<8;k++)ids.push({id:9+k});LN.cancel({notifications:ids});var v=PR.rmt;if(!v)return;
+  if(!rqd||!q){rqd=1;LN.requestPermissions()}
+  LN.createChannel({id:"rem",name:"Daily reminder",importance:3});
+  var hh=+v.split(":")[0],mm=+v.split(":")[1],now=new Date(),t0=todayIdx(),list=[];
+  for(k=0;k<7;k++){var i=t0+k;if(i<0||i>=ND)continue;var src=axSrc(i);if(src<0||st["x"+i]==1)continue;var c=cnt(i);if(c[1]&&c[0]>=c[1])continue;
+    var at=new Date(now.getFullYear(),now.getMonth(),now.getDate()+k,hh,mm,0);if(at<=now)continue;var tt=T[wdk(src)];
+    list.push({id:9+k,channelId:"rem",title:k?"Workout day":"Time to move",body:((tt&&tt.n)||"Your workout")+". Ready when you are.",schedule:{at:at,allowWhileIdle:true}})}
+  if(list.length)LN.schedule({notifications:list});
+  if(!q)toast(list.length?"Reminder set for "+v:"No workout days left to remind")}catch(e){}}
 function pextra2(g,td){td=Math.max(0,td);var W=Math.floor(Math.min(td,ND-1)/7),sum=function(w){var a=0;for(var i=w*7;i<w*7+7&&i<ND;i++)a+=g[i]||0;return a},dn=0,rs=0,jt=0,wk=0,i;
   for(i=W*7;i<W*7+7&&i<ND;i++){if(dayDone(i)||st["x"+i]==2)dn++;if(st["x"+i]==1)rs++;jt+=st["jt"+i]||0;wk+=st["wk"+i]||0}
   var a=sum(W),b=W?sum(W-1):0,df=W&&b?Math.round((a-b)/b*100):null,

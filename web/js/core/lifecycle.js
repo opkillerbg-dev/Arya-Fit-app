@@ -2,19 +2,21 @@
 var AXG=0;
 function axGuard(){if(AXG||!(window.Capacitor&&Capacitor.isNativePlatform&&Capacitor.isNativePlatform()))return;try{history.pushState({g:1},"");AXG=1}catch(e){}}
 function axView(){for(var i=0;i<VIEWS.length;i++)if(!$("ax-v-"+VIEWS[i]).hidden)return VIEWS[i];return"home"}
-window.addEventListener("popstate",function(){AXG=0;
- var d=$("dock"),c=$("cel");
- if($("ax-drawer").classList.contains("on")){axDrawer(false);axGuard();return}
- if(window.axSetBack&&axSetBack()){axGuard();return}
- if(!$("ax-sh").hidden){axSheetX();axGuard();return}
- if(c){c.remove();axGuard();return}
- if($("gov")){var hx_=$("ax-hf-exit");if(hx_)hx_.click();axGuard();return}
- if(!d.hidden&&d.classList.contains("ax-mo")){d.classList.remove("ax-mo");axGuard();return}
- if(!d.hidden&&d.classList.contains("ax-fs")){d.classList.remove("ax-fs");axGuard();return}
+/* v96: one function decides what "back" means. Returns 1 if it closed or went back something, 0 when already at the Home screen with nothing open.
+   Used by the native back button (js/features/backnav.js, @capacitor/app) and by the history fallback below. */
+function axBack(){var d=$("dock"),c=$("cel"),g;
+ if($("ax-drawer").classList.contains("on")){axDrawer(false);return 1}
+ if(window.axSetBack&&axSetBack())return 1;
+ if(!$("ax-sh").hidden){axSheetX();return 1}
+ if(c){c.remove();return 1}
+ g=$("gov");if(g){var hx_=$("ax-hf-exit");if(hx_)hx_.click();else g.remove();return 1}
+ if(!d.hidden&&d.classList.contains("ax-mo")){d.classList.remove("ax-mo");return 1}
+ if(!d.hidden&&d.classList.contains("ax-fs")){d.classList.remove("ax-fs");return 1}
  var v=axView();
- if(v=="plans"){go("set");axGuard();return}
- if(v!="home"){go("home");axGuard();return}
- toast("Press back again to exit")});
+ if(v=="plans"){go("set");return 1}
+ if(v!="home"){go("home");return 1}
+ return 0}
+window.addEventListener("popstate",function(){AXG=0;if(axBack()){axGuard();return}toast("Press back again to exit");setTimeout(axGuard,2200)});
 axGuard();
 try{PRUN=JSON.parse(localStorage.getItem(RK))}catch(e){PRUN=null}
 try{LAST=JSON.parse(localStorage.getItem(LK))}catch(e){LAST=null}

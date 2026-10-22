@@ -27,7 +27,7 @@ final class NotifKit {
     int goal = 8000, done = 0, total = 0, streak = 0;
     double stride = 0.75;
     String title = "";
-    boolean fresh = false, rest = false;
+    boolean fresh = false, rest = false, goalAlert = true, compact = false;
     int accent = DEF_ACCENT, ok = DEF_OK;
   }
 
@@ -50,6 +50,8 @@ final class NotifKit {
       d.total = o.optInt("total", 0);
       d.streak = o.optInt("streak", 0);
       d.rest = o.optBoolean("rest", false);
+      d.goalAlert = o.optInt("nga", 1) != 0;
+      d.compact = o.optInt("ncp", 0) == 1;
       JSONObject k = o.optJSONObject("c");
       if (k != null) {
         d.accent = col(k.optString("blue", ""), DEF_ACCENT);
@@ -94,13 +96,13 @@ final class NotifKit {
       .setContentTitle(NotifText.title(steps))
       .setContentText(NotifText.summary(steps, i.goal))
       .setSubText(i.streak > 0 ? i.streak + "-day streak" : "Today")
-      .setStyle(new Notification.BigTextStyle().bigText(NotifText.big(steps, i.goal, i.stride, plan, yesterday, sum / 7)))
       .setProgress(i.goal, Math.min(steps, i.goal), false)
       .setColor(hit ? i.ok : i.accent)
       .setCategory(Notification.CATEGORY_STATUS)
       .setShowWhen(false)
       .setOngoing(true)
       .setOnlyAlertOnce(true);
+    if (!i.compact) b.setStyle(new Notification.BigTextStyle().bigText(NotifText.big(steps, i.goal, i.stride, plan, yesterday, sum / 7)));
     if (Build.VERSION.SDK_INT >= 31) b.setForegroundServiceBehavior(Notification.FOREGROUND_SERVICE_IMMEDIATE);
     PendingIntent pi = open(c);
     if (pi != null) b.setContentIntent(pi);

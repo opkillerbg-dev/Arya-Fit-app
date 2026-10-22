@@ -306,7 +306,7 @@ public class StepsPlugin extends Plugin {
       nm.notify(NID, NotifKit.steps(this, t, inf));
       if (t >= inf.goal && !d.equals(sp(this).getString("ga", ""))) {
         sp(this).edit().putString("ga", d).apply();
-        if (crossed) nm.notify(NotifKit.NID_GOAL, NotifKit.goal(this, t, inf));
+        if (crossed && inf.goalAlert) nm.notify(NotifKit.NID_GOAL, NotifKit.goal(this, t, inf));
       }
     }
 

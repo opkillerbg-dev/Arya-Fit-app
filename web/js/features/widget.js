@@ -28,7 +28,7 @@
     try{stats()}catch(e){}
     var streak=parseInt((document.getElementById("ax-streak")||{}).textContent,10)||0;
     var sl=0;try{sl=+strideM().toFixed(2)}catch(e){}
-    return{date:ymd(),goal:sgoal(),stride:sl,title:rest?"Rest day":(t&&t.n)||"Workout",kicker:"TODAY \u00b7 DAY "+(i+1)+" OF "+ND,
+    return{date:ymd(),goal:sgoal(),stride:sl,nga:PR.nga===0?0:1,ncp:PR.ncp===1?1:0,title:rest?"Rest day":(t&&t.n)||"Workout",kicker:"TODAY \u00b7 DAY "+(i+1)+" OF "+ND,
       done:c[0],total:c[1],rest:rest,streak:streak,c:colors()};
   }
 
@@ -40,7 +40,7 @@
 
   var _save=window.save;
   if(typeof _save==="function")window.save=function(){var r=_save.apply(this,arguments);later();return r};
-  document.addEventListener("visibilitychange",function(){if(document.hidden)send()});
+  document.addEventListener("visibilitychange",function(){if(document.hidden){send();try{if(PR.rmt&&typeof remind=="function")remind(1)}catch(e){}}});
   setTimeout(send,4000);
   window.axWidgetSync=send;
 })();

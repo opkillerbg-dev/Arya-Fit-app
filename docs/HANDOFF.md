@@ -1,7 +1,7 @@
 # Arya Fit: HANDOFF (latest, consolidated)
 
 **Read order:** `ARYA-FIT-VISION.md` (vision + roadmap) -> `ARYA-FIT-BRIEF.md` (user + objectives) -> this file (state + technical map).
-**Last updated:** 2026-10-22. Service worker cache `arya-v96`. **Repo layout changed in v81: see section 2. File names in older log entries below are the pre-v81 flat names; map them with the table in section 2.**
+**Last updated:** 2026-10-22. Service worker cache `arya-v98`. **Repo layout changed in v81: see section 2. File names in older log entries below are the pre-v81 flat names; map them with the table in section 2.**
 **Live repo (public, readable):** github.com/opkillerbg-dev/Arya-Fit-app. If you have bash with network, `git clone` it and read the real files. Do not trust pasted copies, because a stale build workflow once hid a whole feature (see section 6).
 
 ## 1. What this is
@@ -685,4 +685,20 @@ Causes of that Android error: (a) APK signed with a different key than the insta
 - A run in progress is never stopped by back (it only collapses the dock).
 - **Test:** `tests/backnav_test.py` (in the non-blocking `browser-test` job).
 - Unverified on a phone: that `@capacitor/app` installs and registers in CI, and the feel on Android 13+ gesture navigation.
+
+## v97 — Minimized run panel layout (2026-10-22; checked in a 412 px browser viewport, from a phone screenshot)
+- **Seen on the phone:** the run panel (`#dock`, not fullscreen) overlapped the floating bottom nav, and Pause was squeezed to "Pa" next to Restart / Save run time / Save & close.
+- **Cause:** `.ax-dk:not(.ax-fs){bottom:calc(var(--ax-navh) - 1px)}` ignored that the nav floats `8px + safe-area` above the screen edge (`.ax-pbar` had been fixed for this, the dock had not). The buttons inside `.ax-dxp` (`display:contents`) did not get `flex:1`, so a wide font squeezed `#dpp`.
+- **Fix (css/run-polish.css, appended):** the panel is a floating card (12 px side margins, 24 px radius) 8 px above the nav, scrolls if taller than the screen; all four buttons are equal columns (Pause slightly wider), 13 px, long labels wrap to two lines.
+- Fullscreen run view (`.ax-fs`) is untouched.
+
+## v98 — Smart week (coach) (2026-10-22; engine unit-tested, full flow browser-tested incl. break + auto-close cases; NOT run on a phone)
+- **What:** reads everything the app knows and proposes the next 7 days, including a comeback after a break. Nothing changes until the person taps Apply; Undo restores the exact previous schedule and edits. Entry points: Home card above today's plan (shown after a break of 5+ days, in the last two days of a plan week, or when the plan is about to end; "Not now" hides it for the day) and Settings > Plan & exercises > Smart week.
+- **Files:** `web/js/features/coachcalc.js` (pure engine, `AxCoach`, tests/coachcalc.test.js, in the blocking CI test job), `web/js/features/coach.js` (history gathering, preview sheet, apply/undo, Home card; tests/coach_ui_test.py in browser-test).
+- **Modes (rules in `recommend()`):** `start` (no history), `restart` (28+ days off: 3 sessions, max 2 sets, run level 0), `comeback` (10-27 days: 3 sessions, -1 set, first session max 2 sets, run level -1), `easeback` (5-9 days: first session -1 set), `rebuild` (the week after a reset: full sessions, original sets, run level +1 toward the pre-break peak), `progress` (adherence >= 85% over the last 14 days and lifts not declining: +1 set on the first two exercises, run level +1 if the person ran recently), `hold` (50-85%), `lighten` (< 50%: one session and one set less, kind wording), `deload` (4 solid weeks in a row, never twice in a row). Adherence is measured since the last reset so a break never counts against the weeks after it.
+- **How it writes:** only `plan.schedMap` (day -> source index; `(d % 7) + 7*level` keeps the weekday template and picks the run/walk interval level; `-1` = rest) and `plan.workoutEdits` (`{sets}` only; hand-made edits are never overwritten, coach edits are tracked in `plan.coach.owned`). `plan.coach = {log, owned, last, dismiss}`. The schedule extends past day 28 (ND grows) when the window crosses the plan end.
+- **Reading history (important):** `axAutoClose()` turns every missed day into x=1 (rest) and any day with even one tick (a habit counts) into x=2, so `x` alone is never used. Activity = run/GPS/workout time, a ticked exercise (`e*`) or run (`j`), or a day closed by hand with nothing ticked. A strength day counts as planned even if auto-close made it "rest"; days the coach set to rest have no template and are not counted. Other plans only add "active that day" so a break is measured across plans.
+- **Bug fixed on the way:** `grid()` in `core/plan-ui.js` built the calendar once and crashed when the plan length changed (the existing "insert rest day" had the same latent problem); it now rebuilds when `children.length !== START.getDay()+ND`.
+- **Known limits:** circuit days cannot have fewer sets (the sheet says "one round fewer"); the run distance goal (JKM) is plan-wide so only the interval level changes; the backup import (`axCleanSched`) only keeps schedules longer than the plan, so after a restore the coach's rest conversions may be lost while the sets edits stay; run level uses the active plan only. Not medical advice (stated in the sheet).
+- Unverified on a phone: feel of the card/sheet, and whether the rules suit the person's real weeks. Tune the thresholds in `coachcalc.js` (all in `recommend()`).
 

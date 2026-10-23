@@ -31,7 +31,7 @@ function grid(){
   var td=todayIdx(),w=Math.floor(cur/7),W=Math.ceil(ND/7),a=w*7,b=Math.min(ND,a+7),h="",i,j,ga=$("ax-gall");
   var cl=function(n){var x=st["x"+n],c=cnt(n),p=x==2?100:Math.round(c[0]/c[1]*100);return[p,(n==td?" today":"")+(n==cur?" sel":"")+(p==100&&x!=1?" done":"")+(x==1?" rest":"")]};
   var lb=function(n){var x=st["x"+n],p=cl(n)[0];return"Day "+(n+1)+", "+dl(n)+", "+(x==1?"rest day":p+"% done")};
-  if(!ga.children.length){var o=START.getDay(),g="";for(i=0;i<o;i++)g+="<span></span>";
+  if(ga.children.length!==START.getDay()+ND){/* v98: rebuild when the plan length changed (rest day inserted, coach week past the end) */var o=START.getDay(),g="";for(i=0;i<o;i++)g+="<span></span>";
     for(i=0;i<ND;i++)g+='<button class="ax-gc" data-i="'+i+'"><span class="ax-wr"><b>'+dt(i).getDate()+'</b></span></button>';
     ga.innerHTML=g;ga.onclick=function(e){var t=e.target.closest("button");if(!t)return;cur=+t.dataset.i;render()}}
   for(j=0;j<ND;j++){var e=ga.children[j+START.getDay()],c=cl(j);e.className="ax-gc"+c[1];e.style.setProperty("--p",c[0]);e.setAttribute("aria-label",lb(j))}

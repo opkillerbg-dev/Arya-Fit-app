@@ -73,7 +73,7 @@ function bindExtra(){
   $("skins").innerHTML=SK.map(function(k){return'<button class="sk" data-k="'+k[0]+'"><i style="background:linear-gradient(135deg,'+k[2]+' 50%,'+k[3]+' 50%)"></i>'+k[1]+'</button>'}).join("");
   $("skins").onclick=function(e){var b=e.target.closest(".sk");if(!b)return;PR.skin=b.dataset.k;PR.acc=null;save();theme()};
   theme();metro();
-  $("vtest").onclick=function(){unlock();if(ENG&&ENG.speak){ENG.speak({text:"Jog now. Voice test."}).then(function(){toast("Playing voice test")}).catch(function(){toast("No text-to-speech engine found. Install Google Speech Services.")});return}if(!window.speechSynthesis){toast("Voice is not supported on this phone.");return}say("Jog now. Voice test.",1);toast("Playing voice test")};
+  $("vtest").onclick=function(){unlock();if(ENG&&ENG.speak){ENG.speak({text:"Jog now. Voice test. Two kilometers. Last kilometer, six minutes ten seconds."}).then(function(){toast("Playing voice test")}).catch(function(){toast("No text-to-speech engine found. Install Google Speech Services.")});return}if(!window.speechSynthesis){toast("Voice is not supported on this phone.");return}say("Jog now. Voice test.",1);toast("Playing voice test")};
   $("gw").onclick=function(){unlock();gsess(GW)};$("gcd").onclick=function(){unlock();gsess(GC)};$("ax-rcd").onclick=axCd;$("ax-rrp").onclick=axReps;$("ax-rmr").onclick=axMr;
   applyGoal();
   var gi=$("goal-km");gi.value=PR.goal||"";gi.placeholder=P&&P.jog?String(P.jog.km):"";

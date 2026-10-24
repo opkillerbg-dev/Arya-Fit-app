@@ -173,10 +173,11 @@ public class RunService extends Service implements LocationListener, SensorEvent
       nm.createNotificationChannel(new NotificationChannel("run_engine", "Run in progress", NotificationManager.IMPORTANCE_LOW));
     }
     tg = new ToneGenerator(AudioManager.STREAM_MUSIC, 80);
-    tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
-      public void onInit(int s) {
-        ttsOk = (s == TextToSpeech.SUCCESS);
-        if (ttsOk) tts.setLanguage(Locale.US);
+    VoiceKit.create(this, new VoiceKit.Ready() {
+      @Override
+      public void onReady(TextToSpeech t, boolean ok) {
+        tts = t;
+        ttsOk = ok;
       }
     });
   }
@@ -258,7 +259,7 @@ public class RunService extends Service implements LocationListener, SensorEvent
     pstart = e;
     rev++;
     dirty = true;
-    cue(phase == 0 ? "Jog" : "Walk");
+    cue(phase == 0 ? "Jog now." : "Walk now.");
   }
 
   private void tick() {
@@ -276,7 +277,7 @@ public class RunService extends Service implements LocationListener, SensorEvent
         phase = 1 - phase;
         pstart = e;
         if (phase == 0) round++;
-        cue(phase == 0 ? "Jog" : "Walk");
+        cue(phase == 0 ? "Jog now." : "Walk now.");
         dirty = true;
       }
     }
@@ -331,7 +332,7 @@ public class RunService extends Service implements LocationListener, SensorEvent
   private void say(String t) {
     if (voice && ttsOk && tts != null) {
       try {
-        tts.speak(t, TextToSpeech.QUEUE_FLUSH, null, "c");
+        VoiceKit.speak(this, tts, t, "c");
       } catch (Exception e) {
       }
     }
@@ -361,7 +362,7 @@ public class RunService extends Service implements LocationListener, SensorEvent
       if (kmValid && ps > 60 && ps < 1800) pace = ". Last kilometer, " + (ps / 60) + " minutes " + (ps % 60) + " seconds";
       kmMark = e;
       kmValid = true;
-      if (!fg) say(k + (k > 1 ? " kilometers" : " kilometer") + pace);
+      if (!fg) say(k + (k > 1 ? " kilometers" : " kilometer") + (pace.length() > 0 ? pace : "") + ".");
     }
     synchronized (route) {
       route.add(new double[]{t.outLa, t.outLo, (double) l.getTime()});

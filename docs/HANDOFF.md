@@ -1,7 +1,7 @@
 # Arya Fit: HANDOFF (latest, consolidated)
 
 **Read order:** `ARYA-FIT-VISION.md` (vision + roadmap) -> `ARYA-FIT-BRIEF.md` (user + objectives) -> this file (state + technical map).
-**Last updated:** 2026-10-22. Service worker cache `arya-v98`. **Repo layout changed in v81: see section 2. File names in older log entries below are the pre-v81 flat names; map them with the table in section 2.**
+**Last updated:** 2026-10-22. Service worker cache `arya-v99`. **Repo layout changed in v81: see section 2. File names in older log entries below are the pre-v81 flat names; map them with the table in section 2.**
 **Live repo (public, readable):** github.com/opkillerbg-dev/Arya-Fit-app. If you have bash with network, `git clone` it and read the real files. Do not trust pasted copies, because a stale build workflow once hid a whole feature (see section 6).
 
 ## 1. What this is
@@ -701,4 +701,13 @@ Causes of that Android error: (a) APK signed with a different key than the insta
 - **Bug fixed on the way:** `grid()` in `core/plan-ui.js` built the calendar once and crashed when the plan length changed (the existing "insert rest day" had the same latent problem); it now rebuilds when `children.length !== START.getDay()+ND`.
 - **Known limits:** circuit days cannot have fewer sets (the sheet says "one round fewer"); the run distance goal (JKM) is plan-wide so only the interval level changes; the backup import (`axCleanSched`) only keeps schedules longer than the plan, so after a restore the coach's rest conversions may be lost while the sets edits stay; run level uses the active plan only. Not medical advice (stated in the sheet).
 - Unverified on a phone: feel of the card/sheet, and whether the rules suit the person's real weeks. Tune the thresholds in `coachcalc.js` (all in `recommend()`).
+
+## v99 — Choose the voice engine and voice (natural / open-source voices) (2026-10-22; Java compiled against stubs, picker browser-tested with a stubbed plugin; NOT heard on a phone, NOT built by real CI)
+- **Why:** every cue used the phone's default text-to-speech (robotic). Android lets any installed TTS *engine* provide the voice, and open-source neural engines exist (SherpaTTS on F-Droid, GPL-3.0; VoxSherpa TTS; both run Piper-style voices offline and register as a system engine). So the app now lets the person pick engine + voice + speed instead of bundling a model (a model is 50-100 MB, has its own licence, and would still not cover custom exercise names).
+- **Native:** new `native/java/VoiceKit.java` (pref `arya_voice`: `engine` package name, `voice` name, `rate` percent 50-160, default 95). `create()` binds the chosen engine and **falls back to the phone default** if it is missing or fails, `apply()` sets language/voice/speed/pitch and the navigation-guidance audio usage, `speak()` ducks music with audio focus while a cue plays and releases it afterwards, `list()` returns installed engines and the bound engine's English/Hindi/Gujarati voices. `RunEnginePlugin` (app open) and `RunService` (screen off, reads the pref when a run starts) both use it. New plugin methods: `voiceList`, `voiceSet({engine?,voice?,rate?})` (a new engine is re-bound and its voice resets), `voiceSettings` (phone TTS settings), `openUrl` (only f-droid.org / github.com). The manifest already had the `<queries>` entry for `TTS_SERVICE` that Android 11+ needs to see other engines.
+- **Web:** `web/js/features/voice.js` + a block under Settings > Sound & feedback (hidden outside the phone app): engine select, voice select (offline voices first, English before Hindi/Gujarati, internet voices last), speed slider, "Phone voice settings", "Get SherpaTTS (free)". Test with the existing Play button.
+- **Wording:** cues are fuller sentences for better intonation: `Jog now.` / `Walk now.` (native and web), `2 kilometers. Last kilometer, 6 minutes 10 seconds.`; the test phrase now includes a kilometer announcement.
+- **Test:** `tests/voice_ui_test.py` (browser-test job).
+- **Backlog if the system-engine route is not enough:** (1) pre-rendered clip pack: a `tools/` script runs Piper on a PC for the closed phrase set (Jog now, Walk now, numbers, units, library exercise names), ships ~1-2 MB of audio, native plays it with SoundPool; custom names fall back to TTS. (2) sherpa-onnx inside the APK (heavy: +30-90 MB, JNI, licences).
+- Unverified on a phone: how the cue sounds with a neural engine (first cue after a long pause can be slower while the engine wakes), music ducking on the person's player, and engine switching on OxygenOS.
 

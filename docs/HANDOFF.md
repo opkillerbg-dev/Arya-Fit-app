@@ -711,3 +711,8 @@ Causes of that Android error: (a) APK signed with a different key than the insta
 - **Backlog if the system-engine route is not enough:** (1) pre-rendered clip pack: a `tools/` script runs Piper on a PC for the closed phrase set (Jog now, Walk now, numbers, units, library exercise names), ships ~1-2 MB of audio, native plays it with SoundPool; custom names fall back to TTS. (2) sherpa-onnx inside the APK (heavy: +30-90 MB, JNI, licences).
 - Unverified on a phone: how the cue sounds with a neural engine (first cue after a long pause can be slower while the engine wakes), music ducking on the person's player, and engine switching on OxygenOS.
 
+
+## v93b — build.yml re-issued on the latest repo (2026-10-22)
+- The live `build.yml` was STILL the debug-only file (default fit3, no release step); the v93 release version had not been pasted. Re-issued as `.github/workflows/build.yml`: release-signed APK (default `com.arya.fit4`, inputs `variant`, `aab`), needs the 4 `ARYA_*` secrets, fails instead of falling back to debug.
+- CI tests are now globbed: the blocking job runs every `tests/*.test.js`; the informational job runs every `tests/*_test.py`. New tests are picked up without editing the workflow. `tests/NotifTextTest.java` is still manual (the runner/container has no javac check).
+- iOS: not built. Needs a macOS runner, `@capacitor/ios`, Swift versions of the Android-only plugins (steps, run engine, notifications, voice) and an Apple Developer account (99 USD/year) to sign an installable IPA.

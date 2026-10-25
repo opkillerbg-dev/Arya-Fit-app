@@ -128,6 +128,30 @@
     return{km:km,part:part,pp:pp,dist:total,sec:secT,best:best,worst:worst,gaps:gaps};
   }
 
+  /* ---------- best efforts (Strava style) ----------
+     Fastest time over each standard distance inside one run, pauses excluded (same rule as splits).
+     The time-over-distance curve is piecewise linear, so its minimum sits where the window start or end is on a vertex: checking those is exact.
+     Returns {meters: seconds}. Efforts faster than 9 m/s are GPS errors for a walk/jog app and are dropped. */
+  var EFF=[400,805,1000,1609,3219,5000,10000,15000,16093,20000,21097,42195];
+  function bestEfforts(pts,opt){
+    opt=opt||{};var gapS=opt.gapS||25,maxV=opt.maxV||9,out={};
+    if(!pts||pts.length<5)return out;
+    var cum=[0],tt=[0],i,d,dtm;
+    for(i=1;i<pts.length;i++){
+      d=hav(pts[i-1][0],pts[i-1][1],pts[i][0],pts[i][1]);dtm=(pts[i][2]-pts[i-1][2])/1000;
+      if(!(dtm>0))dtm=0;if(dtm>gapS&&d<dtm*.5)dtm=0;
+      cum.push(cum[i-1]+d);tt.push(tt[i-1]+dtm)}
+    var total=cum[cum.length-1],secT=tt[tt.length-1];
+    function tAt(m){if(m<=0)return 0;if(m>=total)return secT;var lo=0,hi=cum.length-1;
+      while(hi-lo>1){var mid=(lo+hi)>>1;if(cum[mid]<=m)lo=mid;else hi=mid}
+      var span=cum[hi]-cum[lo];return tt[lo]+(span>0?(tt[hi]-tt[lo])*(m-cum[lo])/span:0)}
+    EFF.forEach(function(D){
+      if(total<D)return;var best=Infinity;
+      function tryEnd(x){if(x<D-1e-6||x>total+1e-6)return;var v=tAt(x)-tAt(x-D);if(v<best)best=v}
+      for(var k=0;k<cum.length;k++){tryEnd(cum[k]);tryEnd(cum[k]+D)}
+      if(best>0&&best<Infinity&&D/best<=maxV)out[D]=Math.round(best)});
+    return out}
+
   /* ---------- the saved record ----------
      s: {pts, dist(m), sec, steps, jt, wt, trk, acc(avg gps m), est(m estimated from steps), lvl(label), t(end ms)}
      Keeps it small: about 150 bytes plus the per-km list. */
@@ -140,6 +164,7 @@
     if(sp&&sp.dist>=100){
       o.km=sp.km;if(sp.part)o.pt=sp.part;if(sp.pp.length)o.pp=sp.pp;
     }
+    var be=s.pts&&s.pts.length>=5?bestEfforts(s.pts):null;if(be&&Object.keys(be).length)o.be=be;
     if(s.acc>0)o.ga=Math.round(s.acc);
     if(s.est>30)o.es=Math.round(s.est);
     if(s.lvl)o.lv=String(s.lvl).slice(0,40);
@@ -172,6 +197,6 @@
   Move.prototype.still=function(t){return t-this.lastMove>=Move.stillMs&&t-this.lastGood<=10000};
   Move.prototype.recent=function(t,win){var n=0;for(var i=0;i<this.ev.length;i++)if(t-this.ev[i]<=win)n++;return n};
 
-  var api={Move:Move,Track:Track,splits:splits,summarize:summarize,quality:quality,hav:hav,CFG:CFG};
+  var api={bestEfforts:bestEfforts,EFFORTS:EFF,Move:Move,Track:Track,splits:splits,summarize:summarize,quality:quality,hav:hav,CFG:CFG};
   if(typeof module!=="undefined"&&module.exports)module.exports=api;else root.AxRun=api;
 })(typeof window!=="undefined"?window:this);

@@ -724,3 +724,17 @@ Causes of that Android error: (a) APK signed with a different key than the insta
 - **Live map:** `js/features/livemap.js` adds `#ax-lmap` under the GPS line in the run dock: offline SVG of the last ~1.2 km, your position dot (grey + "Paused" when paused). No tiles/network; a tile basemap would need a provider/key.
 - Tests: `tests/automove.test.js` (11), `tests/autopause_ui_test.py` (web + stubbed native run). Tune `Move.stillMs` or the 0.3 m/s Doppler threshold if the phone disagrees.
 - SW cache `arya-v100`.
+
+## v101 — Strava-style PRs and best efforts (2026-10-22; unit + real-browser tested; not run on a phone)
+- `AxRun.bestEfforts(pts)` (runcalc.js): fastest time over 400 m, ½ mile, 1 km, 1 mile, 2 mile, 5 km, 10 km, 15 km, 10 mile, 20 km, half marathon, marathon inside one run. Exact for the piecewise-linear time/distance curve (window start or end sits on a point), pauses excluded with the same rule as `splits`, speeds >9 m/s dropped as GPS errors. `summarize()` stores it as `be:{meters:seconds}` (<200 bytes); `axCleanRsum` keeps it on import.
+- `js/features/prs.js` (`AxPR`): all-time ranking across every plan. Rank 1 = "PR" (gold, with the gain over the old PR; "First" if nothing to compare), 2nd/3rd medals. Runs saved before v101 have no `be`: it is rebuilt from their saved route when the saved-summary and route lists line up, or from the route alone (route points are thinned to 250, so old efforts are approximate). Nothing is written back.
+- UI: run summary gets "PR 5 km" pills and a Best efforts section (also on the "Run saved" sheet); Progress gets a Best efforts card (1 km, 1 mile, 5 km, 10 km first) with an "All best efforts" sheet showing the top 3 per distance.
+- Rank is all-time, not "at the time of the run": an old run that has since been beaten shows 2nd/3rd instead of PR.
+- Tests: `tests/efforts.test.js` (8), `tests/prs_ui_test.py`. SW cache bumped.
+
+## v102 — GPX export (2026-10-22; unit + real-browser tested incl. a real file download; not run on a phone)
+- `js/features/gpx.js` (`AxGpx`): `build(pts,{name,desc})` makes GPX 1.1 (`<type>running</type>`, ISO `<time>` on every point, a new `<trkseg>` after a pause = gap >25 s with <0.5 m/s), `exportRun(D)` sends it through `axOut()`: native = Android share sheet (pick Strava, Drive, Files...), web = file download, last resort = clipboard.
+- Run summary sheet: "Export GPX" button, only when the run has a saved route (>=5 points). Exports the LAST route of that plan day, like the summary itself.
+- Saved route resolution doubled: `saveRoute` keeps up to ~500 points (was ~250); both import cleaners in `data-io.js` accept up to 520 points (they would otherwise cut the end of a route). Storage cost ~18 KB per run; the daily backup in store.js is skipped above 1.2M characters, so watch total size if you do many runs per day.
+- Not included: elevation (`<ele>`): altitude is not recorded yet (needs `RunTrack.java`/`RunService.java`, which cannot be compiled here), heart rate, bulk export of many runs.
+- Tests: `tests/gpx.test.js` (7), `tests/gpx_ui_test.py` (downloads and parses the real file).

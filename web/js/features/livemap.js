@@ -21,7 +21,7 @@
         ox=(W-(x1-x0)*sc)/2,oy=(H-(y1-y0)*sc)/2;
     function px(p){return[ox+(p[0]-x0)*sc,oy+(p[1]-y0)*sc]}
     var d="";xy.forEach(function(p,j){var c=px(p);d+=(j?"L":"M")+c[0].toFixed(1)+" "+c[1].toFixed(1)});
-    var e=px(xy[xy.length-1]),col=paused?"var(--mute,#8a8f98)":"var(--ok)",h='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Live route" style="width:100%;height:auto;display:block;border-radius:14px;background:var(--cell);border:1px solid var(--line)">';
+    var e=px(xy[xy.length-1]),col=paused?"var(--mut,#8a8f98)":"var(--ok)",h='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Live route" style="width:100%;height:auto;display:block;border-radius:14px;background:var(--cell);border:1px solid var(--line)">';
     h+='<path d="'+d+'" fill="none" stroke="var(--blue)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>';
     if(i===0){var s=px(xy[0]);h+='<circle cx="'+s[0].toFixed(1)+'" cy="'+s[1].toFixed(1)+'" r="5" fill="var(--card)" stroke="var(--blue)" stroke-width="2"/>'}
     h+='<circle cx="'+e[0].toFixed(1)+'" cy="'+e[1].toFixed(1)+'" r="11" fill="'+col+'" opacity=".25"/><circle cx="'+e[0].toFixed(1)+'" cy="'+e[1].toFixed(1)+'" r="6" fill="'+col+'" stroke="var(--card)" stroke-width="2.5"/>';

@@ -179,6 +179,7 @@
     var bd="";
     if(D.pbLong)bd+='<span class="rs-pill g">Longest run so far</span>';
     if(D.pbKm)bd+='<span class="rs-pill g">Fastest km so far</span>';
+    if(window.AxPR)bd+=AxPR.pills(D);
     if(bd)h+='<div class="rs-badges">'+bd+'</div>';
     h+='</div><div class="rs-grid">'+
        tile(fmt(s.s),"Time")+tile(hasD?pace(D.avg):"--","Avg pace /km")+tile(D.best?pace(D.best):"--","Best km")+
@@ -187,6 +188,7 @@
     if(rs)h+='<div class="rs-sec">Route</div>'+rs+'<p class="rs-note m">Green is faster, red is slower. Circles mark each km.</p>';
     var sp=splitRows(s);
     if(sp)h+='<div class="rs-sec">Pace per km</div>'+sp;
+    if(window.AxPR)h+=AxPR.section(D);
     var pf=profileSvg(s.pp);
     if(pf)h+='<div class="rs-sec">Pace over the run</div>'+pf;
     if(s.jt>0&&s.jt+(s.wt||0)>=60){
@@ -202,7 +204,7 @@
       var gq=q.k==="good"?"GPS was good ("+s.ga+" m average accuracy).":q.k==="ok"?"GPS was fair ("+s.ga+" m average). Distance is likely within a few percent.":q.k==="weak"?"GPS was weak"+(s.ga?" ("+s.ga+" m average)":"")+", so distance and pace are less certain. Open sky helps.":"";
       if(gq)h+='<p class="rs-note m">'+gq+(s.es>0?" About "+(s.es/1000).toFixed(2)+" km of steps were filled in from your stride.":"")+(s.dv?" Rebuilt from the saved route.":"")+'</p>';
     }
-    h+='<div class="rs-act"><button class="ax-btn ax-pri" id="rs-share">Share run card</button><button class="ax-btn" id="rs-x">Close</button></div>';
+    h+='<div class="rs-act"><button class="ax-btn ax-pri" id="rs-share">Share run card</button><button class="ax-btn" id="rs-x">Close</button></div>'+(D.pts&&D.pts.length>=5?'<div class="rs-act" style="margin-top:0"><button class="ax-btn" id="rs-gpx">Export GPX</button></div>':'');
     return h;
   }
 
@@ -219,6 +221,7 @@
     var sh=b&&b.querySelector("#rs-share"),x=b&&b.querySelector("#rs-x");
     if(sh)sh.onclick=function(){if(window.AxRunCard)AxRunCard.share(D.dy)};
     if(x)x.onclick=axSheetX;
+    var gx=b&&b.querySelector("#rs-gpx");if(gx)gx.onclick=function(){if(window.AxGpx)AxGpx.exportRun(D)};
     hx("ok");
   }
 

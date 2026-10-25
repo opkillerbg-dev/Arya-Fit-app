@@ -33,11 +33,14 @@ function nfy(){if(!LN||!TM||TM.eng||TM.mode!="iv"||Date.now()-lnt<2000)return;ln
 function nclr(){try{LN&&LN.cancel({notifications:[{id:7}]})}catch(e){}}
 function hav(a,b){var R=6371000,r=Math.PI/180,dl=(b.la-a.la)*r,dn=(b.lo-a.lo)*r,x=Math.sin(dl/2)*Math.sin(dl/2)+Math.cos(a.la*r)*Math.cos(b.la*r)*Math.sin(dn/2)*Math.sin(dn/2);return 2*R*Math.asin(Math.sqrt(x))}
 var SG=9.8,SF=0,SL=0,SX=0;
-function onMo(e){if(!TM||TM.mode!="iv")return;var a=e.accelerationIncludingGravity;if(!a||a.x==null)return;TM.mev=(TM.mev||0)+1;if(!TM.run||TM.nsens)return;
+function onMo(e){if(!TM||TM.mode!="iv")return;var a=e.accelerationIncludingGravity;if(!a||a.x==null)return;TM.mev=(TM.mev||0)+1;if((!TM.run&&!TM.aps)||TM.nsens)return;
   var m=Math.sqrt(a.x*a.x+a.y*a.y+a.z*a.z);SG=SG*.98+m*.02;SF=SF*.7+(m-SG)*.3;var t=Date.now();
   if(SF>1.1&&SL<=1.1&&t-SX>280){TM.steps++;SX=t}SL=SF}
 function onFix(p){if(!TM||TM.mode!="iv")return;var c=p.coords,acc=c.accuracy;TM.gacc=Math.round(acc);
-  if(!TM.run){if(TM.aps){var q0={la:c.latitude,lo:c.longitude};if(TM.apl&&hav(TM.apl,q0)>8)apz(0);else if(!TM.apl)TM.apl=q0}if(TM.tr)TM.tr.restart();return}
+  var mv=TM.mv||(TM.mv=new AxRun.Move(Date.now()));mv.fix(Date.now(),c.latitude,c.longitude,acc,(c.speed!=null&&c.speed>=0)?c.speed:-1,TM.steps);
+  /* auto-paused: keep feeding the tracker so slow walking is never lost; resume on 2 movement signs within 6 s. Manual pause: as before. */
+  if(!TM.run){if(TM.aps&&mv.recent(Date.now(),6000)>=2){apz(0);toast("Resumed")}
+    if(!TM.run&&!TM.aps){if(TM.tr)TM.tr.restart();return}}
   if(acc>30){TM.gmsg="Weak GPS (about "+Math.round(acc)+" m). Move to open sky.";return}
   var tr=TM.tr||(TM.tr=new AxRun.Track()),t=p.timestamp||Date.now(),g0=tr.gaps,
     pt=tr.add(c.latitude,c.longitude,acc,(c.speed!=null&&c.speed>=0)?c.speed:-1,t);
@@ -47,14 +50,19 @@ function onFix(p){if(!TM||TM.mode!="iv")return;var c=p.coords,acc=c.accuracy;TM.
     if(!TM.hit&&TM.dist+(TM.base||0)>=JKM*1000){TM.hit=1;beep(3,988);toast(JKM+" km reached. Tap Save run time.")}}
   TM.gmsg="GPS good (about "+Math.round(acc)+" m)"}
 function onGerr(er){if(!TM)return;TM.gmsg=er.code==1?"Location permission denied. Allow it in site settings, or turn tracking off.":"GPS problem. Timer still works."}
-function trkOn(keep){if(!keep){TM.dist=0;TM.steps=0;TM.hit=0;TM.sdist=0;TM.sst=0;TM.sk=0}TM.tr=new AxRun.Track();TM.dbase=keep?(TM.dist||0):0;TM.gmsg="Finding GPS...";SG=9.8;SF=0;SL=0;
+function trkOn(keep){if(!keep){TM.dist=0;TM.steps=0;TM.hit=0;TM.sdist=0;TM.sst=0;TM.sk=0}TM.tr=new AxRun.Track();TM.mv=new AxRun.Move(Date.now());if(ENG)apWatch();TM.dbase=keep?(TM.dist||0):0;TM.gmsg="Finding GPS...";SG=9.8;SF=0;SL=0;
   var BG=ENG?null:(window.Capacitor&&Capacitor.Plugins&&Capacitor.Plugins.BackgroundGeolocation);
   if(ENG)engStart(keep);else if(BG)try{BG.addWatcher({backgroundTitle:"Arya Fit",backgroundMessage:"Run in progress",requestPermissions:true,stale:false,distanceFilter:2},function(l,e){if(e){onGerr({code:e.code=="NOT_AUTHORIZED"?1:2});return}if(!l)return;onFix({coords:{latitude:l.latitude,longitude:l.longitude,accuracy:l.accuracy},timestamp:l.time});step()}).then(function(id){TM?TM.nid=id:BG.removeWatcher({id:id})})}catch(e){}
   else try{if(navigator.geolocation)TM.wid=navigator.geolocation.watchPosition(onFix,onGerr,{enableHighAccuracy:true,maximumAge:0,timeout:30000});else TM.gmsg="GPS isn't available here."}catch(e){}
   try{var go=function(){window.addEventListener("devicemotion",onMo)};
     if(window.DeviceMotionEvent&&typeof DeviceMotionEvent.requestPermission=="function")DeviceMotionEvent.requestPermission().then(function(r){if(r=="granted")go()}).catch(function(){});
     else if(window.DeviceMotionEvent)go()}catch(e){}}
-function trkOff(){try{if(ENG&&TM&&TM.eng){ENG.stop();TM.eng=0}}catch(e){}try{if(TM&&TM.nid!=null){Capacitor.Plugins.BackgroundGeolocation.removeWatcher({id:TM.nid});TM.nid=null}}catch(e){}try{if(TM&&TM.wid!=null)navigator.geolocation.clearWatch(TM.wid)}catch(e){}try{window.removeEventListener("devicemotion",onMo)}catch(e){}if(TM)TM.wid=null}
+/* Native engine mode: Java handles the run GPS, so the page watches raw GPS only to feed the auto-pause detector. */
+function apFix(p){if(!TM||TM.mode!="iv"||!TM.trk)return;var c=p.coords,n=Date.now(),mv=TM.mv||(TM.mv=new AxRun.Move(n));
+  mv.fix(n,c.latitude,c.longitude,c.accuracy,(c.speed!=null&&c.speed>=0)?c.speed:-1,TM.steps);
+  if(!TM.run&&TM.aps&&mv.recent(n,6000)>=2){apz(0);toast("Resumed")}}
+function apWatch(){try{if(PR.ap&&navigator.geolocation&&TM&&TM.awid==null)TM.awid=navigator.geolocation.watchPosition(apFix,function(){},{enableHighAccuracy:true,maximumAge:0,timeout:30000})}catch(e){}}
+function trkOff(){try{if(TM&&TM.awid!=null){navigator.geolocation.clearWatch(TM.awid);TM.awid=null}}catch(e){}try{if(ENG&&TM&&TM.eng){ENG.stop();TM.eng=0}}catch(e){}try{if(TM&&TM.nid!=null){Capacitor.Plugins.BackgroundGeolocation.removeWatcher({id:TM.nid});TM.nid=null}}catch(e){}try{if(TM&&TM.wid!=null)navigator.geolocation.clearWatch(TM.wid)}catch(e){}try{window.removeEventListener("devicemotion",onMo)}catch(e){}if(TM)TM.wid=null}
 function paintG(e){if(!TM||!TM.trk)return;var km=TM.dist/1000;
   $("gd").textContent=((TM.dist+(TM.base||0))/1000).toFixed(2);$("gst").textContent=TM.steps.toLocaleString();
   $("gp").textContent=km>0.2?fmt(e/km):"--";$("gc").textContent=e>30&&TM.steps?Math.round(TM.steps/(e/60)):"--";
@@ -63,7 +71,7 @@ function paintG(e){if(!TM||!TM.trk)return;var km=TM.dist/1000;
   $("gmsg").textContent=m}
 function step(){
   if(!TM)return;var e=el_(),d=$("dock");
-  if(TM.mode=="iv"){engSync();if(!TM.lm)TM.lm=Date.now();if(TM.run)TM.aps=0;if(PR.ap&&TM.trk&&TM.run&&e>20&&Date.now()-TM.lm>9000)apz(1);var kx=(TM.hold||TM.ph)?"w":"j";if(TM._k&&TM._k!=kx)phaseFx(kx);TM._k=kx;var k1=Math.floor((TM.dist+(TM.base||0))/1000);if(TM.kk==null){TM.kk=k1;TM.kmt=e;TM.kmv=((TM.dist+(TM.base||0))%1000)<50}if(k1>TM.kk){var kp=Math.round(e-TM.kmt),pc=(TM.kmv&&kp>60&&kp<1800)?". Last kilometer, "+Math.floor(kp/60)+" minutes "+(kp%60)+" seconds":"";TM.kk=k1;TM.kmt=e;TM.kmv=1;say(k1+" kilometer"+(k1>1?"s":"")+pc)}var dd=e-(TM.lt||0);TM.lt=e;if(dd>0){if(TM.hold||TM.ph)TM.wt=(TM.wt||0)+dd;else TM.jt=(TM.jt||0)+dd}}
+  if(TM.mode=="iv"){engSync();if(!TM.lm)TM.lm=Date.now();if(TM.run)TM.aps=0;if(PR.ap&&TM.trk&&TM.run&&e>20&&TM.mv&&TM.mv.still(Date.now()))apz(1);var kx=(TM.hold||TM.ph)?"w":"j";if(TM._k&&TM._k!=kx)phaseFx(kx);TM._k=kx;var k1=Math.floor((TM.dist+(TM.base||0))/1000);if(TM.kk==null){TM.kk=k1;TM.kmt=e;TM.kmv=((TM.dist+(TM.base||0))%1000)<50}if(k1>TM.kk){var kp=Math.round(e-TM.kmt),pc=(TM.kmv&&kp>60&&kp<1800)?". Last kilometer, "+Math.floor(kp/60)+" minutes "+(kp%60)+" seconds":"";TM.kk=k1;TM.kmt=e;TM.kmv=1;say(k1+" kilometer"+(k1>1?"s":"")+pc)}var dd=e-(TM.lt||0);TM.lt=e;if(dd>0){if(TM.hold||TM.ph)TM.wt=(TM.wt||0)+dd;else TM.jt=(TM.jt||0)+dd}}
   if(Date.now()-lps>2000){lps=Date.now();persist()}nfy();
   if(TM.mode=="cd"){var r=TM.total-e;
     if(r<=0){endT();TM.run=false;TM.done=true;d.dataset.ph="done";$("dt").textContent="Done";$("dlab").textContent=TM.label;$("dsub").textContent="Nice. Restart or close.";$("dpg").style.width="100%";$("dpp").textContent="Again";snd("stop");return}
@@ -84,7 +92,7 @@ $("dsw").onclick=function(){unlock();if(!TM||TM.mode!="iv")return;var e=el_();
   else if(TM.ph==0){TM.hold=1;TM.ph=1;TM.pstart=e;beep(2,520)}
   else{TM.hold=1;TM.pstart=e;beep(1,520)}
   step()};
-$("drs").onclick=function(){if(!TM)return;TM.hold=0;TM.jt=0;TM.wt=0;TM.lt=0;TM.dist=0;TM.steps=0;TM.sdist=0;TM.sst=0;TM.sk=0;TM.tr=new AxRun.Track();TM.dbase=0;TM.rt=[];TM.kk=null;TM.hit=0;TM.acc=0;TM.last=Date.now();TM.pstart=0;TM.ph=0;TM.round=1;TM.last3=0;TM.done=false;TM.run=true;if(TM.eng)engStart(0);if(!tk)tk=setInterval(step,250);step()};
+$("drs").onclick=function(){if(!TM)return;TM.hold=0;TM.jt=0;TM.wt=0;TM.lt=0;TM.dist=0;TM.steps=0;TM.sdist=0;TM.sst=0;TM.sk=0;TM.tr=new AxRun.Track();TM.mv=null;TM.dbase=0;TM.rt=[];TM.kk=null;TM.hit=0;TM.acc=0;TM.last=Date.now();TM.pstart=0;TM.ph=0;TM.round=1;TM.last3=0;TM.done=false;TM.run=true;if(TM.eng)engStart(0);if(!tk)tk=setInterval(step,250);step()};
 function autoSaveRun(){var dy=TM.day,iv=TM.mode=="iv",msg="";snd("stop");
   if(iv)msg=commit(snapS(),dy);else{st["w"+dy]=(st["w"+dy]||0)+Math.round(el_());save()}
   closeT();render();tvu();toast("Run saved ("+((st["g"+dy]||0)/1000).toFixed(2)+" km today)");if(iv)setTimeout(function(){try{AxRunSum.open(dy,1)}catch(e){}},500)}

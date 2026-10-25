@@ -158,6 +158,20 @@
     return{k:"weak",t:"GPS weak"};
   }
 
-  var api={Track:Track,splits:splits,summarize:summarize,quality:quality,hav:hav,CFG:CFG};
+  /* Auto-pause detector. "Moving" only from positive evidence (Doppler speed, displacement beyond GPS noise, steps);
+     "still" only while GOOD GPS fixes keep arriving with no evidence for stillMs. Weak or missing GPS never pauses. */
+  function Move(t0){this.lastMove=t0||0;this.lastGood=0;this.ax=null;this.steps=-1;this.ev=[]}
+  Move.stillMs=20000;
+  Move.prototype.mark=function(t){this.lastMove=t;this.ev.push(t);if(this.ev.length>16)this.ev.shift()};
+  Move.prototype.fix=function(t,la,lo,acc,spd,steps){
+    if(steps>=0){if(this.steps>=0&&steps>this.steps)this.mark(t);this.steps=steps}
+    if(!(acc>0&&acc<=30)){if(t>this.lastMove)this.lastMove=t;return}
+    this.lastGood=t;
+    if(spd>=.3)this.mark(t);
+    if(!this.ax)this.ax={la:la,lo:lo};else if(hav(this.ax.la,this.ax.lo,la,lo)>=Math.max(4,.6*acc)){this.mark(t);this.ax={la:la,lo:lo}}};
+  Move.prototype.still=function(t){return t-this.lastMove>=Move.stillMs&&t-this.lastGood<=10000};
+  Move.prototype.recent=function(t,win){var n=0;for(var i=0;i<this.ev.length;i++)if(t-this.ev[i]<=win)n++;return n};
+
+  var api={Move:Move,Track:Track,splits:splits,summarize:summarize,quality:quality,hav:hav,CFG:CFG};
   if(typeof module!=="undefined"&&module.exports)module.exports=api;else root.AxRun=api;
 })(typeof window!=="undefined"?window:this);

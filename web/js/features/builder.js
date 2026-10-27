@@ -171,14 +171,14 @@
     var list=$("pl-list");
     if(list&&!$("bld-card")){
       var c=document.createElement("div");c.id="bld-card";c.className="panel";
-      c.innerHTML='<h3 style="margin-top:0">Build my plan</h3><p style="margin:4px 0 10px;font-size:13px;color:var(--mut)">Answer three quick questions and get a plan made for you. No typing needed.</p><div class="qr"><button class="btn pri" id="bld-go">Build my plan</button></div>';
+      c.innerHTML='<h3 style="margin-top:0">Quick plan builder (advanced)</h3><p style="margin:4px 0 10px;font-size:13px;color:var(--mut)">Three quick questions, a plan made for you. For a plan that fits your levels, use Personalise my plan in Settings.</p><div class="qr"><button class="btn pri" id="bld-go">Build my plan</button></div>';
       var nx=list.nextElementSibling;list.parentNode.insertBefore(c,nx||null);
       $("bld-go").onclick=window.axBuildPlan;
     }
     var sp=$("sp-go"),row=sp&&sp.closest(".row");
     if(row&&!$("bld-row")){
       var r=document.createElement("div");r.className="row";r.id="bld-row";
-      r.innerHTML='<span><b>Build my plan</b><em>Answer a few questions, get a plan</em></span><button class="btn pri" id="bld-go2">Build</button>';
+      r.innerHTML='<span><b>Quick plan builder (advanced)</b><em>Three questions, a plan made for you</em></span><button class="btn pri" id="bld-go2">Build</button>';
       row.parentNode.insertBefore(r,row);$("bld-go2").onclick=window.axBuildPlan;
     }
   }

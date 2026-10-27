@@ -21,7 +21,7 @@
     weakT:"Your weak point",weakWhy:"Balanced strength is safer and builds faster.",weakYes:"Yes, recommended",weakNo:"No",weakNone:"Your levels look balanced. No clear weak point.",
     wantT:"Anything you want to improve?",wantS:"Pick up to 4.",protT:"Anything we should protect?",
     schT:"Your schedule",schWhy:"A plan you can keep beats a perfect one.",daysT:"Workout days per week",minsT:"Time per session",weeksT:"Plan length",startT:"Start",recT:"Recommended for you: ",
-    revT:"Your starting levels",revWhy:"Week 1 starts one level lower on purpose, so you can build up safely.",create:"Create my plan",change:"Change answers",weekT:"Your week",reasonT:"Why this plan",
+    revT:"Your starting levels",revWhy:"Week 1 starts one level lower on purpose, so you can build up safely.",create:"Create my plan",createNew:"Create a new plan from these",saveOnly:"Save answers",keepNote:"Your current plan is kept. You can switch back any time in Plans.",notNow:"Not now",change:"Change answers",weekT:"Your week",reasonT:"Why this plan",
     errBuild:"Something went wrong building the plan. Please change an answer and try again.",toast:"Plan ready. Week 1 is deliberately easy.",close:"Close"
   };
   var GOALS=[["muscle","Build muscle","More sets, steady progress"],["strength","Get stronger","Heavier or harder, fewer sets"],["fatloss","Lose fat and stay fit","Strength plus a circuit day"],["run","Run further","Running first, lighter strength"],["general","General fitness","A balanced week"]];
@@ -64,7 +64,7 @@
   }
   var SCREENS=[
     function welcome(){return {body:'<div class="ob-hero" aria-hidden="true"><svg viewBox="0 0 108 108"><path d="M30 80 52 28 68 63Q72 72 81 79"/></svg></div><h1 class="ob-h">'+STR.welcomeT+'</h1><p class="ob-p">'+STR.welcomeP+'</p>',
-      nav:'<button type="button" class="ob-b ob-pri" id="ob-go">'+STR.start+'</button><button type="button" class="ob-b ob-ghost" id="ob-skipall">'+STR.skipAll+'</button>'}},
+      nav:'<button type="button" class="ob-b ob-pri" id="ob-go">'+STR.start+'</button><button type="button" class="ob-b ob-ghost" id="ob-skipall">'+(isFresh()?STR.skipAll:STR.notNow)+'</button>'}},
     function you(){
       var ht=imp()&&S.ht!=null?ftIn(S.ht):null,wt=S.wt==null?null:(imp()?Math.round(S.wt*2.2046):S.wt);
       var h=imp()?'<div class="ob-row">'+numIn("ob-ft","Feet",ht?ht[0]:null,3,7,"ft")+numIn("ob-in","Inches",ht?ht[1]:null,0,11,"in")+'</div>':numIn("ob-ht","Height in centimetres",S.ht,100,230,"cm");
@@ -136,18 +136,25 @@
     var strip='<div class="ob-strip" role="list">'+WKK.map(function(k,i){var d=R.res.plan.days[k];return '<div class="ob-d'+(d.type==="rest"?' rest':'')+'" role="listitem" aria-label="'+DN[i]+': '+esc(d.title)+'"><b>'+DN[i]+'</b><span>'+esc(d.short)+'</span></div>'}).join("")+'</div>';
     var why=R.res.notes.slice(0,4).map(function(n){return '<li>'+esc(n)+'</li>'}).join("");
     return {body:'<h1 class="ob-h">'+STR.revT+'</h1>'+why0()+'<div class="ob-card">'+bars+(wk?'<p class="ob-s" style="margin:8px 0 0">* Priority: '+wk+'</p>':'')+'</div>'
-      +'<p class="ob-q">'+STR.weekT+'</p>'+strip+'<p class="ob-q">'+STR.reasonT+'</p><ul class="ob-ul">'+why+'</ul><p class="ob-note" id="ob-err" role="alert" hidden></p>',
-      nav:'<button type="button" class="ob-b ob-pri" id="ob-create">'+STR.create+'</button><button type="button" class="ob-b ob-ghost" id="ob-change">'+STR.change+'</button>'};
+      +'<p class="ob-q">'+STR.weekT+'</p>'+strip+'<p class="ob-q">'+STR.reasonT+'</p><ul class="ob-ul">'+why+'</ul>'+(isFresh()?'':'<p class="ob-s">'+STR.keepNote+'</p>')+'<p class="ob-note" id="ob-err" role="alert" hidden></p>',
+      nav:(mode.edit?'<button type="button" class="ob-b ob-pri" id="ob-save">'+STR.saveOnly+'</button><button type="button" class="ob-b" id="ob-create" style="margin-top:6px">'+STR.createNew+'</button>'
+        :'<button type="button" class="ob-b ob-pri" id="ob-create">'+STR.create+'</button>')+'<button type="button" class="ob-b ob-ghost" id="ob-change">'+STR.change+'</button>'};
   }
   function why0(){return '<p class="ob-w">'+STR.revWhy+'</p>'}
-  var busy=false;
+  var busy=false,mode={edit:false};
+  function saveProfile(R){var declined=S.weakAsked&&S.weak.length===0;return P().set(Object.assign({},S,{done:true,ts:Date.now(),levels:R.A.levels,weak:declined?[]:R.res.gen.weak}))}
+  function saveOnly(){
+    if(busy)return;busy=true;var err=$("ob-err");
+    try{fill(8);var c=saveProfile(make());if(!c){busy=false;if(err){err.hidden=false;err.textContent=STR.errBuild}return}
+      busy=false;finish();try{root.toast("Answers saved")}catch(e){}try{if(root.AxOnboardEntry)root.AxOnboardEntry.paint()}catch(e){}}
+    catch(e){busy=false;if(err){err.hidden=false;err.textContent=STR.errBuild}}
+  }
   function create(){
     if(busy)return;busy=true;var err=$("ob-err");
     function fail(){busy=false;if(err){err.hidden=false;err.textContent=STR.errBuild}}
     try{
       fill(8);var R=make(),r=root.vplan(R.res.plan);if(!r||!r.plan)return fail();
-      var declined=S.weakAsked&&S.weak.length===0;
-      var c=P().set(Object.assign({},S,{done:true,ts:Date.now(),levels:R.A.levels,weak:declined?[]:R.res.gen.weak}));
+      var c=saveProfile(R);
       if(!c)return fail();
       var id="p"+Date.now().toString(36);
       root.APP.plans[id]={plan:r.plan,st:{},gen:R.res.gen};root.save();root.activate(id);root.save();
@@ -176,6 +183,7 @@
     if(b=$("ob-skipall"))b.onclick=function(){try{localStorage.setItem(SKIPK,"1")}catch(e){}close()};
     if(b=$("ob-close"))b.onclick=close;
     if(b=$("ob-create"))b.onclick=create;
+    if(b=$("ob-save"))b.onclick=saveOnly;
     if(b=$("ob-change"))b.onclick=function(){go(1,-1)};
     if(b=$("ob-back"))b.onclick=function(){go(step-1,-1)};
     if(b=$("ob-next"))b.onclick=function(){fill(step);go(step+1,1)};
@@ -232,12 +240,14 @@
   }
   /* open / close / back */
   function open(o){
-    if(el)return;
-    var d=P().draftGet(),raw=d||{};
+    if(el)return;o=o||{};
+    var prof=P().get(),d=P().draftGet(),raw=d||{};
+    mode={edit:!!(o.edit&&prof)};
+    if(o.fromProfile&&prof){d=null;raw=JSON.parse(JSON.stringify(prof))}
     S=Object.assign({units:"metric",name:"",ht:null,wt:null,age:null,sex:null,health:"ok"},raw);S.goal=raw.goal&&typeof raw.goal==="object"?{main:raw.goal.main||null,extra:raw.goal.extra||null}:{main:null,extra:null};
     S.bench=Object.assign({push:null,pull:null,squat:null,plank:null,run:null},raw.bench||{});S.bench.lifts=Object.assign({squat:null,bench:null,deadlift:null,ohp:null},(raw.bench&&raw.bench.lifts)||{});
     S.equip=Array.isArray(raw.equip)?raw.equip.slice():[];S.want=Array.isArray(raw.want)?raw.want.slice():[];S.protect=Array.isArray(raw.protect)?raw.protect.slice():[];S.weak=Array.isArray(raw.weak)?raw.weak.slice():[];S.weakAsked=raw.weakAsked===true;
-    step=d?Math.min(P().draftStep(),9):0;asked={b:{}};if(step>2){asked.h=1}
+    step=d?Math.min(P().draftStep(),9):((o.fromProfile&&prof)?1:0);asked={b:{}};if(step>2||(o.fromProfile&&prof))asked.h=1;if(o.fromProfile&&prof){asked.none=S.protect.length===0?1:0}
     try{if(root.axGuard)root.axGuard()}catch(e){}
     el=document.createElement("div");el.id="ax-ob";el.setAttribute("role","dialog");el.setAttribute("aria-modal","true");el.setAttribute("aria-label","Personalise your plan");
     document.body.appendChild(el);document.documentElement.classList.add("ob-lock");render(1);

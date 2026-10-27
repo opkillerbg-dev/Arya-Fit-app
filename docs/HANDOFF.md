@@ -756,3 +756,16 @@ Causes of that Android error: (a) APK signed with a different key than the insta
 - Backup: `pack()` now writes `profile`; `doImport` applies `axCleanProfile(d.profile)` when valid, otherwise keeps the current profile (older backups without one never wipe it). Newer-schema backups are still refused.
 - Tests: `tests/profile.test.js` (13), `tests/profile_ui_test.py`; `store.test.js` and `browser_test.py` updated for schema 2. SW cache bumped and `profile.js` added to the shell list.
 - Next: S1 exercise DB (`exdb.js` + `data/exercises.json` from `docs/onboarding/exercises.seed.json`).
+
+## v106 — Onboarding S1: exercise DB (2026-10-27; unit tested; no UI yet)
+- New `js/features/exdb.js` (`AxExDb`, also node): 108 exercises inline (no fetch, so it works offline and at first paint). `all`, `byId`, `byName`, `ladder(g)`, `filter({env,equip,avoid,p,g})`, `ladders`. Home = body/chair + owned gear only; gym = everything; `avoid` drops exercises tagged with that body area.
+- Seed fixes (also in `docs/onboarding/exercises.seed.json`): `squat-jumps` L3 -> 2 and `nordic-curl-negatives` L5 -> 4 so every ladder has no gaps. Levels still need the S10 QA pass.
+- `index.html` loads it after `profile.js`; SW cache `arya-v106`, `exdb.js` added to the shell list. Test: `tests/exdb.test.js` (8).
+- Next: S2 level engine (`features/levelcalc.js`).
+
+## v107 — Onboarding S2: level engine (2026-10-27; unit tested; no UI yet)
+- New `js/features/levelcalc.js` (`AxLevel.calc(profile)`, also node): levels 0-5 for push/pull/legs/core/run from `profile.bench` using the tables in `docs/onboarding/03`; skipped benchmarks use experience (beg 1, int 2, adv 3) and are listed in `skipped`; gym lifts (kg / body weight) raise a level by at most 1 (squat and deadlift -> legs, bench and OHP -> push; deadlift mapping is my choice); knee in `protect` lowers legs by 1.
+- Weak points: level <= top-2 or picked in `want`, max 2, biggest gap first; run only when goal is run. Note: for the owner example (push 5, pull 2, legs 3, core 3) the literal rule also flags legs/core (gap 2), so `weak` is `["pull","legs"]`; pull is always first. Spec 03 text says only pull; S3/S5 can show just `weak[0]` as the headline if wanted.
+- Also returns `start` (levels one lower for the ramp-in week 1) and `caps` (gentle: max 2 sets, long rest, no max tests; under 18: no max/weighted tests, 12-set session cap).
+- `index.html` loads it after `exdb.js`; SW cache `arya-v107` with the file in the shell list. Test: `tests/levelcalc.test.js` (9).
+- Next: S3 plan engine (`features/plangen.js`).

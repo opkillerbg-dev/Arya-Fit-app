@@ -25,6 +25,6 @@
 - Hand-off = `update.zip` containing only files that changed vs the last repo zip the owner uploaded, plus a `docs/HANDOFF.md` entry (`## vNNN ...`). Never touch `signing/`.
 
 ## Status (tick as steps finish; details in 06)
-- [x] S0 profile storage (v105)  - [ ] S1 exercise DB  - [ ] S2 level engine  - [ ] S3 plan engine
+- [x] S0 profile storage (v105)  - [x] S1 exercise DB (v106)  - [x] S2 level engine (v107)  - [ ] S3 plan engine
 - [ ] S4 wizard shell + body screens  - [ ] S5 level/equipment/weak-point screens  - [ ] S6 review + create plan
 - [ ] S7 existing users  - [ ] S8 retest + coach link  - [ ] S9 gym loads  - [ ] S10 content QA  - [ ] S11 polish

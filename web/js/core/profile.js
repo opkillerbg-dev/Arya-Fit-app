@@ -27,7 +27,7 @@
     var b=isObj(raw.bench)?raw.bench:{},ob={lifts:{}};
     Object.keys(BENCH).forEach(function(k){ob[k]=num(b[k],BENCH[k][0],BENCH[k][1])});
     var lf=isObj(b.lifts)?b.lifts:{};LIFTS.forEach(function(k){ob.lifts[k]=num(lf[k],0,600)});o.bench=ob;
-    o.levels=levels(raw.levels);o.weak=list(raw.weak,ENUM.pat,2);o.want=list(raw.want,ENUM.want,4);o.protect=list(raw.protect,ENUM.protect,7);
+    o.levels=levels(raw.levels);o.weak=list(raw.weak,ENUM.pat,2);o.weakAsked=raw.weakAsked===true;o.want=list(raw.want,ENUM.want,4);o.protect=list(raw.protect,ENUM.protect,7);
     o.days=int(raw.days,2,6,null);o.mins=int(raw.mins,20,90,null);o.weeks=int(raw.weeks,4,12,null);o.start=en(raw.start,ENUM.start,"today");
     var r=isObj(raw.retest)?raw.retest:{},rh=[];
     if(Array.isArray(r.history))r.history.forEach(function(h){var lv=isObj(h)?levels(h.levels):null;if(lv)rh.push({ts:int(h.ts,0,4102444800000,0),levels:lv})});
@@ -46,7 +46,12 @@
   /* the profile in use (null until onboarding is finished) */
   function get(){return root.APP&&root.APP.profile&&root.APP.profile.done?root.APP.profile:null}
   function set(raw){var c=clean(raw,{draft:false});if(!c)return null;root.APP.profile=c;draftClear();try{root.save()}catch(e){}return c}
-  var api={clean:clean,ENUM:ENUM,draftGet:draftGet,draftSet:draftSet,draftClear:draftClear,draftStep:draftStep,get:get,set:set};
+  /* the link between a generated plan and the profile that made it: APP.plans[id].gen */
+  function cleanGen(g){
+    if(!isObj(g))return null;var lv=levels(g.levels);if(!lv)return null;
+    return {v:1,ts:int(g.ts,0,4102444800000,0),levels:lv,weak:list(g.weak,ENUM.pat,2),inputsHash:typeof g.inputsHash==="string"?g.inputsHash.replace(/[^0-9a-f]/g,"").slice(0,16):""};
+  }
+  var api={cleanGen:cleanGen,clean:clean,ENUM:ENUM,draftGet:draftGet,draftSet:draftSet,draftClear:draftClear,draftStep:draftStep,get:get,set:set};
   root.axCleanProfile=clean;
   if(typeof module!=="undefined"&&module.exports)module.exports=api;else root.AxProfile=api;
 })(typeof window!=="undefined"?window:this);

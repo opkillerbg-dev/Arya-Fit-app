@@ -10,7 +10,7 @@ function env() {
 const good = () => ({ v: 1, done: true, ts: 1730000000000, units: "metric", name: "Arya", ht: 178, wt: 76, age: "30-39", sex: "m", health: "ok",
   goal: { main: "muscle", extra: "run" }, xp: "int", env: "homeplus", equip: ["backpack", "pullbar"],
   bench: { push: 50, pull: 5, squat: 50, plank: 90, run: 5, lifts: { squat: null, bench: null, deadlift: null, ohp: null } },
-  levels: { push: 5, pull: 2, legs: 3, core: 3, run: 3 }, weak: ["pull"], want: ["pull"], protect: ["shoulder"],
+  levels: { push: 5, pull: 2, legs: 3, core: 3, run: 3 }, weak: ["pull"], weakAsked: false, want: ["pull"], protect: ["shoulder"],
   days: 4, mins: 45, weeks: 8, start: "today", retest: { last: null, due: null, history: [] } });
 let n = 0; const t = (name, f) => { f(); n++; console.log("ok  " + name) };
 
@@ -73,5 +73,10 @@ t("set() stores a cleaned profile, saves, clears the draft; get() returns only a
   const r = good(); r.evil = 1; const c = P.set(r);
   assert.ok(c && ctx.APP.profile.goal.main === "muscle" && ctx.APP.profile.evil === undefined); assert.strictEqual(saved.length, 1); assert.strictEqual(ls.aryaOnboardDraft, undefined);
   assert.strictEqual(P.get().days, 4); ctx.APP.profile.done = false; assert.strictEqual(P.get(), null);
+});
+t("cleanGen keeps only a valid plan link", () => {
+  const P = env().P, g = P.cleanGen({ v: 9, ts: 5, levels: { push: 5, pull: 2, legs: 9 }, weak: ["pull", "bogus", "core", "push"], inputsHash: "ab12<x>" });
+  assert.deepStrictEqual(JSON.parse(JSON.stringify(g)), { v: 1, ts: 5, levels: { push: 5, pull: 2, legs: 5 }, weak: ["pull", "core"], inputsHash: "ab12" });
+  assert.strictEqual(P.cleanGen(null), null); assert.strictEqual(P.cleanGen({ levels: {} }), null);
 });
 console.log("\n" + n + " tests passed");

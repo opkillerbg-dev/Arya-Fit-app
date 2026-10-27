@@ -2,8 +2,9 @@
    APP.schema = version of the saved data shape. Add a migration to AXMIG and raise AXSCHEMA when the shape changes.
    localStorage keys written here: aryaApp2.bak (daily copy), aryaApp2.premig (copy before a migration),
    aryaApp2.bad (a damaged file, kept as evidence), aryaApp2.preimport (copy before a backup import). */
-var AXSCHEMA=1,
- AXMIG=[{to:1,name:"baseline",run:function(a){return a}}],
+var AXSCHEMA=2,
+ AXMIG=[{to:1,name:"baseline",run:function(a){return a}},
+  {to:2,name:"profile",run:function(a){if(!("profile" in a))a.profile=null;return a}}],
  AXSK={bak:"aryaApp2.bak",bakts:"aryaApp2.bakts",pre:"aryaApp2.premig",bad:"aryaApp2.bad",imp:"aryaApp2.preimport"},
  AXSTORE={src:"none",from:0,to:0,newer:false,error:null,ran:[]};
 function axLsGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
@@ -42,5 +43,5 @@ function axStoreRead(){
   else if(r.newer)axNote("This data came from a newer app version. Update the app before editing.");
   return r.app}
 /* new/legacy data built in loadApp is already current */
-function axStamp(a){if(a&&!(+a.schema>0))a.schema=AXSCHEMA}
+function axStamp(a){if(!a)return;if(!(+a.schema>0))a.schema=AXSCHEMA;if(!("profile" in a))a.profile=null}
 function axSnap(name){return axLsSet("aryaApp2."+name,JSON.stringify(APP))}

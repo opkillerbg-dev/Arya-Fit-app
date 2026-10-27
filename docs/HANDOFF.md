@@ -738,3 +738,21 @@ Causes of that Android error: (a) APK signed with a different key than the insta
 - Saved route resolution doubled: `saveRoute` keeps up to ~500 points (was ~250); both import cleaners in `data-io.js` accept up to 520 points (they would otherwise cut the end of a route). Storage cost ~18 KB per run; the daily backup in store.js is skipped above 1.2M characters, so watch total size if you do many runs per day.
 - Not included: elevation (`<ele>`): altitude is not recorded yet (needs `RunTrack.java`/`RunService.java`, which cannot be compiled here), heart rate, bulk export of many runs.
 - Tests: `tests/gpx.test.js` (7), `tests/gpx_ui_test.py` (downloads and parses the real file).
+
+## v103 — Run share card upgrade (2026-10-22; real-browser tested + visually checked; not run on a phone)
+- "Share run card" now opens a preview (`#gov`) with three formats: **Post** 1080x1350 (as before), **Story** 1080x1920 (content kept between y~270 and y~1634, clear of Instagram's top/bottom UI), **Sticker** (transparent PNG: white text with soft shadow, outlined pace-coloured route, for putting over a photo). Last choice is remembered until the app restarts. Share sends the chosen canvas through the existing Filesystem+Share path (native) or Web Share / preview (browser). `AxRunCard.draw(D,mode)`, `AxRunCard.send(cv,name)`.
+- New on every format: gold **PR chips** (largest 1-2 efforts that beat an older best, from `AxPR`), a time-of-day title ("Evening run" from `t - s`), a slow->fast legend for the route colours, and a "New PR · 5 km in 28:20 (−0:50)" footer when there is a PR.
+- Layout is parameterised (`T0` shift, `PH0` panel height); tiles, splits and footer follow the panel, so changing one number re-flows the card.
+- Test: `tests/runcard_ui_test.py` (sizes, transparent corner, PR chip pixels on post and story, no chip on a slower run, preview flow).
+
+## v104 — Onboarding + personalised plan: BLUEPRINT ONLY (2026-10-22; docs, no code changed)
+- New folder `docs/onboarding/` (read `00_START_HERE.md` first): UX spec (questions), data model (`APP.profile`, schema 2), level tables + weak-point rule, plan engine design, exercise DB (`exercises.seed.json`, 108 exercises, validated), 12-step roadmap (S0-S11) with acceptance criteria, and a prompt to hand to another AI.
+- Core idea: a level 0-5 per movement pattern (push, pull, legs, core, run) from benchmarks (push-ups, pull-ups, squats, plank, run), a weak pattern = 2+ levels below the strongest (50 push-ups vs 5 pull-ups -> pull is weak and gets priority), plan from a pure tested function that outputs the existing `arya-plan` format.
+- Nothing is implemented yet. Next: S0 (profile storage + schema 2 migration).
+
+## v105 — Onboarding S0: profile storage, schema 2 (2026-10-22; unit + real-browser tested; no UI yet)
+- `AXSCHEMA` 1 -> 2 (`core/store.js`): migration `profile` adds `APP.profile = null`; `axStamp` gives fresh data `profile:null`. Old data keeps a `premig` copy as before.
+- New `core/profile.js` (after `store.js`; also runs in node): `axCleanProfile(raw,{draft})` whitelists every field per `docs/onboarding/02_DATA_MODEL.md` (enums, clamps, out-of-range body numbers -> null, lists deduped/capped, name stripped, unknown keys and `__proto__` dropped; a finished profile needs goal, env, levels, days, mins, weeks or it is rejected; missing levels filled with 0). `AxProfile`: `clean`, `get()` (finished profile or null), `set(raw)` (clean, store, `save()`, clear draft), `draftGet/draftSet/draftClear/draftStep` (`localStorage aryaOnboardDraft`, separate from `APP`).
+- Backup: `pack()` now writes `profile`; `doImport` applies `axCleanProfile(d.profile)` when valid, otherwise keeps the current profile (older backups without one never wipe it). Newer-schema backups are still refused.
+- Tests: `tests/profile.test.js` (13), `tests/profile_ui_test.py`; `store.test.js` and `browser_test.py` updated for schema 2. SW cache bumped and `profile.js` added to the shell list.
+- Next: S1 exercise DB (`exdb.js` + `data/exercises.json` from `docs/onboarding/exercises.seed.json`).

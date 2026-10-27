@@ -28,12 +28,12 @@ try:
         b = launch(p)
         # build a real plan object once, from a clean first run
         ctx, pg, errs = fresh(b); plan = pg.evaluate("APP.plans[APP.active].plan"); check("clean first run: no page errors", not errs, errs)
-        check("clean first run: schema stamped", pg.evaluate("APP.schema") == 1); ctx.close()
+        check("clean first run: schema stamped", pg.evaluate("APP.schema") == 2); ctx.close()
         mk = lambda **k: json.dumps(dict({"v": 2, "active": "default", "prefs": {"skin": "oldmoney"}, "plans": {"default": {"plan": plan, "st": {"1:wu": 1, "2:j": 1}}}}, **k))
 
         ctx, pg, errs = fresh(b, {"aryaApp2": mk()})
         check("old data (no schema): loads, ticks kept", pg.evaluate(TICKS_JS) == 2, pg.evaluate("JSON.stringify(APP.plans.default.st)"))
-        check("old data: stamped schema 1 + premig copy", pg.evaluate("APP.schema") == 1 and pg.evaluate("!!localStorage.getItem('aryaApp2.premig')"))
+        check("old data: stamped schema 2 + premig copy", pg.evaluate("APP.schema") == 2 and pg.evaluate("!!localStorage.getItem('aryaApp2.premig')"))
         check("old data: no page errors", not errs, errs); ctx.close()
 
         ctx, pg, errs = fresh(b, {"aryaApp2": '{"plans":{"default":{"plan"', "aryaApp2.bak": mk(marker="from-bak")})
@@ -51,7 +51,7 @@ try:
 
         ctx, pg, errs = fresh(b, {"aryaApp2": mk()})
         txt = pg.evaluate("pack()"); d = json.loads(txt)
-        check("export carries schema", d.get("schema") == 1)
+        check("export carries schema", d.get("schema") == 2)
         pg.evaluate("t=>doImport(t)", txt); pg.wait_for_timeout(500)
         check("export -> import round trip keeps ticks", pg.evaluate(TICKS_JS) == 2)
         check("import makes a pre-import safety copy", pg.evaluate("!!localStorage.getItem('aryaApp2.preimport')"))

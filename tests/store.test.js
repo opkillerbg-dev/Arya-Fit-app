@@ -39,7 +39,7 @@ t("read: empty storage returns null (fresh install / legacy path)", () => {
 t("read: valid pre-schema data gets baseline migration, premig copy and daily backup", () => {
   const raw = JSON.stringify(good()); const e = env({ aryaApp2: raw });
   const a = e.run("axStoreRead()");
-  assert.strictEqual(a.schema, 1); assert.strictEqual(a.plans.default.st["1:0"], 1);
+  assert.strictEqual(a.schema, 2); assert.strictEqual(a.profile, null); assert.strictEqual(a.plans.default.st["1:0"], 1);
   assert.strictEqual(e.ls["aryaApp2.premig"], raw); assert.strictEqual(e.ls["aryaApp2.bak"], raw); assert.ok(e.ls["aryaApp2.bakts"]);
 });
 t("read: daily backup is not rewritten within 20 h, is rewritten after", () => {
@@ -49,7 +49,7 @@ t("read: daily backup is not rewritten within 20 h, is rewritten after", () => {
   e.ctx.__now = 1e12 + 21 * 3600e3; e.run("axStoreRead()"); assert.ok(/new/.test(e.ls["aryaApp2.bak"]));
 });
 t("read: no premig copy when already at current schema", () => {
-  const e = env({ aryaApp2: JSON.stringify(good({ schema: 1 })) }); e.run("axStoreRead()"); assert.strictEqual(e.ls["aryaApp2.premig"], undefined);
+  const e = env({ aryaApp2: JSON.stringify(good({ schema: 2, profile: null })) }); e.run("axStoreRead()"); assert.strictEqual(e.ls["aryaApp2.premig"], undefined);
 });
 t("read: damaged main file is restored from the daily backup and kept as evidence", () => {
   const bak = JSON.stringify(good({ schema: 1, from: "bak" })); const e = env({ aryaApp2: '{"plans":{"default":{"plan":', "aryaApp2.bak": bak });
@@ -71,6 +71,6 @@ t("read: oversized data skips the daily backup (quota protection)", () => {
   assert.strictEqual(e.ls["aryaApp2.bak"], undefined);
 });
 t("stamp: fresh data gets the current schema, existing is kept", () => {
-  const e = env({}); e.ctx.__a = {}; e.ctx.__b = { schema: 3 }; e.run("axStamp(__a);axStamp(__b)"); assert.strictEqual(e.ctx.__a.schema, 1); assert.strictEqual(e.ctx.__b.schema, 3);
+  const e = env({}); e.ctx.__a = {}; e.ctx.__b = { schema: 3 }; e.run("axStamp(__a);axStamp(__b)"); assert.strictEqual(e.ctx.__a.schema, 2); assert.strictEqual(e.ctx.__a.profile, null); assert.strictEqual(e.ctx.__b.schema, 3);
 });
 console.log("\n" + n + " tests passed");

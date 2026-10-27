@@ -6,6 +6,7 @@ function axView(){for(var i=0;i<VIEWS.length;i++)if(!$("ax-v-"+VIEWS[i]).hidden)
    Used by the native back button (js/features/backnav.js, @capacitor/app) and by the history fallback below. */
 function axBack(){var d=$("dock"),c=$("cel"),g;
  if($("ax-drawer").classList.contains("on")){axDrawer(false);return 1}
+ if(window.AxOnboard&&AxOnboard.back())return 1;
  if(window.axSetBack&&axSetBack())return 1;
  if(!$("ax-sh").hidden){axSheetX();return 1}
  if(c){c.remove();return 1}

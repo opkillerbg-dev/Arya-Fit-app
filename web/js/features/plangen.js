@@ -41,6 +41,12 @@
     for(var w=0;w<weeks;w++){var t=weeks>1?w/(weeks-1):1,jog=Math.max(30,Math.round((st+(fin-st)*t)/30)*30),walk=Math.max(0,Math.round((120-90*t)/15)*15);if(jog>=1500)walk=0;out.push([jog,walk])}
     return out;
   }
+  /* start weight (kg) for the main barbell/machine lifts from the lifts the person entered: 60% of the best working weight, 2.5 kg steps */
+  function startKg(profile,id){
+    var lift=LIFTEX[id],lf=profile&&profile.bench&&profile.bench.lifts;
+    if(!lift||!lf||!(+lf[lift]>0))return null;
+    return Math.max(2.5,Math.round(0.6*lf[lift]/2.5)*2.5);
+  }
   function kg(p,v){return p.units==="imperial"?Math.round(v*2.2046/5)*5+" lb":(Math.round(v/2.5)*2.5)+" kg"}
 
   function build(profile,exdb,opts){
@@ -200,6 +206,6 @@
     if(avoid.length)notes.push("Exercises that load your "+avoid.join(", ")+" were left out.");
     return {plan:out,gen:gen,notes:notes};
   }
-  var api={build:build,budget:budget,intervals:intervals};
+  var api={build:build,budget:budget,intervals:intervals,startKg:startKg};
   if(typeof module!=="undefined"&&module.exports)module.exports=api;else root.AxPlanGen=api;
 })(typeof window!=="undefined"?window:this);

@@ -27,4 +27,4 @@
 ## Status (tick as steps finish; details in 06)
 - [x] S0 profile storage (v105)  - [x] S1 exercise DB (v106)  - [x] S2 level engine (v107)  - [x] S3 plan engine (v108)
 - [x] S4 wizard shell (v109) + body screens  - [x] S5 level/equipment/weak-point screens (v110)  - [x] S6 review + create plan (v111)
-- [x] S7 existing-user entries (v112)  - [ ] S8 retest + coach link  - [ ] S9 gym loads  - [ ] S10 content QA  - [ ] S11 polish
+- [x] S7 existing-user entries (v112)  - [x] S8 retest + coach link (v113)  - [x] S9 gym loads (v114)  - [ ] S10 content QA  - [ ] S11 polish

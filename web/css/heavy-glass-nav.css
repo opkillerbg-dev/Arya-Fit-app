@@ -195,3 +195,4 @@ body.ax-drawer-open{overflow:hidden}
 .ax-sw-list{display:flex;flex-direction:column;gap:6px;margin-top:8px}
 .ax-sw-list[hidden]{display:none}
 .ax-sw-list .ax-btn{text-align:left;justify-content:flex-start}
+.ax-wt-row .ax-set-chips{align-items:center}.ax-wt-b{min-width:44px;min-height:40px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:700 18px/1 system-ui,sans-serif}.ax-wt-v{min-width:74px;text-align:center;font:700 14px/1 system-ui,sans-serif;color:var(--ink)}.ax-wt-hint{margin:-2px 2px 0;font-size:11px;color:var(--mut)}

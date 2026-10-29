@@ -1,4 +1,8 @@
-/* Arya Fit v90: staged startup behind the logo splash.
+/* Arya Fit v116: SMART loading screen. The splash no longer ends on a fixed timer: after the work below it waits until the app is measurably stable
+   (AxBootGate: a clean 1 s of animation frames at the screen's own refresh rate, no blocked main thread, service worker finished installing,
+   no files still arriving). Strict first; after 6 s of visible time it accepts mild jitter; after 11 s it goes anyway so a weak phone never hangs.
+   Time while the app is in the background does not count. Result of the last start: window.axBootInfo.
+   Arya Fit v90: staged startup behind the logo splash.
    Stage 1 (critical): page load, web fonts (capped), hero picture decoded.
    Stage 2 (warm-up, capped at WARM ms): build and lay out the other tabs while the splash still covers them, so the first tap on Progress,
      Run or Plan does not pay for first-time work. Tabs are NOT shown or un-hidden (observers watch the hidden attribute); each one is only
@@ -7,7 +11,7 @@
    Leftover warm-up work continues in idle time after the app is shown. axBusy(text)/axBusyDone() = small pill for slow jobs (shows after 400 ms). */
 (function(){
   "use strict";
-  var MIN=450,WARM=900,HARD=3400,done=false,t0=Date.now();
+  var MIN=450,WARM=4000,WALL=22000,done=false,t0=Date.now();
   function now(){return window.performance&&performance.now?performance.now():Date.now()-t0}
   function msg(t){var m=document.getElementById("ax-boot-msg");if(m&&!done)m.textContent=t}
   function bars(){try{if(window.syncSystemBarStyle)syncSystemBarStyle()}catch(e){}}
@@ -83,15 +87,87 @@
     })();
   }
 
+  /* ---------- stage 3: service worker (first install or an update copies every file: that is what made the first launches choppy) ---------- */
+  function swSettled(){
+    return new Promise(function(res){
+      try{
+        if(!("serviceWorker" in navigator)||!/^https?:/.test(location.protocol)){res();return}
+        var tries=0;
+        (function find(){
+          var p=window.axSwP;
+          if(!p){if(++tries>12){res();return}setTimeout(find,100);return}          /* registration is requested right after load */
+          p.then(function(reg){
+            if(!reg){res();return}
+            var settled=false;
+            function over(){if(!settled){settled=true;res()}}
+            function track(w){
+              if(!w||w.state==="activated"||w.state==="redundant"){over();return}
+              w.addEventListener("statechange",function(){if(w.state==="activated"||w.state==="redundant")over()});
+            }
+            if(reg.installing||reg.waiting){msg("Updating");track(reg.installing||reg.waiting);return}
+            var u=false;
+            reg.addEventListener("updatefound",function(){u=true;msg("Updating");track(reg.installing)});
+            setTimeout(function(){if(!u)over()},1200);                              /* grace for an update check to report back */
+          },function(){res()});
+        })();
+      }catch(e){res()}
+    });
+  }
+  /* files still arriving? (resource timing: quiet for 400 ms) */
+  function netQuiet(){
+    return new Promise(function(res){
+      var end=now()+3000;
+      (function look(){
+        var last=0;
+        try{var r=performance.getEntriesByType("resource");for(var i=Math.max(0,r.length-40);i<r.length;i++)last=Math.max(last,r[i].responseEnd||0)}catch(e){}
+        if(now()-last>=400||now()>end)res();else setTimeout(look,150);
+      })();
+    });
+  }
+
+  /* ---------- stage 4: wait until frames are stable ---------- */
+  function settle(){
+    return new Promise(function(res){
+      if(!window.AxBootGate){res({ok:true,tier:"nogate",reason:"nogate"});return}
+      var g=AxBootGate.create(),raf=0,lagT=0,po=null,lastTick=now(),stop=false,shown=0;
+      function end(v){
+        if(stop)return;stop=true;cancelAnimationFrame(raf);clearInterval(lagT);try{if(po)po.disconnect()}catch(e){}
+        document.removeEventListener("visibilitychange",vc);res(v);
+      }
+      function vc(){if(document.hidden)g.reset()}
+      document.addEventListener("visibilitychange",vc);
+      try{
+        po=new PerformanceObserver(function(l){l.getEntries().forEach(function(e){g.busy(e.startTime+e.duration,e.duration)})});
+        po.observe({entryTypes:["longtask"]});
+      }catch(e){po=null}
+      /* timer-lag probe: works where the long-task API does not */
+      lagT=setInterval(function(){var t=now(),d=t-lastTick-100;lastTick=t;if(d>=50&&!document.hidden)g.busy(t,d)},100);
+      (function loop(){
+        raf=requestAnimationFrame(function(t){
+          g.frame(t);
+          var v=g.check(t);
+          if(v.ok){end(v);return}
+          var vis=g.visibleMs();
+          if(vis>6000&&shown<2){shown=2;msg("Almost there, still settling")}
+          else if(vis>1500&&!shown){shown=1;msg("Making sure it runs smoothly")}
+          window.axBootInfo={fps:v.fps,base:Math.round(g.base()*10)/10,reason:v.reason,visible:v.visible};
+          loop();
+        });
+      })();
+    });
+  }
+
   Promise.all([wait(loaded,2500),fonts.then?wait(fonts,1700):0,wait(imgs,1200)]).then(function(){
     msg("Getting things ready");
-    return warm(now()+WARM);
-  }).then(function(){
-    var rest=Math.max(0,MIN-now());
-    setTimeout(function(){requestAnimationFrame(function(){requestAnimationFrame(finish)})},rest);
+    var sw=swSettled();                                                       /* runs alongside the warm-up */
+    return warm(now()+WARM).then(function(){return wait(sw,9000)});
+  }).then(function(){return wait(netQuiet(),3500)}).then(function(){
+    return new Promise(function(r){setTimeout(r,Math.max(0,MIN-now()))});
+  }).then(settle).then(function(v){
+    window.axBootInfo={fps:v.fps||0,base:v.base||0,tier:v.tier,reason:v.reason,visible:v.visible||0,ms:Math.round(now())};
+    finish();
   });
-  setTimeout(finish,HARD);
-  setTimeout(function(){var m=document.getElementById("ax-boot-msg");if(m&&!done)m.textContent="Still loading. First start can take a moment."},2200);
+  setTimeout(finish,WALL);                                                    /* last-resort wall clock, only if something above never reports back */
 
   /* busy pill for slow jobs */
   var n=0,tm=null,pill=null;

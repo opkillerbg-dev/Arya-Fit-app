@@ -39,8 +39,10 @@ try:
         ctx, pg, errs = fresh(b, {"aryaApp2": '{"plans":{"default":{"plan"', "aryaApp2.bak": mk(marker="from-bak")})
         check("damaged data: restored from daily backup", pg.evaluate("APP.marker") == "from-bak" and pg.evaluate(TICKS_JS) == 2, pg.evaluate("APP.marker"))
         check("damaged data: evidence kept in .bad", pg.evaluate("localStorage.getItem('aryaApp2.bad')") == '{"plans":{"default":{"plan"')
-        pg.wait_for_timeout(1500)  # the notice appears 1.8 s after start, and only once the splash is gone
-        check("damaged data: user told", pg.evaluate("document.body.innerText.includes('damaged')"))
+        # the notice waits for the splash (v116: the splash now waits for a stable app, so wait for it instead of a fixed time)
+        try: pg.wait_for_function("document.body.innerText.includes('damaged')", timeout=25000); told = True
+        except Exception: told = False
+        check("damaged data: user told", told)
         check("damaged data: no page errors", not errs, errs); ctx.close()
 
         ctx, pg, errs = fresh(b, {"aryaApp2": mk(schema=9, future={"x": 1})})
@@ -71,7 +73,7 @@ try:
         pg.on("pageerror", lambda e: errs.append(str(e)[:150]))
         pg.goto(URL, wait_until="commit"); pg.wait_for_selector("#ax-boot")
         check("splash shows the logo", pg.evaluate("!!document.querySelector('#ax-boot svg.ax-bl path')"))
-        pg.wait_for_function("!document.getElementById('ax-boot')", timeout=8000); pg.wait_for_timeout(1500)
+        pg.wait_for_function("!document.getElementById('ax-boot')", timeout=20000); pg.wait_for_timeout(1500)
         check("splash is removed and booting class cleared", pg.evaluate("!document.documentElement.classList.contains('ax-booting')"))
         state = pg.evaluate("VIEWS.map(v=>[v,document.getElementById('ax-v-'+v).hidden,document.getElementById('ax-v-'+v).getAttribute('style')])")
         check("warm-up: only Home is visible", [x[0] for x in state if not x[1]] == ["home"], state)
@@ -92,7 +94,7 @@ try:
         ctx = b.new_context(viewport={"width": 390, "height": 844}, geolocation={"latitude": 12.9716, "longitude": 77.5946}, permissions=["geolocation"])
         pg = ctx.new_page(); errs = []; pg.on("pageerror", lambda e: errs.append(str(e)[:150]))
         pg.route("**/api.open-meteo.com/**", forecast)
-        pg.goto(URL, wait_until="load"); pg.wait_for_function("!document.getElementById('ax-boot')", timeout=8000); pg.wait_for_timeout(600)
+        pg.goto(URL, wait_until="load"); pg.wait_for_function("!document.getElementById('ax-boot')", timeout=20000); pg.wait_for_timeout(600)
         check("weather: invite card shows before opt-in", pg.evaluate("!!document.getElementById('ax-wx-on')"))
         check("weather: nothing asked or fetched before opt-in", pg.evaluate("localStorage.getItem('axWx')") is None)
         pg.click("#ax-wx-on"); pg.wait_for_function("document.querySelector('#ax-wx-card .ax-wx-pill')", timeout=6000)
@@ -114,7 +116,7 @@ try:
         pg = ctx.new_page(); errs = []; pg.on("pageerror", lambda e: errs.append(str(e)[:150]))
         pg.route("**/api.open-meteo.com/**", lambda r: r.abort())
         pg.goto(URL, wait_until="load"); pg.evaluate("localStorage.setItem('axWx',JSON.stringify({on:1,lat:12.97,lon:77.59,pt:Date.now()}))")
-        pg.reload(wait_until="load"); pg.wait_for_function("!document.getElementById('ax-boot')", timeout=8000); pg.wait_for_timeout(1500)
+        pg.reload(wait_until="load"); pg.wait_for_function("!document.getElementById('ax-boot')", timeout=20000); pg.wait_for_timeout(1500)
         check("weather: offline with no saved forecast shows a retry card, not an error", "try again" in pg.evaluate("document.getElementById('ax-wx-card').innerText").lower())
         check("weather: offline: no page errors", not errs, errs); ctx.close()
         b.close()

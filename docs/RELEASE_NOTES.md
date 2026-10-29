@@ -18,3 +18,6 @@
 - Weight is set per exercise per day, not per individual set; hands-free mode logs reps only.
 - Level history (stored after each retest) is not charted yet.
 - Pre-existing: in the classic skin with AMOLED on, parts of the app outside the wizard show dark text on a dark background.
+
+## v116
+- Smarter start-up: the loading screen now waits until the app is actually smooth (steady animation, nothing still installing) instead of a fixed time. Usually about 2 seconds, up to 11 seconds on a slow moment, then it opens anyway.

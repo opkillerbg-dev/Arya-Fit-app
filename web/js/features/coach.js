@@ -72,6 +72,14 @@
     return { days: Object.keys(days).map(function (k2) { return days[k2]; }), perf: perf, lastLevel: lastLevel, peakLevel: peak, maxLevel: maxL, runsRecent: runsRecent, log: coachOf(pe).log, natural: nat || 5 };
   }
 
+  /* onboarding: is this exercise in one of the plan's weak patterns? (plans without gen have none) */
+  var WPM = { push: ["push"], pull: ["pull"], legs: ["squat", "hinge"], core: ["core"] };
+  function isWeakEx(name, weak) {
+    if (!weak || !weak.length || !window.AxExDb) return false;
+    var x = window.AxExDb.byName(name); if (!x) return false;
+    return weak.some(function (w) { return WPM[w] && WPM[w].indexOf(x.p) >= 0; });
+  }
+
   function hasActivity(d) { return d < ND && dayActivity(st, d); }
 
   function compute() {
@@ -79,12 +87,13 @@
     var h = gather(), tN = edDate(new Date()), ti = todayIdx(), a = C.analyze(h, tN), rec = C.recommend(a, h, { today: tN, natural: h.natural });
     var rem = ((ti % 7) + 7) % 7, d0 = (a.gap === null || a.gap >= 5) ? ti : (rem >= 5 ? ti - rem + 7 : ti);
     if (d0 < 0) d0 = 0;
+    var weakPats = ((APP.plans[APP.active] || {}).gen || {}).weak || [];
     var level = Math.max(0, Math.min(NW - 1, rec.level)); while (level > 0 && isL(level)) level--;
     rec.level = level;
     var days = [];
     for (var d = d0; d < d0 + 7; d++) {
       var wkd = (START.getDay() + d) % 7, t = T[wkd];
-      days.push({ d: d, wk: wkd, kind: !t || t.r ? "rest" : (t.m ? "mobility" : "strength"), base: t ? t.x.map(function (e) { return e[1]; }) : [], circuit: !!(t && t.c), locked: d < ti || hasActivity(d) });
+      days.push({ d: d, wk: wkd, kind: !t || t.r ? "rest" : (t.m ? "mobility" : "strength"), base: t ? t.x.map(function (e) { return e[1]; }) : [], weak: t ? t.x.map(function (e) { return isWeakEx(e[0], weakPats); }) : [], circuit: !!(t && t.c), locked: d < ti || hasActivity(d) });
     }
     return { pe: pe, h: h, a: a, rec: rec, d0: d0, ti: ti, tN: tN, plan: C.buildWeek(rec, days), days: days };
   }

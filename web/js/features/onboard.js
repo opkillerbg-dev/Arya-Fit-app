@@ -21,6 +21,8 @@
     weakT:"Your weak point",weakWhy:"Balanced strength is safer and builds faster.",weakYes:"Yes, recommended",weakNo:"No",weakNone:"Your levels look balanced. No clear weak point.",
     wantT:"Anything you want to improve?",wantS:"Pick up to 4.",protT:"Anything we should protect?",
     schT:"Your schedule",schWhy:"A plan you can keep beats a perfect one.",daysT:"Workout days per week",minsT:"Time per session",weeksT:"Plan length",startT:"Start",recT:"Recommended for you: ",
+    rtT:"Retest: what can you do now?",rtWhy:"Tap what you can do today. Anything you leave alone keeps your last answer.",rtNext:"See results",rtRes:"Your retest results",
+    rtSave:"Save results",rtSavePlan:"Save and create a new plan",rtSame:"No change yet. Keep going, the next retest is in 4 weeks.",rtGap:"Gap closed, priority removed: ",rtStill:"Still your weakest link: ",rtNew:"New priority: ",rtKeep:"Your current plan keeps going. A new plan is optional.",rtToast:"Retest saved",
     revT:"Your starting levels",revWhy:"Week 1 starts one level lower on purpose, so you can build up safely.",create:"Create my plan",createNew:"Create a new plan from these",saveOnly:"Save answers",keepNote:"Your current plan is kept. You can switch back any time in Plans.",notNow:"Not now",change:"Change answers",weekT:"Your week",reasonT:"Why this plan",
     errBuild:"Something went wrong building the plan. Please change an answer and try again.",toast:"Plan ready. Week 1 is deliberately easy.",close:"Close"
   };
@@ -41,11 +43,11 @@
   var PROT=[["knee","Knees"],["back","Lower back"],["shoulder","Shoulders"],["wrist","Wrists"],["elbow","Elbows"]];
   var PN={push:"Pushing",pull:"Pulling",legs:"Legs",core:"Core",run:"Running"},PU={push:"push-ups",pull:"pull-ups",legs:"squats",core:"s plank",run:"km"},BK={push:"push",pull:"pull",legs:"squat",core:"plank",run:"run"};
   var WORDS=["Starter","Basic","Solid","Good","Strong","Very strong"],MAXWEAK=2;
-  var S=null,step=0,el=null,asked={};
+  var S=null,step=0,el=null,asked={},mode={edit:false,retest:false},rtRes=null;
   function $(id){return document.getElementById(id)}
   function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
   function P(){return root.AxProfile}
-  function save(){try{P().draftSet(Object.assign({},S,{step:step}))}catch(e){}}
+  function save(){if(mode.retest)return;try{P().draftSet(Object.assign({},S,{step:step}))}catch(e){}}
   function chips(k,opts,cur){return '<div class="ob-ch" role="group" data-k="'+k+'">'+opts.map(function(o){return '<button type="button" class="ob-c'+(cur===o[0]?' on':'')+'" aria-pressed="'+(cur===o[0])+'" data-v="'+o[0]+'">'+o[1]+'</button>'}).join("")+'</div>'}
   function lab(t,sub){return '<p class="ob-q">'+t+'</p>'+(sub?'<p class="ob-s">'+sub+'</p>':'')}
   function why(t){return '<p class="ob-w">'+STR.why+t+'</p>'}
@@ -97,7 +99,7 @@
           +'<button type="button" class="ob-c'+(ix===-1?' on':'')+'" aria-pressed="'+(ix===-1)+'" data-i="-1">'+STR.notsure2+'</button></div></div>'}).join("");
       var lf="";
       if(S.env==="gym"||S.equip.indexOf("dumbbell")>=0)lf='<div class="ob-card"><p class="ob-q" style="margin-top:2px">'+STR.lifts+'</p><p class="ob-s">'+STR.liftsS+'</p>'+LIFTS.map(function(l){var v=S.bench.lifts[l[0]];if(v!=null&&imp())v=Math.round(v*2.2046);return '<label class="ob-lf"><span>'+l[1]+'</span><input id="ob-l-'+l[0]+'" type="number" inputmode="decimal" min="0" max="'+(imp()?1300:600)+'" aria-label="'+l[1]+' best weight in '+(imp()?"pounds":"kilograms")+'" placeholder="'+(imp()?"lb":"kg")+'" value="'+(v==null?"":v)+'"></label>'}).join("")+'</div>';
-      return {body:'<h1 class="ob-h">'+STR.benchT+'</h1>'+why(STR.benchWhy)+cards+lf,skip:1};
+      return {body:'<h1 class="ob-h">'+(mode.retest?STR.rtT:STR.benchT)+'</h1>'+(mode.retest?'<p class="ob-w">'+STR.rtWhy+'</p>':why(STR.benchWhy))+cards+lf,skip:mode.retest?0:1,next:mode.retest?STR.rtNext:null};
     },
     function weak(){
       var A=lv(),w=A.weak[0],msg;
@@ -141,11 +143,35 @@
         :'<button type="button" class="ob-b ob-pri" id="ob-create">'+STR.create+'</button>')+'<button type="button" class="ob-b ob-ghost" id="ob-change">'+STR.change+'</button>'};
   }
   function why0(){return '<p class="ob-w">'+STR.revWhy+'</p>'}
-  var busy=false,mode={edit:false};
-  function saveProfile(R){var declined=S.weakAsked&&S.weak.length===0;return P().set(Object.assign({},S,{done:true,ts:Date.now(),levels:R.A.levels,weak:declined?[]:R.res.gen.weak}))}
+  var busy=false;
+  function rtResults(){
+    var r=rtRes=root.AxRetest.run(P().get(),S.bench,Date.now()),L=r.levels,O=r.old;
+    var pats=["push","pull","legs","core"].concat(S.goal.main==="run"||S.goal.extra==="run"||S.want.indexOf("run")>=0||O.run!==L.run?["run"]:[]);
+    var rows=pats.map(function(k){var ch=O[k]!==L[k];return '<div class="ob-bar"><span class="ob-bl">'+PN[k]+'</span><span class="ob-bw" style="width:auto;flex:1;text-align:left">'+WORDS[O[k]]+(ch?' &rarr; <b>'+WORDS[L[k]]+'</b>':' (same)')+'</span></div>'}).join("");
+    var names=function(a){return a.map(function(k){return PN[k].toLowerCase()}).join(" and ")},msg=[];
+    if(r.removed.length)msg.push(STR.rtGap+names(r.removed));
+    var still=r.profile.weak.filter(function(k){return r.removed.indexOf(k)<0&&r.added.indexOf(k)<0&&k!=="run"});
+    if(still.length)msg.push(STR.rtStill+names(still));
+    if(r.added.length)msg.push(STR.rtNew+names(r.added.filter(function(k){return k!=="run"})));
+    if(!r.changes.length&&!msg.length)msg.push(STR.rtSame);
+    return {body:'<h1 class="ob-h">'+STR.rtRes+'</h1><div class="ob-card">'+rows+'</div><ul class="ob-ul" style="margin-top:10px">'+msg.map(function(m){return '<li>'+esc(m)+'</li>'}).join("")+'</ul><p class="ob-s">'+STR.rtKeep+'</p><p class="ob-note" id="ob-err" role="alert" hidden></p>',
+      nav:'<button type="button" class="ob-b ob-pri" id="ob-rt-save">'+STR.rtSave+'</button><button type="button" class="ob-b" id="ob-rt-plan" style="margin-top:6px">'+STR.rtSavePlan+'</button><button type="button" class="ob-b ob-ghost" id="ob-back">'+STR.back+'</button>'};
+  }
+  function rtSave(plan){
+    if(busy)return;busy=true;var err=$("ob-err");
+    function fail(){busy=false;if(err){err.hidden=false;err.textContent=STR.errBuild}}
+    try{
+      var r=rtRes||root.AxRetest.run(P().get(),S.bench,Date.now()),c=P().set(r.profile);if(!c)return fail();
+      var pe=root.APP.plans[root.APP.active];if(pe&&pe.gen){pe.gen.weak=r.weak.slice(0,2);root.save()}   /* Coach reads gen.weak: a closed gap stops the extra set */
+      if(plan){S=Object.assign({},S,r.profile);mode={edit:false,retest:false};busy=false;create();return}
+      busy=false;finish();try{root.toast(STR.rtToast)}catch(e){}try{if(root.AxOnboardEntry)root.AxOnboardEntry.paint()}catch(e){}
+    }catch(e){fail()}
+  }
+  function saveProfile(R,keep){var declined=S.weakAsked&&S.weak.length===0,prev=P().get(),now=Date.now(),rt=(keep&&prev&&prev.retest&&typeof prev.retest.due==="number")?prev.retest:root.AxRetest.initial(R.A.levels,now);
+    return P().set(Object.assign({},S,{done:true,ts:now,levels:R.A.levels,weak:declined?[]:R.res.gen.weak,retest:rt}))}
   function saveOnly(){
     if(busy)return;busy=true;var err=$("ob-err");
-    try{fill(8);var c=saveProfile(make());if(!c){busy=false;if(err){err.hidden=false;err.textContent=STR.errBuild}return}
+    try{fill(8);var c=saveProfile(make(),true);if(!c){busy=false;if(err){err.hidden=false;err.textContent=STR.errBuild}return}
       busy=false;finish();try{root.toast("Answers saved")}catch(e){}try{if(root.AxOnboardEntry)root.AxOnboardEntry.paint()}catch(e){}}
     catch(e){busy=false;if(err){err.hidden=false;err.textContent=STR.errBuild}}
   }
@@ -164,8 +190,8 @@
   function later(){return {body:'<h1 class="ob-h">'+"Saved"+'</h1><p class="ob-p">'+STR.later+'</p>',nav:'<button type="button" class="ob-b ob-pri" id="ob-close">'+STR.close+'</button>'}}
 
   function render(dir){
-    var sc=step<SCREENS.length?SCREENS[step]():later(),prog=step===0?"":'<div class="ob-pr" role="progressbar" aria-valuemin="0" aria-valuemax="'+TOTAL+'" aria-valuenow="'+Math.min(step,TOTAL)+'" aria-label="Step '+step+' of '+TOTAL+'"><i style="width:'+Math.round(Math.min(step,TOTAL)/TOTAL*100)+'%"></i></div>';
-    var nav=sc.nav||('<div class="ob-r"><button type="button" class="ob-b" id="ob-back">'+STR.back+'</button><button type="button" class="ob-b ob-pri" id="ob-next">'+STR.next+'</button></div>'+(sc.skip?'<button type="button" class="ob-b ob-ghost" id="ob-skip">'+STR.skip+'</button>':''));
+    var sc=mode.retest?(step===0?SCREENS[6]():rtResults()):(step<SCREENS.length?SCREENS[step]():later()),prog=(step===0||mode.retest)?"":'<div class="ob-pr" role="progressbar" aria-valuemin="0" aria-valuemax="'+TOTAL+'" aria-valuenow="'+Math.min(step,TOTAL)+'" aria-label="Step '+step+' of '+TOTAL+'"><i style="width:'+Math.round(Math.min(step,TOTAL)/TOTAL*100)+'%"></i></div>';
+    var nav=sc.nav||('<div class="ob-r"><button type="button" class="ob-b" id="ob-back">'+STR.back+'</button><button type="button" class="ob-b ob-pri" id="ob-next">'+(sc.next||STR.next)+'</button></div>'+(sc.skip?'<button type="button" class="ob-b ob-ghost" id="ob-skip">'+STR.skip+'</button>':''));
     el.innerHTML='<div class="ob-top">'+prog+'</div><div class="ob-body '+(dir<0?"ob-b2":"ob-f")+'" tabindex="-1" id="ob-bd">'+sc.body+'</div><div class="ob-nav">'+nav+'</div>';
     wire();var bd=$("ob-bd");if(bd){try{bd.focus({preventScroll:true})}catch(e){}bd.scrollTop=0}
   }
@@ -184,8 +210,10 @@
     if(b=$("ob-close"))b.onclick=close;
     if(b=$("ob-create"))b.onclick=create;
     if(b=$("ob-save"))b.onclick=saveOnly;
+    if(b=$("ob-rt-save"))b.onclick=function(){rtSave(false)};
+    if(b=$("ob-rt-plan"))b.onclick=function(){rtSave(true)};
     if(b=$("ob-change"))b.onclick=function(){go(1,-1)};
-    if(b=$("ob-back"))b.onclick=function(){go(step-1,-1)};
+    if(b=$("ob-back"))b.onclick=function(){if(step<=0)close();else go(step-1,-1)};
     if(b=$("ob-next"))b.onclick=function(){fill(step);go(step+1,1)};
     if(b=$("ob-skip"))b.onclick=function(){if(step===2){S.health="check";asked.h=1;asked.hs="notsure"}if(step===3){S.goal={main:"general",extra:null}}fill(step);go(step+1,1)};
     var nm=$("ob-name");if(nm)nm.oninput=function(){S.name=nm.value;save()};
@@ -242,12 +270,12 @@
   function open(o){
     if(el)return;o=o||{};
     var prof=P().get(),d=P().draftGet(),raw=d||{};
-    mode={edit:!!(o.edit&&prof)};
-    if(o.fromProfile&&prof){d=null;raw=JSON.parse(JSON.stringify(prof))}
+    mode={edit:!!(o.edit&&prof),retest:!!(o.retest&&prof)};
+    if((o.fromProfile||o.retest)&&prof){d=null;raw=JSON.parse(JSON.stringify(prof))}
     S=Object.assign({units:"metric",name:"",ht:null,wt:null,age:null,sex:null,health:"ok"},raw);S.goal=raw.goal&&typeof raw.goal==="object"?{main:raw.goal.main||null,extra:raw.goal.extra||null}:{main:null,extra:null};
     S.bench=Object.assign({push:null,pull:null,squat:null,plank:null,run:null},raw.bench||{});S.bench.lifts=Object.assign({squat:null,bench:null,deadlift:null,ohp:null},(raw.bench&&raw.bench.lifts)||{});
     S.equip=Array.isArray(raw.equip)?raw.equip.slice():[];S.want=Array.isArray(raw.want)?raw.want.slice():[];S.protect=Array.isArray(raw.protect)?raw.protect.slice():[];S.weak=Array.isArray(raw.weak)?raw.weak.slice():[];S.weakAsked=raw.weakAsked===true;
-    step=d?Math.min(P().draftStep(),9):((o.fromProfile&&prof)?1:0);asked={b:{}};if(step>2||(o.fromProfile&&prof))asked.h=1;if(o.fromProfile&&prof){asked.none=S.protect.length===0?1:0}
+    step=mode.retest?0:(d?Math.min(P().draftStep(),9):((o.fromProfile&&prof)?1:0));asked={b:{}};if(step>2||(o.fromProfile&&prof))asked.h=1;if(o.fromProfile&&prof){asked.none=S.protect.length===0?1:0}
     try{if(root.axGuard)root.axGuard()}catch(e){}
     el=document.createElement("div");el.id="ax-ob";el.setAttribute("role","dialog");el.setAttribute("aria-modal","true");el.setAttribute("aria-label","Personalise your plan");
     document.body.appendChild(el);document.documentElement.classList.add("ob-lock");render(1);

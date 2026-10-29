@@ -21,6 +21,18 @@
     $("ax-ob-go").onclick=function(){c.remove();root.AxOnboard.open()};
     $("ax-ob-later").onclick=function(){try{root.PR.obz=Date.now()+SNOOZE;root.save()}catch(e){}c.remove()};
   }
+  function retestCard(){
+    var old=$("ax-rt-nudge"),p=prof(),anchor=$("ax-hbrain"),R=root.AxRetest;
+    var show=!!(p&&R&&R.due(p,Date.now())&&!(root.AxOnboard&&root.AxOnboard.isOpen()));
+    if(!show){if(old)old.remove();return}
+    if(old||!anchor||!anchor.parentNode)return;
+    var c=document.createElement("div");c.id="ax-rt-nudge";c.className="ax-card";
+    c.innerHTML='<p class="ax-cap">Time to retest (2 min)</p><p class="ax-sub">It has been 4 weeks. Tap what you can do now and we update your levels and priorities. Your plan keeps going.</p><div class="ax-chips"><button type="button" class="ax-btn ax-pri" id="ax-rt-go">Start</button><button type="button" class="ax-btn" id="ax-rt-later">Later</button></div>';
+    anchor.parentNode.insertBefore(c,anchor);
+    $("ax-rt-go").onclick=function(){c.remove();root.AxOnboard.open({retest:true})};
+    $("ax-rt-later").onclick=function(){try{var q=prof();if(q)root.AxProfile.set(Object.assign({},q,{retest:R.snooze(q,Date.now())}))}catch(e){}c.remove()};
+  }
+  function dstr(ts){try{return new Date(ts).toLocaleDateString(undefined,{day:"numeric",month:"short"})}catch(e){return ""}}
   function settingsRows(){
     var coach=$("ax-coach-open"),row=coach&&coach.closest(".row");if(!row)return;
     var p=prof(),r1=$("ax-ob-row"),r2=$("ax-ob-prow");
@@ -40,8 +52,18 @@
     }
     if(p&&r2)$("ax-ob-psum").textContent=summary(p);
     if(!p&&r2)r2.remove();
+    var r3=$("ax-rt-row");
+    if(p&&root.AxRetest){
+      if(!r3){
+        r3=document.createElement("div");r3.className="row";r3.id="ax-rt-row";
+        r3.innerHTML='<span><b>Retest my levels</b><em id="ax-rt-rem"></em></span><button class="btn" type="button" id="ax-rt-set">Retest</button>';
+        r2.parentNode.insertBefore(r3,r2.nextSibling);
+        $("ax-rt-set").onclick=function(){root.AxOnboard.open({retest:true})};
+      }
+      var d=root.AxRetest.dueAt(p);$("ax-rt-rem").textContent=d?(root.AxRetest.due(p,Date.now())?"Due now. ":"Next due "+dstr(d)+". ")+"Takes 2 minutes.":"Takes 2 minutes.";
+    }else if(r3)r3.remove();
   }
-  function paint(){try{homeCard()}catch(e){}try{settingsRows()}catch(e){}}
+  function paint(){try{homeCard()}catch(e){}try{retestCard()}catch(e){}try{settingsRows()}catch(e){}}
   var _home=root.home;if(typeof _home==="function")root.home=function(){var r=_home.apply(this,arguments);paint();return r};
   /* repaint whenever Home or Settings is shown (other scripts also wrap go(), so watch the views instead) */
   function watch(){["ax-v-set","ax-v-home"].forEach(function(id){var v=$(id);if(!v||v.__obw)return;v.__obw=1;

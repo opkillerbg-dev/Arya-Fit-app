@@ -53,4 +53,10 @@ t("garbage input never throws or leaves the 0-5 range", () => {
   [{}, { bench: "x" }, { bench: { push: -5, pull: NaN, squat: 1e9, lifts: { squat: 1e9 } }, wt: 76 }, { want: "a", protect: 3 }].forEach(x => {
     const r = L.calc(x); Object.values(r.levels).forEach(v => assert.ok(v >= 0 && v <= 5)); });
 });
+t("declining the weak-point priority drops the gap rule but keeps picks from want", () => {
+  const base = P({ push: 50, pull: 3, squat: 15, plank: 20 }, { weakAsked: true, weak: [] });
+  assert.deepStrictEqual(L.calc(base).weak, []);
+  assert.deepStrictEqual(L.calc(Object.assign({}, base, { want: ["pull"] })).weak, ["pull"]);
+  assert.ok(L.calc(Object.assign({}, base, { weakAsked: false })).weak.length > 0);
+});
 console.log(n + " passed");

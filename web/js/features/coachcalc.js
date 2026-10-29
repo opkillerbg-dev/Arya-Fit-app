@@ -126,7 +126,7 @@
     return rec;
   }
 
-  /* days: [{d, wk, kind:"strength"|"mobility"|"rest", base:[sets per exercise], circuit, locked}] -> per-day instructions */
+  /* days: [{d, wk, kind:"strength"|"mobility"|"rest", base:[sets per exercise], weak:[bool per exercise, optional], circuit, locked}] -> per-day instructions */
   function buildWeek(rec, days) {
     var strength = days.filter(function (x) { return x.kind === "strength" && !x.locked; });
     var n = strength.length, S = clamp(rec.sessions, 0, n), keepIdx = {};
@@ -145,7 +145,8 @@
       if (!x.circuit) {
         sets = (x.base || []).map(function (b, k) {
           if (!(b >= 1)) return b;
-          var s = b + rec.delta + (k < 2 ? rec.top : 0) + (first ? rec.firstDelta : 0);
+          var wb = (rec.mode === "progress" && x.weak && x.weak[k]) ? 1 : 0;   /* onboarding weak point: one extra set on its exercises when stepping up */
+          var s = b + rec.delta + (k < 2 ? rec.top : 0) + wb + (first ? rec.firstDelta : 0);
           s = clamp(s, 1, 5);
           if (rec.capAll) s = Math.min(s, rec.capAll);
           if (first && rec.capFirst) s = Math.min(s, rec.capFirst);

@@ -58,4 +58,19 @@ function wk(kinds, base, extra) { return kinds.map((k, i) => Object.assign({ d: 
   ok("circuit days get no per-exercise sets", out[1].keep && out[1].sets === null, out[1]);
   ok("gentle first session lands on the first day that has sets (a circuit has none)", out[2].keep && out[2].sets.join() === "2,2,2", out[2]);
   ok("never below 1 set", C.buildWeek(rec, wk(["strength"], [1, 0, 2]))[0].sets.join() === "1,0,1"); }
+
+/* onboarding weak point: +1 set on weak exercises in progress mode only */
+{ const day = { d: 1, wk: 1, kind: "strength", base: [3, 3, 3, 3], weak: [false, false, true, false] };
+  const prog = { mode: "progress", sessions: 1, delta: 0, top: 1, capFirst: 0, capAll: 0, firstDelta: 0, level: 0 };
+  const w = C.buildWeek(prog, [day])[0].sets;
+  ok("progress: weak exercise gets +1 on top of the normal step", w[2] === 4 && w[0] === 4 && w[1] === 4 && w[3] === 3, w);
+  const hold = Object.assign({}, prog, { mode: "hold", top: 0 });
+  ok("hold: weak flag changes nothing", C.buildWeek(hold, [day])[0].sets.join() === "3,3,3,3", C.buildWeek(hold, [day])[0].sets);
+  const noWeak = C.buildWeek(prog, [Object.assign({}, day, { weak: undefined })])[0].sets;
+  ok("plans without a weak list behave as before", noWeak.join() === "4,4,3,3", noWeak);
+  const capped = C.buildWeek(Object.assign({}, prog, { capAll: 3 }), [day])[0].sets;
+  ok("weak bonus still respects the safety cap", capped.every(x => x <= 3), capped);
+  const five = C.buildWeek(prog, [Object.assign({}, day, { base: [5, 5, 5, 5] })])[0].sets;
+  ok("never above 5 sets", five.every(x => x <= 5), five); }
+
 console.log(fails ? "\n" + fails + " FAILED" : "\nall passed"); process.exit(fails ? 1 : 0);

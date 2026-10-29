@@ -25,11 +25,12 @@
     });
     var prot=Array.isArray(p.protect)?p.protect:[];
     if(prot.indexOf("knee")>=0)L.legs=Math.max(0,L.legs-1);
+    var decl=p.weakAsked===true&&Array.isArray(p.weak)&&p.weak.length===0; /* asked and said no to the gap-based priority */
     var top=Math.max(L.push,L.pull,L.legs,L.core),want=Array.isArray(p.want)?p.want:[],cand=[];
     PAT.forEach(function(k){
       if(k==="run"&&!(p.goal&&p.goal.main==="run"))return;
       var gap=top-L[k];
-      if(gap>=2||want.indexOf(k)>=0)cand.push({k:k,gap:gap,w:want.indexOf(k)>=0?1:0});
+      if((gap>=2&&!decl)||want.indexOf(k)>=0)cand.push({k:k,gap:gap,w:want.indexOf(k)>=0?1:0});
     });
     cand.sort(function(a,c){return c.gap-a.gap||c.w-a.w||PAT.indexOf(a.k)-PAT.indexOf(c.k)});
     var weak=cand.slice(0,2).map(function(c){return c.k}),start={};

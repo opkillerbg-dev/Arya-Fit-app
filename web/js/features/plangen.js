@@ -20,7 +20,7 @@
   var PRACT={push:["pushup"],pull:["pullup","row"],legs:["squat"],core:["core"]};
   var TITLE={fullA:["Full body A","Full A","Push, pull and legs"],fullB:["Full body B","Full B","Push, pull and legs"],upper:["Upper body","Upper","Chest, back, shoulders, arms"],
     lower:["Lower body and core","Lower","Legs, glutes, core"],push:["Push day","Push","Chest, shoulders, triceps"],pull:["Pull day","Pull","Back, rear shoulders, biceps"],legs:["Legs and core","Legs","Quads, hamstrings, glutes, core"]};
-  var PNAME={push:"push",pull:"pull",legs:"leg",core:"core",run:"run"};
+  var PNAME={push:"push",pull:"pull",legs:"leg",core:"core",run:"run"},NOTEW={push:"pushing",pull:"pulling",legs:"legs",core:"core",run:"running"},SKIPW={push:"push-ups",pull:"pull-ups",squat:"squats",plank:"plank",run:"running"};
   var GENERIC={push:"Control the lowering. Stop 1-2 reps before failure.",pull:"Pull with your back, not your arms. Stop 1-2 reps before failure.",squat:"Knees track over toes. Stop 1-2 reps before failure.",hinge:"Hips back, flat back. Stop 1-2 reps before failure.",core:"Keep it slow and tight. Stop before form slips.",cardio:"Steady effort you can keep up.",mobility:"Easy stretch, no pain. Breathe slowly."};
   var GYMEQ=["dumbbell","barbell","machine","cable"];
   var LIFTEX={"barbell-back-squat":"squat","barbell-bench-press":"bench","machine-chest-press":"bench","barbell-deadlift":"deadlift","romanian-deadlift":"deadlift","barbell-overhead-press":"ohp"};
@@ -61,7 +61,7 @@
     var sd=(goal==="run"&&days>=4)?days-1:days;                      /* strength days: run goal swaps one for an easy run day */
     var pool=exdb.filter({env:env,equip:equip,avoid:avoid}).filter(function(e){return !(caps.noWeighted&&/weighted/.test(e.id))});
     var weakStr=A.weak.filter(function(w){return w!=="run"});
-    var BUD=budget(mins,caps.minor),CAP=caps.maxSetsPerExercise||5;
+    var BUD=budget(mins,caps.minor),CAP=caps.maxSetsPerExercise||5,gymEnv=env==="gym";
 
     /* 1) sessions from the split, weak patterns first */
     var order=SPLIT[sd],sessions=order.map(function(t,i){
@@ -95,7 +95,7 @@
         var best=null,bs=-1e9;
         pool.forEach(function(e){
           if(x.g.indexOf(e.g)<0||inDay[e.id])return;
-          var sc=-Math.abs(e.L-tgt)*3+(e.b?1:0)-(used[e.id]||0)*4+(x.g.length-x.g.indexOf(e.g))*0.5;
+          var sc=-Math.abs(e.L-tgt)*3+(e.b?1:0)-(used[e.id]||0)*4+(x.g.length-x.g.indexOf(e.g))*0.5+(gymEnv&&e.e.some(function(t){return GYMEQ.indexOf(t)>=0})?2:0);   /* at a gym prefer the gym equipment */
           if(sc>bs){bs=sc;best=e}
         });
         if(!best)return false;
@@ -143,15 +143,17 @@
     }
     /* 7) day objects */
     function noteFor(e,lvl){
-      var nm=NT[e.n],n=nm&&nm.note?String(nm.note):GENERIC[e.p]||"Good form first.",lift=LIFTEX[e.id],lf=profile.bench&&profile.bench.lifts;
+      var nm=NT[e.n],n=nm&&nm.note?String(nm.note):(e.cue||GENERIC[e.p]||"Good form first."),lift=LIFTEX[e.id],lf=profile.bench&&profile.bench.lifts,adv=[],i;
       if(e.e.some(function(t){return GYMEQ.indexOf(t)>=0})){
-        if(lift&&lf&&+lf[lift]>0)n+=" Start about "+kg(profile,0.6*lf[lift])+", add weight when 10 reps feel easy.";
-        else n+=" Find a weight you can do 10 reps with, 2 left in the tank.";
+        if(lift&&lf&&+lf[lift]>0){var w=kg(profile,startKg(profile,e.id));adv=[" Start about "+w+", add weight when 10 reps feel easy."," Start about "+w+"."]}
+        else adv=[" Find a weight you can do 10 reps with, 2 left in the tank."," Pick a weight for 10 reps, 2 left."];
       }
+      for(i=0;i<adv.length;i++)if((n+adv[i]).length<=160)return n+adv[i];   /* longest advice that still fits the 160 character note limit */
       return n.slice(0,160);
     }
     function repsFor(e,tgt){
       var nm=NT[e.n];if(nm&&nm.reps!=null&&String(nm.reps).length<=20&&String(nm.reps).trim())return String(nm.reps);
+      if(e.reps)return e.reps;
       if(/^(plank|side-plank|l-sit|wall-sit|dead-hang)$|hold$/.test(e.id))return "20-40 sec";
       if(e.g==="pullup")return e.L<=1?"3-6":"5-8";
       if(e.p==="mobility")return "30 sec";if(e.p==="cardio")return "30-45 sec";
@@ -199,8 +201,8 @@
     out.name=(GOALNAME[goal]||"Fit Plan")+(weakStr.length?": "+PNAME[weakStr[0]]+" focus":"");
     var gen={v:1,ts:now,levels:A.levels,weak:A.weak,inputsHash:hash([profile.bench,profile.goal,profile.xp,profile.env,equip,avoid,days,mins,weeks,profile.health,profile.age,want])};
     notes.push("Week 1 is a test week: start one level lower, stop 2 reps before failure and log your reps. Coach adjusts from there.");
-    if(weakStr.length)notes.push("Weak point: "+weakStr.map(function(w){return PNAME[w]}).join(" and ")+". It is trained first and at least 3 times a week.");
-    if(A.skipped.length)notes.push("Skipped benchmarks ("+A.skipped.join(", ")+") were estimated from your experience level.");
+    if(weakStr.length)notes.push("Weak point: "+weakStr.map(function(w){return NOTEW[w]}).join(" and ")+". It is trained first and at least 3 times a week.");
+    if(A.skipped.length)notes.push("We estimated "+A.skipped.map(function(k){return SKIPW[k]||k}).join(", ")+" from your experience level, because you skipped it.");
     if(caps.gentle)notes.push("Gentle mode: at most 2 sets per exercise and no max-effort tests. If something hurts, stop and see a doctor. This is not medical advice.");
     if(caps.minor)notes.push("Under 18: no weighted or max-effort work and at most 12 sets per session.");
     if(avoid.length)notes.push("Exercises that load your "+avoid.join(", ")+" were left out.");

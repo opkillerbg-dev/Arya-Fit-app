@@ -29,4 +29,33 @@ t("avoid removes exercises tagged with that area; pattern/group filters combine"
   assert.ok(a.length < 108 && a.every(e => !e.av.includes("shoulder")));
   assert.ok(X.filter({ p: "pull", g: "pullup" }).every(e => e.p === "pull" && e.g === "pullup"));
 });
+t("QA: every exercise has a one-sentence cue and default reps that fit the plan format", () => {
+  X.all.forEach(e => {
+    assert.ok(typeof e.cue === "string" && e.cue.length >= 20 && e.cue.length <= 118 && /\.$/.test(e.cue), e.id + " cue: " + e.cue);
+    assert.ok(typeof e.reps === "string" && e.reps.length >= 1 && e.reps.length <= 20, e.id + " reps: " + e.reps);
+    assert.ok(!/\n/.test(e.cue), e.id + " cue has a line break");
+  });
+});
+t("QA: cues make no medical claims", () => {
+  const bad = /\b(cure[sd]?|treat(s|ed|ing|ment)?|diagnos\w*|therap\w*|heal(s|ed|ing)?|rehab\w*|prevent(s|ed|ing)? injur\w*|guarantee\w*|pain[- ]free)\b/i;
+  X.all.forEach(e => assert.ok(!bad.test(e.cue), e.id + ": " + e.cue));
+});
+t("QA: only known equipment and body-area tags", () => {
+  const EQ = ["body", "chair", "backpack", "band", "pullbar", "dumbbell", "bench", "rope", "wheel", "barbell", "machine", "cable", "dipbar", "lowbar"], AV = ["knee", "back", "shoulder", "wrist", "elbow", "ankle", "neck"];
+  X.all.forEach(e => { e.e.forEach(t => assert.ok(EQ.includes(t), e.id + " equipment " + t)); e.av.forEach(a => assert.ok(AV.includes(a), e.id + " avoid " + a)); assert.ok(e.e.length >= 1, e.id) });
+});
+t("QA: gym-only tags (dip station, low bar, barbell, machine, cable) never reach a home plan", () => {
+  const home = X.filter({ env: "homeplus", equip: ["pullbar", "dumbbell", "band", "bench", "rope", "backpack", "wheel"] });
+  home.forEach(e => e.e.forEach(t => assert.ok(!["dipbar", "lowbar", "barbell", "machine", "cable"].includes(t), e.id + " " + t)));
+});
+t("QA: a person with NO equipment and ANY mix of protected areas still gets every pattern (no empty slots)", () => {
+  const areas = ["knee", "back", "shoulder", "wrist", "elbow"];
+  for (let m = 0; m < 32; m++) {
+    const avoid = areas.filter((_, i) => m & (1 << i));
+    ["push", "pull", "squat", "hinge", "core"].forEach(p => assert.ok(X.filter({ env: "home", equip: [], avoid, p }).length >= 1, p + " empty with avoid " + avoid.join("+")));
+  }
+});
+t("QA: cardio and mobility menus exist at home and for the gym", () => {
+  ["home", "gym"].forEach(env => ["cardio", "mobility"].forEach(p => assert.ok(X.filter({ env, equip: [], p }).length >= 3, env + " " + p)));
+});
 console.log(n + " passed");

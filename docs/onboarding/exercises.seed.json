@@ -1,6 +1,6 @@
 {
  "_doc": "Seed exercise database for the onboarding plan engine. See 05_EXERCISE_DB.md. p=pattern, g=progression ladder group, L=difficulty step inside the ladder (0 easiest .. 5 hardest), e=equipment tags, av=body areas to avoid when the person reports a problem there, env=where it can be done, b=1 means the app already has pictures/notes for it (same name as in T0). Levels and avoid-tags are first drafts and need QA.",
- "v": 1,
+ "v": 2,
  "ex": [
   {
    "id": "wall-push-ups",
@@ -16,7 +16,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Hands on a wall at chest height, body straight, bend your elbows to bring your chest toward the wall.",
+   "reps": "10-15"
   },
   {
    "id": "incline-push-ups",
@@ -27,12 +29,16 @@
    "e": [
     "body"
    ],
-   "av": [],
+   "av": [
+    "wrist"
+   ],
    "env": [
     "home",
     "gym"
    ],
-   "b": 1
+   "b": 1,
+   "cue": "Hands on a sturdy bench or counter, body in one line, lower your chest to the edge.",
+   "reps": "8-12"
   },
   {
    "id": "knee-push-ups",
@@ -43,12 +49,16 @@
    "e": [
     "body"
    ],
-   "av": [],
+   "av": [
+    "wrist"
+   ],
    "env": [
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Knees down, body straight from knees to head, lower your chest to a fist from the floor.",
+   "reps": "8-12"
   },
   {
    "id": "push-ups",
@@ -66,7 +76,9 @@
     "home",
     "gym"
    ],
-   "b": 1
+   "b": 1,
+   "cue": "Hands under shoulders, body in one line, lower until your chest is a fist from the floor, then press up.",
+   "reps": "8-12"
   },
   {
    "id": "decline-push-ups",
@@ -85,7 +97,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Feet on a chair, hands under shoulders, keep your hips level and lower with control.",
+   "reps": "6-10"
   },
   {
    "id": "diamond-push-ups",
@@ -104,7 +118,9 @@
     "home",
     "gym"
    ],
-   "b": 1
+   "b": 1,
+   "cue": "Hands close under your chest, elbows tucked in, lower slowly and press up.",
+   "reps": "6-10"
   },
   {
    "id": "archer-push-ups",
@@ -123,7 +139,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Wide hands, lower toward one hand while the other arm stays straight, then switch sides.",
+   "reps": "4-6 per side"
   },
   {
    "id": "pseudo-planche-push-ups",
@@ -142,7 +160,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Hands by your hips, lean your shoulders past your hands, lower with a straight body.",
+   "reps": "5-8"
   },
   {
    "id": "weighted-push-ups",
@@ -162,7 +182,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Loaded backpack on your upper back, body straight, same depth as a normal push-up.",
+   "reps": "6-10"
   },
   {
    "id": "one-arm-push-up-negatives",
@@ -181,7 +203,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Feet wide, one hand under your chest, lower for 5 seconds, then reset with both hands.",
+   "reps": "3-5 per side"
   },
   {
    "id": "machine-chest-press",
@@ -198,7 +222,9 @@
    "env": [
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Set the seat so the handles are at chest height, press forward, return slowly.",
+   "reps": "8-12"
   },
   {
    "id": "dumbbell-bench-press",
@@ -217,7 +243,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Lower the dumbbells to chest level with elbows about 45 degrees from your body, then press up.",
+   "reps": "8-12"
   },
   {
    "id": "barbell-bench-press",
@@ -235,7 +263,9 @@
    "env": [
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Shoulder blades back, bar to mid-chest, feet flat, press up. Use a spotter or safety arms.",
+   "reps": "6-10"
   },
   {
    "id": "dumbbell-fly",
@@ -254,7 +284,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Slight bend in your elbows, open your arms until you feel a chest stretch, bring them back together.",
+   "reps": "10-12"
   },
   {
    "id": "cable-fly",
@@ -271,7 +303,9 @@
    "env": [
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Slight bend in your elbows, bring the handles together in front of your chest, control the way back.",
+   "reps": "10-12"
   },
   {
    "id": "chair-dips",
@@ -290,7 +324,9 @@
     "home",
     "gym"
    ],
-   "b": 1
+   "b": 1,
+   "cue": "Hands on a sturdy chair edge, lower until your elbows reach about 90 degrees, stay close to the chair.",
+   "reps": "8-12"
   },
   {
    "id": "parallel-bar-dips",
@@ -299,7 +335,7 @@
    "g": "dip",
    "L": 3,
    "e": [
-    "pullbar"
+    "dipbar"
    ],
    "av": [
     "shoulder",
@@ -309,7 +345,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Lean slightly forward, lower until your shoulders are about level with your elbows, press up.",
+   "reps": "5-10"
   },
   {
    "id": "weighted-dips",
@@ -318,7 +356,7 @@
    "g": "dip",
    "L": 4,
    "e": [
-    "pullbar",
+    "dipbar",
     "backpack"
    ],
    "av": [
@@ -329,7 +367,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Add weight only after 10 clean bodyweight dips. Lower slowly, press up.",
+   "reps": "4-8"
   },
   {
    "id": "pike-push-ups",
@@ -348,7 +388,9 @@
     "home",
     "gym"
    ],
-   "b": 1
+   "b": 1,
+   "cue": "Hips high like an upside-down V, lower the top of your head toward the floor between your hands.",
+   "reps": "6-10"
   },
   {
    "id": "elevated-pike-push-ups",
@@ -367,7 +409,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Feet on a chair, hips high, lower your head toward the floor between your hands, press up.",
+   "reps": "5-8"
   },
   {
    "id": "wall-handstand-hold",
@@ -386,7 +430,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Kick up to a wall with clear space around you, arms straight, body tight. Come down if your wrists hurt.",
+   "reps": "15-30 sec"
   },
   {
    "id": "handstand-push-up-negatives",
@@ -406,7 +452,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Against a wall on a soft mat, lower for 5 seconds with control, then come down safely.",
+   "reps": "2-4"
   },
   {
    "id": "machine-shoulder-press",
@@ -423,7 +471,9 @@
    "env": [
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Set the seat so the handles start at ear height, press overhead without arching your back.",
+   "reps": "8-12"
   },
   {
    "id": "dumbbell-shoulder-press",
@@ -441,7 +491,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Dumbbells at shoulder height, press overhead without arching your back, lower with control.",
+   "reps": "8-12"
   },
   {
    "id": "barbell-overhead-press",
@@ -459,7 +511,9 @@
    "env": [
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Bar at collarbone height, squeeze your glutes, press straight up, move your head through.",
+   "reps": "5-8"
   },
   {
    "id": "lateral-raises",
@@ -477,7 +531,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Light dumbbells, raise your arms to shoulder height with a slight elbow bend, lower slowly.",
+   "reps": "10-15"
   },
   {
    "id": "dead-hang",
@@ -495,7 +551,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Hang with straight arms and a relaxed grip, shoulders pulled down away from your ears.",
+   "reps": "20-40 sec"
   },
   {
    "id": "scapular-pull-ups",
@@ -513,7 +571,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "From a hang, pull your shoulder blades down and back without bending your elbows.",
+   "reps": "6-10"
   },
   {
    "id": "band-assisted-pull-ups",
@@ -533,7 +593,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Loop a band under your knee or foot, pull your chin over the bar, lower slowly.",
+   "reps": "5-8"
   },
   {
    "id": "negative-pull-ups",
@@ -552,7 +614,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Jump or step up to the top, then lower yourself for 4 to 5 seconds to a full hang.",
+   "reps": "3-5"
   },
   {
    "id": "chin-ups",
@@ -571,7 +635,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Palms facing you, pull until your chin passes the bar, lower to straight arms.",
+   "reps": "4-8"
   },
   {
    "id": "pull-ups",
@@ -590,7 +656,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Palms away, start from a full hang, pull your chest toward the bar, lower slowly.",
+   "reps": "4-8"
   },
   {
    "id": "wide-pull-ups",
@@ -608,7 +676,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Hands wider than your shoulders, pull your elbows down toward your ribs, full hang each rep.",
+   "reps": "3-6"
   },
   {
    "id": "weighted-pull-ups",
@@ -628,7 +698,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Add weight only after 10 clean pull-ups. Keep the weight steady, no swinging.",
+   "reps": "3-6"
   },
   {
    "id": "archer-pull-ups",
@@ -647,7 +719,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Wide grip, pull toward one hand while the other arm stays straight, then switch sides.",
+   "reps": "2-4 per side"
   },
   {
    "id": "l-sit-pull-ups",
@@ -666,7 +740,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Keep your legs straight out in front of you while you pull up and lower.",
+   "reps": "2-4"
   },
   {
    "id": "one-arm-pull-up-negatives",
@@ -685,7 +761,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Jump to the top with one hand on the bar, lower for 5 seconds, use the other hand to reset.",
+   "reps": "2-3 per side"
   },
   {
    "id": "lat-pulldown",
@@ -702,7 +780,9 @@
    "env": [
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Pull the bar to your upper chest with elbows down and chest tall, return with control.",
+   "reps": "8-12"
   },
   {
    "id": "assisted-pull-up-machine",
@@ -719,7 +799,9 @@
    "env": [
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Pick a weight that lets you finish every rep, pull your chin over the handles, lower slowly.",
+   "reps": "6-10"
   },
   {
    "id": "table-or-towel-rows",
@@ -735,7 +817,9 @@
     "home",
     "gym"
    ],
-   "b": 1
+   "b": 1,
+   "cue": "Lie under a sturdy table, grip the edge, keep your body straight and pull your chest up to it.",
+   "reps": "8-12"
   },
   {
    "id": "inverted-rows",
@@ -744,7 +828,7 @@
    "g": "row",
    "L": 1,
    "e": [
-    "pullbar"
+    "lowbar"
    ],
    "av": [
     "shoulder"
@@ -753,7 +837,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Lie under a low, secure bar, body straight, pull your chest to the bar and lower slowly.",
+   "reps": "6-10"
   },
   {
    "id": "feet-elevated-inverted-rows",
@@ -762,7 +848,7 @@
    "g": "row",
    "L": 2,
    "e": [
-    "pullbar",
+    "lowbar",
     "chair"
    ],
    "av": [
@@ -772,7 +858,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Feet on a chair, body straight, pull your chest to the bar and lower slowly.",
+   "reps": "5-8"
   },
   {
    "id": "backpack-bent-over-row",
@@ -790,7 +878,9 @@
     "home",
     "gym"
    ],
-   "b": 1
+   "b": 1,
+   "cue": "Hinge at the hips with a flat back, pull a loaded backpack to your belly, squeeze your shoulder blades.",
+   "reps": "8-12"
   },
   {
    "id": "dumbbell-row",
@@ -808,7 +898,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "One hand on a bench, flat back, pull the dumbbell toward your hip, lower with control.",
+   "reps": "8-12 per side"
   },
   {
    "id": "seated-cable-row",
@@ -825,7 +917,9 @@
    "env": [
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Sit tall, pull the handle to your belly, squeeze your shoulder blades, return slowly.",
+   "reps": "8-12"
   },
   {
    "id": "barbell-row",
@@ -842,7 +936,9 @@
    "env": [
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Hinge at the hips with a flat back, pull the bar to your lower ribs without jerking.",
+   "reps": "6-10"
   },
   {
    "id": "superman-hold",
@@ -860,7 +956,9 @@
     "home",
     "gym"
    ],
-   "b": 1
+   "b": 1,
+   "cue": "Lie face down, lift your arms and legs slightly, hold and breathe. Stop if your lower back pinches.",
+   "reps": "20-30 sec"
   },
   {
    "id": "reverse-snow-angels",
@@ -876,7 +974,9 @@
     "home",
     "gym"
    ],
-   "b": 1
+   "b": 1,
+   "cue": "Lie face down, lift your arms and sweep them slowly from your sides to overhead.",
+   "reps": "10-12"
   },
   {
    "id": "band-pull-aparts",
@@ -892,7 +992,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Hold a band at chest height and pull it apart by squeezing your shoulder blades.",
+   "reps": "12-15"
   },
   {
    "id": "face-pulls",
@@ -908,7 +1010,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Anchor a band at head height, pull toward your face with high elbows, squeeze your upper back.",
+   "reps": "12-15"
   },
   {
    "id": "backpack-curls",
@@ -926,7 +1030,9 @@
     "home",
     "gym"
    ],
-   "b": 1
+   "b": 1,
+   "cue": "Hold a loaded backpack by the straps, curl up with elbows at your sides, lower slowly.",
+   "reps": "10-12"
   },
   {
    "id": "dumbbell-curl",
@@ -944,7 +1050,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Elbows at your sides, curl up without swinging, lower slowly.",
+   "reps": "10-12"
   },
   {
    "id": "chair-squat",
@@ -960,7 +1068,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Sit back to a chair and stand up without using your hands, knees in line with your toes.",
+   "reps": "8-12"
   },
   {
    "id": "bodyweight-squats",
@@ -978,7 +1088,9 @@
     "home",
     "gym"
    ],
-   "b": 1
+   "b": 1,
+   "cue": "Feet shoulder-width, chest up, sit down until your thighs are about parallel, drive up through your heels.",
+   "reps": "12-20"
   },
   {
    "id": "goblet-squat",
@@ -996,7 +1108,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Hold one dumbbell at your chest, sit down between your knees with your chest up, stand up.",
+   "reps": "8-12"
   },
   {
    "id": "leg-press",
@@ -1013,7 +1127,9 @@
    "env": [
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Feet shoulder-width on the platform, lower until your knees reach about 90 degrees, do not lock out.",
+   "reps": "10-15"
   },
   {
    "id": "barbell-back-squat",
@@ -1031,7 +1147,9 @@
    "env": [
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Bar on your upper back, brace your core, sit to parallel, stand up. Use safety arms.",
+   "reps": "5-8"
   },
   {
    "id": "step-ups",
@@ -1049,7 +1167,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Whole foot on a sturdy chair, drive through that heel to stand, step down slowly.",
+   "reps": "8-12 per side"
   },
   {
    "id": "reverse-lunges",
@@ -1067,7 +1187,9 @@
     "home",
     "gym"
    ],
-   "b": 1
+   "b": 1,
+   "cue": "Step back, lower the back knee toward the floor, drive up through the front heel.",
+   "reps": "8-12 per side"
   },
   {
    "id": "walking-lunges",
@@ -1085,7 +1207,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Take long steps, lower the back knee toward the floor, keep your torso upright.",
+   "reps": "10-20 steps"
   },
   {
    "id": "bulgarian-split-squats",
@@ -1103,7 +1227,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Back foot on a chair, lower straight down on the front leg, drive up through the heel.",
+   "reps": "6-10 per side"
   },
   {
    "id": "shrimp-squat-progression",
@@ -1121,7 +1247,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Hold your rear foot, lower the back knee toward the floor with control, then stand.",
+   "reps": "4-6 per side"
   },
   {
    "id": "pistol-squat-negatives",
@@ -1139,7 +1267,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Stand on one leg, sit down for 4 to 5 seconds to a chair, use both legs to stand.",
+   "reps": "3-5 per side"
   },
   {
    "id": "pistol-squat",
@@ -1157,7 +1287,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Balance on one leg with the other leg out in front, sit down fully and stand up.",
+   "reps": "2-4 per side"
   },
   {
    "id": "wall-sit",
@@ -1175,7 +1307,9 @@
     "home",
     "gym"
    ],
-   "b": 1
+   "b": 1,
+   "cue": "Back flat on the wall, thighs about parallel, feet under your knees, breathe steadily.",
+   "reps": "20-45 sec"
   },
   {
    "id": "squat-jumps",
@@ -1194,7 +1328,9 @@
     "home",
     "gym"
    ],
-   "b": 1
+   "b": 1,
+   "cue": "Squat down, jump up, land softly with bent knees and reset before the next one.",
+   "reps": "6-10"
   },
   {
    "id": "glute-bridges",
@@ -1210,7 +1346,9 @@
     "home",
     "gym"
    ],
-   "b": 1
+   "b": 1,
+   "cue": "Lie on your back with feet flat, press through your heels to lift your hips, squeeze your glutes.",
+   "reps": "12-15"
   },
   {
    "id": "single-leg-glute-bridge",
@@ -1226,7 +1364,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "One foot flat, other leg straight, lift your hips level and squeeze your glute, then switch.",
+   "reps": "8-12 per side"
   },
   {
    "id": "hip-thrust",
@@ -1244,7 +1384,9 @@
    "env": [
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Upper back on a bench, drive through your heels to lift your hips, pause and squeeze your glutes.",
+   "reps": "8-12"
   },
   {
    "id": "hamstring-walkouts",
@@ -1260,7 +1402,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Lie on your back, bridge up, slowly walk your feet out and back with your hips high.",
+   "reps": "6-10"
   },
   {
    "id": "romanian-deadlift",
@@ -1278,7 +1422,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Soft knees, push your hips back with a flat back, lower the dumbbells along your legs, stand tall.",
+   "reps": "8-12"
   },
   {
    "id": "barbell-deadlift",
@@ -1295,7 +1441,9 @@
    "env": [
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Bar over mid-foot, flat back, push the floor away, finish tall. Stop if your form slips.",
+   "reps": "4-6"
   },
   {
    "id": "nordic-curl-negatives",
@@ -1313,7 +1461,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Knees down with feet anchored, lower your torso forward as slowly as you can, catch with your hands.",
+   "reps": "3-5"
   },
   {
    "id": "calf-raises",
@@ -1331,7 +1481,9 @@
     "home",
     "gym"
    ],
-   "b": 1
+   "b": 1,
+   "cue": "Rise onto the balls of your feet, pause at the top, lower slowly.",
+   "reps": "12-20"
   },
   {
    "id": "single-leg-calf-raise",
@@ -1349,7 +1501,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "On one foot, rise high, pause, lower slowly. Hold a wall for balance.",
+   "reps": "10-15 per side"
   },
   {
    "id": "dead-bug",
@@ -1365,7 +1519,9 @@
     "home",
     "gym"
    ],
-   "b": 1
+   "b": 1,
+   "cue": "Lie on your back, press your lower back down, move the opposite arm and leg slowly.",
+   "reps": "8-12 per side"
   },
   {
    "id": "crunches",
@@ -1383,7 +1539,9 @@
     "home",
     "gym"
    ],
-   "b": 1
+   "b": 1,
+   "cue": "Lift your head and shoulders a few inches without pulling on your neck, lower slowly.",
+   "reps": "12-20"
   },
   {
    "id": "plank",
@@ -1402,7 +1560,9 @@
     "home",
     "gym"
    ],
-   "b": 1
+   "b": 1,
+   "cue": "Forearms down, body in one straight line, squeeze your glutes and core, keep breathing.",
+   "reps": "20-45 sec"
   },
   {
    "id": "side-plank",
@@ -1420,7 +1580,9 @@
     "home",
     "gym"
    ],
-   "b": 1
+   "b": 1,
+   "cue": "On one forearm, lift your hips into a straight line, hold, then switch sides.",
+   "reps": "20-40 sec per side"
   },
   {
    "id": "leg-raises",
@@ -1438,7 +1600,9 @@
     "home",
     "gym"
    ],
-   "b": 1
+   "b": 1,
+   "cue": "Lie flat, keep your legs straight, lower slowly without arching your back, lift back up.",
+   "reps": "8-12"
   },
   {
    "id": "russian-twists",
@@ -1456,7 +1620,9 @@
     "home",
     "gym"
    ],
-   "b": 1
+   "b": 1,
+   "cue": "Lean back slightly, rotate your shoulders from side to side with control.",
+   "reps": "10-20 total"
   },
   {
    "id": "mountain-climbers",
@@ -1474,7 +1640,9 @@
     "home",
     "gym"
    ],
-   "b": 1
+   "b": 1,
+   "cue": "From a plank, drive your knees toward your chest in turn at a steady pace.",
+   "reps": "20-40 sec"
   },
   {
    "id": "bear-crawls",
@@ -1493,7 +1661,9 @@
     "home",
     "gym"
    ],
-   "b": 1
+   "b": 1,
+   "cue": "Hands and knees, lift your knees an inch off the floor, crawl with opposite hand and foot.",
+   "reps": "20-30 sec"
   },
   {
    "id": "pallof-press",
@@ -1509,7 +1679,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Band at chest height beside you, press straight out and hold, resist the pull.",
+   "reps": "8-12 per side"
   },
   {
    "id": "cable-crunch",
@@ -1526,7 +1698,9 @@
    "env": [
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Kneel under a high cable, curl your ribs toward your hips, keep your hips still.",
+   "reps": "10-15"
   },
   {
    "id": "hollow-body-hold",
@@ -1544,7 +1718,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "On your back with your lower back pressed down, lift arms and legs slightly, hold. Bend your knees to ease it.",
+   "reps": "15-30 sec"
   },
   {
    "id": "plank-to-push-up",
@@ -1563,7 +1739,9 @@
     "home",
     "gym"
    ],
-   "b": 1
+   "b": 1,
+   "cue": "From forearms, press up to your hands one arm at a time without rocking your hips, then lower.",
+   "reps": "6-10"
   },
   {
    "id": "hanging-knee-raises",
@@ -1581,7 +1759,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Hang with active shoulders, lift your knees toward your chest, lower without swinging.",
+   "reps": "8-12"
   },
   {
    "id": "hanging-leg-raises",
@@ -1600,7 +1780,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Hang, keep your legs straight, lift to hip height, lower slowly without swinging.",
+   "reps": "6-10"
   },
   {
    "id": "ab-wheel-rollout",
@@ -1619,7 +1801,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "From your knees, roll out only as far as you can keep your back flat, pull back with your abs.",
+   "reps": "5-8"
   },
   {
    "id": "l-sit",
@@ -1638,7 +1822,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Support yourself on bars or parallettes, legs straight out in front, shoulders pushed down.",
+   "reps": "10-20 sec"
   },
   {
    "id": "jumping-jacks",
@@ -1657,7 +1843,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Jump your feet out and arms up, then back, landing softly on the balls of your feet.",
+   "reps": "30-45 sec"
   },
   {
    "id": "high-knees",
@@ -1675,7 +1863,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Run in place, lift your knees to hip height, pump your arms, stay light on your feet.",
+   "reps": "30-45 sec"
   },
   {
    "id": "burpees",
@@ -1695,7 +1885,9 @@
     "home",
     "gym"
    ],
-   "b": 1
+   "b": 1,
+   "cue": "Drop to a plank, push up, jump your feet in and jump up. Step instead of jumping to make it easier.",
+   "reps": "6-10"
   },
   {
    "id": "jump-rope",
@@ -1714,7 +1906,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Small jumps on the balls of your feet, turn the rope with your wrists, elbows close.",
+   "reps": "30-60 sec"
   },
   {
    "id": "rowing-machine",
@@ -1731,7 +1925,9 @@
    "env": [
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Push with your legs first, then lean back and pull the handle to your ribs, return in the same order.",
+   "reps": "3-5 min"
   },
   {
    "id": "stationary-bike",
@@ -1746,7 +1942,9 @@
    "env": [
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "An easy pace where you can talk, seat height so your knee stays slightly bent at the bottom.",
+   "reps": "5-10 min"
   },
   {
    "id": "treadmill-intervals",
@@ -1763,7 +1961,9 @@
    "env": [
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Alternate 1 minute fast and 1 minute easy. Hold the rails only to step on or off.",
+   "reps": "5-10 min"
   },
   {
    "id": "cat-cow",
@@ -1779,7 +1979,9 @@
     "home",
     "gym"
    ],
-   "b": 1
+   "b": 1,
+   "cue": "On hands and knees, round your back, then arch it, moving slowly with your breath.",
+   "reps": "30 sec"
   },
   {
    "id": "world-s-greatest-stretch",
@@ -1795,7 +1997,9 @@
     "home",
     "gym"
    ],
-   "b": 1
+   "b": 1,
+   "cue": "Lunge, place a hand inside your front foot, rotate your chest up, then switch sides.",
+   "reps": "30 sec"
   },
   {
    "id": "hamstring-stretch",
@@ -1811,7 +2015,9 @@
     "home",
     "gym"
    ],
-   "b": 1
+   "b": 1,
+   "cue": "Lie on your back, lift one leg with a strap or towel, keep it straight, breathe.",
+   "reps": "30 sec"
   },
   {
    "id": "hip-flexor-stretch",
@@ -1827,7 +2033,9 @@
     "home",
     "gym"
    ],
-   "b": 1
+   "b": 1,
+   "cue": "Kneel in a lunge, tuck your pelvis under, lean forward until you feel the front of your hip.",
+   "reps": "30 sec"
   },
   {
    "id": "child-s-pose",
@@ -1843,7 +2051,9 @@
     "home",
     "gym"
    ],
-   "b": 1
+   "b": 1,
+   "cue": "Sit back on your heels, arms forward, rest your forehead down and breathe slowly.",
+   "reps": "30 sec"
   },
   {
    "id": "band-shoulder-dislocates",
@@ -1854,12 +2064,16 @@
    "e": [
     "band"
    ],
-   "av": [],
+   "av": [
+    "shoulder"
+   ],
    "env": [
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Wide grip on a band, move it overhead and behind you slowly. Widen your grip if it hurts.",
+   "reps": "10-12"
   },
   {
    "id": "thoracic-rotation",
@@ -1875,7 +2089,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "On hands and knees, hand behind your head, rotate your elbow up toward the ceiling.",
+   "reps": "8-10 per side"
   },
   {
    "id": "ankle-mobility-drill",
@@ -1891,7 +2107,9 @@
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Knee over your toes with your heel down, rock forward and back gently against a wall.",
+   "reps": "10-15 per side"
   },
   {
    "id": "doorway-chest-stretch",
@@ -1902,12 +2120,16 @@
    "e": [
     "body"
    ],
-   "av": [],
+   "av": [
+    "shoulder"
+   ],
    "env": [
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Forearm on a door frame, step through gently until you feel a stretch across your chest.",
+   "reps": "30 sec"
   },
   {
    "id": "couch-stretch",
@@ -1918,12 +2140,16 @@
    "e": [
     "body"
    ],
-   "av": [],
+   "av": [
+    "knee"
+   ],
    "env": [
     "home",
     "gym"
    ],
-   "b": 0
+   "b": 0,
+   "cue": "Back foot up on a couch or wall, knee on a pad, tuck your pelvis under.",
+   "reps": "30 sec per side"
   }
  ]
 }

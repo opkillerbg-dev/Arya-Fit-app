@@ -30,3 +30,6 @@ Replace `<PHASE>` with `P1`, later `P2` (Today), `P3` (Session + Run), `P4` (Pla
 - Every new file goes into `index.html` and the `SHELL` list in `web/sw.js`; bump the cache name in `sw.js` (now `arya-v120`).
 - If something cannot be tested in the sandbox, say so plainly; do not claim it works.
 - Give the owner a short answer: what changed, what to check, what is next.
+
+
+Note: Claude always gives Dhruv the WHOLE pack zip (phone only, no overlaying). You still return only `update.zip` with changed files.

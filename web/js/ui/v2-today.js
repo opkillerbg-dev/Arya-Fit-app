@@ -35,9 +35,9 @@
         if(!coach.querySelector(".v2-coach-row")){
           var row=el("div","v2-coach-row"),ico=el("span","v2-coach-icon"),copy=el("span","v2-coach-copy"),title=el("b",""),sub=el("small","");
           ico.setAttribute("aria-hidden","true");ico.innerHTML="<svg viewBox=\"0 0 24 24\" width=\"21\" height=\"21\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"><path d=\"M12 3l1.8 6.2L20 11l-6.2 1.8L12 19l-1.8-6.2L4 11l6.2-1.8z\"/></svg>";title.textContent="Coach";sub.textContent="Plan guidance and weekly adjustments";
-          copy.appendChild(title);copy.appendChild(sub);row.appendChild(ico);row.appendChild(copy);row.appendChild(btn);coach.innerHTML='<div class="v2-today-section-head"><h2>Coach</h2></div>';coach.appendChild(row);
+          copy.appendChild(title);copy.appendChild(sub);row.appendChild(ico);row.appendChild(copy);var proxy=el("button","btn pri v2-coach-open");proxy.type="button";proxy.textContent="Open";proxy.setAttribute("aria-label","Open Coach");proxy.onclick=function(){btn.click()};row.appendChild(proxy);coach.innerHTML='<div class="v2-today-section-head"><h2>Coach</h2></div>';coach.appendChild(row);
         }
-        btn.setAttribute("aria-label","Open Coach");if(btn.textContent!=="Open")btn.textContent="Open";
+        
       }
     }catch(e){}
     busy=false;

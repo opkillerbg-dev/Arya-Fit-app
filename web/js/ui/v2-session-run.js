@@ -81,14 +81,6 @@
     if(!active()||!run||run.hidden)return;
     run.classList.add("v2-run-ready");ensureMap();updateMap();updateHistory();
   }
-  function clearV2(){
-    if(hero&&hero.parentNode)hero.parentNode.removeChild(hero);
-    if(mapCard&&mapCard.parentNode)mapCard.parentNode.removeChild(mapCard);
-    if(historyCard&&historyCard.parentNode)historyCard.parentNode.removeChild(historyCard);
-    if(day)day.classList.remove("v2-session-ready");
-    if(run)run.classList.remove("v2-run-ready");
-    mapSvg=null;lastMapCount=-1;
-  }
   function bind(){
     if(day&&!observer){observer=new MutationObserver(function(){if(active()&&!day.hidden)enhanceDay()});observer.observe(day,{childList:true})}
     if(run&&!runObserver){runObserver=new MutationObserver(function(){if(active()&&!run.hidden)visibleRun()});runObserver.observe(run,{attributes:true,attributeFilter:["hidden"]})}
@@ -101,7 +93,7 @@
     });
     if(w.AxV2&&typeof w.AxV2.apply==="function"){
       var old=w.AxV2.apply;
-      w.AxV2.apply=function(){var r=old.apply(this,arguments);if(active()){enhanceDay();visibleRun()}else clearV2();return r};
+      w.AxV2.apply=function(){var r=old.apply(this,arguments);if(active()){enhanceDay();visibleRun()}else{if(hero&&hero.parentNode)hero.parentNode.removeChild(hero);if(day)day.classList.remove("v2-session-ready")}return r};
     }
     enhanceDay();visibleRun();
   }

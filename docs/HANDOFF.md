@@ -910,15 +910,13 @@ Causes of that Android error: (a) APK signed with a different key than the insta
 - New installs default to V2; existing installs with saved data get a one-time “Try the new look” prompt. The original “New look (V2)” control remains unchanged for V1; V2 shows a separate “Classic look” switch. Theme, accent, effects and motion preferences use existing `PR` storage and backup restore whitelist. No engines or exercise data were changed.
 - Registered all new CSS/JS in `web/index.html` and service-worker `SHELL`; cache bumped from `arya-v127` to `arya-v128`. `python3 tools/check-web.py` passes; all 15 Node test files pass. Python UI tests could not navigate to localhost (`ERR_BLOCKED_BY_ADMINISTRATOR`), despite Chromium being present; computed-style/luminance scan, screenshots, live UI toggle and phone rendering remain for Claude's final QA.
 
+## V2 final review fixes (Claude, v130)
+- `v2-today.js`: Today MOVED the real `#ax-coach-open` button into its Coach row, so Settings > Plan tools lost it and `onboard-entry.js` never created the 'Personalise my plan'/'My profile' rows (coach_ui + onboard_entry_ui failed once V2 became default). Now Today uses a proxy button that calls `btn.click()`; the real button stays in Settings.
+- `polish.css`: onboarding under V2 with light V1 skins had cream/dark-on-dark text (.ob-note, .ob-card, .ob-d, .ob-bw, spans, li); fixed (polish_ui contrast test passes). Light theme Today: hero/progress box fixed (session-run.css had hardcoded #111113, needs `#ax-htoday` selector).
+- Known: serif (Georgia) still shows inside some Today/plan cards in light theme; About shows 'v99'; ~16 hidden `.v2-*` nodes remain after V2 off; reminder_test.py fails (demo plan date); real phone/GPS/voice untested.
 
-## V2 v129 — minor QA bug fixes (2026-11-03; check-web + all Node tests pass; Playwright unavailable; not on a phone)
-- Fixed light-theme Georgia leakage: V2 now overrides the V1 Old Money universal Georgia `!important` rule throughout the V2 tree, then restores only the intentional Arya Display and Instrument Serif faces.
-- About version label now uses the actual CI `versionName` pattern (`1.<workflow run>`) from `AXBUILD.run`; unbuilt fallback is `1.0.0`, not `v99`.
-- V2-off now removes session hero/run map/history nodes and restores the original flat Settings rows while removing V2-only Settings controls/cards; Today and shell cleanup is retained and widened.
-- Cache bumped from `arya-v128` to `arya-v129`. `python3 tools/check-web.py`, all 15 Node test files, and JS syntax checks pass. Playwright could not launch because its bundled Chromium executable is absent; verify light-theme cards, About version on a built APK, and repeated V2 on/off transitions in final browser/phone QA.
-
-
-## V2 full audit watchlist — 2026-11-03
-- Added `docs/v2/V2_WATCHOUT.md` with 16 outstanding findings grouped by P0/P1/P2, including confirmed source issues and runtime/release verification gaps.
-- Important corrections to the prior v129 note: `#ax-credits` still contains a hardcoded `v86` label, and `v2-polish.js` still hides the stopwatch `TIME` label without gating that behavior on V2. Treat both as open.
-- The watchlist is intentionally not a code fix. Complete the P0 fixes, browser QA, accessibility/effects checks and physical Android verification before release.
+## Final bug sweep (Claude, v131)
+- V2 off leaked the Plan session hero into V1 (empty 1200px block): `v2-session-run.js` now removes it and `v2-session-ready` when V2 is off; CSS fallback `html:not(.v2) .v2-session-hero{display:none}`.
+- About shows the real version (`settings.js`, `Arya Fit · v131`); update this string with every cache bump.
+- Today cards no longer use V1 serif (Georgia); light theme Today hero/progress fixed; onboarding contrast fixed; Coach proxy button on Today.
+- Open: `tests/reminder_test.py` fails (demo plan ended 31 Oct 2026); real phone/GPS/voice untested.

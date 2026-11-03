@@ -212,3 +212,5 @@ html.v2 body .ax-wc.rest .ax-wr,html.v2 body .ax-gc.rest .ax-wr{background:none!
 html.v2 body .ax-wc.rest .ax-wr b,html.v2 body .ax-gc.rest .ax-wr b{background:none!important}
 html.v2 body .ax-wc small{color:var(--v2-text-2)!important}
 html.v2 body .ax-ex-play{background:rgba(0,0,0,.62)!important;color:#fff!important;border:1px solid var(--v2-line-strong)!important;font-family:"Arya UI","Arya UI Fallback",system-ui,sans-serif!important}
+/* V2 off must leave V1 untouched even if a hero node lingers */
+html:not(.v2) .v2-session-hero{display:none!important}

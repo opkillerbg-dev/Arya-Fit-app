@@ -1,7 +1,7 @@
 /* Arya Fit V2 P6 — grouped Settings hub and Appearance controls; original settings nodes remain moved, never rebuilt. */
 (function(w,d){
   "use strict";
-  var root=d.documentElement,done=false,baseRows=[];
+  var root=d.documentElement,done=false;
   function $(id){return d.getElementById(id)}
   function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
   function accent(){return w.PR&&PR.v2Accent||"green"}
@@ -22,21 +22,11 @@
   function decorateHub(){var hub=$("ax-sm");if(!hub)return;var search=$("v2-settings-search");if(!search){search=d.createElement("input");search.type="search";search.id="v2-settings-search";search.placeholder="Search settings";search.setAttribute("aria-label","Search settings");hub.insertBefore(search,hub.firstChild);search.addEventListener("input",function(){var q=search.value.toLowerCase();hub.querySelectorAll("[data-sp]").forEach(function(b){b.hidden=q&&b.textContent.toLowerCase().indexOf(q)<0})})}
     if(hub.querySelector(".v2-settings-card"))return;
     var old=hub.querySelector(".ax-sm-card"),rows=old?old.querySelectorAll("[data-sp]"):hub.querySelectorAll("[data-sp]"),groups=[{t:"TRAINING",keys:["plan","run"]},{t:"APP EXPERIENCE",keys:["look","alert"]},{t:"YOUR DATA",keys:["data","about"]}],i,j,card,head,b;
-    baseRows=Array.prototype.slice.call(rows);
     groups.forEach(function(g){card=d.createElement("section");card.className="ax-card ax-sm-card v2-settings-card";head=d.createElement("h3");head.className="v2-settings-group-title";head.textContent=g.t;card.appendChild(head);g.keys.forEach(function(k){for(j=0;j<rows.length;j++){b=rows[j];if(b.getAttribute("data-sp")===k){b.setAttribute("aria-label",b.textContent.replace(/\s+/g," ").trim());card.appendChild(b);break}}});if(card.querySelector("[data-sp]"))hub.appendChild(card)});
     if(old)old.remove();
-  }
-  function restoreHub(){
-    var hub=$("ax-sm");if(!hub)return;
-    var base=hub.querySelector(":scope > .ax-sm-card");
-    if(!base){base=d.createElement("div");base.className="ax-card ax-sm-card";hub.insertBefore(base,hub.firstChild)}
-    if(!baseRows.length)baseRows=Array.prototype.slice.call(hub.querySelectorAll("[data-sp]"));
-    hub.querySelectorAll(".v2-settings-card").forEach(function(card){card.remove()});
-    baseRows.forEach(function(row){row.hidden=false;base.appendChild(row)});
-    var appearance=$("v2-appearance-controls"),search=$("v2-settings-search");if(appearance)appearance.remove();if(search)search.remove();
   }
   function enhance(){if(!root.classList.contains("v2"))return;decorateHub();addAppearance();}
   function watch(){var sec=$("ax-v-set");if(sec&&w.MutationObserver){var mo=new MutationObserver(function(){if(root.classList.contains("v2"))enhance()});mo.observe(sec,{childList:true,subtree:true})}enhance()}
   if(d.readyState==="loading")d.addEventListener("DOMContentLoaded",function(){setTimeout(watch,500)});else setTimeout(watch,500);
-  if(w.AxV2&&w.AxV2.apply){var old=w.AxV2.apply;w.AxV2.apply=function(){var r=old.apply(this,arguments);if(root.classList.contains("v2"))enhance();else restoreHub();return r}}
+  if(w.AxV2&&w.AxV2.apply){var old=w.AxV2.apply;w.AxV2.apply=function(){var r=old.apply(this,arguments);if(root.classList.contains("v2"))enhance();else{var b=$("v2-appearance-controls"),s=$("v2-settings-search");if(b)b.remove();if(s)s.remove()}return r}}
 })(window,document);

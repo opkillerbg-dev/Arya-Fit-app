@@ -2,11 +2,6 @@
 html.v2[data-theme="light"],html.v2[data-theme="system"]{--v2-bg:#f3f4f6;--v2-surface:#fff;--v2-surface-2:#e8eaee;--v2-line:rgba(18,24,32,.14);--v2-line-strong:rgba(18,24,32,.32);--v2-text:#15191f;--v2-text-2:#424a55;--v2-text-3:#626c78;--v2-glass-fill:rgba(255,255,255,.84);--v2-glass-solid:#fff;--v2-glass-edge:rgba(18,24,32,.16);--v2-glass-hi:rgba(255,255,255,.72);--v2-accent-ink:#061a0b}
 @media(prefers-color-scheme:dark){html.v2[data-theme="system"]{--v2-bg:#000;--v2-surface:#1c1c1e;--v2-surface-2:#2c2c2e;--v2-line:rgba(255,255,255,.1);--v2-line-strong:rgba(255,255,255,.25);--v2-text:#fff;--v2-text-2:rgba(255,255,255,.82);--v2-text-3:rgba(255,255,255,.62);--v2-glass-fill:rgba(40,40,44,.55);--v2-glass-solid:#232326;--v2-glass-edge:rgba(255,255,255,.16);--v2-glass-hi:rgba(255,255,255,.1)}}
 html.v2 body{background:var(--v2-bg)!important;color:var(--v2-text)!important;font-family:"Arya UI","Arya UI Fallback",system-ui,sans-serif!important}
-/* Old Money applies Georgia with !important to every descendant. Reset the full V2 tree,
-   then re-apply the intentional display/editorial faces below. */
-html.v2 body *{font-family:"Arya UI","Arya UI Fallback",system-ui,sans-serif!important}
-html.v2 body .v2-today-title,html.v2 body .v2-today-section-head h2,html.v2 body .v2-session-lockup h2,html.v2 body .ax-display-title,html.v2 body .ax-prog-sectionhead b,html.v2 body .ax-body-intro h2,html.v2 body .ax-sg3 b,html.v2 body .pr-g b,html.v2 body #ax-sht,html.v2 body #ax-v-plans>h1,html.v2 body #ax-v-plan #ax-wlab,html.v2 body #ax-credits .ax-cr-hero b,html.v2 body #ax-boot .ax-bw,html.v2 body .v2-run-history-head h2,html.v2 body .v2-popover-title,html.v2 body .v2-hero,html.v2 body .v2-numeral{font-family:"Arya Display","Arya Display Fallback",Impact,sans-serif!important}
-html.v2 body .v2-today-title em,html.v2 body .v2-accent{font-family:"Arya Editorial","Arya Editorial Fallback",Georgia,serif!important}
 html.v2 body .ax-wrap,html.v2 body main,html.v2 body .ax-view{background:transparent!important;color:var(--v2-text)!important}
 html.v2[data-theme="light"] body #ax-drawer,html.v2[data-theme="light"] body #ax-sh,html.v2[data-theme="light"] body #dock,html.v2[data-theme="light"] body #toast,html.v2[data-theme="light"] body .v2-popover{background:var(--v2-surface)!important;color:var(--v2-text)!important;border-color:var(--v2-line)!important}
 html.v2[data-theme="light"] body #ax-sh .ax-ex-detail-picture{background:#f4f0e6!important}
@@ -60,3 +55,28 @@ html.v2[data-theme="light"] body #ax-v-set #v2-appearance-controls .v2-segment b
 html.v2[data-theme="light"] body #ax-drawer .ax-dr-item,html.v2[data-theme="light"] body #ax-drawer .ax-dr-row{background:var(--v2-surface)!important;color:var(--v2-text)!important}
 html.v2[data-theme="light"] body #ax-shbg{background:rgba(0,0,0,.35)!important}
 html.v2[data-theme="light"] body #toast{background:var(--v2-surface)!important;color:var(--v2-text)!important}
+/* review fix (Claude): onboarding notes/captions were cream-on-light with V1 skins */
+html.v2 body #ax-ob .ob-note,html.v2 body #ax-ob [class*="note"]{background:var(--v2-surface-2)!important;color:var(--v2-text-2)!important;border:1px solid var(--v2-line)!important;box-shadow:none!important}
+html.v2 body #ax-ob button span,html.v2 body #ax-ob label span,html.v2 body #ax-ob button em,html.v2 body #ax-ob button small{background:transparent!important;color:var(--v2-text-2)!important;box-shadow:none!important}
+html.v2 body #ax-ob button b{color:var(--v2-text)!important}
+html.v2 body #ax-ob .ob-card{background:var(--v2-surface-2)!important;color:var(--v2-text)!important;border:1px solid var(--v2-line)!important;box-shadow:none!important}
+html.v2 body #ax-ob .ob-bw,html.v2 body #ax-ob [class*="ob-bw"]{background:var(--v2-surface-2)!important;color:var(--v2-text)!important;border-color:var(--v2-line)!important;box-shadow:none!important}
+html.v2 body #ax-ob .ob-d{background:var(--v2-surface-2)!important;color:var(--v2-text)!important;border:1px solid var(--v2-line)!important;box-shadow:none!important}
+html.v2 body #ax-ob .ob-d.on,html.v2 body #ax-ob .ob-d.sel,html.v2 body #ax-ob .ob-d[aria-pressed="true"]{background:var(--v2-accent)!important;color:var(--v2-accent-ink)!important}
+html.v2 body #ax-ob .ob-d.on *,html.v2 body #ax-ob .ob-d.sel *,html.v2 body #ax-ob .ob-d[aria-pressed="true"] *{color:var(--v2-accent-ink)!important}
+html.v2 body #ax-ob .ob-d span,html.v2 body #ax-ob .ob-d small,html.v2 body #ax-ob .ob-d em,html.v2 body #ax-ob .ob-strip span{color:var(--v2-text-2)!important}
+html.v2 body #ax-ob .ob-d b{color:var(--v2-text)!important}
+html.v2 body #ax-ob .ob-d.on span,html.v2 body #ax-ob .ob-d.sel span{color:var(--v2-accent-ink)!important}
+html.v2 body #ax-ob li,html.v2 body #ax-ob label,html.v2 body #ax-ob td,html.v2 body #ax-ob th,html.v2 body #ax-ob dd,html.v2 body #ax-ob dt{color:var(--v2-text-2)!important}
+/* review fix (Claude): light theme Today leftovers */
+html.v2[data-theme="light"] body .v2-today-hero{background:transparent!important}
+html.v2[data-theme="light"] body #ax-v-home .ax-home-progress{background:var(--v2-surface-2)!important;color:var(--v2-text)!important;border:1px solid var(--v2-line)!important}
+html.v2[data-theme="light"] body #ax-v-home .ax-home-progress *{color:var(--v2-text-2)!important}
+html.v2[data-theme="light"] body #ax-v-home .ax-home-progress b,html.v2[data-theme="light"] body #ax-v-home .ax-home-progress strong{color:var(--v2-text)!important}
+html.v2 body #ax-v-home .ax-card h2,html.v2 body #ax-v-home .ax-card h3,html.v2 body #ax-v-home .ax-card p,html.v2 body #ax-v-home .ax-card em{font-family:"Arya UI","Arya UI Fallback",system-ui,sans-serif}
+html.v2[data-theme="light"] body #ax-v-home #ax-htoday .ax-home-progress{background:var(--v2-surface-2)!important;color:var(--v2-text)!important}
+html.v2[data-theme="light"] body #ax-v-home #ax-htoday .ax-home-progress *{color:var(--v2-text-2)!important}
+html.v2[data-theme="light"] body #ax-v-home #ax-htoday .ax-home-progress b{color:var(--v2-text)!important}
+html.v2[data-theme="light"] body #ax-v-home .v2-today-hero{background:transparent!important;background-color:transparent!important}
+/* V1 skin serif (Georgia) leaked into Today cards */
+html.v2 body #ax-v-home .ax-card,html.v2 body #ax-v-home .ax-card *:not(svg):not(use):not(path){font-family:"Arya UI","Arya UI Fallback",system-ui,sans-serif!important}

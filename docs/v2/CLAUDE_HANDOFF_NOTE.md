@@ -29,9 +29,4 @@
 - Cache `arya-v128`; new files registered in `index.html` and `SHELL`. `check-web.py` and all 15 Node tests passed. Playwright UI tests fail at `page.goto(http://127.0.0.1:...)` with `ERR_BLOCKED_BY_ADMINISTRATOR`; no computed-style scan, screenshots or phone validation were completed in this sandbox.
 - Final Claude QA: apply the update over the v127 source, run all Python UI tests in small batches, inspect all views at 390×844 and 360×800 in dark/light and V2 on/off, scan actual contrast and 44px targets, verify new-install default and existing-user prompt, exercise A/B viewer/custom add/settings/backup restore, then build and test the Android APK. Keep the `reminder_test.py` demo-plan date failure separate from V2 if it recurs.
 
-
-## v129 minor QA fixes (2026-11-03)
-- Light theme: global V2 descendant font override beats Old Money Georgia `!important`; intentional display/editorial font faces are re-applied explicitly.
-- About: `Arya Fit · v1.<AXBUILD.run>` (CI matches Gradle `versionName`); source fallback `v1.0.0`.
-- V2 off: session/run injected nodes are removed and Settings hub grouping is reversed to the original flat V1 rows; Today/shell cleanup remains.
-- Cache: `arya-v129`. Run final browser tests for live toggles, light theme, and About on an APK build.
+**Status after final (v130):** V2 P0-P7 applied, reviewed and fixed; V2 default on. Next: real-phone test by Dhruv, then APK build/signing (see docs/HANDOFF.md). Bug class: moving a V1 element (reparenting) breaks V1 code that looks it up by id; use proxies.

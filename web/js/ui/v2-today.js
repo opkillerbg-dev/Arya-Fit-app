@@ -42,7 +42,7 @@
     }catch(e){}
     busy=false;
   }
-  function restoreCoach(){if(hero)hero.hidden=up.hidden=week.hidden=coach.hidden=true;if(coachButton&&coachParent){if(coachButton.parentNode!==coachParent){if(coachNext&&coachNext.parentNode===coachParent)coachParent.insertBefore(coachButton,coachNext);else coachParent.appendChild(coachButton)}if(coachButton.textContent!==coachText)coachButton.textContent=coachText;if(coachLabel===null)coachButton.removeAttribute("aria-label");else coachButton.setAttribute("aria-label",coachLabel)}}
+  function restoreCoach(){[hero,up,week,coach].forEach(function(n){if(n&&n.parentNode)n.parentNode.removeChild(n)});hero=up=week=coach=null;if(coachButton&&coachParent){if(coachButton.parentNode!==coachParent){if(coachNext&&coachNext.parentNode===coachParent)coachParent.insertBefore(coachButton,coachNext);else coachParent.appendChild(coachButton)}if(coachButton.textContent!==coachText)coachButton.textContent=coachText;if(coachLabel===null)coachButton.removeAttribute("aria-label");else coachButton.setAttribute("aria-label",coachLabel)}}
   function sync(){if(active())render();else restoreCoach()}
   var _home=w.home;if(typeof _home==="function")w.home=function(){var r=_home.apply(this,arguments);sync();return r};
   if(typeof MutationObserver!=="undefined"){var mo=new MutationObserver(function(ms){var external=false;for(var z=0;z<ms.length;z++){var target=ms[z].target;if(target===hero||target===up||target===week||target===coach||(coach&&coach.contains(target)))continue;external=true;break}if(external&&!busy&&active())render()});mo.observe(home,{childList:true,subtree:true,characterData:true})}

@@ -1,0 +1,94 @@
+/* Arya Fit V2 P4 — Plan + Plans. All V2 styles are isolated from the V1 screen. */
+html.v2 body #ax-v-plan.v2-plan-ready,
+html.v2 body #ax-v-plans.v2-plans-ready{background:var(--v2-bg)!important;color:var(--v2-text)!important}
+html.v2 body #ax-v-plan.v2-plan-ready *,
+html.v2 body #ax-v-plans.v2-plans-ready *{font-family:"Arya UI","Arya UI Fallback",system-ui,sans-serif!important}
+html.v2 body #ax-v-plan.v2-plan-ready .ax-section-intro,
+html.v2 body #ax-v-plans.v2-plans-ready>h1{margin:6px 0 26px;padding:4px 2px 0;background:transparent!important;color:var(--v2-text)!important}
+html.v2 body #ax-v-plan.v2-plan-ready .ax-section-intro .ax-kicker,
+html.v2 body #ax-v-plans.v2-plans-ready .ax-kicker{display:block;margin:0 0 10px;color:var(--v2-accent)!important;font:700 11px/1.2 "Arya UI","Arya UI Fallback",system-ui,sans-serif!important;letter-spacing:.24em;text-transform:uppercase}
+html.v2 body #ax-v-plan.v2-plan-ready .ax-display-title,
+html.v2 body #ax-v-plans.v2-plans-ready>h1{margin:0;color:var(--v2-text)!important;font:900 clamp(3.2rem,14vw,5.4rem)/.88 "Arya Display","Arya Display Fallback",Impact,sans-serif!important;letter-spacing:-.025em;text-transform:uppercase}
+html.v2 body #ax-v-plan.v2-plan-ready .ax-section-intro p{max-width:280px;margin:12px 0 0;color:var(--v2-text-2)!important;font:400 14px/1.5 "Arya UI","Arya UI Fallback",system-ui,sans-serif!important}
+html.v2 body #ax-v-plan.v2-plan-ready .ax-wk{position:relative;overflow:hidden;margin:0 0 16px;padding:18px!important;border:1px solid var(--v2-line)!important;border-radius:28px!important;background:linear-gradient(145deg,#202023,#101012)!important;color:var(--v2-text)!important;box-shadow:none!important}
+html.v2 body #ax-v-plan.v2-plan-ready .ax-wkh{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 16px}
+html.v2 body #ax-v-plan.v2-plan-ready .ax-wkt{display:flex;flex:1;min-width:0;flex-direction:column;align-items:center;gap:5px;text-align:center}
+html.v2 body #ax-v-plan.v2-plan-ready #ax-wlab{color:var(--v2-text)!important;font:900 26px/.95 "Arya Display","Arya Display Fallback",Impact,sans-serif!important;letter-spacing:.03em;text-transform:uppercase}
+html.v2 body #ax-v-plan.v2-plan-ready #ax-wrng{color:var(--v2-text-2)!important;font:400 11px/1.3 "Arya UI","Arya UI Fallback",system-ui,sans-serif!important}
+html.v2 body #ax-v-plan.v2-plan-ready .ax-wkh .ax-ibtn{width:48px;height:48px;min-width:48px;min-height:48px;border:1px solid var(--v2-line)!important;border-radius:50%!important;background:var(--v2-surface-2)!important;color:var(--v2-text)!important}
+html.v2 body #ax-v-plan.v2-plan-ready .ax-wstrip{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+html.v2 body #ax-v-plan.v2-plan-ready .ax-wc{display:flex;min-width:0;min-height:84px;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:8px 2px;border:1px solid transparent!important;border-radius:18px!important;background:transparent!important;color:var(--v2-text-2)!important}
+html.v2 body #ax-v-plan.v2-plan-ready .ax-wc small{color:var(--v2-text-2)!important;font:700 10px/1 "Arya UI","Arya UI Fallback",system-ui,sans-serif!important;letter-spacing:.1em;text-transform:uppercase}
+html.v2 body #ax-v-plan.v2-plan-ready .ax-wc .ax-wr{display:grid;place-items:center;width:38px;height:38px;border:1px solid var(--v2-line)!important;border-radius:50%!important;background:var(--v2-surface-2)!important;color:var(--v2-text)!important}
+html.v2 body #ax-v-plan.v2-plan-ready .ax-wc .ax-wr b{color:var(--v2-text)!important;font:700 14px/1 "Arya UI","Arya UI Fallback",system-ui,sans-serif!important}
+html.v2 body #ax-v-plan.v2-plan-ready .ax-wc.today{border-color:var(--v2-line)!important;background:rgba(255,255,255,.035)!important}
+html.v2 body #ax-v-plan.v2-plan-ready .ax-wc.today .ax-wr,
+html.v2 body #ax-v-plan.v2-plan-ready .ax-wc.sel .ax-wr{border-color:var(--v2-accent)!important;background:var(--v2-accent)!important;color:var(--v2-accent-ink)!important}
+html.v2 body #ax-v-plan.v2-plan-ready .ax-wc.today .ax-wr b,
+html.v2 body #ax-v-plan.v2-plan-ready .ax-wc.sel .ax-wr b{color:var(--v2-accent-ink)!important}
+html.v2 body #ax-v-plan.v2-plan-ready .ax-wc.done .ax-wr{border-color:var(--v2-accent)!important}
+html.v2 body #ax-v-plan.v2-plan-ready .ax-wc.rest .ax-wr{border-style:dashed!important}
+html.v2 body #ax-v-plan.v2-plan-ready .ax-all{overflow:hidden;margin:0 0 16px;padding:0!important;border:1px solid var(--v2-line)!important;border-radius:22px!important;background:var(--v2-surface)!important;color:var(--v2-text)!important;box-shadow:none!important}
+html.v2 body #ax-v-plan.v2-plan-ready .ax-all summary{display:flex;align-items:center;justify-content:space-between;min-height:58px;padding:0 18px;list-style:none;color:var(--v2-text)!important;font:700 15px/1.3 "Arya UI","Arya UI Fallback",system-ui,sans-serif!important;cursor:pointer}
+html.v2 body #ax-v-plan.v2-plan-ready .ax-all summary::-webkit-details-marker{display:none}
+html.v2 body #ax-v-plan.v2-plan-ready .ax-all summary:after{content:"+";color:var(--v2-accent);font:400 24px/1 "Arya UI","Arya UI Fallback",system-ui,sans-serif}
+html.v2 body #ax-v-plan.v2-plan-ready .ax-all[open] summary:after{content:"−"}
+html.v2 body #ax-v-plan.v2-plan-ready .ax-gwd{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;padding:0 12px 8px;color:var(--v2-text-3)!important;font:700 9px/1 "Arya UI","Arya UI Fallback",system-ui,sans-serif!important;text-align:center;text-transform:uppercase}
+html.v2 body #ax-v-plan.v2-plan-ready .ax-gall{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;padding:0 12px 16px}
+html.v2 body #ax-v-plan.v2-plan-ready .ax-gc{display:grid;place-items:center;min-width:0;min-height:44px;padding:2px;border:1px solid transparent!important;border-radius:13px!important;background:transparent!important;color:var(--v2-text)!important}
+html.v2 body #ax-v-plan.v2-plan-ready .ax-gc .ax-wr{display:grid;place-items:center;width:34px;height:34px;border:1px solid var(--v2-line)!important;border-radius:50%!important;background:var(--v2-surface-2)!important;color:var(--v2-text)!important}
+html.v2 body #ax-v-plan.v2-plan-ready .ax-gc .ax-wr b{color:var(--v2-text)!important;font:700 12px/1 "Arya UI","Arya UI Fallback",system-ui,sans-serif!important}
+html.v2 body #ax-v-plan.v2-plan-ready .ax-gc.sel .ax-wr,
+html.v2 body #ax-v-plan.v2-plan-ready .ax-gc.today .ax-wr{background:var(--v2-accent)!important;border-color:var(--v2-accent)!important}
+html.v2 body #ax-v-plan.v2-plan-ready .ax-gc.sel .ax-wr b,
+html.v2 body #ax-v-plan.v2-plan-ready .ax-gc.today .ax-wr b{color:var(--v2-accent-ink)!important}
+html.v2 body #ax-v-plan.v2-plan-ready .ax-gc.done .ax-wr{border-color:var(--v2-accent)!important}
+html.v2 body #ax-v-plan.v2-plan-ready .ax-pbar{position:sticky;bottom:calc(76px + env(safe-area-inset-bottom,0px));z-index:8;display:flex;gap:10px;margin:18px 0;padding:10px;border:1px solid var(--v2-line)!important;border-radius:22px!important;background:var(--v2-surface)!important;color:var(--v2-text)!important}
+html.v2 body #ax-v-plan.v2-plan-ready .ax-pbar button{min-height:48px;border-radius:15px!important;font:700 14px/1.2 "Arya UI","Arya UI Fallback",system-ui,sans-serif!important}
+html.v2 body #ax-v-plan.v2-plan-ready .ax-pbar .ax-pri{flex:1;background:var(--v2-accent)!important;color:var(--v2-accent-ink)!important;border:1px solid var(--v2-accent)!important}
+html.v2 body #ax-v-plan.v2-plan-ready .ax-pbar .ax-more{width:48px;min-width:48px;background:var(--v2-surface-2)!important;color:var(--v2-text)!important;border:1px solid var(--v2-line)!important}
+html.v2 body #ax-v-plans.v2-plans-ready .panel,
+html.v2 body #ax-v-plans.v2-plans-ready .ax-card,
+html.v2 body #ax-v-plans.v2-plans-ready .ax-plan-card,
+html.v2 body #ax-v-plans.v2-plans-ready #pl-list>div,
+html.v2 body #ax-v-plans.v2-plans-ready #pl-res{margin:0 0 14px;padding:18px!important;border:1px solid var(--v2-line)!important;border-radius:22px!important;background:var(--v2-surface)!important;color:var(--v2-text)!important;box-shadow:none!important}
+html.v2 body #ax-v-plans.v2-plans-ready h2,
+html.v2 body #ax-v-plans.v2-plans-ready h3,
+html.v2 body #ax-v-plans.v2-plans-ready b,
+html.v2 body #ax-v-plans.v2-plans-ready strong{color:var(--v2-text)!important;font-family:"Arya UI","Arya UI Fallback",system-ui,sans-serif!important}
+html.v2 body #ax-v-plans.v2-plans-ready p,
+html.v2 body #ax-v-plans.v2-plans-ready em,
+html.v2 body #ax-v-plans.v2-plans-ready small,
+html.v2 body #ax-v-plans.v2-plans-ready label{color:var(--v2-text-2)!important;font-family:"Arya UI","Arya UI Fallback",system-ui,sans-serif!important}
+html.v2 body #ax-v-plans.v2-plans-ready button,
+html.v2 body #ax-v-plans.v2-plans-ready input,
+html.v2 body #ax-v-plans.v2-plans-ready select,
+html.v2 body #ax-v-plans.v2-plans-ready textarea{min-height:44px;max-width:100%;border:1px solid var(--v2-line)!important;border-radius:14px!important;background:var(--v2-surface-2)!important;color:var(--v2-text)!important;font:400 14px/1.4 "Arya UI","Arya UI Fallback",system-ui,sans-serif!important}
+html.v2 body #ax-v-plans.v2-plans-ready textarea{min-height:120px;padding:12px!important}
+html.v2 body #ax-v-plans.v2-plans-ready .pri,
+html.v2 body #ax-v-plans.v2-plans-ready .ax-btn.ax-pri{background:var(--v2-accent)!important;color:var(--v2-accent-ink)!important}
+html.v2 body #ax-v-plans.v2-plans-ready .ax-bd,
+html.v2 body #ax-v-plans.v2-plans-ready .ax-chip,
+html.v2 body #ax-v-plans.v2-plans-ready .ax-opt{min-height:32px;padding:7px 10px;border-radius:99px!important;background:var(--v2-surface-2)!important;color:var(--v2-text-2)!important}
+html.v2 body #ax-v-plans.v2-plans-ready .ax-shh{color:var(--v2-accent)!important;font:700 10px/1.2 "Arya UI","Arya UI Fallback",system-ui,sans-serif!important;letter-spacing:.2em}
+html.v2 body #ax-v-plan.v2-plan-ready input,
+html.v2 body #ax-v-plan.v2-plan-ready select,
+html.v2 body #ax-v-plan.v2-plan-ready textarea{background:var(--v2-surface-2)!important;color:var(--v2-text)!important;border-color:var(--v2-line)!important;font-family:"Arya UI","Arya UI Fallback",system-ui,sans-serif!important}
+html.v2 body #ax-v-plan.v2-plan-ready button:focus-visible,
+html.v2 body #ax-v-plans.v2-plans-ready button:focus-visible,
+html.v2 body #ax-v-plans.v2-plans-ready input:focus-visible,
+html.v2 body #ax-v-plans.v2-plans-ready textarea:focus-visible{outline:2px solid var(--v2-accent);outline-offset:2px}
+html.v2 body #ax-sh{z-index:120!important;background:var(--v2-surface)!important;color:var(--v2-text)!important;border:1px solid var(--v2-line)!important}
+html.v2 body #ax-sh *{color:var(--v2-text)!important;font-family:"Arya UI","Arya UI Fallback",system-ui,sans-serif!important}
+html.v2 body #ax-sh input,html.v2 body #ax-sh select,html.v2 body #ax-sh textarea{background:var(--v2-surface-2)!important;color:var(--v2-text)!important}
+html.v2 body #ax-v-plan.v2-plan-ready .ax-day{background:transparent!important}
+@media(max-width:380px){html.v2 body #ax-v-plan.v2-plan-ready .ax-wstrip{gap:2px}html.v2 body #ax-v-plan.v2-plan-ready .ax-wc .ax-wr{width:34px;height:34px}html.v2 body #ax-v-plan.v2-plan-ready .ax-wk{padding:14px!important}}
+
+html.v2 body #ax-v-plan.v2-plan-ready .ax-all summary{background:transparent!important}
+html.v2 body #ax-v-plan.v2-plan-ready .ax-wc,
+html.v2 body #ax-v-plan.v2-plan-ready .ax-gc{font-family:"Arya UI","Arya UI Fallback",system-ui,sans-serif!important}
+html.v2 body #ax-v-plan.v2-plan-ready .ax-wc .ax-wr,
+html.v2 body #ax-v-plan.v2-plan-ready .ax-gc .ax-wr{background:var(--v2-surface-2)!important;color:var(--v2-text)!important}
+/* review fix: V1 border-chevron overlapped the "+" */
+html.v2 body #ax-v-plan.v2-plan-ready .ax-all summary:after{border:0!important;width:auto!important;height:auto!important;transform:none!important;margin-left:auto}
+html.v2 body #ax-v-plan.v2-plan-ready .ax-all[open] summary:after{content:"\2212"}

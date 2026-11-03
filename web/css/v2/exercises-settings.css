@@ -1,0 +1,137 @@
+/* P6 — Exercise discovery and grouped Settings. Every surface is explicit to defeat legacy skins. */
+html.v2 body #ax-sh{z-index:120!important;background:var(--v2-surface)!important;color:var(--v2-text)!important;border:1px solid var(--v2-line)!important;font-family:"Arya UI","Arya UI Fallback",system-ui,sans-serif!important}
+html.v2 body #ax-sh .ax-shh{position:sticky;top:0;z-index:2;padding:12px 0 14px;background:var(--v2-surface)!important;color:var(--v2-text)!important}
+html.v2 body #ax-sh #ax-sht{color:var(--v2-text)!important;font:900 28px/.95 "Arya Display","Arya Display Fallback",Impact,sans-serif!important;text-transform:uppercase}
+html.v2 body #ax-sh #ax-shx{min-width:48px;min-height:48px;background:var(--v2-surface-2)!important;color:var(--v2-text)!important;border:1px solid var(--v2-line)!important}
+html.v2 body #ax-sh .ax-opt,html.v2 body #ax-sh .ax-field,html.v2 body #ax-sh input,html.v2 body #ax-sh select,html.v2 body #ax-sh textarea{background:var(--v2-surface-2)!important;color:var(--v2-text)!important;border:1px solid var(--v2-line)!important;border-radius:14px!important;font:400 15px/1.4 "Arya UI","Arya UI Fallback",system-ui,sans-serif!important;min-height:48px}
+html.v2 body #ax-sh .ax-sub,html.v2 body #ax-sh .ax-cap,html.v2 body #ax-sh em,html.v2 body #ax-sh small{color:var(--v2-text-2)!important}
+html.v2 body #ax-sh .ax-btn{min-height:48px;border-radius:14px!important;background:var(--v2-surface-2)!important;color:var(--v2-text)!important;border:1px solid var(--v2-line)!important;font:700 14px/1.2 "Arya UI","Arya UI Fallback",system-ui,sans-serif!important}
+html.v2 body #ax-sh .ax-btn.ax-pri{background:var(--v2-accent)!important;color:var(--v2-accent-ink)!important;border-color:var(--v2-accent)!important}
+html.v2 body #v2-ex-browser{margin:14px 0;padding:14px;border:1px solid var(--v2-line)!important;border-radius:20px!important;background:var(--v2-surface)!important;color:var(--v2-text)!important}
+html.v2 body #v2-ex-browser *{font-family:"Arya UI","Arya UI Fallback",system-ui,sans-serif!important}
+html.v2 body #v2-ex-browser .v2-ex-search-label{display:block;margin:0 0 8px;color:var(--v2-text-2)!important;font-size:12px;font-weight:700}
+html.v2 body #v2-ex-browser .v2-ex-filters{display:flex;gap:7px;overflow-x:auto;padding:2px 0 10px;scrollbar-width:none}
+html.v2 body #v2-ex-browser .v2-ex-filters button,html.v2 body #v2-ex-browser .v2-ex-frame-actions button{flex:0 0 auto;min-width:48px;min-height:44px;padding:0 13px;border:1px solid var(--v2-line)!important;border-radius:99px!important;background:var(--v2-surface-2)!important;color:var(--v2-text-2)!important;font-size:12px;font-weight:700}
+html.v2 body #v2-ex-browser .v2-ex-filters button[aria-pressed=true],html.v2 body #v2-ex-browser .v2-ex-frame-actions button[aria-pressed=true]{background:var(--v2-accent)!important;color:var(--v2-accent-ink)!important;border-color:var(--v2-accent)!important}
+html.v2 body #v2-ex-browser .v2-ex-equipment{display:flex;align-items:center;gap:12px;margin:2px 0 10px;color:var(--v2-text-2)!important;font-size:12px}
+html.v2 body #v2-ex-browser .v2-ex-equipment select{flex:1;min-width:0;padding:0 12px}
+html.v2 body #v2-ex-browser .v2-ex-results{max-height:38vh;overflow:auto;overscroll-behavior:contain}
+html.v2 body #v2-ex-browser .v2-ex-row{display:flex;align-items:center;gap:12px;width:100%;min-height:68px;padding:8px 2px;border:0;border-bottom:1px solid var(--v2-line)!important;background:transparent!important;color:var(--v2-text)!important;text-align:left}
+html.v2 body #v2-ex-browser .v2-ex-thumb{display:grid;place-items:center;flex:0 0 52px;width:52px;height:52px;overflow:hidden;border-radius:13px;background:#29292c!important;color:var(--v2-text-2)!important}
+html.v2 body #v2-ex-browser .v2-ex-thumb img{width:100%;height:100%;object-fit:cover}
+html.v2 body #v2-ex-browser .v2-ex-copy{display:block;min-width:0;flex:1}
+html.v2 body #v2-ex-browser .v2-ex-copy b{display:block;overflow:hidden;color:var(--v2-text)!important;font-size:14px;text-overflow:ellipsis;white-space:nowrap}
+html.v2 body #v2-ex-browser .v2-ex-copy small{display:block;margin-top:4px;color:var(--v2-text-2)!important;font-size:11px;text-transform:capitalize}
+html.v2 body #v2-ex-browser .v2-ex-arrow{color:var(--v2-text-2)!important;font-size:24px}
+html.v2 body #v2-ex-browser .v2-ex-note,html.v2 body #v2-ex-browser .v2-ex-empty{color:var(--v2-text-2)!important;font-size:12px;line-height:1.45}
+html.v2 body #ax-sh .v2-ex-detail{color:var(--v2-text)!important}
+html.v2 body #ax-sh .v2-ex-detail-picture{display:grid;place-items:center;overflow:hidden;aspect-ratio:1/1;max-height:44vh;border-radius:22px;background:#f4f0e6!important}
+html.v2 body #ax-sh .v2-ex-detail-picture img{width:100%;height:100%;object-fit:contain}
+html.v2 body #ax-sh .v2-ex-frame-actions{display:flex;justify-content:center;gap:8px;margin:10px 0}
+html.v2 body #ax-sh .v2-ex-meta{color:var(--v2-accent)!important;font:var(--t-eyebrow)!important;text-transform:uppercase}
+html.v2 body #ax-sh .v2-ex-cue{color:var(--v2-text)!important;font-size:15px;line-height:1.55}
+html.v2 body #ax-sh .v2-ex-reps{color:var(--v2-text-2)!important;font-size:13px}
+html.v2 body #ax-sh .v2-ex-add{width:100%;min-height:52px;border:0;border-radius:15px;background:var(--v2-accent);color:var(--v2-accent-ink);font:700 14px/1.2 "Arya UI","Arya UI Fallback",system-ui,sans-serif}
+html.v2 body #ax-v-set{padding-bottom:calc(116px + env(safe-area-inset-bottom,0px));background:transparent!important;color:var(--v2-text)!important}
+html.v2 body #ax-v-set>h1{color:var(--v2-text)!important;font:var(--t-title)!important}
+html.v2 body #ax-sm{display:flex;flex-direction:column;gap:12px;margin-top:12px}
+html.v2 body #v2-settings-search{width:100%;min-height:50px;padding:0 16px;border:1px solid var(--v2-line)!important;border-radius:16px!important;background:var(--v2-surface)!important;color:var(--v2-text)!important;font:400 15px/1.2 "Arya UI","Arya UI Fallback",system-ui,sans-serif!important}
+html.v2 body #ax-sm .ax-sm-card,html.v2 body #ax-sp-box .ax-sp-card,html.v2 body #v2-appearance-controls{overflow:hidden;padding:4px 14px;border:1px solid var(--v2-line)!important;border-radius:22px!important;background:var(--v2-surface)!important;color:var(--v2-text)!important;box-shadow:none!important}
+html.v2 body #ax-sm .ax-smr{display:flex;align-items:center;gap:14px;min-height:76px;padding:10px 2px;border-top:1px solid var(--v2-line)!important;background:transparent!important;color:var(--v2-text)!important;text-align:left}
+html.v2 body #ax-sm .ax-smr:first-child{border-top:0!important}
+html.v2 body #ax-sm .ax-smr>svg:first-child{flex:0 0 23px;width:23px;height:23px;color:var(--v2-accent)!important}
+html.v2 body #ax-sm .ax-smr b,html.v2 body #ax-sp-box .ax-sp-h h2{color:var(--v2-text)!important;font:700 15px/1.25 "Arya UI","Arya UI Fallback",system-ui,sans-serif!important}
+html.v2 body #ax-sm .ax-smr em{display:block;margin-top:4px;color:var(--v2-text-2)!important;font:400 12px/1.4 "Arya UI","Arya UI Fallback",system-ui,sans-serif!important}
+html.v2 body #ax-sm .ax-smr .ax-chv{margin-left:auto;color:var(--v2-text-2)!important}
+html.v2 body #ax-sp-box .ax-sp{padding-top:4px}
+html.v2 body #ax-sp-box .ax-sp-h{display:flex;align-items:center;gap:12px;margin:0 0 16px}
+html.v2 body #ax-sp-box .ax-sp-b{flex:0 0 48px;width:48px;height:48px;border:1px solid var(--v2-line)!important;background:var(--v2-surface)!important;color:var(--v2-text)!important}
+html.v2 body #ax-sp-box .ax-sp-c{display:flex;flex-direction:column;gap:12px}
+html.v2 body #ax-sp-box .ax-sp-card{padding:8px 14px}
+html.v2 body #ax-sp-box .ax-sp-card .row{display:flex;align-items:center;gap:12px;min-height:64px;padding:10px 0;border-top:1px solid var(--v2-line)!important;background:transparent!important;color:var(--v2-text)!important}
+html.v2 body #ax-sp-box .ax-sp-card .row:first-child{border-top:0!important}
+html.v2 body #ax-sp-box .ax-sp-card b,html.v2 body #ax-sp-box .ax-sp-card strong{color:var(--v2-text)!important;font:700 14px/1.3 "Arya UI","Arya UI Fallback",system-ui,sans-serif!important}
+html.v2 body #ax-sp-box .ax-sp-card em,html.v2 body #ax-sp-box .ax-sp-card p,html.v2 body #ax-sp-box .ax-sp-card small{color:var(--v2-text-2)!important;font:400 12px/1.45 "Arya UI","Arya UI Fallback",system-ui,sans-serif!important}
+html.v2 body #ax-sp-box .ax-sp-card input,html.v2 body #ax-sp-box .ax-sp-card select,html.v2 body #ax-sp-box .ax-sp-card textarea{max-width:100%;min-height:44px;border:1px solid var(--v2-line)!important;border-radius:12px!important;background:var(--v2-surface-2)!important;color:var(--v2-text)!important;font:400 14px/1.35 "Arya UI","Arya UI Fallback",system-ui,sans-serif!important}
+html.v2 body #ax-sp-box .ax-sp-card button{min-height:44px;border-radius:13px!important;background:var(--v2-surface-2)!important;color:var(--v2-text)!important;border:1px solid var(--v2-line)!important}
+html.v2 body #ax-sp-box .ax-sp-card button.pri,html.v2 body #ax-sp-box .ax-sp-card .ax-btn.ax-pri{background:var(--v2-accent)!important;color:var(--v2-accent-ink)!important}
+html.v2 body #v2-appearance-controls{padding:10px 14px}
+html.v2 body #v2-appearance-controls>h3{margin:12px 0 4px;color:var(--v2-accent)!important;font:var(--t-eyebrow)!important;letter-spacing:.2em}
+html.v2 body #v2-appearance-controls .v2-settings-row{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:70px;padding:10px 0;border-top:1px solid var(--v2-line)!important;background:transparent!important;color:var(--v2-text)!important}
+html.v2 body #v2-appearance-controls .v2-settings-row>span{min-width:0;flex:1}
+html.v2 body #v2-appearance-controls .v2-settings-row b{display:block;color:var(--v2-text)!important;font:700 14px/1.25 "Arya UI","Arya UI Fallback",system-ui,sans-serif!important}
+html.v2 body #v2-appearance-controls .v2-settings-row small{display:block;margin-top:4px;color:var(--v2-text-2)!important;font:400 11px/1.35 "Arya UI","Arya UI Fallback",system-ui,sans-serif!important}
+html.v2 body #v2-appearance-controls .v2-segment{display:flex;gap:3px;padding:3px;border-radius:13px;background:var(--v2-surface-2)!important}
+html.v2 body #v2-appearance-controls .v2-segment button{min-height:40px;padding:0 9px;border:0;border-radius:10px;background:transparent;color:var(--v2-text-2);font:700 11px/1 "Arya UI","Arya UI Fallback",system-ui,sans-serif}
+html.v2 body #v2-appearance-controls .v2-segment button[aria-pressed=true]{background:var(--v2-accent)!important;color:var(--v2-accent-ink)!important}
+html.v2 body #v2-appearance-controls .v2-accent-picker{display:flex;gap:7px;flex-wrap:wrap}
+html.v2 body #v2-appearance-controls .v2-accent-picker button{width:27px;min-width:27px;height:27px;min-height:27px;padding:0;border:2px solid var(--v2-surface)!important;border-radius:50%;background:var(--v2-surface-2)}
+html.v2 body #v2-appearance-controls [data-accent-choice=green]{background:#30d158!important}html.v2 body #v2-appearance-controls [data-accent-choice=blue]{background:#4f7bff!important}html.v2 body #v2-appearance-controls [data-accent-choice=ruby]{background:#ff3b5c!important}html.v2 body #v2-appearance-controls [data-accent-choice=teal]{background:#3fcfae!important}html.v2 body #v2-appearance-controls [data-accent-choice=orange]{background:#ff7a45!important}html.v2 body #v2-appearance-controls [data-accent-choice=gold]{background:#e8c15a!important}
+html.v2 body #v2-appearance-controls .v2-accent-picker button[aria-pressed=true]{outline:2px solid var(--v2-text);outline-offset:2px}
+html.v2 body #v2-appearance-controls select{min-width:105px;padding:0 10px;background:var(--v2-surface-2)!important;color:var(--v2-text)!important}
+html.v2 body #ax-credits .ax-cr-hero b{font:900 30px/1 "Arya Display","Arya Display Fallback",Impact,sans-serif!important;letter-spacing:.12em;text-transform:uppercase}
+html.v2 body #ax-credits .ax-cr-hero b:after{content:".";color:var(--v2-accent)}
+html.v2 body #ax-drawer{z-index:125!important;background:var(--v2-surface)!important;color:var(--v2-text)!important;border:1px solid var(--v2-line)!important}
+html.v2 body #ax-drawer *,html.v2 body #ax-drawer button{background-color:transparent;color:var(--v2-text)!important;font-family:"Arya UI","Arya UI Fallback",system-ui,sans-serif!important}
+html.v2 body #ax-drawer button{min-height:52px;border-bottom:1px solid var(--v2-line)!important}
+html.v2 body #ax-dscrim{z-index:124!important;background:rgba(0,0,0,.72)!important}
+html.v2 body #toast{z-index:130!important;background:var(--v2-surface-2)!important;color:var(--v2-text)!important;border:1px solid var(--v2-line)!important;font:600 13px/1.4 "Arya UI","Arya UI Fallback",system-ui,sans-serif!important}
+html.v2 body #ax-v-home{padding-top:72px}
+html.v2 body .v2-avatar{top:calc(env(safe-area-inset-top,0px) + 10px)!important;right:14px!important;z-index:92!important}
+html.v2 body #ax-day .v2-session-hero{padding-top:22px!important}
+html.v2 body #ax-v-prog .ax-prog-sectionhead.v2-duplicate-title{display:none!important}
+html.v2 body #ax-boot{background:#000!important;color:#fff!important}
+html.v2 body #ax-boot .ax-bw{font:900 32px/1 "Arya Display","Arya Display Fallback",Impact,sans-serif!important;letter-spacing:.12em;text-transform:uppercase;color:#fff!important}
+html.v2 body #ax-boot .ax-bw:after{content:".";color:var(--v2-accent)}
+html.v2 body #ax-shbg{z-index:119!important}
+html.v2 body #ax-sh{z-index:120!important}
+html.v2 body #dock.ax-fs{inset:0!important;z-index:95!important;left:0!important;right:0!important;bottom:0!important;width:100%!important;max-height:none!important;border-radius:0!important}
+html.v2 body #ax-drawer,html.v2 body #ax-sh,html.v2 body #toast,html.v2 body #ax-boot,html.v2 body #ax-v-set,html.v2 body #v2-ex-browser{font-family:"Arya UI","Arya UI Fallback",system-ui,sans-serif!important}
+html.v2 body #ax-v-set *,html.v2 body #ax-drawer *,html.v2 body #ax-sh *,html.v2 body #toast *{font-family:"Arya UI","Arya UI Fallback",system-ui,sans-serif!important}
+/* Remaining shared controls and overlays */
+html.v2 body #ax-ob,html.v2 body #ax-ob .ax-ob-card,html.v2 body #ax-ob .ax-ob-step{background:var(--v2-surface)!important;color:var(--v2-text)!important;border-color:var(--v2-line)!important;font-family:"Arya UI","Arya UI Fallback",system-ui,sans-serif!important}
+html.v2 body #ax-ob h1,html.v2 body #ax-ob h2,html.v2 body #ax-ob b,html.v2 body #ax-ob strong{color:var(--v2-text)!important}
+html.v2 body #ax-ob p,html.v2 body #ax-ob small,html.v2 body #ax-ob em{color:var(--v2-text-2)!important}
+html.v2 body #ax-ob input,html.v2 body #ax-ob select,html.v2 body #ax-ob textarea{min-height:48px;padding:10px 12px;border:1px solid var(--v2-line)!important;border-radius:13px!important;background:var(--v2-surface-2)!important;color:var(--v2-text)!important;font:400 16px/1.35 "Arya UI","Arya UI Fallback",system-ui,sans-serif!important}
+html.v2 body #ax-ob button{min-height:48px;border-radius:14px!important;background:var(--v2-surface-2)!important;color:var(--v2-text)!important;border:1px solid var(--v2-line)!important}
+html.v2 body #ax-ob button.pri,html.v2 body #ax-ob .ax-btn.ax-pri{background:var(--v2-accent)!important;color:var(--v2-accent-ink)!important}
+html.v2 body .ax-empty,html.v2 body .empty,html.v2 body .note,html.v2 body .v2-empty{padding:16px;border:1px dashed var(--v2-line-strong)!important;border-radius:16px!important;background:var(--v2-surface)!important;color:var(--v2-text-2)!important;font:400 14px/1.5 "Arya UI","Arya UI Fallback",system-ui,sans-serif!important}
+html.v2 body #ax-v-plan .ax-two,html.v2 body #ax-sh .ax-two{gap:10px}
+html.v2 body #ax-v-plan input,html.v2 body #ax-v-plan select,html.v2 body #ax-v-plan textarea,html.v2 body #ax-v-plans input,html.v2 body #ax-v-plans select,html.v2 body #ax-v-plans textarea{min-height:48px;padding:10px 12px;border:1px solid var(--v2-line)!important;border-radius:13px!important;background:var(--v2-surface-2)!important;color:var(--v2-text)!important;font:400 16px/1.35 "Arya UI","Arya UI Fallback",system-ui,sans-serif!important}
+html.v2 body #ax-v-plan button,html.v2 body #ax-v-plans button,html.v2 body #ax-v-set button{min-height:44px;font-family:"Arya UI","Arya UI Fallback",system-ui,sans-serif!important}
+html.v2 body #ax-v-plan .ax-card,html.v2 body #ax-v-plans .panel{background:var(--v2-surface)!important;color:var(--v2-text)!important;border:1px solid var(--v2-line)!important;box-shadow:none!important}
+html.v2 body #ax-v-plan .ax-card *,html.v2 body #ax-v-plans .panel *{color:var(--v2-text)!important}
+html.v2 body #ax-v-plan .ax-card .ax-cap,html.v2 body #ax-v-plans .panel p{color:var(--v2-text-2)!important}
+html.v2 body #ax-v-home .ax-br-card,html.v2 body #ax-v-home .ax-br-result{background:var(--v2-surface)!important;color:var(--v2-text)!important;border-color:var(--v2-line)!important}
+html.v2 body #ax-v-home .ax-br-card *,html.v2 body #ax-v-home .ax-br-result *{font-family:"Arya UI","Arya UI Fallback",system-ui,sans-serif!important}
+html.v2 body #ax-v-home .ax-br-card b,html.v2 body #ax-v-home .ax-br-result b{color:var(--v2-text)!important}
+html.v2 body #ax-v-home .ax-br-card p,html.v2 body #ax-v-home .ax-br-result p{color:var(--v2-text-2)!important}
+html.v2 body #ax-v-home .v2-today-title{max-width:calc(100% - 42px);overflow-wrap:anywhere}
+html.v2 body #ax-v-home .v2-today-hero{padding-right:10px}
+html.v2 body #ax-v-home .v2-today-section{background:transparent!important;color:var(--v2-text)!important}
+html.v2 body #ax-v-home .v2-today-section-head h2,html.v2 body #ax-v-home .v2-today-card b{color:var(--v2-text)!important}
+html.v2 body #ax-v-home .v2-today-section-head span,html.v2 body #ax-v-home .v2-today-card small{color:var(--v2-text-2)!important}
+html.v2 body #ax-v-home .v2-today-card,html.v2 body #ax-v-home .v2-week-day,html.v2 body #ax-v-home .v2-coach-row{border:1px solid var(--v2-line)!important;background:var(--v2-surface)!important;color:var(--v2-text)!important}
+html.v2 body #ax-v-home .v2-today-thumb{background:var(--v2-surface-2)!important}
+html.v2 body #ax-v-home .v2-today-placeholder{color:var(--v2-text-2)!important}
+html.v2 body #ax-v-home .v2-coach-row button{min-width:60px;min-height:44px;border-radius:12px;background:var(--v2-surface-2);color:var(--v2-text);border:1px solid var(--v2-line)}
+html.v2 body #ax-drawer .ax-dr-sep{border-color:var(--v2-line)!important}
+html.v2 body #ax-drawer .ax-dr-item,html.v2 body #ax-drawer .ax-dr-row{min-height:56px;color:var(--v2-text)!important;background:var(--v2-surface)!important}
+html.v2 body #ax-drawer .ax-dr-item em,html.v2 body #ax-drawer .ax-dr-row em{color:var(--v2-text-2)!important}
+html.v2 body #ax-shbg{background:rgba(0,0,0,.7)!important}
+html.v2 body #ax-sh{max-height:calc(100dvh - env(safe-area-inset-top,0px) - 8px)!important;overflow:auto!important}
+html.v2 body #ax-sh .ax-two>*{min-width:0;flex:1}
+html.v2 body #ax-v-set .ax-sp-card .sw2,html.v2 body #ax-v-set .ax-sp-card input[type=checkbox],html.v2 body #v2-appearance-controls input[type=checkbox]{width:48px;height:28px;min-height:28px;accent-color:var(--v2-accent)}
+html.v2 body #ax-v-set .ax-sp-card details,html.v2 body #ax-v-set .ax-sp-card summary{background:var(--v2-surface)!important;color:var(--v2-text)!important}
+html.v2 body #ax-v-set .ax-sp-card .bk{padding:12px 0;border-top:1px solid var(--v2-line);background:transparent!important}
+html.v2 body #ax-v-set .ax-sp-card .bk button{min-height:48px}
+html.v2 body #ax-v-set .ax-sp-card #ax-lib{padding:14px;border-radius:16px;background:var(--v2-surface-2)!important;color:var(--v2-text)!important}
+html.v2 body #ax-v-set .ax-sp-card #ax-lib h2{color:var(--v2-text)!important}
+html.v2 body #ax-v-set .ax-sp-card #ax-lib p{color:var(--v2-text-2)!important}
+html.v2 body #ax-v-set .ax-sp-card #ax-lib button{min-height:44px}
+html.v2 body #ax-v-set .ax-sp-card .ax-cr-hero{padding:18px 0;background:transparent!important;color:var(--v2-text)!important}
+html.v2 body #ax-v-set .ax-sp-card .ax-cr-foot{color:var(--v2-text-2)!important}
+html.v2 body #ax-v2-row{display:none!important}
+html.v2 body #ax-sm .v2-settings-card{padding:10px 14px;margin:0}
+html.v2 body #ax-sm .v2-settings-group-title{margin:6px 0 2px;padding:0 2px;color:var(--v2-text-2)!important;font:var(--t-eyebrow)!important;letter-spacing:.2em}
+html.v2 body #ax-sm .v2-settings-card .ax-smr{min-height:68px}

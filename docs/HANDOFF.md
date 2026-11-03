@@ -889,3 +889,36 @@ Causes of that Android error: (a) APK signed with a different key than the insta
 - `session-run.css` (appended): fullscreen run dock ring/layout (V1 skin cream leaked), dark `axSheet` sheets above nav, floating dock sits above mini pill when timer runs, cream leftovers restyled (week card, week circles, All days, Smart Today bar, Close-day bar, chips/badges, exercise Play button, Run intro hero). Selectors use `html.v2 body` to beat `html.gls .ax-card{...!important}`.
 - `tests/v2_shell_test.py`: minimizes fullscreen dock (`#dfs`) before tapping mini pill.
 - Cache `arya-v124`. Known: `reminder_test.py` fails (demo plan date). Unchecked: V2-off screenshot identity, light theme.
+- Process: Claude returns the whole `Arya-Fit-ChatGPT-pack.zip` every time (owner is phone-only). Recorded in docs/v2/CLAUDE_HANDOFF_NOTE.md.
+
+## V2 P4 + P5 — Plan/Plans and Progress (2026-11-03; static checks pending)
+- Added `web/js/ui/v2-plan.js`, `web/css/v2/plan.css`, `web/js/ui/v2-progress.js`, and `web/css/v2/progress.css`; registered all four in `index.html` and the service-worker `SHELL` list. Cache bumped from `arya-v124` to `arya-v125`.
+- P4 styles the existing Plan intro, week poster, week strip/date circles, All days calendar, close-day action bar, and `#ax-v-plans` management/import/export forms. Existing week/day buttons, plan switcher/generator, sheet actions, handlers, IDs and persistence are preserved. `#ax-day` remains the P3 surface and is not restyled by P4.
+- P5 styles existing Progress segments, generated metric tiles, weekly bars, step chart/history, PR cards, recovery/body map, badges and share-related surfaces. All values and charts continue to come from the existing progress renderers and saved local data.
+- Both enhancers only add/remove a scoped readiness class on their existing view when `html.v2` is active; they observe rerenders and wrap `go()`/`prog()` after boot without replacing data or event handlers. V2-off removes those classes and leaves V1 styles untouched.
+- Browser-based luminance/contrast scan at 390×844, computed styles, live toggle, and phone rendering could not be run in this sandbox; verify those in Claude/real browser. Static checks and Node tests are recorded in the delivery response.
+
+## V2 P4+P5 review fixes (Claude, v126)
+- `v2-progress.js`: html class MutationObserver ran apply() on every class change and broke `browser_test` 'damaged data: user told'; now acts only when the `v2` class flips. Bisected by removing hooks one by one.
+- `progress.css`: removed cream box-shadow ring on `.ax-pseg`. `plan.css`: V1 border chevron overlapped '+' in `.ax-all summary`. Cache `arya-v127` (also `#ax-v-prog .ax-pseg` needs the ID selector to beat V1 sticky mask ring).
+- Known: after V2 off, `.v2-today-*` nodes stay in DOM (hidden). Duplicate 'Progress, in context' header in Progress.
+
+## V2 P6 + P7 — Exercises, Settings and final polish (2026-11-03; static checks + Node tests pass; browser navigation blocked; not on a phone)
+- Added `web/js/ui/v2-exercises.js` and `web/css/v2/exercises-settings.css`: the existing Add Exercise sheet now includes local exercise search, pattern/equipment filters, exercise detail cues, A/B picture switching and a route back into the existing custom exercise name/sets/reps form. Existing `axAdd`, `axSheet`, plan data and save handlers remain authoritative.
+- Added `web/js/ui/v2-settings.js`: grouped Settings hub search and V2 Appearance controls (Dark/Light/System, six accents, Auto/Full/Lite/Solid effects, Reduce animation and Classic look). Existing settings sections are still moved rather than rebuilt; reminders, voice, backup/import/export, plan management and About remain the original controls.
+- Added `web/js/ui/v2-polish.js` and `web/css/v2/polish.css`: light/system token resolution, focus/label/reduced-motion/accessibility styling, grouped drawer/toast/sheet/onboarding/splash/empty-state/form surfaces, Smart Today/Today avatar spacing, session hero spacing, stopwatch TIME label suppression and duplicate Progress subheading removal. V2 Today-generated nodes are removed from the DOM on a live switch off.
+- New installs default to V2; existing installs with saved data get a one-time “Try the new look” prompt. The original “New look (V2)” control remains unchanged for V1; V2 shows a separate “Classic look” switch. Theme, accent, effects and motion preferences use existing `PR` storage and backup restore whitelist. No engines or exercise data were changed.
+- Registered all new CSS/JS in `web/index.html` and service-worker `SHELL`; cache bumped from `arya-v127` to `arya-v128`. `python3 tools/check-web.py` passes; all 15 Node test files pass. Python UI tests could not navigate to localhost (`ERR_BLOCKED_BY_ADMINISTRATOR`), despite Chromium being present; computed-style/luminance scan, screenshots, live UI toggle and phone rendering remain for Claude's final QA.
+
+
+## V2 v129 — minor QA bug fixes (2026-11-03; check-web + all Node tests pass; Playwright unavailable; not on a phone)
+- Fixed light-theme Georgia leakage: V2 now overrides the V1 Old Money universal Georgia `!important` rule throughout the V2 tree, then restores only the intentional Arya Display and Instrument Serif faces.
+- About version label now uses the actual CI `versionName` pattern (`1.<workflow run>`) from `AXBUILD.run`; unbuilt fallback is `1.0.0`, not `v99`.
+- V2-off now removes session hero/run map/history nodes and restores the original flat Settings rows while removing V2-only Settings controls/cards; Today and shell cleanup is retained and widened.
+- Cache bumped from `arya-v128` to `arya-v129`. `python3 tools/check-web.py`, all 15 Node test files, and JS syntax checks pass. Playwright could not launch because its bundled Chromium executable is absent; verify light-theme cards, About version on a built APK, and repeated V2 on/off transitions in final browser/phone QA.
+
+
+## V2 full audit watchlist — 2026-11-03
+- Added `docs/v2/V2_WATCHOUT.md` with 16 outstanding findings grouped by P0/P1/P2, including confirmed source issues and runtime/release verification gaps.
+- Important corrections to the prior v129 note: `#ax-credits` still contains a hardcoded `v86` label, and `v2-polish.js` still hides the stopwatch `TIME` label without gating that behavior on V2. Treat both as open.
+- The watchlist is intentionally not a code fix. Complete the P0 fixes, browser QA, accessibility/effects checks and physical Android verification before release.

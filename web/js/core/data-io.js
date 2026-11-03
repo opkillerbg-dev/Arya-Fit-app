@@ -25,6 +25,9 @@ function restorePrefs(pr){if(!pr||typeof pr!="object")return;var num=function(x)
   if(Number.isInteger(pr.spm)&&pr.spm>=100&&pr.spm<=220)PR.spm=pr.spm;
   if(typeof pr.acc=="string"&&/^#[0-9a-f]{6}$/i.test(pr.acc))PR.acc=pr.acc;
   if(typeof pr.v2Accent=="string"&&/^(blue|ruby|teal|orange|gold)$/.test(pr.v2Accent))PR.v2Accent=pr.v2Accent;
+  if(typeof pr.v2Theme=="string"&&/^(dark|light|system)$/.test(pr.v2Theme))PR.v2Theme=pr.v2Theme;
+  if(pr.v2ReduceMotion===0||pr.v2ReduceMotion===1)PR.v2ReduceMotion=pr.v2ReduceMotion;
+  if(pr.v2Intro===0||pr.v2Intro===1)PR.v2Intro=pr.v2Intro;
   if(typeof pr.v2Fx=="string"&&/^(full|lite|solid)$/.test(pr.v2Fx))PR.v2Fx=pr.v2Fx;
   if(typeof pr.goal=="number"&&pr.goal>=.5&&pr.goal<=42)PR.goal=pr.goal;
   if(typeof pr.skin=="string"&&/^(classic|oldmoney|modern|professional|midnight|sunset)$/.test(pr.skin))PR.skin=pr.skin;

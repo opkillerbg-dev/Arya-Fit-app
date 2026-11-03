@@ -1,7 +1,7 @@
 /* V2 foundation state. Pure helpers are exported for node tests; DOM work stays optional. */
 (function(root){
   "use strict";
-  var FX={full:1,lite:1,solid:1};
+  var FX={full:1,lite:1,solid:1},priorTheme=null,priorThemeHad=false,wasV2=false;
   function choice(info,opt){
     info=info||{};opt=opt||{};
     if(opt.reducedTransparency)return "solid";
@@ -20,16 +20,18 @@
   function pref(){return root.PR&&typeof root.PR==="object"?root.PR:null}
   function apply(){
     if(!root.document)return;
-    var p=pref()||{},h=document.documentElement,on=p.v2===1;
-    h.classList.toggle("v2",on);
+    var p=pref()||{},h=document.documentElement,on=p.v2===1,th=p.v2Theme||"dark",resolved=th;
+    if(on&&!wasV2){priorTheme=h.getAttribute("data-theme");priorThemeHad=h.hasAttribute("data-theme")}
+    h.classList.toggle("v2",on);if(on){if(th==="system")resolved=root.matchMedia&&root.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";h.setAttribute("data-theme",resolved);h.setAttribute("data-theme-mode",th);h.setAttribute("data-v2-motion",p.v2ReduceMotion?"reduce":"full")}else{h.removeAttribute("data-v2-motion");h.removeAttribute("data-theme-mode");if(wasV2){if(priorThemeHad)h.setAttribute("data-theme",priorTheme);else h.removeAttribute("data-theme")}}wasV2=on;
     if(p.v2Accent)h.setAttribute("data-accent",p.v2Accent);else h.removeAttribute("data-accent");
     h.setAttribute("data-fx",choice(root.axBootInfo,{forced:p.v2Fx,liteSignal:h.classList.contains("ax-lite-glass"),reducedMotion:root.matchMedia&&root.matchMedia("(prefers-reduced-motion: reduce)").matches,reducedTransparency:root.matchMedia&&root.matchMedia("(prefers-reduced-transparency: reduce)").matches}));
   }
   function enabled(on){var p=pref();if(!p)return false;p.v2=on?1:0;try{root.save&&root.save()}catch(e){}api.apply();return true}
-  function accent(name){var p=pref();if(!p||!(/^(blue|ruby|teal|orange|gold)$/.test(name||"")))return false;p.v2Accent=name;try{root.save&&root.save()}catch(e){}api.apply();return true}
-  function fx(name){var p=pref();if(!p||!FX[name])return false;p.v2Fx=name;try{root.save&&root.save()}catch(e){}api.apply();return true}
-  function init(){apply();if(root.addEventListener)root.addEventListener("load",apply)}
-  var api={chooseFx:choice,scrollDirection:scrollDirection,apply:apply,setEnabled:enabled,setAccent:accent,setFx:fx,init:init};
+  function accent(name){var p=pref();if(!p||!(/^(green|blue|ruby|teal|orange|gold)$/.test(name||"")))return false;if(name==="green")delete p.v2Accent;else p.v2Accent=name;try{root.save&&root.save()}catch(e){}api.apply();return true}
+  function fx(name){var p=pref();if(!p||!(FX[name]||name==="auto"))return false;if(name==="auto")delete p.v2Fx;else p.v2Fx=name;try{root.save&&root.save()}catch(e){}api.apply();return true}
+  function init(){apply();if(root.addEventListener)root.addEventListener("load",apply);try{var mq=root.matchMedia("(prefers-color-scheme: dark)"),fn=function(){var p=pref()||{};if(p.v2Theme==="system")apply()};if(mq.addEventListener)mq.addEventListener("change",fn);else if(mq.addListener)mq.addListener(fn)}catch(e){}}
+  function setTheme(name){var p=pref();if(!p||!/^(dark|light|system)$/.test(name||""))return false;p.v2Theme=name;try{root.save&&root.save()}catch(e){}api.apply();return true}
+  var api={chooseFx:choice,scrollDirection:scrollDirection,apply:apply,setEnabled:enabled,setAccent:accent,setFx:fx,setTheme:setTheme,init:init};
   root.AxV2=api;
   if(root.document){if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init()}
   if(typeof module!=="undefined"&&module.exports)module.exports=api;

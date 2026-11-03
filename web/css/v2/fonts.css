@@ -1,0 +1,8 @@
+/* Latin files are intentionally small; other scripts fall back to the platform font. */
+@font-face{font-family:"Arya Display Fallback";src:local("Arial Narrow");size-adjust:102%;ascent-override:88%;descent-override:22%}
+@font-face{font-family:"Arya Editorial Fallback";src:local("Georgia");size-adjust:98%;ascent-override:92%;descent-override:24%}
+@font-face{font-family:"Arya UI Fallback";src:local("Arial");size-adjust:96%;ascent-override:92%;descent-override:24%}
+@font-face{font-family:"Arya Display";src:url("../../fonts/big-shoulders-display-900-latin.woff2") format("woff2");font-style:normal;font-weight:800 900;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+2000-206F,U+20AC}
+@font-face{font-family:"Arya Editorial";src:url("../../fonts/instrument-serif-italic-latin.woff2") format("woff2");font-style:italic;font-weight:400;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+2000-206F,U+20AC}
+@font-face{font-family:"Arya UI";src:url("../../fonts/inter-400-latin.woff2") format("woff2");font-style:normal;font-weight:400 500;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+2000-206F,U+20AC}
+@font-face{font-family:"Arya UI";src:url("../../fonts/inter-700-latin.woff2") format("woff2");font-style:normal;font-weight:600 800;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+2000-206F,U+20AC}

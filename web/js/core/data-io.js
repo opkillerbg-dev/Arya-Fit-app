@@ -20,10 +20,12 @@ function clean(p,nd){var o={};nd=nd||ND;for(var key in p){var v=p[key],m;
   else if((m=/^(?:[wrgsx]|jt|wk)(\d{1,3})$/.exec(key))&&+m[1]<nd&&typeof v=="number"&&v>0&&v<200000)o[key]=Math.round(v)}return o}
 function restorePrefs(pr){if(!pr||typeof pr!="object")return;var num=function(x){return typeof x=="number"&&isFinite(x)},di=/^\d{1,3}$/;
   if(pr.brain&&typeof pr.brain=="object"){var Br={};Object.keys(pr.brain).slice(-400).forEach(function(d){var x=pr.brain[d];if(!/^\d{4}-\d{2}-\d{2}$/.test(d)||!x||typeof x!="object")return;var y={};["s","e","o"].forEach(function(k){if(Number.isInteger(x[k])&&x[k]>=0&&x[k]<=2)y[k]=x[k]});if(Object.keys(y).length)Br[d]=y});if(Object.keys(Br).length)PR.brain=Br}
-  ["snd","auto","gps","hap","exi","exAnim","nga","ncp","voi","ap","met","amo"].forEach(function(k){if(pr[k]===0||pr[k]===1)PR[k]=pr[k]});
+  ["snd","auto","gps","hap","exi","exAnim","nga","ncp","voi","ap","met","amo","v2"].forEach(function(k){if(pr[k]===0||pr[k]===1)PR[k]=pr[k]});
   if(typeof pr.gls==="boolean")PR.gls=pr.gls;
   if(Number.isInteger(pr.spm)&&pr.spm>=100&&pr.spm<=220)PR.spm=pr.spm;
   if(typeof pr.acc=="string"&&/^#[0-9a-f]{6}$/i.test(pr.acc))PR.acc=pr.acc;
+  if(typeof pr.v2Accent=="string"&&/^(blue|ruby|teal|orange|gold)$/.test(pr.v2Accent))PR.v2Accent=pr.v2Accent;
+  if(typeof pr.v2Fx=="string"&&/^(full|lite|solid)$/.test(pr.v2Fx))PR.v2Fx=pr.v2Fx;
   if(typeof pr.goal=="number"&&pr.goal>=.5&&pr.goal<=42)PR.goal=pr.goal;
   if(typeof pr.skin=="string"&&/^(classic|oldmoney|modern|professional|midnight|sunset)$/.test(pr.skin))PR.skin=pr.skin;
   if(Number.isInteger(pr.lvl)&&pr.lvl>=0&&pr.lvl<=11)PR.lvl=pr.lvl;

@@ -1,0 +1,26 @@
+/* Arya Fit V2 foundations. Every token is deliberately scoped so V1 remains untouched. */
+html.v2 {
+  --v2-bg:#000;--v2-surface:#1c1c1e;--v2-surface-2:#2c2c2e;
+  --v2-line:rgba(255,255,255,.1);--v2-line-strong:rgba(255,255,255,.25);
+  --v2-text:#fff;--v2-text-2:rgba(255,255,255,.72);--v2-text-3:rgba(255,255,255,.48);
+  --v2-accent:#30d158;--v2-accent-ink:#04210e;--v2-danger:#ff453a;
+  --v2-glass-fill:rgba(40,40,44,.55);--v2-glass-solid:#232326;
+  --v2-glass-edge:rgba(255,255,255,.16);--v2-glass-hi:rgba(255,255,255,.1);
+  --r-card:28px;--r-group:24px;--r-sheet:32px;--r-btn:16px;--r-pill:999px;
+  --sp-1:.25rem;--sp-2:.5rem;--sp-3:.75rem;--sp-4:1rem;--sp-5:1.5rem;--sp-6:2rem;
+  --tap:48px;--ease:cubic-bezier(.2,.8,.2,1);--dur-1:140ms;--dur-2:240ms;--dur-3:380ms;
+  --t-hero:900 clamp(3.5rem,17vw,5.25rem)/.88 "Arya Display","Arya Display Fallback",Impact,sans-serif;
+  --t-title:900 2.5rem/.92 "Arya Display","Arya Display Fallback",Impact,sans-serif;
+  --t-section:900 1.75rem/1 "Arya Display","Arya Display Fallback",Impact,sans-serif;
+  --t-numeral:900 clamp(4rem,22vw,7rem)/.8 "Arya Display","Arya Display Fallback",Impact,sans-serif;
+  --t-eyebrow:700 .6875rem/1.2 "Arya UI","Arya UI Fallback",system-ui,sans-serif;
+  --t-accent:italic 400 1.15em/1 "Arya Editorial","Arya Editorial Fallback",Georgia,serif;
+  --t-card:700 1.0625rem/1.2 "Arya UI","Arya UI Fallback",system-ui,sans-serif;
+  --t-body:400 1rem/1.45 "Arya UI","Arya UI Fallback",system-ui,sans-serif;
+  --t-caption:700 .75rem/1.2 "Arya UI","Arya UI Fallback",system-ui,sans-serif;
+}
+html.v2[data-accent="blue"]{--v2-accent:#4f7bff;--v2-accent-ink:#061432}
+html.v2[data-accent="ruby"]{--v2-accent:#ff3b5c;--v2-accent-ink:#30030c}
+html.v2[data-accent="teal"]{--v2-accent:#3fcfae;--v2-accent-ink:#03241e}
+html.v2[data-accent="orange"]{--v2-accent:#ff7a45;--v2-accent-ink:#321005}
+html.v2[data-accent="gold"]{--v2-accent:#e8c15a;--v2-accent-ink:#2b2100}

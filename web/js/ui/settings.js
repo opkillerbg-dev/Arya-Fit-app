@@ -62,7 +62,13 @@
       var r=document.documentElement;
       try{localStorage.setItem("axLite",tl.checked?"1":"0");localStorage.setItem("axLiteAuto","user")}catch(e){}
       r.classList.toggle("ax-lite-glass",tl.checked);r.setAttribute("data-glass-mode",tl.checked?"efficient":"full");
+      if(window.AxV2)AxV2.apply();
     });
+    var v2r=document.createElement("label");v2r.className="row";
+    v2r.innerHTML='<span><b>New look (V2)</b><em>Try the new cinematic interface. You can switch back here at any time.</em></span><input class="sw2" type="checkbox" id="t-v2">';
+    card0.insertBefore(v2r,lr.nextSibling);
+    var tv2=v2r.querySelector("#t-v2");tv2.checked=!!(window.PR&&PR.v2===1);
+    tv2.addEventListener("change",function(){if(window.AxV2&&AxV2.setEnabled(tv2.checked)){try{toast(tv2.checked?"New look enabled":"Classic look restored")}catch(e){}}else{tv2.checked=!tv2.checked}});
     drain(run,pRun);
     drain(voice,pAl);
     drain(tools,pPl);

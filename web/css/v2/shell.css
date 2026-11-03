@@ -1,0 +1,73 @@
+/* V2 app shell. Every rule is gated by html.v2 so the classic UI is unchanged. */
+html.v2{background:var(--v2-bg);color:var(--v2-text);font-family:"Arya UI","Arya UI Fallback",system-ui,sans-serif;scroll-padding-bottom:calc(112px + env(safe-area-inset-bottom,0px));}
+html.v2 body{background:var(--v2-bg);}
+html.v2 .v2-shell{min-height:100dvh;background:var(--v2-bg);color:var(--v2-text);padding:max(var(--sp-5),env(safe-area-inset-top,0px)) var(--sp-4) calc(132px + env(safe-area-inset-bottom,0px));}
+html.v2 .v2-top-fade{position:fixed;z-index:70;inset:0 0 auto;height:calc(env(safe-area-inset-top,0px) + 28px);pointer-events:none;background:linear-gradient(var(--v2-bg),transparent);}
+html.v2[data-fx="solid"] .v2-top-fade{background:var(--v2-bg)}
+html.v2 :focus-visible{outline:2px solid var(--v2-accent);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){html.v2 *,html.v2 *:before,html.v2 *:after{animation-duration:1ms!important;transition-duration:1ms!important;scroll-behavior:auto!important}}
+
+html.v2 #ax-nav,html.v2 .ax-top{display:none!important}
+html.v2 .v2-shell-controls{position:fixed;z-index:75;left:16px;right:16px;bottom:calc(12px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;align-items:stretch;gap:8px;pointer-events:none}
+html.v2 .v2-nav-wrap{position:relative;min-height:64px;pointer-events:none}
+html.v2 .v2-nav,html.v2 .v2-collapsed{position:absolute;inset:0;display:flex;align-items:center;gap:8px;pointer-events:auto;transition:opacity var(--dur-2) var(--ease),transform var(--dur-2) var(--ease);will-change:transform,opacity}
+html.v2 .v2-nav{padding:6px;border-radius:var(--r-pill)}
+html.v2 .v2-glass{background:linear-gradient(180deg,var(--v2-glass-hi),transparent 35%),var(--v2-glass-solid);border:1px solid var(--v2-glass-edge);box-shadow:0 10px 30px rgba(0,0,0,.25)}
+html.v2[data-fx="full"] .v2-nav,html.v2[data-fx="full"] .v2-mini,html.v2[data-fx="full"] .v2-popover{background:linear-gradient(180deg,var(--v2-glass-hi),transparent 35%),var(--v2-glass-fill);-webkit-backdrop-filter:blur(24px) saturate(1.6);backdrop-filter:blur(24px) saturate(1.6)}
+html.v2[data-fx="solid"] .v2-glass{background:var(--v2-glass-solid);box-shadow:none}
+html.v2 .v2-tab{position:relative;z-index:1;display:flex;flex:1;min-width:0;min-height:50px;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:0;border-radius:var(--r-pill);background:transparent;color:var(--v2-text-2);font:700 11px/1.1 "Arya UI","Arya UI Fallback",system-ui,sans-serif;cursor:pointer}
+html.v2 .v2-tab[aria-current="page"]{background:var(--v2-surface-2);color:var(--v2-text)}
+html.v2 .v2-tab svg,html.v2 .v2-icon-button svg,html.v2 .v2-avatar svg,html.v2 .v2-pop-row svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+html.v2 .v2-icon-button{display:grid;place-items:center;flex:0 0 52px;width:52px;height:52px;padding:0;border:1px solid var(--v2-glass-edge);border-radius:50%;background:var(--v2-glass-solid);color:var(--v2-text);cursor:pointer}
+html.v2 .v2-search-button{margin-left:2px}
+html.v2 .v2-collapsed{justify-content:space-between;opacity:0;transform:translateY(8px) scale(.97);pointer-events:none}
+html.v2 .v2-nav-wrap.is-collapsed .v2-nav{opacity:0;transform:translateY(8px) scale(.97);pointer-events:none}
+html.v2 .v2-nav-wrap.is-collapsed .v2-collapsed{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+html.v2 .v2-current-tab{display:flex;align-items:center;justify-content:center;width:58px;height:58px;border:1px solid var(--v2-glass-edge);border-radius:50%;background:var(--v2-glass-solid);color:var(--v2-text)}
+html.v2 .v2-current-tab svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+html.v2 .v2-mini{display:flex;align-items:center;gap:10px;min-height:64px;padding:7px 10px;border-radius:var(--r-pill);pointer-events:auto;opacity:0;transform:translateY(8px);transition:opacity var(--dur-2) var(--ease),transform var(--dur-2) var(--ease);will-change:transform,opacity}
+html.v2 .v2-mini.is-visible{opacity:1;transform:translateY(0)}
+html.v2 .v2-mini img,html.v2 .v2-mini-thumb{display:grid;place-items:center;width:48px;height:48px;flex:0 0 48px;border-radius:14px;object-fit:cover;background:var(--v2-surface-2);color:var(--v2-accent)}
+html.v2 .v2-mini-thumb svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+html.v2 .v2-mini-copy{min-width:0;flex:1}
+html.v2 .v2-mini-copy b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:700 14px/1.2 "Arya UI","Arya UI Fallback",system-ui,sans-serif}
+html.v2 .v2-mini-copy span{display:block;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--v2-text-2);font:600 11px/1.2 "Arya UI","Arya UI Fallback",system-ui,sans-serif}
+html.v2 .v2-mini-action{display:grid;place-items:center;width:42px;height:42px;flex:0 0 42px;border:0;border-radius:50%;background:var(--v2-surface-2);color:var(--v2-text)}
+html.v2 .v2-mini-action svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+html.v2 .v2-avatar{position:fixed;z-index:74;top:calc(env(safe-area-inset-top,0px) + 10px);right:16px;display:grid;place-items:center;width:44px;height:44px;border:1px solid var(--v2-glass-edge);border-radius:50%;background:var(--v2-glass-solid);color:var(--v2-text);cursor:pointer}
+html.v2 .v2-avatar-mark{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--v2-accent);color:var(--v2-accent-ink);font:800 13px/1 "Arya UI",system-ui,sans-serif}
+html.v2 .v2-popover-scrim{position:fixed;z-index:89;inset:0;background:rgba(0,0,0,.52);opacity:0;pointer-events:none;transition:opacity var(--dur-2) var(--ease)}
+html.v2 .v2-popover{position:fixed;z-index:90;top:calc(env(safe-area-inset-top,0px) + 62px);right:14px;width:min(300px,calc(100vw - 28px));padding:18px;border-radius:var(--r-sheet);opacity:0;transform:translateY(-8px) scale(.98);pointer-events:none;transition:opacity var(--dur-2) var(--ease),transform var(--dur-2) var(--ease);will-change:transform,opacity}
+html.v2 .v2-popover.is-open,html.v2 .v2-popover-scrim.is-open{opacity:1;pointer-events:auto}
+html.v2 .v2-popover.is-open{transform:translateY(0) scale(1)}
+html.v2 .v2-popover-title{margin:0 0 12px;font:var(--t-section)}
+html.v2 .v2-popover-account{padding:12px 0 14px;border-bottom:1px solid var(--v2-line);color:var(--v2-text-2);font-size:13px}
+html.v2 .v2-pop-row{display:flex;align-items:center;gap:12px;width:100%;min-height:50px;padding:0 4px;border:0;background:transparent;color:var(--v2-text);text-align:left;font:600 14px/1.2 "Arya UI","Arya UI Fallback",system-ui,sans-serif}
+html.v2 .v2-pop-row svg{width:20px;height:20px;color:var(--v2-text-2)}
+html.v2[data-fx="solid"] .v2-popover,html.v2[data-fx="solid"] .v2-mini,html.v2[data-fx="solid"] .v2-nav,html.v2[data-fx="solid"] .v2-collapsed{box-shadow:none;transition:opacity var(--dur-1) var(--ease)}
+@media (min-width:700px){html.v2 .v2-shell-controls{left:50%;right:auto;width:min(560px,calc(100vw - 32px));transform:translateX(-50%)}html.v2 .v2-avatar{right:max(20px,calc((100vw - 560px)/2))}}
+html.v2 .v2-mini-collapsed{display:none;min-width:0;flex:1;max-width:none;min-height:58px;padding:5px 7px;box-shadow:none}
+html.v2 .v2-mini-collapsed .v2-mini-thumb{width:40px;height:40px;flex-basis:40px}
+html.v2 .v2-mini-collapsed .v2-mini-action{width:36px;height:36px;flex-basis:36px}
+html.v2 .v2-shell-controls.is-collapsed>.v2-mini{opacity:0;transform:translateY(8px);pointer-events:none}
+html.v2 .v2-nav-wrap.is-collapsed .v2-mini-collapsed{display:flex}
+html.v2 .v2-nav-wrap.is-collapsed .v2-current-tab{flex:0 0 58px}
+html.v2 .v2-nav-wrap.is-collapsed .v2-search-button{flex:0 0 58px;width:58px;height:58px}
+html.v2 .v2-avatar[hidden]{display:none}
+
+html.v2[data-fx="full"] .v2-shell-controls.is-collapsed>.v2-mini,html.v2[data-fx="full"] .v2-nav-wrap.is-collapsed .v2-nav{-webkit-backdrop-filter:none;backdrop-filter:none}
+/* The expanded mini-session floats above the navigation without reserving a blank row. */
+html.v2 .v2-shell-controls>.v2-mini{position:absolute;left:0;right:0;bottom:72px}
+html.v2 .v2-nav-wrap .v2-mini-collapsed{position:relative;left:auto;right:auto;bottom:auto}
+html.v2 .v2-bottom-row{display:flex;align-items:center;gap:8px;pointer-events:none}
+html.v2 .v2-bottom-row>.v2-nav-wrap{flex:1;min-width:0}
+html.v2 .v2-bottom-row>.v2-icon-button{pointer-events:auto;flex:0 0 64px;width:64px;height:64px}
+html.v2 .v2-nav{min-height:64px;width:100%}
+html.v2 .v2-current-tab{width:58px;flex:0 0 58px}
+
+/* v119b contrast fix: V1 skins color h2/b elements, so V2 text colors are set with higher specificity */
+html.v2 .v2-mini,html.v2 .v2-popover,html.v2 .v2-nav{color:var(--v2-text)}
+html.v2 .v2-popover h2.v2-popover-title,html.v2 .v2-mini .v2-mini-copy b{color:var(--v2-text)}
+html.v2 .v2-popover .v2-popover-account{color:var(--v2-text-2)}
+/* v120: Old Money (V1 skin) forces Georgia with !important on everything; the V2 shell keeps the V2 UI font */
+html.v2 .v2-shell-controls,html.v2 .v2-shell-controls *,html.v2 .v2-popover,html.v2 .v2-popover *,html.v2 .v2-avatar{font-family:"Arya UI","Arya UI Fallback",system-ui,sans-serif!important}

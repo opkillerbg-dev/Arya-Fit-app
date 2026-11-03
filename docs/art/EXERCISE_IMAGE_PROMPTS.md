@@ -1,16 +1,16 @@
-# Arya Fit: picture prompts for the 77 exercises that have none (147 pictures)
+# Arya Fit: picture prompts for the 77 exercises that have none (165 pictures)
 
-Made at app v116. Goal: 147 square pictures in the SAME style as the existing 62 exercise pictures, ready for ChatGPT image generation. Colour-theme masks come afterwards (see the last section).
+Made at app v116. Goal: 165 square pictures in the SAME style as the existing 62 exercise pictures (1 to 4 frames per exercise; 3 or 4 where two pictures would not explain the movement), ready for ChatGPT image generation. Colour-theme masks come afterwards (see the last section).
 
 ## How to use this file (ChatGPT)
 
 1. Start a NEW chat. Attach 3 existing pictures as the style reference: `web/images/exercises/arya-ex-push-ups-a.webp`, `arya-ex-bodyweight-squats-a.webp`, `arya-ex-chair-dips-b.webp` (convert to PNG or JPG first if ChatGPT refuses webp).
 2. Paste the **MASTER STYLE BLOCK** below once, as the first message. Say: "Remember this for the whole chat. Reply only OK."
 3. For each picture, paste ONE **frame prompt** (the grey quoted text under each exercise). Ask for one image at a time.
-4. Always generate frame **A** first. For frame **B/C**, attach the finished A picture and add: "Same character, same size, same position, same line weight, same colours. Only change the pose as described."
+4. Always generate frame **A** first. For frame **B, C or D**, attach the finished A picture and add: "Same character, same size, same position, same line weight, same colours. Only change the pose as described."
 5. If the face, outfit colour or mat colour drifts, say: "Match the reference style exactly. Dark green tank top and shorts, sage mat, cream background." Do not accept pictures with text, arrows or logos.
 6. Keep about 8 exercises per chat. Long chats drift; start a new chat and paste the master block again.
-7. Save each result as 1024 x 1024 and name it exactly as shown (`arya-ex-<slug>-<letter>.webp`). A single-frame exercise has only `-a`.
+7. Save each result as 1024 x 1024 and name it exactly as shown (`arya-ex-<slug>-<letter>.webp`). Holds have only `-a`; some exercises have 3 or 4 frames (`-c`, `-d`).
 
 ## Existing look (what to match)
 
@@ -56,10 +56,10 @@ OUTPUT: one image per request, 1024 x 1024.
 | 1 | Wall push-ups | `arya-ex-wall-push-ups-a.webp`, `arya-ex-wall-push-ups-b.webp` | none (wall) |
 | 2 | Knee push-ups | `arya-ex-knee-push-ups-a.webp`, `arya-ex-knee-push-ups-b.webp` | none (mat) |
 | 3 | Decline push-ups | `arya-ex-decline-push-ups-a.webp`, `arya-ex-decline-push-ups-b.webp` | chair |
-| 4 | Archer push-ups | `arya-ex-archer-push-ups-a.webp`, `arya-ex-archer-push-ups-b.webp` | none (mat) |
+| 4 | Archer push-ups | `arya-ex-archer-push-ups-a.webp`, `arya-ex-archer-push-ups-b.webp`, `arya-ex-archer-push-ups-c.webp` | none (mat) |
 | 5 | Pseudo-planche push-ups | `arya-ex-pseudo-planche-push-ups-a.webp`, `arya-ex-pseudo-planche-push-ups-b.webp` | none (mat) |
 | 6 | Weighted push-ups | `arya-ex-weighted-push-ups-a.webp`, `arya-ex-weighted-push-ups-b.webp` | backpack |
-| 7 | One-arm push-up negatives | `arya-ex-one-arm-push-up-negatives-a.webp`, `arya-ex-one-arm-push-up-negatives-b.webp` | none (mat) |
+| 7 | One-arm push-up negatives | `arya-ex-one-arm-push-up-negatives-a.webp`, `arya-ex-one-arm-push-up-negatives-b.webp`, `arya-ex-one-arm-push-up-negatives-c.webp` | none (mat) |
 | 8 | Machine chest press | `arya-ex-machine-chest-press-a.webp`, `arya-ex-machine-chest-press-b.webp` | gym machine |
 | 9 | Dumbbell bench press | `arya-ex-dumbbell-bench-press-a.webp`, `arya-ex-dumbbell-bench-press-b.webp` | dumbbells, flat bench |
 | 10 | Dumbbell fly | `arya-ex-dumbbell-fly-a.webp`, `arya-ex-dumbbell-fly-b.webp` | dumbbells, flat bench |
@@ -72,19 +72,19 @@ OUTPUT: one image per request, 1024 x 1024.
 | 17 | Dumbbell shoulder press | `arya-ex-dumbbell-shoulder-press-a.webp`, `arya-ex-dumbbell-shoulder-press-b.webp` | dumbbells |
 | 18 | Elevated pike push-ups | `arya-ex-elevated-pike-push-ups-a.webp`, `arya-ex-elevated-pike-push-ups-b.webp` | chair |
 | 19 | Barbell overhead press | `arya-ex-barbell-overhead-press-a.webp`, `arya-ex-barbell-overhead-press-b.webp` | barbell |
-| 20 | Wall handstand hold | `arya-ex-wall-handstand-hold-a.webp` | wall |
+| 20 | Wall handstand hold | `arya-ex-wall-handstand-hold-a.webp`, `arya-ex-wall-handstand-hold-b.webp` | wall |
 | 21 | Handstand push-up negatives | `arya-ex-handstand-push-up-negatives-a.webp`, `arya-ex-handstand-push-up-negatives-b.webp` | wall, thick mat |
 | 22 | Dead hang | `arya-ex-dead-hang-a.webp` | pull-up bar |
 | 23 | Scapular pull-ups | `arya-ex-scapular-pull-ups-a.webp`, `arya-ex-scapular-pull-ups-b.webp` | pull-up bar |
 | 24 | Band-assisted pull-ups | `arya-ex-band-assisted-pull-ups-a.webp`, `arya-ex-band-assisted-pull-ups-b.webp` | pull-up bar, resistance band |
-| 25 | Negative pull-ups | `arya-ex-negative-pull-ups-a.webp`, `arya-ex-negative-pull-ups-b.webp` | pull-up bar, step/box |
+| 25 | Negative pull-ups | `arya-ex-negative-pull-ups-a.webp`, `arya-ex-negative-pull-ups-b.webp`, `arya-ex-negative-pull-ups-c.webp` | pull-up bar, step/box |
 | 26 | Lat pulldown | `arya-ex-lat-pulldown-a.webp`, `arya-ex-lat-pulldown-b.webp` | cable machine |
 | 27 | Assisted pull-up machine | `arya-ex-assisted-pull-up-machine-a.webp`, `arya-ex-assisted-pull-up-machine-b.webp` | assisted pull-up machine |
 | 28 | Chin-ups | `arya-ex-chin-ups-a.webp`, `arya-ex-chin-ups-b.webp` | pull-up bar |
 | 29 | Pull-ups | `arya-ex-pull-ups-a.webp`, `arya-ex-pull-ups-b.webp` | pull-up bar |
 | 30 | Wide pull-ups | `arya-ex-wide-pull-ups-a.webp`, `arya-ex-wide-pull-ups-b.webp` | pull-up bar |
 | 31 | Weighted pull-ups | `arya-ex-weighted-pull-ups-a.webp`, `arya-ex-weighted-pull-ups-b.webp` | pull-up bar, backpack |
-| 32 | Archer pull-ups | `arya-ex-archer-pull-ups-a.webp`, `arya-ex-archer-pull-ups-b.webp` | pull-up bar |
+| 32 | Archer pull-ups | `arya-ex-archer-pull-ups-a.webp`, `arya-ex-archer-pull-ups-b.webp`, `arya-ex-archer-pull-ups-c.webp` | pull-up bar |
 | 33 | L-sit pull-ups | `arya-ex-l-sit-pull-ups-a.webp`, `arya-ex-l-sit-pull-ups-b.webp` | pull-up bar |
 | 34 | One-arm pull-up negatives | `arya-ex-one-arm-pull-up-negatives-a.webp`, `arya-ex-one-arm-pull-up-negatives-b.webp` | pull-up bar, box |
 | 35 | Inverted rows | `arya-ex-inverted-rows-a.webp`, `arya-ex-inverted-rows-b.webp` | low bar (rack or smith bar) |
@@ -99,33 +99,33 @@ OUTPUT: one image per request, 1024 x 1024.
 | 44 | Leg press | `arya-ex-leg-press-a.webp`, `arya-ex-leg-press-b.webp` | leg press machine |
 | 45 | Goblet squat | `arya-ex-goblet-squat-a.webp`, `arya-ex-goblet-squat-b.webp` | dumbbell |
 | 46 | Barbell back squat | `arya-ex-barbell-back-squat-a.webp`, `arya-ex-barbell-back-squat-b.webp` | barbell, squat rack |
-| 47 | Step-ups | `arya-ex-step-ups-a.webp`, `arya-ex-step-ups-b.webp` | chair/step |
-| 48 | Walking lunges | `arya-ex-walking-lunges-a.webp`, `arya-ex-walking-lunges-b.webp` | none (mat) |
+| 47 | Step-ups | `arya-ex-step-ups-a.webp`, `arya-ex-step-ups-b.webp`, `arya-ex-step-ups-c.webp` | chair/step |
+| 48 | Walking lunges | `arya-ex-walking-lunges-a.webp`, `arya-ex-walking-lunges-b.webp`, `arya-ex-walking-lunges-c.webp` | none (mat) |
 | 49 | Bulgarian split squats | `arya-ex-bulgarian-split-squats-a.webp`, `arya-ex-bulgarian-split-squats-b.webp` | chair |
-| 50 | Shrimp squat progression | `arya-ex-shrimp-squat-progression-a.webp`, `arya-ex-shrimp-squat-progression-b.webp` | none (mat) |
-| 51 | Pistol squat negatives | `arya-ex-pistol-squat-negatives-a.webp`, `arya-ex-pistol-squat-negatives-b.webp` | chair |
-| 52 | Pistol squat | `arya-ex-pistol-squat-a.webp`, `arya-ex-pistol-squat-b.webp` | none (mat) |
+| 50 | Shrimp squat progression | `arya-ex-shrimp-squat-progression-a.webp`, `arya-ex-shrimp-squat-progression-b.webp`, `arya-ex-shrimp-squat-progression-c.webp` | none (mat) |
+| 51 | Pistol squat negatives | `arya-ex-pistol-squat-negatives-a.webp`, `arya-ex-pistol-squat-negatives-b.webp`, `arya-ex-pistol-squat-negatives-c.webp` | chair |
+| 52 | Pistol squat | `arya-ex-pistol-squat-a.webp`, `arya-ex-pistol-squat-b.webp`, `arya-ex-pistol-squat-c.webp` | none (mat) |
 | 53 | Single-leg glute bridge | `arya-ex-single-leg-glute-bridge-a.webp`, `arya-ex-single-leg-glute-bridge-b.webp` | none (mat) |
-| 54 | Hamstring walkouts | `arya-ex-hamstring-walkouts-a.webp`, `arya-ex-hamstring-walkouts-b.webp` | none (mat) |
+| 54 | Hamstring walkouts | `arya-ex-hamstring-walkouts-a.webp`, `arya-ex-hamstring-walkouts-b.webp`, `arya-ex-hamstring-walkouts-c.webp` | none (mat) |
 | 55 | Romanian deadlift | `arya-ex-romanian-deadlift-a.webp`, `arya-ex-romanian-deadlift-b.webp` | dumbbells |
 | 56 | Hip thrust | `arya-ex-hip-thrust-a.webp`, `arya-ex-hip-thrust-b.webp` | bench, barbell |
-| 57 | Barbell deadlift | `arya-ex-barbell-deadlift-a.webp`, `arya-ex-barbell-deadlift-b.webp` | barbell |
-| 58 | Nordic curl negatives | `arya-ex-nordic-curl-negatives-a.webp`, `arya-ex-nordic-curl-negatives-b.webp` | none (mat, anchor) |
+| 57 | Barbell deadlift | `arya-ex-barbell-deadlift-a.webp`, `arya-ex-barbell-deadlift-b.webp`, `arya-ex-barbell-deadlift-c.webp` | barbell |
+| 58 | Nordic curl negatives | `arya-ex-nordic-curl-negatives-a.webp`, `arya-ex-nordic-curl-negatives-b.webp`, `arya-ex-nordic-curl-negatives-c.webp` | none (mat, anchor) |
 | 59 | Single-leg calf raise | `arya-ex-single-leg-calf-raise-a.webp`, `arya-ex-single-leg-calf-raise-b.webp` | wall (support) |
 | 60 | Pallof press | `arya-ex-pallof-press-a.webp`, `arya-ex-pallof-press-b.webp` | resistance band |
 | 61 | Cable crunch | `arya-ex-cable-crunch-a.webp`, `arya-ex-cable-crunch-b.webp` | cable machine |
-| 62 | Hollow body hold | `arya-ex-hollow-body-hold-a.webp` | none (mat) |
+| 62 | Hollow body hold | `arya-ex-hollow-body-hold-a.webp`, `arya-ex-hollow-body-hold-b.webp` | none (mat) |
 | 63 | Hanging knee raises | `arya-ex-hanging-knee-raises-a.webp`, `arya-ex-hanging-knee-raises-b.webp` | pull-up bar |
 | 64 | Hanging leg raises | `arya-ex-hanging-leg-raises-a.webp`, `arya-ex-hanging-leg-raises-b.webp` | pull-up bar |
-| 65 | Ab wheel rollout | `arya-ex-ab-wheel-rollout-a.webp`, `arya-ex-ab-wheel-rollout-b.webp` | ab wheel |
+| 65 | Ab wheel rollout | `arya-ex-ab-wheel-rollout-a.webp`, `arya-ex-ab-wheel-rollout-b.webp`, `arya-ex-ab-wheel-rollout-c.webp` | ab wheel |
 | 66 | L-sit | `arya-ex-l-sit-a.webp` | parallettes or bars |
 | 67 | Jumping jacks | `arya-ex-jumping-jacks-a.webp`, `arya-ex-jumping-jacks-b.webp` | none |
 | 68 | High knees | `arya-ex-high-knees-a.webp`, `arya-ex-high-knees-b.webp` | none |
 | 69 | Stationary bike | `arya-ex-stationary-bike-a.webp` | stationary bike |
 | 70 | Jump rope | `arya-ex-jump-rope-a.webp`, `arya-ex-jump-rope-b.webp` | jump rope |
-| 71 | Rowing machine | `arya-ex-rowing-machine-a.webp`, `arya-ex-rowing-machine-b.webp` | rowing machine |
+| 71 | Rowing machine | `arya-ex-rowing-machine-a.webp`, `arya-ex-rowing-machine-b.webp`, `arya-ex-rowing-machine-c.webp`, `arya-ex-rowing-machine-d.webp` | rowing machine |
 | 72 | Treadmill intervals | `arya-ex-treadmill-intervals-a.webp`, `arya-ex-treadmill-intervals-b.webp` | treadmill |
-| 73 | Band shoulder dislocates | `arya-ex-band-shoulder-dislocates-a.webp`, `arya-ex-band-shoulder-dislocates-b.webp` | resistance band |
+| 73 | Band shoulder dislocates | `arya-ex-band-shoulder-dislocates-a.webp`, `arya-ex-band-shoulder-dislocates-b.webp`, `arya-ex-band-shoulder-dislocates-c.webp` | resistance band |
 | 74 | Thoracic rotation | `arya-ex-thoracic-rotation-a.webp`, `arya-ex-thoracic-rotation-b.webp` | none (mat) |
 | 75 | Ankle mobility drill | `arya-ex-ankle-mobility-drill-a.webp`, `arya-ex-ankle-mobility-drill-b.webp` | wall |
 | 76 | Doorway chest stretch | `arya-ex-doorway-chest-stretch-a.webp` | door frame |
@@ -181,16 +181,20 @@ OUTPUT: one image per request, 1024 x 1024.
 ### 4. Archer push-ups
 
 **Ladder:** Push-up ladder, L4  
-**Files:** `arya-ex-archer-push-ups-a.webp`, `arya-ex-archer-push-ups-b.webp`  
+**Files:** `arya-ex-archer-push-ups-a.webp`, `arya-ex-archer-push-ups-b.webp`, `arya-ex-archer-push-ups-c.webp`  
 **Gear:** none (mat)
 
 **Frame A** (`arya-ex-archer-push-ups-a.webp`)
 
-> Exercise illustration, picture A of 2 for "Archer push-ups". VIEW: FRONT view (figure faces the viewer), full body from head to feet, slightly raised camera so the floor is visible. SETTING: On the sage mat, figure in a wide push-up position. POSE: START. Wide push-up position, hands about twice shoulder-width apart, arms straight, body straight, toes on the mat. MUST SHOW: The straight arm must be clearly straight; the bending arm clearly bent. AVOID: Both arms bent equally, hips twisting. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+> Exercise illustration, picture A of 3 for "Archer push-ups". VIEW: FRONT view (figure faces the viewer), full body from head to feet, slightly raised camera so the floor is visible. SETTING: On the sage mat, figure in a wide push-up position. POSE: START. Wide push-up position, hands about twice shoulder-width apart, arms straight, body straight, toes on the mat. MUST SHOW: The straight arm must be clearly straight; the bending arm clearly bent. AVOID: Both arms bent equally, hips twisting. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
 
 **Frame B** (`arya-ex-archer-push-ups-b.webp`)
 
-> Exercise illustration, picture B of 2 for "Archer push-ups". VIEW: FRONT view (figure faces the viewer), full body from head to feet, slightly raised camera so the floor is visible. SETTING: On the sage mat, figure in a wide push-up position. POSE: END. Weight shifted over the RIGHT hand (viewer's left): that elbow bent deeply, chest lowered toward that hand, the LEFT arm completely straight and extended out to the side with the palm flat. Body stays straight, hips level. MUST SHOW: The straight arm must be clearly straight; the bending arm clearly bent. AVOID: Both arms bent equally, hips twisting. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+> Exercise illustration, picture B of 3 for "Archer push-ups". VIEW: FRONT view (figure faces the viewer), full body from head to feet, slightly raised camera so the floor is visible. SETTING: On the sage mat, figure in a wide push-up position. POSE: END. Weight shifted over the RIGHT hand (viewer's left): that elbow bent deeply, chest lowered toward that hand, the LEFT arm completely straight and extended out to the side with the palm flat. Body stays straight, hips level. MUST SHOW: The straight arm must be clearly straight; the bending arm clearly bent. AVOID: Both arms bent equally, hips twisting. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+
+**Frame C** (`arya-ex-archer-push-ups-c.webp`)
+
+> Exercise illustration, picture C of 3 for "Archer push-ups". VIEW: FRONT view (figure faces the viewer), full body from head to feet, slightly raised camera so the floor is visible. SETTING: On the sage mat, figure in a wide push-up position. POSE: END, OTHER SIDE. Weight shifted over the LEFT hand (viewer's right): that elbow bent deeply, chest lowered toward that hand, the RIGHT arm completely straight and extended out to the side with the palm flat. Body straight, hips level, same size and position as the other frames. MUST SHOW: The straight arm must be clearly straight; the bending arm clearly bent. AVOID: Both arms bent equally, hips twisting. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
 
 
 ### 5. Pseudo-planche push-ups
@@ -226,16 +230,20 @@ OUTPUT: one image per request, 1024 x 1024.
 ### 7. One-arm push-up negatives
 
 **Ladder:** Push-up ladder, L5  
-**Files:** `arya-ex-one-arm-push-up-negatives-a.webp`, `arya-ex-one-arm-push-up-negatives-b.webp`  
+**Files:** `arya-ex-one-arm-push-up-negatives-a.webp`, `arya-ex-one-arm-push-up-negatives-b.webp`, `arya-ex-one-arm-push-up-negatives-c.webp`  
 **Gear:** none (mat)
 
 **Frame A** (`arya-ex-one-arm-push-up-negatives-a.webp`)
 
-> Exercise illustration, picture A of 2 for "One-arm push-up negatives". VIEW: Side view, facing right, slightly 3/4 from the front so the single support arm and the free arm behind the back are visible. SETTING: On the sage mat. POSE: START. Feet wide apart for balance, one hand (the near hand) flat on the mat directly under the chest, arm straight, the other hand resting behind the lower back, body straight, hips slightly turned. MUST SHOW: Feet clearly wide, free hand clearly behind the back. AVOID: Feet together, free arm in the air. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+> Exercise illustration, picture A of 3 for "One-arm push-up negatives". VIEW: Side view, facing right, slightly 3/4 from the front so the single support arm and the free arm behind the back are visible. SETTING: On the sage mat. POSE: START. Feet wide apart for balance, one hand (the near hand) flat on the mat directly under the chest, arm straight, the other hand resting behind the lower back, body straight, hips slightly turned. MUST SHOW: Feet clearly wide, free hand clearly behind the back. AVOID: Feet together, free arm in the air. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
 
 **Frame B** (`arya-ex-one-arm-push-up-negatives-b.webp`)
 
-> Exercise illustration, picture B of 2 for "One-arm push-up negatives". VIEW: Side view, facing right, slightly 3/4 from the front so the single support arm and the free arm behind the back are visible. SETTING: On the sage mat. POSE: END. Lowered position: the supporting elbow bent deeply, chest a few centimetres above the mat, free hand still behind the back, body straight, feet wide. MUST SHOW: Feet clearly wide, free hand clearly behind the back. AVOID: Feet together, free arm in the air. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+> Exercise illustration, picture B of 3 for "One-arm push-up negatives". VIEW: Side view, facing right, slightly 3/4 from the front so the single support arm and the free arm behind the back are visible. SETTING: On the sage mat. POSE: END. Lowered position: the supporting elbow bent deeply, chest a few centimetres above the mat, free hand still behind the back, body straight, feet wide. MUST SHOW: Feet clearly wide, free hand clearly behind the back. AVOID: Feet together, free arm in the air. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+
+**Frame C** (`arya-ex-one-arm-push-up-negatives-c.webp`)
+
+> Exercise illustration, picture C of 3 for "One-arm push-up negatives". VIEW: Side view, facing right, slightly 3/4 from the front so the single support arm and the free arm behind the back are visible. SETTING: On the sage mat. POSE: RESET. Both hands now on the mat under the shoulders, arms pushing back up to the top push-up position with two hands, body straight, feet still wide. This shows how to get back to the start between reps. MUST SHOW: Feet clearly wide, free hand clearly behind the back. AVOID: Feet together, free arm in the air. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
 
 
 ### 8. Machine chest press
@@ -421,12 +429,16 @@ OUTPUT: one image per request, 1024 x 1024.
 ### 20. Wall handstand hold
 
 **Ladder:** Vertical push ladder, L4  
-**Files:** `arya-ex-wall-handstand-hold-a.webp`  
+**Files:** `arya-ex-wall-handstand-hold-a.webp`, `arya-ex-wall-handstand-hold-b.webp`  
 **Gear:** wall
 
 **Frame A** (`arya-ex-wall-handstand-hold-a.webp`)
 
-> Exercise illustration, picture A of 1 for "Wall handstand hold". VIEW: Side view, figure facing right toward the wall (chest to the wall). SETTING: Plain beige wall on the RIGHT edge of the picture, mat on the floor with clear empty space around it. Figure kicked up into a handstand with the chest FACING the wall, toes resting on the wall. POSE: HOLD. Handstand with the chest facing the wall, hands on the mat about 15 cm from the wall, arms straight and locked, shoulders pushed up toward the ears, body in one straight line from hands to feet, toes touching the wall, head neutral between the arms, legs together and pointed. MUST SHOW: Straight banana-free line; arms locked; toes lightly on the wall. AVOID: Arched back, bent arms, head dropping. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+> Exercise illustration, picture A of 2 for "Wall handstand hold". VIEW: Side view, figure facing right toward the wall (chest to the wall). SETTING: Plain beige wall on the RIGHT edge of the picture, mat on the floor with clear empty space around it. Figure kicked up into a handstand with the chest FACING the wall, toes resting on the wall. POSE: KICK-UP. Hands on the mat about 15 cm from the wall, arms straight, shoulders over the hands, head between the arms looking at the mat, the LEFT leg swinging up straight toward the wall while the RIGHT foot has just left the floor, chest facing the wall. Clear empty floor around the mat. MUST SHOW: Straight banana-free line; arms locked; toes lightly on the wall. AVOID: Arched back, bent arms, head dropping. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+
+**Frame B** (`arya-ex-wall-handstand-hold-b.webp`)
+
+> Exercise illustration, picture B of 2 for "Wall handstand hold". VIEW: Side view, figure facing right toward the wall (chest to the wall). SETTING: Plain beige wall on the RIGHT edge of the picture, mat on the floor with clear empty space around it. Figure kicked up into a handstand with the chest FACING the wall, toes resting on the wall. POSE: HOLD. Handstand with the chest facing the wall, hands on the mat about 15 cm from the wall, arms straight and locked, shoulders pushed up toward the ears, body in one straight line from hands to feet, toes touching the wall, head neutral between the arms, legs together and pointed. MUST SHOW: Straight banana-free line; arms locked; toes lightly on the wall. AVOID: Arched back, bent arms, head dropping. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
 
 
 ### 21. Handstand push-up negatives
@@ -488,16 +500,20 @@ OUTPUT: one image per request, 1024 x 1024.
 ### 25. Negative pull-ups
 
 **Ladder:** Pull-up ladder, L1  
-**Files:** `arya-ex-negative-pull-ups-a.webp`, `arya-ex-negative-pull-ups-b.webp`  
+**Files:** `arya-ex-negative-pull-ups-a.webp`, `arya-ex-negative-pull-ups-b.webp`, `arya-ex-negative-pull-ups-c.webp`  
 **Gear:** pull-up bar, step/box
 
 **Frame A** (`arya-ex-negative-pull-ups-a.webp`)
 
-> Exercise illustration, picture A of 2 for "Negative pull-ups". VIEW: 3/4 FRONT view, full body. SETTING: A steel pull-up bar mounted high across two upright posts at the LEFT and RIGHT edges of the picture (a freestanding rack look), plain gym floor line. A small sturdy box or step below the bar. POSE: START (top). Figure standing on the box, chin above the bar, hands overhand, arms fully flexed, eyes forward. MUST SHOW: Box visible beneath the figure. AVOID: Arrows or text on the picture. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+> Exercise illustration, picture A of 3 for "Negative pull-ups". VIEW: 3/4 FRONT view, full body. SETTING: A steel pull-up bar mounted high across two upright posts at the LEFT and RIGHT edges of the picture (a freestanding rack look), plain gym floor line. A small sturdy box or step below the bar. POSE: START (top). Figure standing on the box, chin above the bar, hands overhand, arms fully flexed, eyes forward. MUST SHOW: Box visible beneath the figure. AVOID: Arrows or text on the picture. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
 
 **Frame B** (`arya-ex-negative-pull-ups-b.webp`)
 
-> Exercise illustration, picture B of 2 for "Negative pull-ups". VIEW: 3/4 FRONT view, full body. SETTING: A steel pull-up bar mounted high across two upright posts at the LEFT and RIGHT edges of the picture (a freestanding rack look), plain gym floor line. A small sturdy box or step below the bar. POSE: END (bottom). Slow lowering finished: fully hanging with straight arms, feet off the box, shoulders gently down. MUST SHOW: Box visible beneath the figure. AVOID: Arrows or text on the picture. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+> Exercise illustration, picture B of 3 for "Negative pull-ups". VIEW: 3/4 FRONT view, full body. SETTING: A steel pull-up bar mounted high across two upright posts at the LEFT and RIGHT edges of the picture (a freestanding rack look), plain gym floor line. A small sturdy box or step below the bar. POSE: MIDDLE. Slow lowering halfway: elbows bent about 90 degrees, feet off the box, body still and straight, chin below the bar. MUST SHOW: Box visible beneath the figure. AVOID: Arrows or text on the picture. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+
+**Frame C** (`arya-ex-negative-pull-ups-c.webp`)
+
+> Exercise illustration, picture C of 3 for "Negative pull-ups". VIEW: 3/4 FRONT view, full body. SETTING: A steel pull-up bar mounted high across two upright posts at the LEFT and RIGHT edges of the picture (a freestanding rack look), plain gym floor line. A small sturdy box or step below the bar. POSE: END (bottom). Fully hanging with straight arms, feet off the box, shoulders gently down. MUST SHOW: Box visible beneath the figure. AVOID: Arrows or text on the picture. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
 
 
 ### 26. Lat pulldown
@@ -593,16 +609,20 @@ OUTPUT: one image per request, 1024 x 1024.
 ### 32. Archer pull-ups
 
 **Ladder:** Pull-up ladder, L4  
-**Files:** `arya-ex-archer-pull-ups-a.webp`, `arya-ex-archer-pull-ups-b.webp`  
+**Files:** `arya-ex-archer-pull-ups-a.webp`, `arya-ex-archer-pull-ups-b.webp`, `arya-ex-archer-pull-ups-c.webp`  
 **Gear:** pull-up bar
 
 **Frame A** (`arya-ex-archer-pull-ups-a.webp`)
 
-> Exercise illustration, picture A of 2 for "Archer pull-ups". VIEW: FRONT view, full body. SETTING: A steel pull-up bar mounted high across two upright posts at the LEFT and RIGHT edges of the picture (a freestanding rack look), plain gym floor line. POSE: START. Wide overhand grip, full hang, arms straight. MUST SHOW: One arm clearly straight, the other clearly bent. AVOID: Both arms bent. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+> Exercise illustration, picture A of 3 for "Archer pull-ups". VIEW: FRONT view, full body. SETTING: A steel pull-up bar mounted high across two upright posts at the LEFT and RIGHT edges of the picture (a freestanding rack look), plain gym floor line. POSE: START. Wide overhand grip, full hang, arms straight. MUST SHOW: One arm clearly straight, the other clearly bent. AVOID: Both arms bent. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
 
 **Frame B** (`arya-ex-archer-pull-ups-b.webp`)
 
-> Exercise illustration, picture B of 2 for "Archer pull-ups". VIEW: FRONT view, full body. SETTING: A steel pull-up bar mounted high across two upright posts at the LEFT and RIGHT edges of the picture (a freestanding rack look), plain gym floor line. POSE: END. Body pulled up toward the RIGHT hand (viewer's left): that elbow deeply bent, chin level with that hand, the LEFT arm completely straight along the bar, legs together. MUST SHOW: One arm clearly straight, the other clearly bent. AVOID: Both arms bent. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+> Exercise illustration, picture B of 3 for "Archer pull-ups". VIEW: FRONT view, full body. SETTING: A steel pull-up bar mounted high across two upright posts at the LEFT and RIGHT edges of the picture (a freestanding rack look), plain gym floor line. POSE: END. Body pulled up toward the RIGHT hand (viewer's left): that elbow deeply bent, chin level with that hand, the LEFT arm completely straight along the bar, legs together. MUST SHOW: One arm clearly straight, the other clearly bent. AVOID: Both arms bent. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+
+**Frame C** (`arya-ex-archer-pull-ups-c.webp`)
+
+> Exercise illustration, picture C of 3 for "Archer pull-ups". VIEW: FRONT view, full body. SETTING: A steel pull-up bar mounted high across two upright posts at the LEFT and RIGHT edges of the picture (a freestanding rack look), plain gym floor line. POSE: END, OTHER SIDE. Body pulled up toward the LEFT hand (viewer's right): that elbow deeply bent, chin level with that hand, the RIGHT arm completely straight along the bar, legs together. MUST SHOW: One arm clearly straight, the other clearly bent. AVOID: Both arms bent. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
 
 
 ### 33. L-sit pull-ups
@@ -818,31 +838,39 @@ OUTPUT: one image per request, 1024 x 1024.
 ### 47. Step-ups
 
 **Ladder:** Single-leg ladder, L1  
-**Files:** `arya-ex-step-ups-a.webp`, `arya-ex-step-ups-b.webp`  
+**Files:** `arya-ex-step-ups-a.webp`, `arya-ex-step-ups-b.webp`, `arya-ex-step-ups-c.webp`  
 **Gear:** chair/step
 
 **Frame A** (`arya-ex-step-ups-a.webp`)
 
-> Exercise illustration, picture A of 2 for "Step-ups". VIEW: Side view, facing right. SETTING: A sturdy plain wooden chair or low box in front (right) of the figure, on the mat. POSE: START. Standing facing the chair, one whole foot placed flat on the seat, the other foot on the mat behind, torso upright. MUST SHOW: Whole foot on the chair. AVOID: Pushing off the back foot. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+> Exercise illustration, picture A of 3 for "Step-ups". VIEW: Side view, facing right. SETTING: A sturdy plain wooden chair or low box in front (right) of the figure, on the mat. POSE: START. Standing facing the chair, one whole foot placed flat on the seat, the other foot on the mat behind, torso upright. MUST SHOW: Whole foot on the chair. AVOID: Pushing off the back foot. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
 
 **Frame B** (`arya-ex-step-ups-b.webp`)
 
-> Exercise illustration, picture B of 2 for "Step-ups". VIEW: Side view, facing right. SETTING: A sturdy plain wooden chair or low box in front (right) of the figure, on the mat. POSE: END. Standing tall on the chair with the working leg straight, other knee lifted to hip height, torso upright. MUST SHOW: Whole foot on the chair. AVOID: Pushing off the back foot. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+> Exercise illustration, picture B of 3 for "Step-ups". VIEW: Side view, facing right. SETTING: A sturdy plain wooden chair or low box in front (right) of the figure, on the mat. POSE: MIDDLE. Driving up through the front heel: front knee over the toes, back foot just leaving the mat, torso upright. MUST SHOW: Whole foot on the chair. AVOID: Pushing off the back foot. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+
+**Frame C** (`arya-ex-step-ups-c.webp`)
+
+> Exercise illustration, picture C of 3 for "Step-ups". VIEW: Side view, facing right. SETTING: A sturdy plain wooden chair or low box in front (right) of the figure, on the mat. POSE: END. Standing tall on the chair with the working leg straight, other knee lifted to hip height, torso upright. MUST SHOW: Whole foot on the chair. AVOID: Pushing off the back foot. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
 
 
 ### 48. Walking lunges
 
 **Ladder:** Single-leg ladder, L2  
-**Files:** `arya-ex-walking-lunges-a.webp`, `arya-ex-walking-lunges-b.webp`  
+**Files:** `arya-ex-walking-lunges-a.webp`, `arya-ex-walking-lunges-b.webp`, `arya-ex-walking-lunges-c.webp`  
 **Gear:** none (mat)
 
 **Frame A** (`arya-ex-walking-lunges-a.webp`)
 
-> Exercise illustration, picture A of 2 for "Walking lunges". VIEW: Side view, facing right. SETTING: On the sage mat (long enough for a stride). POSE: START. Standing tall, feet together, hands on hips. MUST SHOW: Front shin vertical, torso upright. AVOID: Front knee past the toes, leaning forward. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+> Exercise illustration, picture A of 3 for "Walking lunges". VIEW: Side view, facing right. SETTING: On the sage mat (long enough for a stride). POSE: START. Standing tall, feet together, hands on hips. MUST SHOW: Front shin vertical, torso upright. AVOID: Front knee past the toes, leaning forward. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
 
 **Frame B** (`arya-ex-walking-lunges-b.webp`)
 
-> Exercise illustration, picture B of 2 for "Walking lunges". VIEW: Side view, facing right. SETTING: On the sage mat (long enough for a stride). POSE: END. Long stride forward with the RIGHT foot: front knee bent about 90 degrees over the ankle, back knee hovering just above the mat, back heel lifted, torso upright, hands on hips. MUST SHOW: Front shin vertical, torso upright. AVOID: Front knee past the toes, leaning forward. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+> Exercise illustration, picture B of 3 for "Walking lunges". VIEW: Side view, facing right. SETTING: On the sage mat (long enough for a stride). POSE: END. Long stride forward with the RIGHT foot: front knee bent about 90 degrees over the ankle, back knee hovering just above the mat, back heel lifted, torso upright, hands on hips. MUST SHOW: Front shin vertical, torso upright. AVOID: Front knee past the toes, leaning forward. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+
+**Frame C** (`arya-ex-walking-lunges-c.webp`)
+
+> Exercise illustration, picture C of 3 for "Walking lunges". VIEW: Side view, facing right. SETTING: On the sage mat (long enough for a stride). POSE: NEXT STEP. Pushed off the right foot and stepped through: now lunging with the LEFT foot forward, left knee bent about 90 degrees over the ankle, right back knee hovering just above the mat, right heel lifted, torso upright, hands on hips. Same size and position as frame B so it reads as a walking pattern. MUST SHOW: Front shin vertical, torso upright. AVOID: Front knee past the toes, leaning forward. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
 
 
 ### 49. Bulgarian split squats
@@ -863,46 +891,58 @@ OUTPUT: one image per request, 1024 x 1024.
 ### 50. Shrimp squat progression
 
 **Ladder:** Single-leg ladder, L4  
-**Files:** `arya-ex-shrimp-squat-progression-a.webp`, `arya-ex-shrimp-squat-progression-b.webp`  
+**Files:** `arya-ex-shrimp-squat-progression-a.webp`, `arya-ex-shrimp-squat-progression-b.webp`, `arya-ex-shrimp-squat-progression-c.webp`  
 **Gear:** none (mat)
 
 **Frame A** (`arya-ex-shrimp-squat-progression-a.webp`)
 
-> Exercise illustration, picture A of 2 for "Shrimp squat progression". VIEW: Side view, facing right. SETTING: On the sage mat. POSE: START. Standing on the right leg, left knee bent and left foot held behind with the left hand. MUST SHOW: Rear foot held by the same-side hand in both frames. AVOID: Knee slamming the floor. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+> Exercise illustration, picture A of 3 for "Shrimp squat progression". VIEW: Side view, facing right. SETTING: On the sage mat. POSE: START. Standing on the right leg, left knee bent and left foot held behind with the left hand, torso upright. MUST SHOW: Rear foot held by the same-side hand in both frames. AVOID: Knee slamming the floor. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
 
 **Frame B** (`arya-ex-shrimp-squat-progression-b.webp`)
 
-> Exercise illustration, picture B of 2 for "Shrimp squat progression". VIEW: Side view, facing right. SETTING: On the sage mat. POSE: END. Lowered on the right leg, the back knee gently touching the mat (or hovering just above it), torso leaning slightly forward, left foot still held by the hand. MUST SHOW: Rear foot held by the same-side hand in both frames. AVOID: Knee slamming the floor. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+> Exercise illustration, picture B of 3 for "Shrimp squat progression". VIEW: Side view, facing right. SETTING: On the sage mat. POSE: MIDDLE. Halfway down on the right leg: right knee bent about 90 degrees, torso leaning slightly forward, left foot still held behind, back knee a hand-width above the mat. MUST SHOW: Rear foot held by the same-side hand in both frames. AVOID: Knee slamming the floor. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+
+**Frame C** (`arya-ex-shrimp-squat-progression-c.webp`)
+
+> Exercise illustration, picture C of 3 for "Shrimp squat progression". VIEW: Side view, facing right. SETTING: On the sage mat. POSE: END. Bottom: the back knee gently touching the mat (or just above it), torso leaning forward, right heel flat, left foot still held by the hand. MUST SHOW: Rear foot held by the same-side hand in both frames. AVOID: Knee slamming the floor. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
 
 
 ### 51. Pistol squat negatives
 
 **Ladder:** Single-leg ladder, L4  
-**Files:** `arya-ex-pistol-squat-negatives-a.webp`, `arya-ex-pistol-squat-negatives-b.webp`  
+**Files:** `arya-ex-pistol-squat-negatives-a.webp`, `arya-ex-pistol-squat-negatives-b.webp`, `arya-ex-pistol-squat-negatives-c.webp`  
 **Gear:** chair
 
 **Frame A** (`arya-ex-pistol-squat-negatives-a.webp`)
 
-> Exercise illustration, picture A of 2 for "Pistol squat negatives". VIEW: Side view, facing right. SETTING: A plain wooden chair BEHIND the figure (left), seat facing right, on the mat. POSE: START. Standing on the right leg, left leg straight out in front, arms forward for balance, chair behind. MUST SHOW: Free leg straight, off the floor in both frames. AVOID: Free foot on the floor. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+> Exercise illustration, picture A of 3 for "Pistol squat negatives". VIEW: Side view, facing right. SETTING: A plain wooden chair BEHIND the figure (left), seat facing right, on the mat. POSE: START. Standing on the right leg, left leg straight out in front, arms forward for balance, chair behind. MUST SHOW: Free leg straight, off the floor in both frames. AVOID: Free foot on the floor. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
 
 **Frame B** (`arya-ex-pistol-squat-negatives-b.webp`)
 
-> Exercise illustration, picture B of 2 for "Pistol squat negatives". VIEW: Side view, facing right. SETTING: A plain wooden chair BEHIND the figure (left), seat facing right, on the mat. POSE: END. Slow sit-down: right knee deeply bent, hips back, left leg still straight out in front, just touching the chair seat. MUST SHOW: Free leg straight, off the floor in both frames. AVOID: Free foot on the floor. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+> Exercise illustration, picture B of 3 for "Pistol squat negatives". VIEW: Side view, facing right. SETTING: A plain wooden chair BEHIND the figure (left), seat facing right, on the mat. POSE: MIDDLE. Halfway down: right knee bent about 90 degrees, hips back, left leg still straight out in front and off the floor, arms forward. MUST SHOW: Free leg straight, off the floor in both frames. AVOID: Free foot on the floor. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+
+**Frame C** (`arya-ex-pistol-squat-negatives-c.webp`)
+
+> Exercise illustration, picture C of 3 for "Pistol squat negatives". VIEW: Side view, facing right. SETTING: A plain wooden chair BEHIND the figure (left), seat facing right, on the mat. POSE: END. Sat down on the chair: right knee deeply bent, hips just touching the chair seat, left leg still straight out in front. MUST SHOW: Free leg straight, off the floor in both frames. AVOID: Free foot on the floor. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
 
 
 ### 52. Pistol squat
 
 **Ladder:** Single-leg ladder, L5  
-**Files:** `arya-ex-pistol-squat-a.webp`, `arya-ex-pistol-squat-b.webp`  
+**Files:** `arya-ex-pistol-squat-a.webp`, `arya-ex-pistol-squat-b.webp`, `arya-ex-pistol-squat-c.webp`  
 **Gear:** none (mat)
 
 **Frame A** (`arya-ex-pistol-squat-a.webp`)
 
-> Exercise illustration, picture A of 2 for "Pistol squat". VIEW: Side view, facing right. SETTING: On the sage mat. POSE: START. Standing on the right leg, left leg straight out in front at hip height, arms forward. MUST SHOW: Heel flat, free leg lifted. AVOID: Heel off the floor, free leg dropping. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+> Exercise illustration, picture A of 3 for "Pistol squat". VIEW: Side view, facing right. SETTING: On the sage mat. POSE: START. Standing on the right leg, left leg straight out in front at hip height, arms forward. MUST SHOW: Heel flat, free leg lifted. AVOID: Heel off the floor, free leg dropping. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
 
 **Frame B** (`arya-ex-pistol-squat-b.webp`)
 
-> Exercise illustration, picture B of 2 for "Pistol squat". VIEW: Side view, facing right. SETTING: On the sage mat. POSE: END. Full depth single-leg squat: right hip below the knee, heel flat, left leg still straight and lifted in front, torso leaning forward, arms forward. MUST SHOW: Heel flat, free leg lifted. AVOID: Heel off the floor, free leg dropping. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+> Exercise illustration, picture B of 3 for "Pistol squat". VIEW: Side view, facing right. SETTING: On the sage mat. POSE: MIDDLE. Halfway down: right thigh about parallel to the floor, left leg still straight out in front, arms forward, heel flat, torso leaning slightly forward. MUST SHOW: Heel flat, free leg lifted. AVOID: Heel off the floor, free leg dropping. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+
+**Frame C** (`arya-ex-pistol-squat-c.webp`)
+
+> Exercise illustration, picture C of 3 for "Pistol squat". VIEW: Side view, facing right. SETTING: On the sage mat. POSE: END. Full depth single-leg squat: right hip below the knee, heel flat, left leg straight and lifted in front, torso leaning forward, arms forward. MUST SHOW: Heel flat, free leg lifted. AVOID: Heel off the floor, free leg dropping. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
 
 
 ### 53. Single-leg glute bridge
@@ -923,16 +963,20 @@ OUTPUT: one image per request, 1024 x 1024.
 ### 54. Hamstring walkouts
 
 **Ladder:** Hinge ladder, L2  
-**Files:** `arya-ex-hamstring-walkouts-a.webp`, `arya-ex-hamstring-walkouts-b.webp`  
+**Files:** `arya-ex-hamstring-walkouts-a.webp`, `arya-ex-hamstring-walkouts-b.webp`, `arya-ex-hamstring-walkouts-c.webp`  
 **Gear:** none (mat)
 
 **Frame A** (`arya-ex-hamstring-walkouts-a.webp`)
 
-> Exercise illustration, picture A of 2 for "Hamstring walkouts". VIEW: Side view, facing right (head to the left). SETTING: On the sage mat. POSE: START. Bridge position: lying on the back, hips lifted high, knees bent about 90 degrees, heels flat under the knees. MUST SHOW: Hips high in both frames; legs almost straight in B. AVOID: Hips dropping. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+> Exercise illustration, picture A of 3 for "Hamstring walkouts". VIEW: Side view, facing right (head to the left). SETTING: On the sage mat. POSE: START. Bridge position: lying on the back, hips lifted high, knees bent about 90 degrees, heels flat under the knees. MUST SHOW: Hips high in both frames; legs almost straight in B. AVOID: Hips dropping. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
 
 **Frame B** (`arya-ex-hamstring-walkouts-b.webp`)
 
-> Exercise illustration, picture B of 2 for "Hamstring walkouts". VIEW: Side view, facing right (head to the left). SETTING: On the sage mat. POSE: END. Feet walked out further, legs nearly straight (a slight bend), hips STILL lifted high in a long diagonal from shoulders to heels. MUST SHOW: Hips high in both frames; legs almost straight in B. AVOID: Hips dropping. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+> Exercise illustration, picture B of 3 for "Hamstring walkouts". VIEW: Side view, facing right (head to the left). SETTING: On the sage mat. POSE: MIDDLE. Feet walked out about halfway: knees bent about 130 degrees, hips STILL lifted high, heels on the mat, shoulders on the mat. MUST SHOW: Hips high in both frames; legs almost straight in B. AVOID: Hips dropping. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+
+**Frame C** (`arya-ex-hamstring-walkouts-c.webp`)
+
+> Exercise illustration, picture C of 3 for "Hamstring walkouts". VIEW: Side view, facing right (head to the left). SETTING: On the sage mat. POSE: END. Feet walked out as far as control allows, legs nearly straight (a slight bend), hips STILL lifted high in a long diagonal from shoulders to heels. MUST SHOW: Hips high in both frames; legs almost straight in B. AVOID: Hips dropping. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
 
 
 ### 55. Romanian deadlift
@@ -968,31 +1012,39 @@ OUTPUT: one image per request, 1024 x 1024.
 ### 57. Barbell deadlift
 
 **Ladder:** Hinge ladder, L3  
-**Files:** `arya-ex-barbell-deadlift-a.webp`, `arya-ex-barbell-deadlift-b.webp`  
+**Files:** `arya-ex-barbell-deadlift-a.webp`, `arya-ex-barbell-deadlift-b.webp`, `arya-ex-barbell-deadlift-c.webp`  
 **Gear:** barbell
 
 **Frame A** (`arya-ex-barbell-deadlift-a.webp`)
 
-> Exercise illustration, picture A of 2 for "Barbell deadlift". VIEW: Side view, facing right. SETTING: On a gym floor line, an Olympic barbell with two black plates each end, no text. POSE: START. Bar over the mid-foot, hips low, shins touching the bar, back flat, arms straight and vertical gripping just outside the legs, chest up, head neutral. MUST SHOW: Flat back at the start; bar close to the legs. AVOID: Rounded back, bar far from the legs. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+> Exercise illustration, picture A of 3 for "Barbell deadlift". VIEW: Side view, facing right. SETTING: On a gym floor line, an Olympic barbell with two black plates each end, no text. POSE: START. Bar over the mid-foot, hips low, shins touching the bar, back flat, arms straight and vertical gripping just outside the legs, chest up, head neutral. MUST SHOW: Flat back at the start; bar close to the legs. AVOID: Rounded back, bar far from the legs. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
 
 **Frame B** (`arya-ex-barbell-deadlift-b.webp`)
 
-> Exercise illustration, picture B of 2 for "Barbell deadlift". VIEW: Side view, facing right. SETTING: On a gym floor line, an Olympic barbell with two black plates each end, no text. POSE: END. Standing fully tall, hips and knees locked, bar held against the thighs, shoulders back, no leaning back. MUST SHOW: Flat back at the start; bar close to the legs. AVOID: Rounded back, bar far from the legs. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+> Exercise illustration, picture B of 3 for "Barbell deadlift". VIEW: Side view, facing right. SETTING: On a gym floor line, an Olympic barbell with two black plates each end, no text. POSE: MIDDLE. Bar just past the knees, hips and shoulders rising together, back still flat, bar sliding close along the shins, arms straight. MUST SHOW: Flat back at the start; bar close to the legs. AVOID: Rounded back, bar far from the legs. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+
+**Frame C** (`arya-ex-barbell-deadlift-c.webp`)
+
+> Exercise illustration, picture C of 3 for "Barbell deadlift". VIEW: Side view, facing right. SETTING: On a gym floor line, an Olympic barbell with two black plates each end, no text. POSE: END. Standing fully tall, hips and knees locked, bar held against the thighs, shoulders back, no leaning back. MUST SHOW: Flat back at the start; bar close to the legs. AVOID: Rounded back, bar far from the legs. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
 
 
 ### 58. Nordic curl negatives
 
 **Ladder:** Hinge ladder, L4  
-**Files:** `arya-ex-nordic-curl-negatives-a.webp`, `arya-ex-nordic-curl-negatives-b.webp`  
+**Files:** `arya-ex-nordic-curl-negatives-a.webp`, `arya-ex-nordic-curl-negatives-b.webp`, `arya-ex-nordic-curl-negatives-c.webp`  
 **Gear:** none (mat, anchor)
 
 **Frame A** (`arya-ex-nordic-curl-negatives-a.webp`)
 
-> Exercise illustration, picture A of 2 for "Nordic curl negatives". VIEW: Side view, facing right. SETTING: On a mat, feet anchored under a sturdy low bar or a heavy sofa end at the LEFT (draw a simple padded anchor bar over the heels). POSE: START. Kneeling upright on the mat, knees on a pad, feet hooked under the anchor, torso upright and straight from the knees to the head, arms bent in front. MUST SHOW: Straight line knees-to-head in both frames; anchor visible. AVOID: Piking at the hips. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+> Exercise illustration, picture A of 3 for "Nordic curl negatives". VIEW: Side view, facing right. SETTING: On a mat, feet anchored under a sturdy low bar or a heavy sofa end at the LEFT (draw a simple padded anchor bar over the heels). POSE: START. Kneeling upright on the mat, knees on a pad, feet hooked under the anchor, torso upright and straight from the knees to the head, arms bent in front. MUST SHOW: Straight line knees-to-head in both frames; anchor visible. AVOID: Piking at the hips. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
 
 **Frame B** (`arya-ex-nordic-curl-negatives-b.webp`)
 
-> Exercise illustration, picture B of 2 for "Nordic curl negatives". VIEW: Side view, facing right. SETTING: On a mat, feet anchored under a sturdy low bar or a heavy sofa end at the LEFT (draw a simple padded anchor bar over the heels). POSE: END. Body lowered slowly forward in a straight line from the knees to the head, hands reaching the mat to catch, hips NOT bent. MUST SHOW: Straight line knees-to-head in both frames; anchor visible. AVOID: Piking at the hips. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+> Exercise illustration, picture B of 3 for "Nordic curl negatives". VIEW: Side view, facing right. SETTING: On a mat, feet anchored under a sturdy low bar or a heavy sofa end at the LEFT (draw a simple padded anchor bar over the heels). POSE: MIDDLE. Torso tilted forward about 45 degrees in one straight line from the knees to the head, hips NOT bent, arms reaching forward ready to catch. MUST SHOW: Straight line knees-to-head in both frames; anchor visible. AVOID: Piking at the hips. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+
+**Frame C** (`arya-ex-nordic-curl-negatives-c.webp`)
+
+> Exercise illustration, picture C of 3 for "Nordic curl negatives". VIEW: Side view, facing right. SETTING: On a mat, feet anchored under a sturdy low bar or a heavy sofa end at the LEFT (draw a simple padded anchor bar over the heels). POSE: END. Body lowered fully forward in a straight line from the knees to the head, hands on the mat to catch, hips NOT bent. MUST SHOW: Straight line knees-to-head in both frames; anchor visible. AVOID: Piking at the hips. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
 
 
 ### 59. Single-leg calf raise
@@ -1043,12 +1095,16 @@ OUTPUT: one image per request, 1024 x 1024.
 ### 62. Hollow body hold
 
 **Ladder:** Core, L3  
-**Files:** `arya-ex-hollow-body-hold-a.webp`  
+**Files:** `arya-ex-hollow-body-hold-a.webp`, `arya-ex-hollow-body-hold-b.webp`  
 **Gear:** none (mat)
 
 **Frame A** (`arya-ex-hollow-body-hold-a.webp`)
 
-> Exercise illustration, picture A of 1 for "Hollow body hold". VIEW: Side view, facing right (head to the left). SETTING: On the sage mat. POSE: HOLD. Lying on the back with the lower back pressed into the mat, arms extended overhead by the ears, legs straight, together and lifted low (about 30 cm), shoulders and head lifted off the floor slightly, body forming a shallow banana, ribs pulled down. MUST SHOW: Lower back clearly flat on the mat. AVOID: Back arching off the floor. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+> Exercise illustration, picture A of 2 for "Hollow body hold". VIEW: Side view, facing right (head to the left). SETTING: On the sage mat. POSE: FULL HOLD. Lying on the back with the lower back pressed into the mat, arms extended overhead by the ears, legs straight, together and lifted low (about 30 cm), shoulders and head lifted off the floor slightly, body forming a shallow banana, ribs pulled down. MUST SHOW: Lower back clearly flat on the mat. AVOID: Back arching off the floor. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+
+**Frame B** (`arya-ex-hollow-body-hold-b.webp`)
+
+> Exercise illustration, picture B of 2 for "Hollow body hold". VIEW: Side view, facing right (head to the left). SETTING: On the sage mat. POSE: EASIER VERSION. Same shoulders and head lift and flat lower back, but knees bent and tucked so the shins are parallel to the floor, arms reaching forward along the thighs or overhead, ribs pulled down. MUST SHOW: Lower back clearly flat on the mat. AVOID: Back arching off the floor. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
 
 
 ### 63. Hanging knee raises
@@ -1084,16 +1140,20 @@ OUTPUT: one image per request, 1024 x 1024.
 ### 65. Ab wheel rollout
 
 **Ladder:** Core, L4  
-**Files:** `arya-ex-ab-wheel-rollout-a.webp`, `arya-ex-ab-wheel-rollout-b.webp`  
+**Files:** `arya-ex-ab-wheel-rollout-a.webp`, `arya-ex-ab-wheel-rollout-b.webp`, `arya-ex-ab-wheel-rollout-c.webp`  
 **Gear:** ab wheel
 
 **Frame A** (`arya-ex-ab-wheel-rollout-a.webp`)
 
-> Exercise illustration, picture A of 2 for "Ab wheel rollout". VIEW: Side view, facing right. SETTING: On the sage mat. A small ab wheel (black wheel, grey handle on a short axle) held under the shoulders. POSE: START. Kneeling with the wheel directly under the shoulders, arms straight, back slightly rounded, hips over the knees. MUST SHOW: Flat back, no sagging. AVOID: Arching the lower back. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+> Exercise illustration, picture A of 3 for "Ab wheel rollout". VIEW: Side view, facing right. SETTING: On the sage mat. A small ab wheel (black wheel, grey handle on a short axle) held under the shoulders. POSE: START. Kneeling with the wheel directly under the shoulders, arms straight, back slightly rounded, hips over the knees. MUST SHOW: Flat back, no sagging. AVOID: Arching the lower back. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
 
 **Frame B** (`arya-ex-ab-wheel-rollout-b.webp`)
 
-> Exercise illustration, picture B of 2 for "Ab wheel rollout". VIEW: Side view, facing right. SETTING: On the sage mat. A small ab wheel (black wheel, grey handle on a short axle) held under the shoulders. POSE: END. Rolled out in a long line from the knees to the head, hips NOT sagging, arms overhead by the ears, back flat or very slightly rounded. MUST SHOW: Flat back, no sagging. AVOID: Arching the lower back. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+> Exercise illustration, picture B of 3 for "Ab wheel rollout". VIEW: Side view, facing right. SETTING: On the sage mat. A small ab wheel (black wheel, grey handle on a short axle) held under the shoulders. POSE: MIDDLE. Rolled out about halfway: arms reaching forward at roughly 45 degrees, body in a long diagonal from the knees to the head, hips in line, back flat. MUST SHOW: Flat back, no sagging. AVOID: Arching the lower back. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+
+**Frame C** (`arya-ex-ab-wheel-rollout-c.webp`)
+
+> Exercise illustration, picture C of 3 for "Ab wheel rollout". VIEW: Side view, facing right. SETTING: On the sage mat. A small ab wheel (black wheel, grey handle on a short axle) held under the shoulders. POSE: END. Rolled out in a long line from the knees to the head, hips NOT sagging, arms overhead by the ears, back flat or very slightly rounded. MUST SHOW: Flat back, no sagging. AVOID: Arching the lower back. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
 
 
 ### 66. L-sit
@@ -1166,16 +1226,24 @@ OUTPUT: one image per request, 1024 x 1024.
 ### 71. Rowing machine
 
 **Ladder:** Cardio, L2  
-**Files:** `arya-ex-rowing-machine-a.webp`, `arya-ex-rowing-machine-b.webp`  
+**Files:** `arya-ex-rowing-machine-a.webp`, `arya-ex-rowing-machine-b.webp`, `arya-ex-rowing-machine-c.webp`, `arya-ex-rowing-machine-d.webp`  
 **Gear:** rowing machine
 
 **Frame A** (`arya-ex-rowing-machine-a.webp`)
 
-> Exercise illustration, picture A of 2 for "Rowing machine". VIEW: Side view, facing right. SETTING: A generic indoor rowing machine in charcoal and light grey with a long rail, a round flywheel housing at the right, footplates, a sliding seat, handle and a black chain/strap, no logos or readout text. POSE: CATCH. Knees bent and shins vertical, arms straight forward gripping the handle, torso leaning slightly forward, seat close to the flywheel. MUST SHOW: Both ends of the stroke; flat back. AVOID: Rounded back. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+> Exercise illustration, picture A of 4 for "Rowing machine". VIEW: Side view, facing right. SETTING: A generic indoor rowing machine in charcoal and light grey with a long rail, a round flywheel housing at the right, footplates, a sliding seat, handle and a black chain/strap, no logos or readout text. POSE: 1 CATCH. Knees bent and shins vertical, arms straight forward gripping the handle, torso leaning slightly forward with a flat back, seat close to the flywheel. MUST SHOW: Both ends of the stroke; flat back. AVOID: Rounded back. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
 
 **Frame B** (`arya-ex-rowing-machine-b.webp`)
 
-> Exercise illustration, picture B of 2 for "Rowing machine". VIEW: Side view, facing right. SETTING: A generic indoor rowing machine in charcoal and light grey with a long rail, a round flywheel housing at the right, footplates, a sliding seat, handle and a black chain/strap, no logos or readout text. POSE: FINISH. Legs extended, torso leaning back slightly, handle pulled to the lower ribs, elbows back. MUST SHOW: Both ends of the stroke; flat back. AVOID: Rounded back. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+> Exercise illustration, picture B of 4 for "Rowing machine". VIEW: Side view, facing right. SETTING: A generic indoor rowing machine in charcoal and light grey with a long rail, a round flywheel housing at the right, footplates, a sliding seat, handle and a black chain/strap, no logos or readout text. POSE: 2 DRIVE. Legs pushing and about half extended, the seat slid back along the rail, torso still leaning slightly forward, arms STILL straight, handle still out in front. MUST SHOW: Both ends of the stroke; flat back. AVOID: Rounded back. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+
+**Frame C** (`arya-ex-rowing-machine-c.webp`)
+
+> Exercise illustration, picture C of 4 for "Rowing machine". VIEW: Side view, facing right. SETTING: A generic indoor rowing machine in charcoal and light grey with a long rail, a round flywheel housing at the right, footplates, a sliding seat, handle and a black chain/strap, no logos or readout text. POSE: 3 FINISH. Legs fully extended, torso leaning back slightly, handle pulled to the lower ribs, elbows back, shoulders down. MUST SHOW: Both ends of the stroke; flat back. AVOID: Rounded back. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+
+**Frame D** (`arya-ex-rowing-machine-d.webp`)
+
+> Exercise illustration, picture D of 4 for "Rowing machine". VIEW: Side view, facing right. SETTING: A generic indoor rowing machine in charcoal and light grey with a long rail, a round flywheel housing at the right, footplates, a sliding seat, handle and a black chain/strap, no logos or readout text. POSE: 4 RECOVERY. Arms straightened forward first, torso leaning forward from the hips with a flat back, knees just starting to bend, seat beginning to slide forward, handle moving back toward the flywheel. MUST SHOW: Both ends of the stroke; flat back. AVOID: Rounded back. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
 
 
 ### 72. Treadmill intervals
@@ -1196,16 +1264,20 @@ OUTPUT: one image per request, 1024 x 1024.
 ### 73. Band shoulder dislocates
 
 **Ladder:** Mobility, L0  
-**Files:** `arya-ex-band-shoulder-dislocates-a.webp`, `arya-ex-band-shoulder-dislocates-b.webp`  
+**Files:** `arya-ex-band-shoulder-dislocates-a.webp`, `arya-ex-band-shoulder-dislocates-b.webp`, `arya-ex-band-shoulder-dislocates-c.webp`  
 **Gear:** resistance band
 
 **Frame A** (`arya-ex-band-shoulder-dislocates-a.webp`)
 
-> Exercise illustration, picture A of 2 for "Band shoulder dislocates". VIEW: Frame A is a FRONT view, frame B is a SIDE view facing right (state the view in each frame). SETTING: On a thin mat, a light looped band (muted orange-red) held in both hands. POSE: START (front view). Standing tall, band held wide in front of the thighs with straight arms, hands about twice shoulder-width apart. MUST SHOW: Straight arms; ribs down. AVOID: Bent elbows, back arching. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+> Exercise illustration, picture A of 3 for "Band shoulder dislocates". VIEW: Frame A is a FRONT view, frame B is a SIDE view facing right (state the view in each frame). SETTING: On a thin mat, a light looped band (muted orange-red) held in both hands. POSE: START (front view). Standing tall, band held wide in front of the thighs with straight arms, hands about twice shoulder-width apart. MUST SHOW: Straight arms; ribs down. AVOID: Bent elbows, back arching. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
 
 **Frame B** (`arya-ex-band-shoulder-dislocates-b.webp`)
 
-> Exercise illustration, picture B of 2 for "Band shoulder dislocates". VIEW: Frame A is a FRONT view, frame B is a SIDE view facing right (state the view in each frame). SETTING: On a thin mat, a light looped band (muted orange-red) held in both hands. POSE: END (side view). Arms still straight, band carried overhead and slightly behind the head, ribs down, torso tall. MUST SHOW: Straight arms; ribs down. AVOID: Bent elbows, back arching. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+> Exercise illustration, picture B of 3 for "Band shoulder dislocates". VIEW: Frame A is a FRONT view, frame B is a SIDE view facing right (state the view in each frame). SETTING: On a thin mat, a light looped band (muted orange-red) held in both hands. POSE: END (side view). Arms still straight, band carried overhead and slightly behind the head, ribs down, torso tall. MUST SHOW: Straight arms; ribs down. AVOID: Bent elbows, back arching. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
+
+**Frame C** (`arya-ex-band-shoulder-dislocates-c.webp`)
+
+> Exercise illustration, picture C of 3 for "Band shoulder dislocates". VIEW: Frame A is a FRONT view, frame B is a SIDE view facing right (state the view in each frame). SETTING: On a thin mat, a light looped band (muted orange-red) held in both hands. POSE: BEHIND (side view, facing right). Arms still straight, band carried down behind the body at hip height, hands wide, shoulder blades squeezed back, torso tall with ribs down, no back arch. MUST SHOW: Straight arms; ribs down. AVOID: Bent elbows, back arching. Same athlete, same style, same colours as the master style block. Square 1:1, 1024 x 1024, cream #FAF6EB background, no text, no arrows.
 
 
 ### 74. Thoracic rotation

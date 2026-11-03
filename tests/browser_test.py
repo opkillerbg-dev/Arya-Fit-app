@@ -40,7 +40,7 @@ try:
         check("damaged data: restored from daily backup", pg.evaluate("APP.marker") == "from-bak" and pg.evaluate(TICKS_JS) == 2, pg.evaluate("APP.marker"))
         check("damaged data: evidence kept in .bad", pg.evaluate("localStorage.getItem('aryaApp2.bad')") == '{"plans":{"default":{"plan"')
         # the notice waits for the splash (v116: the splash now waits for a stable app, so wait for it instead of a fixed time)
-        try: pg.wait_for_function("document.body.innerText.includes('damaged')", timeout=25000); told = True
+        try: pg.wait_for_function("document.body.textContent.includes('damaged')", timeout=25000, polling=50); told = True
         except Exception: told = False
         check("damaged data: user told", told)
         check("damaged data: no page errors", not errs, errs); ctx.close()

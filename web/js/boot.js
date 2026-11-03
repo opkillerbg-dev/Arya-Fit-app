@@ -165,6 +165,7 @@
     return new Promise(function(r){setTimeout(r,Math.max(0,MIN-now()))});
   }).then(settle).then(function(v){
     window.axBootInfo={fps:v.fps||0,base:v.base||0,tier:v.tier,reason:v.reason,visible:v.visible||0,ms:Math.round(now())};
+    try{if(window.AxV2)AxV2.apply()}catch(e){}
     finish();
   });
   setTimeout(finish,WALL);                                                    /* last-resort wall clock, only if something above never reports back */

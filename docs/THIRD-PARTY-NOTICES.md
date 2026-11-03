@@ -1,5 +1,9 @@
 # Third-party notices
 
+## Arya Fit V2 fonts
+
+Big Shoulders Display, Instrument Serif, and Inter are bundled as Latin-subset WOFF2 files in `web/fonts/`. Each is licensed under the SIL Open Font License, Version 1.1. Source: Google Fonts. The app uses the unmodified typefaces with local fallback fonts for other scripts.
+
 ## Body muscle artwork (Progress > Body)
 
 The front and back male body outline and muscle region paths in `index.html` (variables `BHF`, `BHB`, `BHOF`, `BHOB`) come from **react-native-body-highlighter** by ELABBASSI Hicham, https://github.com/HichamELBSI/react-native-body-highlighter , used under the MIT License. The paths were joined per muscle group and recolored; the shapes are unchanged.

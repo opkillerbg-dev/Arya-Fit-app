@@ -930,3 +930,10 @@ Reported on a real phone: cream cards with white text (Today steps card, Setting
 - Avatar is `position:absolute` (scrolls away) instead of fixed.
 - About shows v132. Sheet open/close frames checked in slow motion, no cream frames.
 - Known: tests/reminder_test.py fails (demo plan date).
+
+## Liquid glass (Claude, v133)
+- Request: use github.com/iyinchao/liquid-glass-studio. That repo (MIT) is a WebGL2/WebGPU playground that refracts a fixed image/video, it cannot refract live DOM (author says so too), so it cannot be dropped in. Implemented the same ideas natively instead: `js/ui/v2-liquid.js` builds a per-element displacement map (rounded-rect SDF -> convex bezel -> Snell n=1.5), feeds it to SVG feDisplacementMap (3 channel scales = dispersion) used in `backdrop-filter: blur() url(#v2lg-WxHrR)`. `css/v2/liquid.css` adds translucent fill + specular rim. Chromium only (Android Chrome/WebView); other engines keep the frosted look.
+- Applies to small floating controls only (`.v2-glass`, `.v2-icon-button`, `.v2-avatar`: nav pill, round buttons, mini-session pill, popover). NOT big cards/sheets (cost + legibility).
+- Settings > Appearance > 'Liquid glass' switch (`PR.v2Liquid===0` = off); `window.AxLiquid.set/sync/supported`. Disabled when fx=solid (reduced transparency) or V2 off. `tests/v2_liquid_test.py`.
+- Over a pure black background there is little to refract; the effect shows over scrolling content (exercise pictures, text) and as rim light.
+- Credit added to docs/THIRD-PARTY-NOTICES.md. Unverified: real-phone GPU cost, light-theme look.

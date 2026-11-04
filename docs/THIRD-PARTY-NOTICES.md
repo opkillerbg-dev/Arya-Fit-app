@@ -36,3 +36,4 @@ SOFTWARE.
 
 Optional download of exercise names, muscles, equipment and level from **free-exercise-db** (github.com/yuhonas/free-exercise-db), released into the public domain (Unlicense). The data is fetched only when the user taps Download and is stored on the device. Check the project's LICENSE if this changes.
 
+- Liquid glass (css/v2/liquid.css, js/ui/v2-liquid.js): approach inspired by iyinchao/liquid-glass-studio (MIT, https://github.com/iyinchao/liquid-glass-studio); no code copied.

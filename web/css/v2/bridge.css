@@ -1,0 +1,19 @@
+/* V2 bridge: map V1 skin variables onto V2 tokens so every remaining V1 component
+   (steps card, readiness, weather, online library, sheets, details, etc.) inherits V2 colours.
+   Root-cause fix for cream cards with white text. Loaded last. */
+html.v2,html.v2:root,html.v2[data-skin],html.v2[data-skin]:root,html.v2.amo,html.v2.amo[data-skin],html.v2.amo[data-skin]:root,html.v2.gls[data-skin]:root{
+  --bg:var(--v2-bg)!important;--card:var(--v2-surface)!important;--ink:var(--v2-text)!important;--mut:var(--v2-text-2)!important;
+  --line:var(--v2-line)!important;--blue:var(--v2-accent)!important;--bluet:var(--v2-surface-2)!important;
+  --ok:var(--v2-accent)!important;--okt:var(--v2-surface-2)!important;--hero:var(--v2-surface)!important;--hero2:var(--v2-surface)!important;
+  --bar:var(--v2-surface)!important;--glass:var(--v2-glass-fill)!important;--gline:var(--v2-glass-edge)!important;--cell:var(--v2-surface-2)!important;
+  --ax-onblue:var(--v2-accent-ink)!important;
+  color-scheme:dark;background:var(--v2-bg)!important}
+html.v2[data-theme="light"],html.v2[data-theme="light"]:root,html.v2[data-theme="light"][data-skin]:root{color-scheme:light}
+html.v2 body{background:var(--v2-bg)!important}
+/* removed for now: grey gradient band ("progressive blur") under the status bar */
+html.v2 .v2-top-fade{display:none!important}
+/* Close day / plan bar must clear the floating nav pill */
+html.v2 body #ax-v-plan .ax-pbar{bottom:calc(108px + env(safe-area-inset-bottom,0px))!important}
+html.v2 body #ax-v-plan{padding-bottom:calc(150px + env(safe-area-inset-bottom,0px))}
+/* avatar scrolls away with the page instead of floating over cards */
+html.v2 .v2-avatar{position:absolute!important}

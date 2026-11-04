@@ -920,3 +920,13 @@ Causes of that Android error: (a) APK signed with a different key than the insta
 - About shows the real version (`settings.js`, `Arya Fit · v131`); update this string with every cache bump.
 - Today cards no longer use V1 serif (Georgia); light theme Today hero/progress fixed; onboarding contrast fixed; Coach proxy button on Today.
 - Open: `tests/reminder_test.py` fails (demo plan ended 31 Oct 2026); real phone/GPS/voice untested.
+
+## Phone-test fixes (Claude, v132)
+Reported on a real phone: cream cards with white text (Today steps card, Settings > Online exercise library, readiness 'Details'), grey/brown gradient band at top and bottom, cream sheet flash, Close day bar hidden behind the nav, rest-day hero placeholder 'AF / -- REPS', avatar floating over cards.
+- ROOT CAUSE: V1 skin variables (--bg --card --ink --mut --line --blue --hero --bar --glass --gline --cell ...) kept cream values, and `:root` has safe-area padding so html background (cream) showed under the fade. New `web/css/v2/bridge.css` (linked last, in SHELL) maps all V1 variables to V2 tokens under `html.v2`, sets color-scheme, html/body background. NEW RULE: never patch cream class-by-class; fix the variable bridge.
+- Removed `.v2-top-fade` (grey 'progressive blur' band) for now (display:none in bridge.css).
+- `.ax-pbar` (Close day) bottom offset 108px so it clears the nav pill; plan view bottom padding.
+- Rest day: `v2-session-run.js` no longer inserts the session hero when the day has no exercises. BUG I introduced then fixed: removing the hero re-triggered the MutationObserver which re-inserted it = infinite loop, app hung on load on rest days (11 Oct fake date). Insert hero only after an exercise is found. Regression test `tests/v2_restday_test.py` (boot on rest day, no hero, Close day above nav).
+- Avatar is `position:absolute` (scrolls away) instead of fixed.
+- About shows v132. Sheet open/close frames checked in slow motion, no cream frames.
+- Known: tests/reminder_test.py fails (demo plan date).

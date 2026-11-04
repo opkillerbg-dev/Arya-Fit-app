@@ -15,12 +15,13 @@
   function addHero(){
     if(!day)return;
     if(!hero){hero=d.createElement("section");hero.className="v2-session-hero";hero.setAttribute("aria-label","Current workout exercise");}
-    if(hero.parentNode!==day)day.insertBefore(hero,day.firstChild);
     var n=dayItems(),name="",target="",sets=0,done=0,idx=-1,i;
     for(i=0;i<n.length;i++){
       if(/^e\d+$/.test(n[i][1])&&!st[k(cur,n[i][1])]){idx=i;name=n[i][2];target=n[i][3]||"";break}
     }
     if(idx<0){for(i=0;i<n.length;i++)if(/^e\d+$/.test(n[i][1])){name=n[i][2];target=n[i][3]||"";idx=i;break}}
+    if(idx<0){if(hero.parentNode)hero.parentNode.removeChild(hero);return}
+    if(hero.parentNode!==day)day.insertBefore(hero,day.firstChild);
     var m=/^(\d+)\s*[x×]/i.exec(target);sets=m?+m[1]:1;
     try{var logs=PR.setLog&&PR.setLog[name]&&PR.setLog[name][cur]||[];for(i=0;i<logs.length;i++)if(logs[i]>0)done++}catch(e){}
     var reps=(target.match(/(?:x|×)\s*(\d+)|^(\d+)(?=\s*(?:-|s\b|$))/i)||[]),rep=reps[1]||reps[2]||target;

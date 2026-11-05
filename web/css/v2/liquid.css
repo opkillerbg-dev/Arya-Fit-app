@@ -1,11 +1,10 @@
-/* Liquid Glass material - values taken from archisvaze/liquid-glass demo defaults (MIT, (c) 2026 Archis Vaze):
-   tint white 6%, inner glow 0 0 20px -5px #fff, outer shadow 0 4px 24px rgba(0,0,0,.18). Refraction itself: js/ui/v2-liquid.js */
-html.v2[data-liquid="1"] body .v2-glass:not(.v2-mini-collapsed),html.v2[data-liquid="1"] body .v2-icon-button,html.v2[data-liquid="1"] body .v2-avatar{
-  background:rgba(255,255,255,.06)!important;
+/* Liquid Glass material. Defaults = archisvaze/liquid-glass demo (MIT, (c) 2026 Archis Vaze); every value is tunable in Settings > Glass studio
+   through the --lg-* variables set by js/ui/v2-liquid.js. */
+html.v2[data-liquid="1"] body .v2-glass:not(.v2-mini-collapsed),html.v2[data-liquid="1"] body .v2-icon-button,html.v2[data-liquid="1"] body .v2-avatar,html.v2 body .lg-lens{
+  background:var(--lg-tint,rgba(255,255,255,.06))!important;
   border:1px solid rgba(255,255,255,.1)!important;
-  box-shadow:inset 0 0 20px -5px #fff,0 4px 24px rgba(0,0,0,.18)!important;
+  box-shadow:var(--lg-glow,inset 0 0 20px -5px #fff),var(--lg-shadow,0 4px 24px rgba(0,0,0,.18))!important;
   isolation:isolate}
 html.v2[data-theme="light"][data-liquid="1"] body .v2-glass:not(.v2-mini-collapsed),html.v2[data-theme="light"][data-liquid="1"] body .v2-icon-button,html.v2[data-theme="light"][data-liquid="1"] body .v2-avatar{
-  background:rgba(255,255,255,.18)!important;border:1px solid rgba(255,255,255,.6)!important;
-  box-shadow:inset 0 0 20px -5px #fff,0 4px 24px rgba(20,30,50,.14)!important}
+  background:var(--lg-tint-light,rgba(255,255,255,.18))!important;border:1px solid rgba(255,255,255,.6)!important}
 @media (prefers-reduced-transparency:reduce){html.v2[data-liquid="1"] body .v2-glass{background:var(--v2-surface)!important}}

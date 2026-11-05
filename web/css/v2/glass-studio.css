@@ -1,0 +1,38 @@
+/* Settings upgrades + Glass studio. Selectors use html.v2 body ... to beat V1 skin rules. */
+/* --- hub: tinted icon tiles, quick toggles --- */
+html.v2 body #ax-sm .ax-smr>svg:first-child{box-sizing:content-box;flex:0 0 22px;width:22px;height:22px;padding:9px;border-radius:14px;background:rgba(48,209,88,.14)!important;background:color-mix(in srgb,var(--v2-accent) 16%,transparent)!important}
+html.v2 body #v2-quick{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:2px 0 12px}
+html.v2 body .v2-q-tile{display:flex;align-items:center;gap:11px;min-height:66px;padding:10px 12px;border-radius:22px;border:1px solid var(--v2-line)!important;background:var(--v2-surface)!important;color:var(--v2-text)!important;text-align:left;font-family:"Arya UI","Arya UI Fallback",system-ui,sans-serif!important;box-shadow:none!important}
+html.v2 body .v2-q-tile[aria-pressed="true"]{background:color-mix(in srgb,var(--v2-accent) 18%,var(--v2-surface))!important;border-color:color-mix(in srgb,var(--v2-accent) 55%,transparent)!important}
+html.v2 body .v2-q-tile:disabled{opacity:.5}
+html.v2 body .v2-q-ic{flex:0 0 38px;width:38px;height:38px;border-radius:13px;display:grid;place-items:center;background:var(--v2-surface-2)!important;color:var(--v2-accent)!important}
+html.v2 body .v2-q-ic svg{width:20px;height:20px}
+html.v2 body .v2-q-t{display:block;min-width:0}
+html.v2 body .v2-q-t b{display:block;font:700 13.5px/1.2 "Arya UI","Arya UI Fallback",system-ui,sans-serif!important;color:var(--v2-text)!important}
+html.v2 body .v2-q-t em{display:block;margin-top:3px;font:400 12px/1.2 "Arya UI","Arya UI Fallback",system-ui,sans-serif!important;font-style:normal;color:var(--v2-text-2)!important}
+/* --- sub-pages: sticky header --- */
+html.v2 body #ax-sp-box .ax-sp-h{position:sticky;top:0;z-index:9;margin:0 0 10px;padding:6px 0 10px;background:linear-gradient(var(--v2-bg) 72%,rgba(0,0,0,0))}
+/* --- glass studio --- */
+html.v2 body #ax-sp-glass .lg-preview{position:sticky;top:60px;z-index:8;height:170px;border-radius:26px;overflow:hidden;border:1px solid var(--v2-line);touch-action:none;background:#1a1030}
+html.v2 body #ax-sp-glass .lg-prev-bg{position:absolute;inset:0;background:radial-gradient(circle at 16% 30%,#ff3d7f 0,rgba(255,61,127,0) 40%),radial-gradient(circle at 86% 20%,#2dd4ff 0,rgba(45,212,255,0) 42%),radial-gradient(circle at 62% 96%,#ffd23d 0,rgba(255,210,61,0) 44%),repeating-linear-gradient(90deg,rgba(255,255,255,0) 0 22px,rgba(255,255,255,.18) 22px 25px),#1a1030}
+html.v2 body #ax-sp-glass .lg-prev-bg b{position:absolute;left:16px;top:12px;font:900 46px/1 "Big Shoulders Display","Arya UI",system-ui,sans-serif;text-transform:uppercase;color:#fff}
+html.v2 body #ax-sp-glass .lg-prev-bg i{position:absolute;right:16px;bottom:8px;font:italic 400 44px/1 "Instrument Serif",Georgia,serif;color:#fff}
+html.v2 body #ax-sp-glass .lg-lens{position:absolute;left:50%;top:50%;width:200px;height:96px;margin:-48px 0 0 -100px;border-radius:48px;cursor:grab;touch-action:none}
+html.v2 body #ax-sp-glass .lg-note{position:absolute;left:14px;right:auto;bottom:8px;margin:0;text-align:left;font:600 11px/1.3 "Arya UI","Arya UI Fallback",system-ui,sans-serif;color:rgba(255,255,255,.85);text-shadow:0 1px 3px rgba(0,0,0,.6);pointer-events:none}
+html.v2 body #ax-sp-glass .lg-card{padding:6px 16px 10px}
+html.v2 body #ax-sp-glass .lg-h{margin:10px 0 2px;color:var(--v2-text-2)!important;font:var(--t-eyebrow)!important;letter-spacing:.2em;text-transform:uppercase}
+html.v2 body #ax-sp-glass .lg-switch{display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:60px;padding:6px 0}
+html.v2 body #ax-sp-glass .lg-switch b{display:block;font:700 15px/1.25 "Arya UI","Arya UI Fallback",system-ui,sans-serif!important;color:var(--v2-text)!important}
+html.v2 body #ax-sp-glass .lg-switch small{display:block;margin-top:3px;font:400 12px/1.35 "Arya UI","Arya UI Fallback",system-ui,sans-serif!important;color:var(--v2-text-2)!important}
+html.v2 body #ax-sp-glass .lg-chips{display:flex;gap:8px;overflow-x:auto;padding:4px 0 6px;scrollbar-width:none}
+html.v2 body #ax-sp-glass .lg-chip{flex:0 0 auto;min-height:44px;padding:0 18px;border-radius:999px;border:1px solid var(--v2-line)!important;background:var(--v2-surface-2)!important;color:var(--v2-text)!important;font:700 13px/1 "Arya UI","Arya UI Fallback",system-ui,sans-serif!important}
+html.v2 body #ax-sp-glass .lg-chip[aria-pressed="true"]{background:var(--v2-accent)!important;color:var(--v2-accent-ink)!important;border-color:transparent!important}
+html.v2 body #ax-sp-glass .lg-row{display:grid;gap:4px;padding:8px 0;border-top:1px solid var(--v2-line)}
+html.v2 body #ax-sp-glass .lg-h+.lg-row{border-top:0}
+html.v2 body #ax-sp-glass .lg-row label{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font:700 14px/1.3 "Arya UI","Arya UI Fallback",system-ui,sans-serif!important;color:var(--v2-text)!important}
+html.v2 body #ax-sp-glass .lg-row output{font:600 12px/1.3 ui-monospace,Menlo,monospace!important;color:var(--v2-text-2)!important}
+html.v2 body #ax-sp-glass .lg-row input[type=range]{width:100%;height:36px;margin:0;accent-color:var(--v2-accent);background:transparent!important}
+html.v2 body #ax-sp-glass .lg-row-c{grid-template-columns:1fr auto;align-items:center}
+html.v2 body #ax-sp-glass .lg-row input[type=color]{width:52px;height:36px;padding:2px;border-radius:10px;border:1px solid var(--v2-line)!important;background:var(--v2-surface-2)!important}
+html.v2 body #ax-sp-glass .lg-row select{min-height:44px;border-radius:12px;border:1px solid var(--v2-line)!important;background:var(--v2-surface-2)!important;color:var(--v2-text)!important;padding:0 10px}
+html.v2 body #ax-sp-glass .lg-reset{min-height:48px;border-radius:16px;border:1px solid var(--v2-line)!important;background:var(--v2-surface)!important;color:var(--v2-text)!important;font:700 14px/1 "Arya UI","Arya UI Fallback",system-ui,sans-serif!important}

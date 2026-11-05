@@ -937,3 +937,10 @@ Reported on a real phone: cream cards with white text (Today steps card, Setting
 - Settings > Appearance > 'Liquid glass' switch (`PR.v2Liquid===0` = off); `window.AxLiquid.set/sync/supported`. Disabled when fx=solid (reduced transparency) or V2 off. `tests/v2_liquid_test.py`.
 - Over a pure black background there is little to refract; the effect shows over scrolling content (exercise pictures, text) and as rim light.
 - Credit added to docs/THIRD-PARTY-NOTICES.md. Unverified: real-phone GPU cost, light-theme look.
+
+## Liquid glass swapped to the real library (Claude, v134)
+- Owner rejected my own implementation and the liquid-glass-studio idea (WebGL, cannot refract live DOM). Chose archisvaze/liquid-glass SVG version (MIT).
+- `web/js/ui/v2-liquid.js` now contains the author's functions COPIED VERBATIM (SURFACE_FNS, calculateRefractionProfile, generateDisplacementMap, generateSpecularMap; verified identical to index.html) + the author's filter markup; only wiring is ours (per-size filter ids, targets `.v2-glass/.v2-icon-button/.v2-avatar`, toggle, `AxLiquid`). Parameters `AxLiquid.params` = author's demo defaults (thickness 80, bezel 60, ior 3.0, scale 1, blur .3, specular .5, sat 4). `AxLiquid.rebuild()` after changing them.
+- `web/css/v2/liquid.css` = author's tint 6% white, inner glow `0 0 20px -5px #fff`, outer shadow. Licence in docs/licenses/liquid-glass-LICENSE.txt, credit in THIRD-PARTY-NOTICES.
+- Chromium only. Settings > Appearance > Liquid glass switch unchanged (`PR.v2Liquid===0` = off). Tests: tests/v2_liquid_test.py.
+- Not done: tuning for small controls (author's defaults are for a 300x200 panel), light theme check.

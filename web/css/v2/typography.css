@@ -1,0 +1,22 @@
+/* Typography unification: every day title, section heading, exercise name and big number uses the poster face
+   (Arya Display = Big Shoulders 900) with the editorial italic accent (Arya Editorial) like the Today hero. */
+html.v2 body{--v2-type-display:"Arya Display","Arya Display Fallback","Arial Narrow",sans-serif;--v2-type-editorial:"Arya Editorial","Arya Editorial Fallback",Georgia,serif;font-synthesis:none;text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased}
+html.v2 body :is(h1,h2,h3,p,b,strong,span,em){text-wrap:pretty}
+html.v2 body :is(h1,h2){text-wrap:balance}
+/* day titles (Today card + Plan day card) */
+html.v2 body #ax-v-home :is(.ax-dayx,.ax-home-session-title) h2.ax-h2,html.v2 body #ax-v-plan :is(.ax-dayx,.ax-home-session-title) h2.ax-h2{font-family:var(--v2-type-display)!important;font-weight:900!important;font-size:30px!important;line-height:1!important;letter-spacing:.012em!important;text-transform:uppercase!important}
+html.v2 body #ax-v-home :is(.ax-dayx,.ax-home-session-title) h2.ax-h2 em.v2-type-accent,html.v2 body #ax-v-plan :is(.ax-dayx,.ax-home-session-title) h2.ax-h2 em.v2-type-accent{font-family:var(--v2-type-editorial)!important;font-style:italic!important;font-weight:400!important;font-size:1.12em;letter-spacing:0!important;text-transform:none!important}
+/* group headings in the day list: Warm-up, Main, Daily habits, 5 km run... */
+html.v2 body #ax-v-plan h3.ax-gh{font-family:var(--v2-type-display)!important;font-weight:900!important;font-size:36px!important;line-height:1!important;letter-spacing:.012em!important;text-transform:uppercase!important}
+/* session hero: exercise name + big number */
+html.v2 body #ax-v-plan .v2-session-lockup h2{font-family:var(--v2-type-display)!important;font-weight:900!important;font-size:36px!important;line-height:.96!important;letter-spacing:.012em!important;text-transform:uppercase!important}
+html.v2 body #ax-v-plan .v2-session-lockup strong{font-family:var(--v2-type-display)!important;font-weight:900!important;font-size:104px!important;line-height:.85!important;letter-spacing:0!important}
+/* Today: big count + section heads */
+html.v2 body #ax-v-home .v2-today-metric strong{font-family:var(--v2-type-display)!important;font-weight:900!important;font-size:96px!important;line-height:.85!important;letter-spacing:0!important}
+html.v2 body #ax-v-home .v2-today-section-head h2{font-family:var(--v2-type-display)!important;font-weight:900!important;font-size:38px!important;line-height:1!important;letter-spacing:.012em!important;text-transform:uppercase!important}
+/* Today card sits inside #ax-htoday which has its own ID-level font rules */
+html.v2 body #ax-v-home #ax-htoday :is(.ax-dayx,.ax-home-session-title) h2.ax-h2{font-family:var(--v2-type-display)!important;font-weight:900!important;font-size:30px!important;line-height:1!important;letter-spacing:.012em!important;text-transform:uppercase!important}
+html.v2 body #ax-v-home #ax-htoday :is(.ax-dayx,.ax-home-session-title) h2.ax-h2 em.v2-type-accent{font-family:var(--v2-type-editorial)!important;font-style:italic!important;font-weight:400!important;font-size:1.12em;letter-spacing:0!important;text-transform:none!important}
+/* day titles flow as one line of text (icon inline), long names wrap naturally */
+html.v2 body #ax-v-home :is(.ax-dayx,.ax-home-session-title) h2.ax-h2,html.v2 body #ax-v-plan :is(.ax-dayx,.ax-home-session-title) h2.ax-h2,html.v2 body #ax-v-home #ax-htoday :is(.ax-dayx,.ax-home-session-title) h2.ax-h2{display:block!important}
+html.v2 body :is(.ax-dayx,.ax-home-session-title) h2.ax-h2>svg.ax-ic{display:inline-block!important;vertical-align:-3px;margin:0 8px 0 0!important;width:24px;height:24px}

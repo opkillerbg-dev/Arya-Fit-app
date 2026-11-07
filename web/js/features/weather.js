@@ -179,7 +179,7 @@
     },function(e){
       busy=false;
       var denied=e&&e.code===1;
-      if(window.toast)toast(denied?"Location is off for Arya Fit. Allow it in phone settings to use run weather.":"Couldn’t get your location. Try again outside or with location on.");
+      if(window.toast)toast(denied?"Location is off for AERUNO. Allow it in phone settings to use run weather.":"Couldn’t get your location. Try again outside or with location on.");
       paint();
     });
   }

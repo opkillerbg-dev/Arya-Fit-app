@@ -27,7 +27,7 @@ t("missing timestamps give points without <time> instead of bad dates", () => {
   assert.ok(!x.includes("<time>")); assert.strictEqual((x.match(/<trkpt /g) || []).length, 5);
 });
 t("file name uses the local date of the first point, or the plan day", () => {
-  const d = new Date(T0), exp = "Arya-Run-" + d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0") + ".gpx";
-  assert.strictEqual(G.fileName(pts(5, 1000, 1e-5), 3), exp); assert.strictEqual(G.fileName([[1, 1, 0]], 3), "Arya-Run-day4.gpx");
+  const d = new Date(T0), exp = "AERUNO-Run-" + d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0") + ".gpx";
+  assert.strictEqual(G.fileName(pts(5, 1000, 1e-5), 3), exp); assert.strictEqual(G.fileName([[1, 1, 0]], 3), "AERUNO-Run-day4.gpx");
 });
 console.log("\n" + n + " tests passed");

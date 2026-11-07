@@ -327,7 +327,7 @@ final class WidgetKit {
     cv.drawText(kicker, left, pad + 11f * u, k);
 
     boolean known = d.fresh && d.title.length() > 0;
-    String title = known ? d.title : "Open Arya Fit";
+    String title = known ? d.title : "Open AERUNO";
     Paint t = text(d.ink, 26f * u, SERIF, Paint.Align.LEFT);
     float ts = fit(t, title, maxW, Math.min(H * 0.21f, 27f * u), 14f * u);
     float tb = H * 0.5f + ts * 0.1f;
@@ -429,7 +429,7 @@ final class WidgetKit {
     Data d = load(c);
     if (type == STEPS) return "Steps today: " + d.steps + " of " + d.goal;
     if (type == TODAY) return "Today: " + (d.fresh ? d.title : "open the app") + ". Steps " + d.steps;
-    return "Arya Fit overview. Workout " + d.done + " of " + d.total + ", steps " + d.steps + ", streak " + d.streak;
+    return "AERUNO overview. Workout " + d.done + " of " + d.total + ", steps " + d.steps + ", streak " + d.streak;
   }
 
   static void push(Context c, AppWidgetManager m, int id, int type) {

@@ -26,7 +26,7 @@ function axSteps(){
   for(i=6;i>=0;i--){var d=new Date(now.getFullYear(),now.getMonth(),now.getDate()-i),v=i==0?n:(ds[ymdOf(d)]||0);vals.push([DN[d.getDay()].charAt(0),v,i==0]);mx=Math.max(mx,v)}
   bars=vals.map(function(x){return'<span class="ax-sb'+(x[2]?' on':'')+'" aria-label="'+x[1]+' steps"><u><i style="height:'+Math.max(3,Math.round(x[1]/mx*100))+'%"></i></u><em>'+x[0]+'</em></span>'}).join("");
   axSheet("Steps",'<div class="ax-sbig"><b>'+n.toLocaleString()+'</b><span class="ax-cap">steps today | '+skm(n)+' km | '+Math.min(100,Math.round(n/g*100))+'% of goal</span></div><div class="ax-sbars">'+bars+'</div>'
-    +(SS.ign?'':'<button class="ax-opt" id="ax-sbat"><b>Keep counting in background</b><span>Turn off battery limits for Arya Fit</span></button>')
+    +(SS.ign?'':'<button class="ax-opt" id="ax-sbat"><b>Keep counting in background</b><span>Turn off battery limits for AERUNO</span></button>')
     +'<p class="ax-cap">Daily goal (steps)</p><input class="ax-field" id="ax-sg" type="number" inputmode="numeric" min="1000" max="50000" value="'+g+'" aria-label="Daily step goal"><button class="ax-btn ax-pri" id="ax-sgs">Save goal</button>');
   $("ax-sgs").onclick=function(){var v=Math.round(+$("ax-sg").value);if(!(v>=1000&&v<=50000)){toast("Goal: 1,000 to 50,000 steps");return}PR.sg=v;save();axSheetX();stepsPaint();toast("Goal saved")};
   if($("ax-sbat"))$("ax-sbat").onclick=function(){try{STP.keepAlive()}catch(e){}axSheetX()}}

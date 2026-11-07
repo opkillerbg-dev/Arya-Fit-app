@@ -22,13 +22,10 @@ def bg_svg(v, rx=0):
 
 def fg_svg(v, mono=False, scale=1.0):
     ink = "#000" if mono else v["ink"]
-    acc = "#000" if mono else v["accent"]
-    x, y, r = M["dot"]
     shadow = '' if (mono or not v["glass"]) else '<filter id="sh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="1.6" stdDeviation="1.6" flood-color="#2a2f8a" flood-opacity=".35"/></filter>'
     f = ' filter="url(#sh)"' if shadow else ''
     t = 'translate(54 54) scale(%s) translate(-54 -54)' % scale
-    return ('<defs>%s</defs><g transform="%s"%s><path d="%s" fill="none" stroke="%s" stroke-width="%s" stroke-linecap="round" stroke-linejoin="round"/>'
-            '<circle cx="%s" cy="%s" r="%s" fill="%s"/></g>') % (shadow, t, f, M["stroke"], ink, M["sw"], x, y, r, acc)
+    return ('<defs>%s</defs><g transform="%s"%s><path d="%s" fill="%s" fill-rule="%s"/></g>') % (shadow, t, f, M["path"], ink, M.get("rule", "evenodd"))
 
 def page(inner, size):
     return '<html><body style="margin:0;background:transparent"><svg id="s" xmlns="http://www.w3.org/2000/svg" width="%d" height="%d" viewBox="0 0 108 108">%s</svg></body></html>' % (size, size, inner)

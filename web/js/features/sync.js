@@ -64,7 +64,7 @@
     return readRemote().then(function(rr){
       return packFresh().then(function(txt){
         var h=hash(txt),dirty=h!==S.baseHash,env=rr.env;
-        if(rr.bad){S.err="The sync file isn't an Arya Fit file.";keep();return}
+        if(rr.bad){S.err="The sync file isn't an AERUNO file.";keep();return}
         if(!env){return push(txt,h)}                              /* empty file: first push */
         if(env.ts===S.baseTs){                                    /* remote unchanged since our last sync */
           if(dirty&&(loud||Date.now()-lastPush>MIN_GAP))return push(txt,h);

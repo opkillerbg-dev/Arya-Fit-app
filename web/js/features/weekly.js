@@ -109,13 +109,13 @@
       cv.toBlob(function(bl){
         if(!bl)return;
         var f=new File([bl],"arya-fit-week-"+w.wNum+".png",{type:"image/png"});
-        if(navigator.canShare&&navigator.canShare({files:[f]}))navigator.share({files:[f],title:"Arya Fit week "+w.wNum}).catch(function(){});
+        if(navigator.canShare&&navigator.canShare({files:[f]}))navigator.share({files:[f],title:"AERUNO week "+w.wNum}).catch(function(){});
         else showPreview(URL.createObjectURL(bl));
       });
     }
     if(FS&&SH){
       FS.writeFile({path:"arya-fit-week-"+w.wNum+".png",data:cv.toDataURL("image/png").split(",")[1],directory:"CACHE"})
-        .then(function(r){return SH.share({title:"Arya Fit week "+w.wNum,url:r.uri})})
+        .then(function(r){return SH.share({title:"AERUNO week "+w.wNum,url:r.uri})})
         .catch(fallback);
       return;
     }

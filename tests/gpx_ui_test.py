@@ -26,7 +26,7 @@ try:
         pg.evaluate("AxRunSum.open(2,0)"); pg.wait_for_timeout(500)
         check("run summary shows Export GPX", pg.evaluate("!!document.getElementById('rs-gpx')"))
         with pg.expect_download(timeout=5000) as dl: pg.evaluate("document.getElementById('rs-gpx').click()")
-        d = dl.value; path = d.path(); check("file name is Arya-Run-<date>.gpx", d.suggested_filename.startswith("Arya-Run-") and d.suggested_filename.endswith(".gpx"), d.suggested_filename)
+        d = dl.value; path = d.path(); check("file name is AERUNO-Run-<date>.gpx", d.suggested_filename.startswith("AERUNO-Run-") and d.suggested_filename.endswith(".gpx"), d.suggested_filename)
         root_el = ET.parse(path).getroot(); ns = {"g": "http://www.topografix.com/GPX/1/1"}
         pts = root_el.findall(".//g:trkpt", ns)
         check("downloaded file is well-formed GPX with all route points", root_el.tag.endswith("gpx") and len(pts) == n, (len(pts), n))

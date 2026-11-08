@@ -47,7 +47,7 @@ import java.util.Map;
 })
 public class StepsPlugin extends Plugin {
   static final String PREF = "arya_steps";
-  static final String CH = "arya_steps_bg";
+  static final String CH = "arya_steps_off";
   static final int NID = 11;
   static volatile boolean running = false;
 

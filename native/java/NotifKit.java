@@ -66,8 +66,12 @@ final class NotifKit {
     NotificationManager nm = (NotificationManager) c.getSystemService(Context.NOTIFICATION_SERVICE);
     if (nm == null) return;
     try { nm.deleteNotificationChannel("arya_steps"); } catch (Exception ex) { /* old live-count channel, already gone */ }
-    NotificationChannel s = new NotificationChannel(CH_STEPS, "Step counting (background)", NotificationManager.IMPORTANCE_MIN);
-    s.setDescription("Android needs one quiet notification to keep step counting alive. Your steps are in the widget and the app.");
+    try { nm.deleteNotificationChannel("arya_steps_bg"); } catch (Exception ex) { /* v140 minimised channel, replaced by the hidden one */ }
+    // v141: the step-counting service still posts its (required) notification, but into a channel created with
+    // IMPORTANCE_NONE, i.e. blocked. Android keeps the service running and simply never shows the notification.
+    // It can be turned back on any time in system Settings > Apps > AERUNO > Notifications > Step counting (hidden).
+    NotificationChannel s = new NotificationChannel(CH_STEPS, "Step counting (hidden)", NotificationManager.IMPORTANCE_NONE);
+    s.setDescription("Keeps step counting alive. Hidden on purpose; turn on only if you want to see it.");
     s.setShowBadge(false);
     s.setLockscreenVisibility(Notification.VISIBILITY_SECRET);
     nm.createNotificationChannel(s);
@@ -86,7 +90,7 @@ final class NotifKit {
     return PendingIntent.getActivity(c, 0, li, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
   }
 
-  /** v140: the step counter service must show a notification (Android rule), so it is a static, silent, minimised one. No live numbers: those live in the widget and the app. */
+  /** v140/v141: the step counter service must post a notification (Android rule). It is static (no live numbers) and goes into the blocked CH_STEPS channel, so it is never shown. */
   static Notification steps(Context c, int steps, Info i) {
     Notification.Builder b = builder(c, CH_STEPS);
     b.setSmallIcon(R.drawable.ic_stat_arya)

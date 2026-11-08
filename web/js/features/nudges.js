@@ -172,7 +172,7 @@
       item("ws", "Weekly summary", "Every Sunday.", c.ws.on, tin("ws", c.ws.t)) +
       item("cb", "Comeback", "Two gentle messages if you have not opened the app for 3 and 6 days. No guilt.", c.cb.on, "") +
       '<div class="row"><span><b>Send a test</b><em>Arrives in a few seconds.</em></span><button class="btn" type="button" data-ndtest="1">Test</button></div>' +
-      '<p class="key" style="margin:10px 2px 0">Step counting needs one tiny Android notification to stay alive. It is silent, hidden from the status bar and lock screen, and you can swipe it away. Counting continues.</p>';
+      '<p class="key" style="margin:10px 2px 0">Step counting keeps running in the background. Its Android notification is hidden. If you ever want to see it, turn on the &quot;Step counting (hidden)&quot; category in your phone&#39;s notification settings for this app.</p>';
     w.axSheet("Notifications", h);
     var box = document.getElementById("ax-shb");
     if (!box) return;

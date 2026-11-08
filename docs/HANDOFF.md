@@ -981,3 +981,10 @@ Reported on a real phone: cream cards with white text (Today steps card, Setting
 - Known limits: content is fixed at plan time (e.g. evening walk text does not know steps taken after the app was left); nothing is scheduled beyond 3 days if the app is not opened (comeback messages cover that); exact timing depends on OxygenOS battery management. Native Java cannot be compiled in the sandbox (no Android SDK): edits are small, but the first CI build is the real check.
 - Tests: `tests/nudges.test.js` (11 checks, pure planner), `tests/nudges_ui_test.py` (17 checks, stubbed LocalNotifications). Cache `arya-v140`, About shows v140.
 - Not confirmed on phone: the quiet step notification (after install, long-press it once; if it still shows the old "Daily steps" channel, clear it in system settings), nudge delivery times, test button.
+
+## Step notification hidden (Claude, v141)
+- Request: hide the permanent "Counting your steps" notification; keep everything else running.
+- Android requires a foreground-service notification, so it is still posted, but into a channel created with IMPORTANCE_NONE (blocked). Android keeps `StepsPlugin.Svc` running and never shows it. Channel id changed `arya_steps_bg` -> `arya_steps_off` (name "Step counting (hidden)"); the old channel is deleted in `NotifKit.channels()` so the phone drops it. No service, sensor, widget or goal-alert logic touched.
+- Re-enable: system Settings > Apps > AERUNO > Notifications > "Step counting (hidden)".
+- Nudges sheet note reworded. Cache `arya-v141`, About shows v141.
+- Not confirmed on phone (Java cannot be compiled in the sandbox). Check after install: notification gone, step count still rising in widget/app after a few minutes with the screen off. If OxygenOS kills the service, set battery to Unrestricted for the app.

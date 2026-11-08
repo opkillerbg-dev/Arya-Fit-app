@@ -47,7 +47,7 @@ import java.util.Map;
 })
 public class StepsPlugin extends Plugin {
   static final String PREF = "arya_steps";
-  static final String CH = "arya_steps";
+  static final String CH = "arya_steps_bg";
   static final int NID = 11;
   static volatile boolean running = false;
 
@@ -283,10 +283,10 @@ public class StepsPlugin extends Plugin {
       later();
     }
 
-    /** Trailing throttle: at most one update per 4 s, and the last value always gets shown (the old code could stay stale). */
+    /** Trailing throttle: at most one check per 15 s (only the goal-reached alert needs it now; the notification itself no longer shows live numbers). */
     private void later() {
       if (pending) return;
-      long wait = Math.max(0L, 4000L - (System.currentTimeMillis() - lastNotify));
+      long wait = Math.max(0L, 15000L - (System.currentTimeMillis() - lastNotify));
       pending = true;
       h.postDelayed(tick, wait);
     }
@@ -303,7 +303,6 @@ public class StepsPlugin extends Plugin {
       lastNotify = now;
       NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
       if (nm == null) return;
-      nm.notify(NID, NotifKit.steps(this, t, inf));
       if (t >= inf.goal && !d.equals(sp(this).getString("ga", ""))) {
         sp(this).edit().putString("ga", d).apply();
         if (crossed && inf.goalAlert) nm.notify(NotifKit.NID_GOAL, NotifKit.goal(this, t, inf));

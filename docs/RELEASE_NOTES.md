@@ -21,3 +21,7 @@
 
 ## v116
 - Smarter start-up: the loading screen now waits until the app is actually smooth (steady animation, nothing still installing) instead of a fixed time. Usually about 2 seconds, up to 11 seconds on a slow moment, then it opens anyway.
+
+## v140
+- Steps notification is now tiny and silent (Android requires one to count steps all day): no numbers, no status-bar icon, hidden on the lock screen. Your steps stay in the widget and the app.
+- New Notifications & nudges (Settings > Voice & alerts): hydration, morning check-in, move break, evening walk, workout still open, wind-down, weekly summary and a gentle comeback message. Each one has its own switch and time, plus a test button.

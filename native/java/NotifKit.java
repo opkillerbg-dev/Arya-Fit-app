@@ -65,9 +65,11 @@ final class NotifKit {
     if (Build.VERSION.SDK_INT < 26) return;
     NotificationManager nm = (NotificationManager) c.getSystemService(Context.NOTIFICATION_SERVICE);
     if (nm == null) return;
-    NotificationChannel s = new NotificationChannel(CH_STEPS, "Daily steps", NotificationManager.IMPORTANCE_LOW);
-    s.setDescription("Live step count with your daily goal");
+    try { nm.deleteNotificationChannel("arya_steps"); } catch (Exception ex) { /* old live-count channel, already gone */ }
+    NotificationChannel s = new NotificationChannel(CH_STEPS, "Step counting (background)", NotificationManager.IMPORTANCE_MIN);
+    s.setDescription("Android needs one quiet notification to keep step counting alive. Your steps are in the widget and the app.");
     s.setShowBadge(false);
+    s.setLockscreenVisibility(Notification.VISIBILITY_SECRET);
     nm.createNotificationChannel(s);
     NotificationChannel g = new NotificationChannel(CH_GOAL, "Goal reached", NotificationManager.IMPORTANCE_DEFAULT);
     g.setDescription("One message when you reach your daily step goal");
@@ -84,26 +86,19 @@ final class NotifKit {
     return PendingIntent.getActivity(c, 0, li, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
   }
 
+  /** v140: the step counter service must show a notification (Android rule), so it is a static, silent, minimised one. No live numbers: those live in the widget and the app. */
   static Notification steps(Context c, int steps, Info i) {
-    boolean hit = steps >= i.goal;
-    long now = System.currentTimeMillis();
-    int yesterday = StepsPlugin.sp(c).getInt("d_" + StepsPlugin.dayKey(now - 86400000L), 0);
-    int sum = 0;
-    for (int k = 1; k <= 7; k++) sum += StepsPlugin.sp(c).getInt("d_" + StepsPlugin.dayKey(now - (long) k * 86400000L), 0);
-    String plan = NotifText.plan(i.fresh, i.rest, i.title, i.done, i.total);
     Notification.Builder b = builder(c, CH_STEPS);
     b.setSmallIcon(R.drawable.ic_stat_arya)
-      .setContentTitle(NotifText.title(steps))
-      .setContentText(NotifText.summary(steps, i.goal))
-      .setSubText(i.streak > 0 ? i.streak + "-day streak" : "Today")
-      .setProgress(i.goal, Math.min(steps, i.goal), false)
-      .setColor(hit ? i.ok : i.accent)
-      .setCategory(Notification.CATEGORY_STATUS)
+      .setContentTitle("Counting your steps")
+      .setContentText("Runs quietly in the background")
+      .setColor(i.accent)
+      .setCategory(Notification.CATEGORY_SERVICE)
       .setShowWhen(false)
       .setOngoing(true)
-      .setOnlyAlertOnce(true);
-    if (!i.compact) b.setStyle(new Notification.BigTextStyle().bigText(NotifText.big(steps, i.goal, i.stride, plan, yesterday, sum / 7)));
-    if (Build.VERSION.SDK_INT >= 31) b.setForegroundServiceBehavior(Notification.FOREGROUND_SERVICE_IMMEDIATE);
+      .setOnlyAlertOnce(true)
+      .setVisibility(Notification.VISIBILITY_SECRET);
+    if (Build.VERSION.SDK_INT < 26) b.setPriority(Notification.PRIORITY_MIN);
     PendingIntent pi = open(c);
     if (pi != null) b.setContentIntent(pi);
     return b.build();

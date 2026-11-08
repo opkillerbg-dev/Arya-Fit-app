@@ -15,6 +15,11 @@ try:
         try:
             pg.goto("http://127.0.0.1:8973/index.html", timeout=15000); pg.wait_for_function("!document.getElementById('ax-boot')", timeout=15000); booted = True
         except Exception: booted = False
+        if booted:
+            try:
+                pg.evaluate("AxV2.setEnabled(true)"); pg.wait_for_timeout(500)
+                pg.reload(timeout=15000); pg.wait_for_function("!document.getElementById('ax-boot')", timeout=15000); pg.wait_for_timeout(1200)
+            except Exception: booted = False
         check("V2 boots on a rest day (no hang)", booted)
         if booted:
             pg.evaluate("go('plan')"); pg.wait_for_timeout(700)

@@ -441,8 +441,8 @@ button:disabled{cursor:not-allowed}
 .ax-hero-art:before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(7,17,17,.82) 0%,rgba(7,17,17,.48) 47%,rgba(7,17,17,.05) 100%),linear-gradient(0deg,rgba(6,13,12,.46),transparent 52%)}
 .ax-hero-top{display:flex;align-items:center;gap:8px;position:relative;z-index:1}
 .ax-brand-mark{width:29px;height:29px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.52);border-radius:10px;background:rgba(255,255,255,.12);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
-.ax-brand-mark svg{width:22px;height:22px;fill:none;stroke:#fff;stroke-width:1.7;stroke-linejoin:round}
-.ax-brand-word{font-size:11px;letter-spacing:.19em;font-weight:500}.ax-brand-word b{font-weight:800}
+.ax-brand-mark svg{width:24px;height:24px;fill:#fff;stroke:none}
+.ax-brand-word{font-size:11px;letter-spacing:.24em;font-weight:700}.ax-brand-word b{font-weight:800}
 .ax-hero-pill{margin-left:auto;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.13);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:6px 9px;border-radius:30px;font-size:9px;letter-spacing:.12em;font-weight:700}
 .ax-hero-pill i{display:inline-block;width:5px;height:5px;border-radius:50%;background:#c9ef8d;margin-right:5px;vertical-align:1px}
 .ax-hero-copy{position:relative;z-index:1;margin-top:27px;max-width:76%}.ax-hero-copy p,.ax-kicker{margin:0 0 7px;color:#d8edae;font-size:10px;font-weight:800;letter-spacing:.16em}.ax-hero-copy h2{font-size:clamp(28px,8vw,38px);line-height:.98;letter-spacing:-.045em;margin:0;font-weight:700}.ax-hero-copy>span{display:block;margin-top:10px;color:rgba(255,255,255,.83);font-size:11px;line-height:1.4}

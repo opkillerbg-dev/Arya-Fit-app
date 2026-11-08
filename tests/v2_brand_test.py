@@ -27,7 +27,7 @@ try:
         left = []
         for v in ["home", "plan", "timers", "prog", "set", "plans"]:
             pg.evaluate("go('%s')" % v); pg.wait_for_timeout(300)
-            if "Arya Fit" in pg.evaluate("document.body.innerText"): left.append(v)
+            if "arya fit" in pg.evaluate("document.body.innerText").lower() or "arya" in pg.evaluate("document.body.innerText").lower().replace("arya sheladiya",""): left.append(v)
         check("no view still shows the old name", not left)
         pg.evaluate("go('set')"); pg.wait_for_timeout(600); pg.evaluate("axSettingsHub.show('about')"); pg.wait_for_timeout(500)
         check("About shows AERUNO + tagline", pg.evaluate("/AERUNO/.test(document.getElementById('ax-sp-about').innerText)&&/Personal Fitness/.test(document.getElementById('ax-sp-about').innerText)"))

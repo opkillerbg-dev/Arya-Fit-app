@@ -13,7 +13,7 @@
     {k:"alert",t:"Sound & feedback",s:function(){return (PR.voi===0?"Voice off":"Voice on")+" · "+(PR.hap===0?"haptics off":"haptics on")}},
     {k:"plan",t:"Plan & exercises",s:function(){var n=$("sp-name");return (n&&n.textContent)||"Plans, next plan, library"}},
     {k:"data",t:"Data & backup",s:function(){return PR.lbk?"Last backup "+Math.floor((Date.now()-PR.lbk)/864e5)+" d ago":"No backup yet"}},
-    {k:"about",t:"About",s:function(){var b=window.AXBUILD;return "AERUNO · v137"+(b&&b.run?" · build "+b.run:"")}}
+    {k:"about",t:"About",s:function(){var b=window.AXBUILD;return "AERUNO · v139"+(b&&b.run?" · build "+b.run:"")}}
   ];
   function cap(s){return s.charAt(0).toUpperCase()+s.slice(1)}
   function ic(n,c){return '<svg class="ax-ic'+(c?" "+c:"")+'"><use href="#'+n+'"/></svg>'}
@@ -65,7 +65,7 @@
       if(window.AxV2)AxV2.apply();
     });
     var v2r=document.createElement("label");v2r.className="row";
-    v2r.id="ax-v2-row";v2r.innerHTML='<span><b>New look (V2)</b><em>Try the new cinematic interface. You can switch back here at any time.</em></span><input class="sw2" type="checkbox" id="t-v2">';
+    v2r.id="ax-v2-row";v2r.innerHTML='<span><b>New look (beta)</b><em>Early preview of the new interface. Some screens are unfinished and it can use more battery. Switch back here any time.</em></span><input class="sw2" type="checkbox" id="t-v2">';
     card0.insertBefore(v2r,lr.nextSibling);
     var tv2=v2r.querySelector("#t-v2");tv2.checked=!!(window.PR&&PR.v2===1);
     tv2.addEventListener("change",function(){if(window.AxV2&&AxV2.setEnabled(tv2.checked)){try{toast(tv2.checked?"New look enabled":"Classic look restored")}catch(e){}}else{tv2.checked=!!(window.PR&&PR.v2===1)}});

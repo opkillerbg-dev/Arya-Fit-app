@@ -988,3 +988,6 @@ Reported on a real phone: cream cards with white text (Today steps card, Setting
 - Re-enable: system Settings > Apps > AERUNO > Notifications > "Step counting (hidden)".
 - Nudges sheet note reworded. Cache `arya-v141`, About shows v141.
 - Not confirmed on phone (Java cannot be compiled in the sandbox). Check after install: notification gone, step count still rising in widget/app after a few minutes with the screen off. If OxygenOS kills the service, set battery to Unrestricted for the app.
+
+## V1 simplification blueprint (Claude, v141, docs only)
+- Owner: a stranger would be confused by V1; wants simpler feature arrangement. Added `docs/v1-simplify/BLUEPRINT.md` (audit with code evidence, target structure, one-home-per-action table, phases P0-P9, glossary, stranger test, decisions D1-D4). No code changed. Next: owner answers D1-D4, then P0 (screenshots) and P1.

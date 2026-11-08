@@ -190,6 +190,7 @@
 
   function renderCard() {
     try {
+      if (window.axQuiet && axQuiet()) { var cq = $("ax-coach-card"); if (cq) cq.remove(); return; }   /* v142: nothing to coach on day one */
       var hb = $("ax-htoday") || $("ax-hbrain"); if (!hb || !hb.parentNode) return;   /* right above today's plan: it changes what today should be */
       var box = $("ax-coach-card"), s = null;
       try { s = state(); } catch (e) { s = null; }

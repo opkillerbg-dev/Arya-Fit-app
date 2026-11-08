@@ -15,7 +15,7 @@ try:
     with sync_playwright() as p:
         try: b = p.chromium.launch(channel="chrome")
         except Exception: b = p.chromium.launch()
-        for label, day in [("workout day", "2026-10-08"), ("rest day", "2026-10-11")]:
+        for label, day in [("workout day", "2026-10-09"), ("rest day", "2026-10-11")]:
             ctx = b.new_context(viewport={"width": 360, "height": 800})
             ctx.add_init_script("(()=>{const R=Date,off=new R('%sT09:00:00').getTime()-R.now();class D extends R{constructor(...a){if(a.length)super(...a);else super(R.now()+off)}static now(){return R.now()+off}};window.Date=D})()" % day)
             pg = ctx.new_page(); errs = []; pg.on("pageerror", lambda e: errs.append(str(e)))

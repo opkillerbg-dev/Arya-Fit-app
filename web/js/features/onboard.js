@@ -8,7 +8,7 @@
   "use strict";
   var AUTOSTART=true,SKIPK="aryaOnboardSkip",TOTAL=9;
   var STR={
-    welcomeT:"Let's make a plan that fits you",welcomeP:"A few quick questions, about 2 minutes. Everything stays on your phone.",start:"Start",skipAll:"Skip, use a standard plan",
+    welcomeT:"Let's make a plan that fits you",welcomeP:"AERUNO is your workout, run and step tracker. Answer a few quick questions (about 2 minutes) and get a plan that fits you. Everything stays on your phone.",start:"Start",skipAll:"Skip, use a starter plan",
     next:"Next",back:"Back",skip:"Skip",why:"Why we ask: ",
     youT:"About you",youWhy:"Height and weight help set sensible starting loads. Age keeps things safe. All optional.",name:"Name (optional)",units:"Units",height:"Height",weight:"Weight",age:"Age",sex:"Sex",
     sexWhy:"Only used for strength standards.",under18:"Under 18: we will keep it gentle, with no max-effort tests.",

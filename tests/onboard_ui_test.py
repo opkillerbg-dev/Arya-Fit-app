@@ -25,7 +25,7 @@ try:
         ctx, pg, errs = page(b)
         check("automated browsers skip the autostart (so other UI tests are not blocked)", not pg.evaluate("AxOnboard.isOpen()") and pg.evaluate("AxOnboard.isFresh()"))
         pg.evaluate("AxOnboard.open()"); pg.wait_for_timeout(200)
-        check("welcome screen opens full screen with Start and Skip", "Start" in txt(pg) and "Skip, use a standard plan" in txt(pg))
+        check("welcome screen opens full screen with Start and Skip", "Start" in txt(pg) and "Skip, use a starter plan" in txt(pg))
         pg.click("#ob-go"); pg.wait_for_timeout(200)
         check("screen 1 shows you-questions and a progress bar", "About you" in txt(pg) and pg.evaluate("!!document.querySelector('#ax-ob [role=progressbar]')"))
         pg.fill("#ob-name", "Arya"); pg.fill("#ob-ht", "178"); pg.fill("#ob-wt", "76")
@@ -151,7 +151,7 @@ try:
         pg.on("pageerror", lambda e: errs.append(str(e)[:160])); pg.goto(URL, wait_until="load"); pg.wait_for_timeout(3500)
         check("a fresh install opens the wizard by itself after the splash", pg.evaluate("AxOnboard.isOpen()") and "Let's make a plan" in txt(pg))
         pg.click("#ob-skipall"); pg.wait_for_timeout(200); pg.reload(wait_until="load"); pg.wait_for_timeout(3500)
-        check("after 'Skip, use a standard plan' it does not come back", not pg.evaluate("AxOnboard.isOpen()"))
+        check("after 'Skip, use a starter plan' it does not come back", not pg.evaluate("AxOnboard.isOpen()"))
         check("no page errors (autostart)", not errs, errs); ctx.close()
 
         # a person with history never sees it
@@ -164,7 +164,7 @@ try:
         # skip everything on the welcome screen
         ctx, pg, errs = page(b)
         pg.evaluate("AxOnboard.open()"); pg.click("#ob-skipall"); pg.wait_for_timeout(200)
-        check("'Skip, use a standard plan' closes it and it is no longer fresh", not pg.evaluate("AxOnboard.isOpen()") and not pg.evaluate("AxOnboard.isFresh()"))
+        check("'Skip, use a starter plan' closes it and it is no longer fresh", not pg.evaluate("AxOnboard.isOpen()") and not pg.evaluate("AxOnboard.isFresh()"))
         check("no page errors (skip all)", not errs, errs); ctx.close()
 
         # layout sanity on a small phone: nothing wider than the screen, buttons big enough

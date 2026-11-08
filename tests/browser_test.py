@@ -95,6 +95,8 @@ try:
         pg = ctx.new_page(); errs = []; pg.on("pageerror", lambda e: errs.append(str(e)[:150]))
         pg.route("**/api.open-meteo.com/**", forecast)
         pg.goto(URL, wait_until="load"); pg.wait_for_function("!document.getElementById('ax-boot')", timeout=20000); pg.wait_for_timeout(600)
+        check("weather: invite stays hidden in a new user's first days (v142 quiet window)", pg.evaluate("!document.getElementById('ax-wx-on')"))
+        pg.evaluate("delete PR.born; save(); go('plan'); go('home')"); pg.wait_for_timeout(900)
         check("weather: invite card shows before opt-in", pg.evaluate("!!document.getElementById('ax-wx-on')"))
         check("weather: nothing asked or fetched before opt-in", pg.evaluate("localStorage.getItem('axWx')") is None)
         pg.click("#ax-wx-on"); pg.wait_for_function("document.querySelector('#ax-wx-card .ax-wx-pill')", timeout=6000)

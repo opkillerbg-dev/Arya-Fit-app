@@ -991,3 +991,11 @@ Reported on a real phone: cream cards with white text (Today steps card, Setting
 
 ## V1 simplification blueprint (Claude, v141, docs only)
 - Owner: a stranger would be confused by V1; wants simpler feature arrangement. Added `docs/v1-simplify/BLUEPRINT.md` (audit with code evidence, target structure, one-home-per-action table, phases P0-P9, glossary, stranger test, decisions D1-D4). No code changed. Next: owner answers D1-D4, then P0 (screenshots) and P1.
+
+## V1 simplification P0 + P1 (Claude, v142)
+- Decisions applied: Run tab -> "Move" (P4), Settings -> "Me" (P7), drawer removed (P3), neutral starter plan for people who skip setup.
+- P0: `tools/shots-v1.py` writes tab/Settings screenshots (`docs/v1-simplify/before`, `after_p1`).
+- P1: `sheets-views.js` `starterPlan()` (AxPlanGen from a fixed beginner profile, validated by `vplan`, fallback = old plan without the owner's name; gentle 2 km run/walk added because `#tvpanel` is hidden for plans with no run) used by `loadApp()` only for a truly fresh install (no legacy data); fresh install is saved at once and gets `PR.born`. `axQuiet()` = born < 3 days and < 3 ticks; gates the weather prompt (`weather.js`, repaints on next Home visit after the window), readiness card (`readiness.js`) and Smart week card (`coach.js`). Backup nag was already gated by `todayIdx()>=3`; with a plan starting today it no longer fires on day one. `index.html` `#ax-name` placeholder "Your plan". Wizard welcome copy + skip label ("Skip, use a starter plan") in `onboard.js`.
+- Existing users: untouched (stored plan and prefs win; no `PR.born`).
+- Tests: new `tests/v1_starter_test.py` (22 checks). Updated `onboard_ui_test.py` (skip label), `browser_test.py` (weather invite now checked hidden first, then after the window), `v2_type_test.py` (workout-day fake date 2026-10-09, because the starter plan starts on the fake date). Full suite passes. Cache `arya-v142`, About v142.
+- Not confirmed on a real phone. Edge: if the person installs on a rest day the first Today card says Rest day (honest, but P2 should make that card friendlier and show the next workout).

@@ -193,6 +193,18 @@ function defaultPlan(){var K=["mon","tue","wed","thu","fri","sat","sun"],days={}
   return {format:"arya-plan",version:1,name:"Home Plan",athlete:"Arya Sheladiya",start:"2026-10-04",weeks:4,lightWeeks:[4],lightSets:2,
     jog:{label:"5 km run and walk",km:5,weeks:[[60,120],[120,60],[240,60],[360,60]]},
     habits:[{name:"Water",badge:"3-4 L",note:"More on hot days and jog days.",icon:"drop"},{name:"Protein",badge:"90-115 g",note:"Eggs, paneer, dal, curd, soya chunks, chana, sprouts.",icon:"egg"},{name:"Sleep",badge:"8-9 h",note:"Muscle is built during recovery.",icon:"moon"}],days:days}}
+/* v142 (V1 simplification P1): a new install must not start on the owner's plan. Starter plan = beginner, 3 full-body days, no equipment, starts today, no name. Falls back to the old plan with the owner's name removed. */
+function starterPlan(){
+  try{
+    var pf=AxProfile.clean({done:true,units:"metric",health:"ok",goal:{main:"general"},xp:"beg",env:"home",equip:[],levels:{push:0,pull:0,legs:0,core:0,run:0},days:3,mins:30,weeks:4,start:"today"},{});
+    var r=AxPlanGen.build(pf,AxExDb,{now:Date.now(),notes:{},athlete:"",level:AxLevel}),v=vplan(r.plan);
+    if(v&&v.plan){v.plan.name="Starter plan";v.plan.athlete="";
+      if(!v.plan.jog){var jg=vplan(Object.assign({},r.plan,{name:"Starter plan",jog:{label:"2 km run and walk",km:2,weeks:AxPlanGen.intervals(2,r.plan.weeks||4,0)}}));if(jg&&jg.plan&&jg.plan.jog){jg.plan.athlete="";return jg.plan}}   /* keeps the Run tab's Start run button available (it is hidden when a plan has no run) */
+      return v.plan}
+  }catch(e){}
+  var d=defaultPlan();d.athlete="";d.name="Starter plan";d.start=ymd();return d}
+/* v142: first days on a fresh install stay calm: weather prompt, readiness card and similar extras wait. Ends after 3 days or 3 ticks. Restored or older installs have no PR.born, so they are never quiet. */
+function axQuiet(){try{var b=PR&&+PR.born;if(!b||Date.now()-b>=3*864e5)return false;var e=APP&&APP.plans&&APP.plans[APP.active];return !e||ticksOf(e)<3}catch(x){return false}}
 function vplan(o){var E=[],pl={};
   function S(v,max,def){return typeof v=="string"&&v.trim()&&v.trim().length<=max?v.trim():def}
   if(!o||typeof o!="object"||o.format!="arya-plan")return {E:['Missing "format": "arya-plan" at the top.'],plan:null};
@@ -240,10 +252,10 @@ function activate(id){APP.active=id;var e=APP.plans[id];st=e.st;setPlan(e.plan);
 function loadApp(){var a=axStoreRead(),fresh=!a||!a.plans||!a.active||!a.plans[a.active];
   if(fresh){var old={};try{old=JSON.parse(localStorage.getItem(OLDK)||"{}")||{}}catch(e){old={}}
     var pr={};if(old._snd===0||old._snd===1)pr.snd=old._snd;if(old._auto===0||old._auto===1)pr.auto=old._auto;if(old._gps===0||old._gps===1)pr.gps=old._gps;
-    if(!old||!Object.keys(old).length){pr.v2Intro=1;pr.v2Rst=1}a={v:2,active:"default",prefs:pr,plans:{"default":{plan:defaultPlan(),st:{}}}};
+    var brandNew=!old||!Object.keys(old).length;if(brandNew){pr.v2Intro=1;pr.v2Rst=1;pr.born=Date.now()}a={v:2,active:"default",prefs:pr,plans:{"default":{plan:brandNew?starterPlan():defaultPlan(),st:{}}}};
     var pg=clean(old,28);a.plans["default"].st=pg}
   Object.keys(a.plans||{}).forEach(function(k){var pp=a.plans[k]&&a.plans[k].plan;if(pp&&pp.name==="28-Day Home Plan")pp.name="Home Plan"});
-  APP=a;axStamp(a);PR=APP.prefs=APP.prefs||{};if(APP.plans[APP.active]){if(!APP.plans[APP.active].schedMap&&Array.isArray(PR.schedMap))APP.plans[APP.active].schedMap=PR.schedMap.slice();if(!APP.plans[APP.active].workoutEdits&&PR.workoutEdits&&typeof PR.workoutEdits==="object")APP.plans[APP.active].workoutEdits=PR.workoutEdits;delete PR.schedMap;delete PR.workoutEdits;if(!APP.plans[APP.active].routes&&PR.routes&&typeof PR.routes==="object")APP.plans[APP.active].routes=PR.routes;delete PR.routes}if(!PR.skin)PR.skin="oldmoney";if(typeof PR.gls!=="boolean")PR.gls=true;activate(APP.active)}
+  APP=a;axStamp(a);PR=APP.prefs=APP.prefs||{};if(APP.plans[APP.active]){if(!APP.plans[APP.active].schedMap&&Array.isArray(PR.schedMap))APP.plans[APP.active].schedMap=PR.schedMap.slice();if(!APP.plans[APP.active].workoutEdits&&PR.workoutEdits&&typeof PR.workoutEdits==="object")APP.plans[APP.active].workoutEdits=PR.workoutEdits;delete PR.schedMap;delete PR.workoutEdits;if(!APP.plans[APP.active].routes&&PR.routes&&typeof PR.routes==="object")APP.plans[APP.active].routes=PR.routes;delete PR.routes}if(!PR.skin)PR.skin="oldmoney";if(typeof PR.gls!=="boolean")PR.gls=true;activate(APP.active);if(brandNew)try{save()}catch(e){}}   /* v142: persist the fresh install at once so PR.born and the starter plan start date are fixed */
 var PEND=null;
 function ticksOf(e){var n=0;for(var k2 in e.st)if(/^\d+:/.test(k2))n++;return n}
 function plans(){var h="",ids=Object.keys(APP.plans);

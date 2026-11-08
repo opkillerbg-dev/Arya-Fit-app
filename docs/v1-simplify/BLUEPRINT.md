@@ -100,7 +100,7 @@ Five people who have never seen the app, fresh install, no help, phone in hand. 
 5. Back up their data. (45 s)
 Also record: first tap, any "what is this?" comment, any screen where they went back twice. Fix by moving things, not by adding explanations.
 
-## 8. Decisions needed (defaults in bold)
+## 8. Decisions (owner said: do what is best; the bold defaults are APPLIED)
 - **D1** Run tab: **keep as "Move" with run first** / keep "Run" / fold into Today as a Quick start sheet.
 - **D2** Settings tab name: **Me** / keep Settings.
 - **D3** Drawer: **remove** / keep as menu with 3 items.
@@ -111,3 +111,9 @@ Also record: first tap, any "what is this?" comment, any screen where they went 
 - Widgets, step service, backups, plan format, storage keys: untouched.
 - Moving the library and plans out of Settings changes where existing users find them: P3 ships a one-time "Moved to Plan > ..." hint.
 - Risk: Today diet hides weather/readiness for users who like them. Mitigation: "More for today" remembers open/closed.
+
+## 10. Progress log
+- **P0 done (v142):** `tools/shots-v1.py` + baseline screenshots in `docs/v1-simplify/before/`. Fresh-install finding: Home showed "Plan complete" (built-in plan ran 4-31 Oct), the owner's name, a "never saved a backup" nag, a weather prompt, a readiness score and a coach card before any activity.
+- **P1 done (v142):** new installs get a neutral Starter plan (beginner, 3 full-body days, no equipment, starts today, no name, plus a gentle 2 km run/walk so the Run tab keeps its Start button). Calm first days: weather prompt, readiness card and Smart week card wait until 3 days or 3 ticks (`axQuiet()`, `PR.born`; older/restored installs never quiet). Welcome copy says what the app is; skip button says "starter plan". Home name placeholder neutral. Test: `tests/v1_starter_test.py`.
+- **Found while doing P1 (feeds P4):** the Run tab's Start run button is hidden for any plan without a run (`#tvpanel` hidden when `JKM` is 0), so every wizard plan with a non-running goal has no Start run. P4 must make Start run always available (free run).
+- **Next:** P2 Today diet.

@@ -149,6 +149,7 @@
 
   function render(){
     try{
+      if(window.axQuiet&&axQuiet()){var rq=$("ax-readiness-card");if(rq)rq.remove();return}
       var hb=$("ax-hbrain");if(!hb||!hb.parentNode)return;
       var box=$("ax-readiness-card");
       if(!box){

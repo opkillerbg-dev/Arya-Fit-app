@@ -147,6 +147,7 @@
   function lvlCol(s){return s>=75?"var(--ok,#2f7d4f)":s>=50?"var(--sun,#c98a1b)":"#c0432f"}
 
   function paint(){
+    if(W.on!==1&&window.axQuiet&&axQuiet()){var q=document.getElementById("ax-wx-card");if(q)q.remove();return}
     css();var b=box();
     if(W.on===1){
       var hrs=W.d&&Date.now()-W.t<KEEP?hoursOf(W.d):null;
@@ -206,6 +207,9 @@
   /* start after the splash is gone; refresh when the app comes back to the front and the forecast is old */
   function ready(f){if(!document.getElementById("ax-boot"))f();else setTimeout(function(){ready(f)},250)}
   ready(function(){paint();if(W.on===1)setTimeout(function(){refresh(false)},400)});
+  /* v142: the card is held back in a new install's first days; show it on the next visit to Home once that window is over */
+  var _wxHome=window.home;
+  if(typeof _wxHome==="function")window.home=function(){var r=_wxHome.apply(this,arguments);try{if(!document.getElementById("ax-wx-card")&&!(window.axQuiet&&axQuiet()))paint()}catch(e){}return r};
   document.addEventListener("visibilitychange",function(){if(!document.hidden&&W.on===1)refresh(false)});
   setInterval(function(){if(!document.hidden&&W.on===1)paint()},10*60e3);
 })();

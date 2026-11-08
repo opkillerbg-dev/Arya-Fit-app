@@ -23,7 +23,7 @@ function axDrawerFill(){var td=todayIdx(),inP=td>=0&&td<ND,nm=(P&&P.name)||"Your
   b("ax-dr-about",function(){go("set");var c=$("ax-credits");if(c){c.open=true;setTimeout(function(){c.scrollIntoView({behavior:"smooth",block:"start"})},140)}})}
 function axTopMore(){var td=todayIdx(),inP=td>=0&&td<ND,xs=st["x"+Dn()];
   axSheet("Quick actions",(inP?'<button class="ax-opt" id="ax-q1"><b>'+(xs?"Reopen today":"Close today")+'</b><span>'+(xs?"Day is closed":"Rest day or call it a day")+'</span></button>':'')
-   +'<button class="ax-opt" id="ax-q2"><b>Smart Today check-in</b><span>Sleep, energy and soreness</span></button><button class="ax-opt" id="ax-q3"><b>Add exercise</b><span>To a day of the current plan</span></button><button class="ax-opt" id="ax-q4"><b>Export backup</b><span>Save everything to a file</span></button>');
+   +'<button class="ax-opt" id="ax-q2"><b>Daily check-in</b><span>Sleep, energy and soreness</span></button><button class="ax-opt" id="ax-q3"><b>Add exercise</b><span>To a day of the current plan</span></button><button class="ax-opt" id="ax-q4"><b>Export backup</b><span>Save everything to a file</span></button>');
   var q=function(id,fn){var e=$(id);if(e)e.onclick=function(){axSheetX();setTimeout(fn,60)}};
   q("ax-q1",function(){cur=Dn();go("plan");render();axClose()});
   q("ax-q2",function(){go("home");window.axBrainOpen&&axBrainOpen();var e=$("ax-hbrain");if(e)e.scrollIntoView({behavior:"smooth",block:"center"})});

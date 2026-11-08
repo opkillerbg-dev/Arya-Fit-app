@@ -999,3 +999,10 @@ Reported on a real phone: cream cards with white text (Today steps card, Setting
 - Existing users: untouched (stored plan and prefs win; no `PR.born`).
 - Tests: new `tests/v1_starter_test.py` (22 checks). Updated `onboard_ui_test.py` (skip label), `browser_test.py` (weather invite now checked hidden first, then after the window), `v2_type_test.py` (workout-day fake date 2026-10-09, because the starter plan starts on the fake date). Full suite passes. Cache `arya-v142`, About v142.
 - Not confirmed on a real phone. Edge: if the person installs on a rest day the first Today card says Rest day (honest, but P2 should make that card friendlier and show the next workout).
+
+## V1 simplification P2: Today diet (Claude, v143)
+- `web/js/ui/home.js` rewritten (still only MOVES nodes; ids untouched). Non-V2: top level = banner, `ax-hnote`, `ax-htoday`, `ax-hmiss`, `.ax-stat`, `ax-hsteps`, `#ax-hnudge` (one visible nudge, priority `ax-ob-nudge` > `ax-rt-nudge` > `ax-coach-card` > `ax-bk-nudge`, others get `.ax-nq`), `#ax-hmore` (collapsible; body holds `ax-wx-card`, `ax-readiness-card`, `ax-hbar`, `ax-hbrain`). Empty `#ax-hnote`/`#ax-hmiss` are display:none so they add no flex gap. With `html.v2` the old flat order is used and the new wrappers are hidden (V2 untouched).
+- `window.axBrainOpen()` (quick-actions check-in) now opens More first. More state: `localStorage axHomeMore`.
+- `home()` in `sheets-views.js`: rest-day Today card shows "Next workout: Mon 9 Nov · Full body A". Labels: SMART TODAY -> DAILY CHECK-IN, Catch up -> Missed days, quick-actions "Smart Today check-in" -> "Daily check-in", readiness sentence updated.
+- Tests: new `tests/v1_home_test.py`; `browser_test.py` updated (weather opt-in is inside More; opens it first). Full suite passes. Cache `arya-v143`, About v143.
+- Not checked on a phone. Open question for P3: the left drawer and "..." sheet still exist.

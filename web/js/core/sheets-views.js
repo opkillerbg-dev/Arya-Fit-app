@@ -122,7 +122,7 @@ function smartBrainUI(){
   var td=todayIdx(),today=ymd(),all=PR.brain=PR.brain||{},c=all[today]||{},done=c.s!=null&&c.e!=null&&c.o!=null;
   var names={s:["Poor","Okay","Good"],e:["Low","Okay","High"],o:["None","Some","High"]};
   var rows=[ ["s","Sleep"],["e","Energy"],["o","Soreness"] ];
-  var h='<div class="ax-card ax-br-card"><div class="ax-br-head"><div><p class="ax-cap">SMART TODAY</p><h2>How are you feeling?</h2></div><span class="ax-tag">On-device</span></div><p class="ax-cap" style="margin:0">Three quick taps help tailor today. Your answers stay on this phone.</p>';
+  var h='<div class="ax-card ax-br-card"><div class="ax-br-head"><div><p class="ax-cap">DAILY CHECK-IN</p><h2>How are you feeling?</h2></div><span class="ax-tag">On-device</span></div><p class="ax-cap" style="margin:0">Three quick taps help tailor today. Your answers stay on this phone.</p>';
   if(!done||BR_EDIT)rows.forEach(function(r){h+='<div class="ax-br-row"><span class="ax-br-label">'+r[1]+'</span><div class="ax-br-options">'+names[r[0]].map(function(n,i){return '<button class="ax-br-opt'+(c[r[0]]===i?' on':'')+'" data-br-k="'+r[0]+'" data-br-v="'+i+'" aria-pressed="'+(c[r[0]]===i)+'">'+n+'</button>'}).join('')+'</div></div>'});
   if(done){if(!BR_EDIT){var soreLabel=names.o[c.o];try{var ms=calcM();if(c.o===0&&Object.keys(ms).some(function(m){return !!ms[m].s}))soreLabel="Some (muscle log)"}catch(e){}h+='<p class="ax-cap" style="margin:0">Sleep: '+names.s[c.s]+' · Energy: '+names.e[c.e]+' · Soreness: '+soreLabel+'</p>'}var pick=td>ND-1?{label:"Keep it flexible",why:"Your plan is complete. Choose a comfortable activity based on your sleep, energy and soreness.",mode:"Light"}:smartBrainPick(Math.max(0,Math.min(ND-1,td)),c);h+='<div class="ax-br-result"><span class="ax-cap">TODAY’S RECOMMENDATION</span><b>'+pick.label+'</b><p>'+pick.why+'</p></div>';var brainSrc=axSrc(Math.max(0,Math.min(ND-1,td)));if((pick.mode==="Rest"||pick.mode==="Walk-only")&&td>=0&&td<ND&&brainSrc>=0&&!T[wdk(brainSrc)].r)h+='<button class="ax-btn ax-pri" id="ax-br-preview">Preview recovery reschedule</button><p class="ax-cap">Nothing changes until you review and apply the new schedule.</p>';h+='<button class="ax-br-opt" id="ax-br-edit">'+(BR_EDIT?'Done':'Change answers')+'</button><p class="ax-br-foot">'+((window.axRdActive&&axRdActive())?"Today's plan was adjusted by your readiness. Finish it and the day counts as complete.":"Suggestion only — your plan is unchanged. You choose what feels right.")+'</p>'}
   else h+='<p class="ax-br-foot">Complete all three to get a recommendation. You can change answers anytime.</p>';
@@ -134,12 +134,14 @@ function smartBrainUI(){
 
 function home(){runPrompt();runBtn();stepsPaint();smartBrainUI();
   var td0=todayIdx(),ms=[];for(var q=Math.min(td0,ND)-1;q>=0&&ms.length<4;q--)if(!dayDone(q)&&!st["x"+q])ms.push(q);
-  var mz=$("ax-hmiss");mz.innerHTML=ms.length?'<div class="ax-card"><p class="ax-cap">Catch up</p><div class="ax-chips">'+ms.map(function(q){return '<button class="ax-chip" data-m="'+q+'">'+DN[dt(q).getDay()]+' '+dl(q)+'</button>'}).join("")+'</div></div>':"";
+  var mz=$("ax-hmiss");mz.innerHTML=ms.length?'<div class="ax-card"><p class="ax-cap">Missed days</p><div class="ax-chips">'+ms.map(function(q){return '<button class="ax-chip" data-m="'+q+'">'+DN[dt(q).getDay()]+' '+dl(q)+'</button>'}).join("")+'</div></div>':"";
   mz.querySelectorAll("button").forEach(function(b){b.onclick=function(){cur=+b.dataset.m;go("plan");render()}});
   var td=todayIdx(),i=Dn(),t=T[wdk(i)],c=cnt(i),p=Math.round(c[0]/c[1]*100);
   var tag=td<0?"Starts "+DF[START.getDay()]+" "+dl(0)+(td==-1?" (tomorrow)":" (in "+(-td)+" days)"):td>ND-1?"Plan complete":"Today";
   var lab=td<0?"Preview day 1":td>ND-1?"View last day":t.r?"View today's recovery plan":p==100?"View today":"Start today's plan";
   var h='<div class="ax-home-session-top"><span class="ax-kicker">TODAY, AT YOUR PACE</span><span class="ax-home-date">'+esc(tag)+'</span></div><div class="ax-dayrow"><div class="ax-dbadge"><small>'+DN[dt(i).getDay()]+'</small><b>'+dt(i).getDate()+'</b></div><div class="ax-home-session-title"><h2 class="ax-h2">'+ic(T[wdk(i)].ic,"ax-ic")+t.n+'</h2><p class="ax-sub">'+esc(t.s||'A little progress, on your terms.')+'</p></div></div>';
+  var nx=-1;if(t.r&&td>=0&&td<=ND-1&&!st["x"+i]){for(var j=i+1;j<ND;j++){if(!T[wdk(j)].r){nx=j;break}}}
+  if(nx>=0){h+='<p class="ax-cap">Next workout: '+esc(DN[dt(nx).getDay()]+" "+dl(nx)+" · "+T[wdk(nx)].n)+'</p>'}
   h+='<div class="ax-home-progress"><div class="ax-home-progress-label"><span>YOUR PROGRESS</span><b>'+p+'%</b></div><div class="ax-bar"><i style="width:'+p+'%"></i></div><p class="ax-cap">'+c[0]+' of '+c[1]+' activities complete</p>'+(st["x"+i]==1?'<p class="ax-cap ax-okt">Rest is part of the plan.</p>':st["x"+i]==2?'<p class="ax-cap ax-okt">Day closed. Nice work.</p>':'')+'</div>';
   h+='<button class="ax-btn ax-pri" id="ax-hopen">'+lab+'</button>';
   $("ax-htoday").innerHTML=h;

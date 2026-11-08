@@ -78,7 +78,7 @@
     var isRest=!!t.r,sentence;
     if(isRest)sentence="Today is a planned recovery day. Rest up and recharge.";
     else if(ov)sentence="You chose "+ov.toUpperCase()+" for today (recommended: "+rec.toUpperCase()+").";
-    else if(!checked)sentence="Answer the Smart Today check-in below to tune today's session.";
+    else if(!checked)sentence="Answer the daily check-in (under More for today) to tune today's session.";
     else if(active==="full")sentence="Recovery looks good. Today's session stays at full volume.";
     else if(active==="light"){
       var wl=slp===0?"short sleep":eng===0?"low energy":(soreCnt||bSore)?"muscle soreness":"recent training load";

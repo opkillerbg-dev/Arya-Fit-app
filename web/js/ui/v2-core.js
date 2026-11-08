@@ -20,7 +20,10 @@
   function pref(){return root.PR&&typeof root.PR==="object"?root.PR:null}
   function apply(){
     if(!root.document)return;
-    var p=pref()||{},h=document.documentElement,on=p.v2===1,th=p.v2Theme||"dark",resolved=th;
+    var p=pref()||{},h=document.documentElement,th=p.v2Theme||"dark",resolved=th;
+    /* v137: V1 is the main UI. V2 was switched on by default before; move everyone back ONCE. A later explicit choice (Settings > New look beta) is kept. */
+    if(pref()&&p.v2Rst!==1){if(p.v2===1)p.v2=0;p.v2Rst=1;try{root.save&&root.save()}catch(e){}}
+    var on=p.v2===1;
     if(on&&!wasV2){priorTheme=h.getAttribute("data-theme");priorThemeHad=h.hasAttribute("data-theme")}
     h.classList.toggle("v2",on);if(on){if(th==="system")resolved=root.matchMedia&&root.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";h.setAttribute("data-theme",resolved);h.setAttribute("data-theme-mode",th);h.setAttribute("data-v2-motion",p.v2ReduceMotion?"reduce":"full")}else{h.removeAttribute("data-v2-motion");h.removeAttribute("data-theme-mode");if(wasV2){if(priorThemeHad)h.setAttribute("data-theme",priorTheme);else h.removeAttribute("data-theme")}}wasV2=on;
     if(p.v2Accent)h.setAttribute("data-accent",p.v2Accent);else h.removeAttribute("data-accent");

@@ -46,7 +46,7 @@
     ctx.fillStyle=bg;ctx.fillRect(0,0,1080,1350);
     ctx.strokeStyle=line;ctx.lineWidth=3;rrect(ctx,36,36,1008,1278,44);ctx.stroke();
 
-    var pill="ARYA FIT  \u00b7  WEEK "+w.wNum;
+    var pill="AERUNO  \u00b7  WEEK "+w.wNum;
     ctx.font="800 22px "+SANS;
     var pw=Math.ceil(ctx.measureText(pill).width)+52;
     ctx.fillStyle=blue;rrect(ctx,76,82,pw,48,24);ctx.fill();
@@ -108,13 +108,13 @@
     function fallback(){
       cv.toBlob(function(bl){
         if(!bl)return;
-        var f=new File([bl],"arya-fit-week-"+w.wNum+".png",{type:"image/png"});
+        var f=new File([bl],"aeruno-week-"+w.wNum+".png",{type:"image/png"});
         if(navigator.canShare&&navigator.canShare({files:[f]}))navigator.share({files:[f],title:"AERUNO week "+w.wNum}).catch(function(){});
         else showPreview(URL.createObjectURL(bl));
       });
     }
     if(FS&&SH){
-      FS.writeFile({path:"arya-fit-week-"+w.wNum+".png",data:cv.toDataURL("image/png").split(",")[1],directory:"CACHE"})
+      FS.writeFile({path:"aeruno-week-"+w.wNum+".png",data:cv.toDataURL("image/png").split(",")[1],directory:"CACHE"})
         .then(function(r){return SH.share({title:"AERUNO week "+w.wNum,url:r.uri})})
         .catch(fallback);
       return;

@@ -240,7 +240,7 @@ function activate(id){APP.active=id;var e=APP.plans[id];st=e.st;setPlan(e.plan);
 function loadApp(){var a=axStoreRead(),fresh=!a||!a.plans||!a.active||!a.plans[a.active];
   if(fresh){var old={};try{old=JSON.parse(localStorage.getItem(OLDK)||"{}")||{}}catch(e){old={}}
     var pr={};if(old._snd===0||old._snd===1)pr.snd=old._snd;if(old._auto===0||old._auto===1)pr.auto=old._auto;if(old._gps===0||old._gps===1)pr.gps=old._gps;
-    if(!old||!Object.keys(old).length){pr.v2=1;pr.v2Intro=1}a={v:2,active:"default",prefs:pr,plans:{"default":{plan:defaultPlan(),st:{}}}};
+    if(!old||!Object.keys(old).length){pr.v2Intro=1;pr.v2Rst=1}a={v:2,active:"default",prefs:pr,plans:{"default":{plan:defaultPlan(),st:{}}}};
     var pg=clean(old,28);a.plans["default"].st=pg}
   Object.keys(a.plans||{}).forEach(function(k){var pp=a.plans[k]&&a.plans[k].plan;if(pp&&pp.name==="28-Day Home Plan")pp.name="Home Plan"});
   APP=a;axStamp(a);PR=APP.prefs=APP.prefs||{};if(APP.plans[APP.active]){if(!APP.plans[APP.active].schedMap&&Array.isArray(PR.schedMap))APP.plans[APP.active].schedMap=PR.schedMap.slice();if(!APP.plans[APP.active].workoutEdits&&PR.workoutEdits&&typeof PR.workoutEdits==="object")APP.plans[APP.active].workoutEdits=PR.workoutEdits;delete PR.schedMap;delete PR.workoutEdits;if(!APP.plans[APP.active].routes&&PR.routes&&typeof PR.routes==="object")APP.plans[APP.active].routes=PR.routes;delete PR.routes}if(!PR.skin)PR.skin="oldmoney";if(typeof PR.gls!=="boolean")PR.gls=true;activate(APP.active)}

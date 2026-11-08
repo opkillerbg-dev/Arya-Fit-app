@@ -82,7 +82,7 @@ function doImport(txt){var d;try{d=JSON.parse(txt)}catch(e){d=null}
   closeT();render();toast("Imported "+n+" ticks into the current plan.")}
 $("ex").onclick=async function(){var txt=await packFresh(),mt;try{mt=JSON.parse(txt).meta}catch(e){mt=null}
   if(!mt){hx("err");toast("Couldn't build the backup. Try Copy text.");return}
-  $("bt").value=txt;var nm="arya-fit-backup-"+ymd()+"-"+hm()+".json",r=await axOut(nm,txt);
+  $("bt").value=txt;var nm="aeruno-backup-"+ymd()+"-"+hm()+".json",r=await axOut(nm,txt);
   if(!r){$("dt2").open=true;toast("Couldn't save the file. Copy the text below instead.");return}
   PR.lbk=Date.now();save();axLbk();hx("ok");
   toast((r==2?"Choose where to save. ":"Saved to Downloads. ")+mt.runDays+" run days, "+mt.stepDays+" step days.")};

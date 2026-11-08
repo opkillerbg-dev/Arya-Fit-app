@@ -28,7 +28,7 @@
     ctx.fillStyle=bg;ctx.fillRect(0,0,1080,H);
     ctx.strokeStyle=line;ctx.lineWidth=3;rrect(ctx,36,36,1008,H-72,44);ctx.stroke();
 
-    var pill="ARYA FIT  \u00b7  RUN";
+    var pill="AERUNO  \u00b7  RUN";
     ctx.font="800 22px "+SANS;
     var pw=Math.ceil(ctx.measureText(pill).width)+52;
     ctx.fillStyle=blue;rrect(ctx,76,82+T0,pw,48,24);ctx.fill();
@@ -137,7 +137,7 @@
     st.forEach(function(t,k){var x=70+k*320;ctx.font="700 76px "+SERIF;ctx.fillText(t[0],x,1130);ctx.font="800 24px "+SANS;ctx.globalAlpha=.85;ctx.fillText(t[1],x,1172);ctx.globalAlpha=1});
     var prs=prList(D);if(prs.length){var e=prs[0],lab="PR  "+(AxPR.LAB[e.D]||"")+"  "+fmt(e.s);ctx.font="800 32px "+SANS;var cw=Math.ceil(ctx.measureText(lab).width)+48;
       sh(0);ctx.fillStyle="#c9971c";rrect(ctx,70,1206,cw,56,28);ctx.fill();ctx.fillStyle="#fff";ctx.fillText(lab,94,1244)}
-    sh(1);ctx.fillStyle="#fff";ctx.font="800 26px "+SANS;ctx.textAlign="right";ctx.fillText("ARYA FIT",1010,1300);
+    sh(1);ctx.fillStyle="#fff";ctx.font="800 26px "+SANS;ctx.textAlign="right";ctx.fillText("AERUNO",1010,1300);
     return cv}
 
   function showPreview(url){
@@ -185,7 +185,7 @@
     function paint(m){lastMode=m;cv=draw(D,m);$("ax-rc-i").src=cv.toDataURL("image/png");
       [].forEach.call(o.querySelectorAll("[data-m]"),function(b){b.style.outline=b.getAttribute("data-m")===m?"3px solid var(--blue)":"none"})}
     [].forEach.call(o.querySelectorAll("[data-m]"),function(b){b.onclick=function(){paint(b.getAttribute("data-m"))}});
-    $("ax-rc-s").onclick=function(){if(cv)send(cv,"arya-fit-run-"+D.dy+"-"+lastMode+".png")};
+    $("ax-rc-s").onclick=function(){if(cv)send(cv,"aeruno-run-"+D.dy+"-"+lastMode+".png")};
     $("ax-rc-x").onclick=function(){o.remove()};
     paint(lastMode);
   }

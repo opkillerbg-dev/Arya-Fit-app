@@ -1,6 +1,11 @@
 """Glass studio: hub quick toggles + glass row, presets, sliders, persistence, cleanup when V2 is off."""
 import subprocess, time, sys
 from playwright.sync_api import sync_playwright
+
+def v2on(pg):
+    """V1 is the default now: switch V2 on and reload, like a user who opted in."""
+    pg.evaluate("AxV2.setEnabled(true)"); pg.wait_for_timeout(500)
+    pg.reload(); pg.wait_for_function("!document.getElementById('ax-boot')", timeout=25000); pg.wait_for_timeout(1500)
 srv = subprocess.Popen([sys.executable, "-m", "http.server", "8975", "-d", "web"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 time.sleep(1.5); fails = 0
 def check(n, ok):
@@ -12,6 +17,7 @@ try:
         except Exception: b = p.chromium.launch()
         ctx = b.new_context(viewport={"width": 360, "height": 800}); pg = ctx.new_page(); errs = []; pg.on("pageerror", lambda e: errs.append(str(e)))
         pg.goto(URL); pg.wait_for_function("!document.getElementById('ax-boot')", timeout=25000); pg.wait_for_timeout(1500)
+        v2on(pg)
         pg.evaluate("go('set')"); pg.wait_for_timeout(1200)
         check("quick toggles present (4)", pg.evaluate("document.querySelectorAll('#v2-quick [data-q]').length") == 4)
         check("Glass studio row in hub", pg.evaluate("!!document.querySelector('#ax-sm [data-sp=glass]')"))

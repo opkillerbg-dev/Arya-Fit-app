@@ -2,6 +2,11 @@
 """P1 V2 shell smoke test. Run from repo root; requires Playwright + Chromium."""
 import os, subprocess, sys, time
 from playwright.sync_api import sync_playwright
+
+def v2on(pg):
+    """V1 is the default now: switch V2 on and reload, like a user who opted in."""
+    pg.evaluate("AxV2.setEnabled(true)"); pg.wait_for_timeout(500)
+    pg.reload(); pg.wait_for_function("!document.getElementById('ax-boot')", timeout=25000); pg.wait_for_timeout(1500)
 PORT = "8917"
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "web")
 srv = subprocess.Popen([sys.executable, "-m", "http.server", PORT], cwd=ROOT, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
@@ -20,6 +25,7 @@ try:
         page.on("pageerror", lambda e: errors.append(str(e)))
         page.goto(URL, wait_until="load")
         page.wait_for_function("!document.getElementById('ax-boot')", timeout=25000)
+        v2on(page)
         page.evaluate("AxV2.setEnabled(true)")
         page.wait_for_selector("#v2-shell-controls .v2-nav")
         check("V2 nav mounts only after enable", page.locator("#v2-shell-controls .v2-nav").count()==1)

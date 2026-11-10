@@ -1006,3 +1006,11 @@ Reported on a real phone: cream cards with white text (Today steps card, Setting
 - `home()` in `sheets-views.js`: rest-day Today card shows "Next workout: Mon 9 Nov · Full body A". Labels: SMART TODAY -> DAILY CHECK-IN, Catch up -> Missed days, quick-actions "Smart Today check-in" -> "Daily check-in", readiness sentence updated.
 - Tests: new `tests/v1_home_test.py`; `browser_test.py` updated (weather opt-in is inside More; opens it first). Full suite passes. Cache `arya-v143`, About v143.
 - Not checked on a phone. Open question for P3: the left drawer and "..." sheet still exist.
+
+## V1 simplification P3: one navigation (Claude, v144)
+- `native-ui.js`: `var AX_DRAWER=false` hides `#ax-tmenu` (drawer code and `axDrawer()` kept; `backnav_test` still uses it). `axTopMore()` now has only Close/Reopen today and Daily check-in. CSS `.ax-top .ax-tp{margin-left:auto}` keeps "..." on the right.
+- `sheets-views.js`: `axMore()` is now the "Manage plan" sheet (ids `ax-m2` add exercise, `ax-m3` plans, `ax-m4` personalise via `AxOnboard.open()`, `ax-m5` Smart week via `#ax-coach-open`, `ax-m6` more plan tools via `axOpenPlanTools("plan")`). "Mark rest day" removed from it (Close day sheet has Rest day). `#pl-back` returns to Plan.
+- `index.html`: `#ax-pmore` shows "Manage" text (aria-label "Manage plan"); `#pl-back` says "Back to plan". `base.css`: `#ax-pmore` auto width.
+- `settings.js`: hub skips the `plan` row; the `ax-sp-plan` page is unchanged and opened by `axOpenPlanTools(from)`. `window.axSetFrom` makes the page's Back button and Android back (`axSetBack`) return to Plan; cleared when Settings hides. One-time card `.ax-mv` in the hub when `!PR.born && !PR.mvHint` (Open Manage / Got it sets `PR.mvHint=1`). The hub only repaints when entering Settings after it was hidden.
+- Tests: new `tests/v1_nav_test.py`; `coach_ui_test`, `onboard_entry_ui_test`, `retest_ui_test` now open plan tools via Plan > Manage. Full suite passes. Cache `arya-v144`, About v144.
+- Not checked on a phone. Known leftovers for later phases: Plans view still says "Ask Claude" (P7); Settings "Plan & exercises" page is still titled that and still has a Settings-style Back chevron (P5 can give it a Plan-style header).

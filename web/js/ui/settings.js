@@ -13,7 +13,7 @@
     {k:"alert",t:"Sound & feedback",s:function(){return (PR.voi===0?"Voice off":"Voice on")+" · "+(PR.hap===0?"haptics off":"haptics on")}},
     {k:"plan",t:"Plan & exercises",s:function(){var n=$("sp-name");return (n&&n.textContent)||"Plans, next plan, library"}},
     {k:"data",t:"Data & backup",s:function(){return PR.lbk?"Last backup "+Math.floor((Date.now()-PR.lbk)/864e5)+" d ago":"No backup yet"}},
-    {k:"about",t:"About",s:function(){var b=window.AXBUILD;return "AERUNO · v143"+(b&&b.run?" · build "+b.run:"")}}
+    {k:"about",t:"About",s:function(){var b=window.AXBUILD;return "AERUNO · v144"+(b&&b.run?" · build "+b.run:"")}}
   ];
   function cap(s){return s.charAt(0).toUpperCase()+s.slice(1)}
   function ic(n,c){return '<svg class="ax-ic'+(c?" "+c:"")+'"><use href="#'+n+'"/></svg>'}
@@ -21,7 +21,7 @@
   function pageFrom(key,title){
     var p=document.createElement("div");p.className="ax-sp";p.id="ax-sp-"+key;p.hidden=true;
     p.innerHTML='<div class="ax-sp-h"><button type="button" class="ax-sp-b" aria-label="Back to Settings">'+ic("i-chev","ax-sp-bi")+'</button><h2>'+title+'</h2></div><div class="ax-sp-c"></div>';
-    p.querySelector(".ax-sp-b").onclick=function(){show(null)};
+    p.querySelector(".ax-sp-b").onclick=function(){if(!backToOrigin())show(null)};
     pagesBox.appendChild(p);return p;
   }
   /* move all children of a <details> (except summary) into a page body, keep order */
@@ -95,11 +95,15 @@
   function paintHub(){
     if(!hub)return;
     var h="";
+    if(window.PR&&!PR.born&&!PR.mvHint)h+='<div class="ax-card ax-mv"><p class="ax-sub"><b>Plan tools moved.</b> Plans, Smart week, Personalise and the exercise library are now in Plan, under Manage.</p><div class="ax-chips"><button type="button" class="ax-btn ax-pri" data-mv="go">Open Manage</button><button type="button" class="ax-btn" data-mv="ok">Got it</button></div></div>';
     DEF.forEach(function(d){
+      if(d.k==="plan")return;
       var sub="";try{sub=d.s()}catch(e){}
       h+='<button type="button" class="ax-lr ax-smr" data-sp="'+d.k+'">'+ic(ICON[d.k])+'<span><b>'+d.t+'</b><em>'+sub+'</em></span>'+ic("i-chev","ax-chv")+'</button>';
     });
-    hub.innerHTML='<div class="ax-card ax-sm-card">'+h+'</div>';
+    var mv=h.indexOf('ax-mv')>=0?h.slice(0,h.indexOf('</div></div>')+12):"";if(mv)h=h.slice(mv.length);
+    hub.innerHTML=mv+'<div class="ax-card ax-sm-card">'+h+'</div>';
+    Array.prototype.forEach.call(hub.querySelectorAll("[data-mv]"),function(b){b.onclick=function(){PR.mvHint=1;try{save()}catch(e){}paintHub();if(b.getAttribute("data-mv")==="go"){go("plan");setTimeout(function(){if(window.axMore)axMore()},120)}}});
     Array.prototype.forEach.call(hub.querySelectorAll("[data-sp]"),function(b){b.onclick=function(){show(b.getAttribute("data-sp"))}});
   }
 
@@ -117,12 +121,15 @@
   }
 
   /* Android Back: close the open page first */
-  window.axSetBack=function(){if(cur&&!sec.hidden){show(null);return true}return false};
+  window.axSetBack=function(){if(cur&&!sec.hidden){if(!backToOrigin())show(null);return true}return false};
+  /* v144: Plan tools page is opened from Plan > Manage; Back returns there */
+  function backToOrigin(){var f=window.axSetFrom;if(!f)return false;window.axSetFrom=null;if(window.go)go(f);return true}
+  window.axOpenPlanTools=function(from){window.axSetFrom=from||null;if(window.go)go("set");show("plan")};
 
   /* leaving Settings resets to the menu; a deep link (drawer > About) sets a page right after it opens */
   var wasHidden=sec.hidden;
   new MutationObserver(function(){
-    if(sec.hidden){wasHidden=true;if(built){cur=null;hub.hidden=false;var t=sec.querySelector("h1.vt");if(t)t.hidden=false;Array.prototype.forEach.call(pagesBox.children,function(p){p.hidden=true})}}
+    if(sec.hidden){wasHidden=true;window.axSetFrom=null;if(built){cur=null;hub.hidden=false;var t=sec.querySelector("h1.vt");if(t)t.hidden=false;Array.prototype.forEach.call(pagesBox.children,function(p){p.hidden=true})}}
     else if(wasHidden){wasHidden=false;if(!cur)show(null)}
   }).observe(sec,{attributes:true,attributeFilter:["hidden"]});
 

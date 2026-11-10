@@ -13,11 +13,19 @@ function axClose(){
   $("ax-c2").onclick=function(){axPut(i,2,"Day closed with what you did.")};
   $("ax-c3").onclick=function(){PR.sore=PR.sore||{};["quads","hams","calves","glutes"].forEach(function(m){PR.sore[m]=Date.now()});PR.lvl=Math.max(0,lvl()-1);PR.lrd=i;axPut(i,1,"Rest day saved. Legs marked sore, next run eased one level.")}
 }
+/* v144 (V1 simplification P3): the ONE home for plan management. Rest day lives in the Close day sheet. */
 function axMore(){
-  var i=cur,td=todayIdx(),ok=td>=0&&i<=td&&!st["x"+i];
-  axSheet("More",(ok?'<button class="ax-opt" id="ax-m1"><b>Mark rest day</b><span>Keeps your streak</span></button>':'')+'<button class="ax-opt" id="ax-m2"><b>Add exercise</b><span>Adds to every matching weekday</span></button>');
-  if(ok)$("ax-m1").onclick=function(){axPut(i,1,"Rest day saved. Streak kept.")};
-  $("ax-m2").onclick=axAdd
+  var nm=(P&&P.name)||"Your plan";
+  axSheet("Manage plan",'<button class="ax-opt" id="ax-m2"><b>Add exercise</b><span>Adds to every matching weekday</span></button>'
+   +'<button class="ax-opt" id="ax-m3"><b>Switch, import or export plan</b><span>'+esc(nm)+'</span></button>'
+   +'<button class="ax-opt" id="ax-m4"><b>Personalise my plan</b><span>A few questions, a plan that fits you</span></button>'
+   +'<button class="ax-opt" id="ax-m5"><b>Smart week</b><span>Plan the next 7 days from what you have done</span></button>'
+   +'<button class="ax-opt" id="ax-m6"><b>More plan tools</b><span>Exercise library, profile, next plan, quick builder</span></button>');
+  var m=function(id,fn){var e=$(id);if(e)e.onclick=function(){axSheetX();setTimeout(fn,60)}};
+  m("ax-m2",axAdd);m("ax-m3",function(){go("plans")});
+  m("ax-m4",function(){if(window.AxOnboard)AxOnboard.open()});
+  m("ax-m5",function(){var b=$("ax-coach-open");if(b)b.click()});
+  m("ax-m6",function(){if(window.axOpenPlanTools)axOpenPlanTools("plan")})
 }
 function axAdd(){
   axSheet("Add exercise",'<select class="ax-field" id="ax-ced" aria-label="Day type"></select><div id="ax-cel"></div><input class="ax-field" id="ax-cen" placeholder="Exercise name"><div class="ax-two"><input class="ax-field" id="ax-ces" type="number" inputmode="numeric" placeholder="Sets"><input class="ax-field" id="ax-cer" placeholder="Reps, e.g. 10"></div><button class="ax-btn ax-pri" id="ax-ceg">Add exercise</button>');
@@ -285,7 +293,7 @@ async function dlFile(name,txt){var dl=null;try{dl=window.claude&&await claude.u
   try{var u=URL.createObjectURL(new Blob([txt],{type:"application/json"})),a=document.createElement("a");a.href=u;a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){a.remove();URL.revokeObjectURL(u)},2000);return 1}catch(e){return 0}}
 async function saveFile(name,txt){var r=await dlFile(name,txt);if(r==1)toast("Plan file saved");else if(!r)copyText(txt,"Couldn't save the file. Plan copied instead.")}
 function bindPlans(){
-  $("sp-go").onclick=function(){go("plans")};$("pl-back").onclick=function(){go("set")};
+  $("sp-go").onclick=function(){go("plans")};$("pl-back").onclick=function(){go("plan")};
   $("pl-pick").onclick=function(){$("pl-f").click()};
   $("pl-f").onchange=function(){var f=this.files[0];this.value="";if(!f)return;var r=new FileReader();r.onload=function(){$("pl-t").value=String(r.result);chk()};r.readAsText(f)};
   $("pl-chk").onclick=chk;

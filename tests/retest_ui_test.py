@@ -21,7 +21,7 @@ SEED = """(()=>{
 def settings(pg):
     pg.evaluate("go('set')"); wait(pg, 350)
     if not pg.evaluate("document.getElementById('ax-rt-row')&&document.getElementById('ax-rt-row').offsetParent!==null"):
-        pg.click("#ax-v-set [data-sp='plan']"); wait(pg, 350)
+        pg.evaluate("go('plan')"); pg.wait_for_timeout(400); pg.click("#ax-pmore"); pg.wait_for_timeout(300); pg.click("#ax-m6"); wait(pg, 350)   # Plan tools now live in Plan > Manage (v144)
 def pick(pg, k, i): pg.click(f"#ax-ob [data-b={k}] .ob-c[data-i='{i}']")
 try:
     with sync_playwright() as pw:

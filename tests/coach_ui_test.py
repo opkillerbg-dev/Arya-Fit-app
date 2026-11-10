@@ -73,8 +73,8 @@ try:
         r = pg.evaluate("(function(){var x=axCoach.compute();return {m:x.rec.mode,gap:x.a.gap}})()")
         check("solid recent weeks -> step up (or lighter week), never a comeback", r["m"] in ("progress", "deload", "hold"), r)
         # settings button opens the sheet
-        pg.evaluate("go('set')"); pg.wait_for_timeout(300); pg.click('[data-sp="plan"]'); pg.wait_for_timeout(300); pg.click("#ax-coach-open"); pg.wait_for_timeout(300)
-        check("Settings > Smart week opens the sheet", "Apply this week" in pg.evaluate("document.getElementById('ax-shb').innerText"))
+        pg.evaluate("go('plan')"); pg.wait_for_timeout(400); pg.click("#ax-pmore"); pg.wait_for_timeout(300); pg.click("#ax-m5"); pg.wait_for_timeout(500)   # Smart week now lives in Plan > Manage (v144)
+        check("Plan > Manage > Smart week opens the sheet", "Apply this week" in pg.evaluate("document.getElementById('ax-shb').innerText"))
         check("no page errors", errs == [], errs)
         b.close()
 finally:

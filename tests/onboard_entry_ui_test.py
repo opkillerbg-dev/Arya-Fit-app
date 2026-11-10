@@ -13,7 +13,7 @@ def wait(pg, ms=250): pg.wait_for_timeout(ms)
 def settings(pg):
     pg.evaluate("go('set')"); pg.wait_for_timeout(350)
     if not pg.evaluate("document.getElementById('ax-ob-row').offsetParent!==null"):
-        pg.click("#ax-v-set [data-sp='plan']"); pg.wait_for_timeout(350)
+        pg.evaluate("go('plan')"); pg.wait_for_timeout(400); pg.click("#ax-pmore"); pg.wait_for_timeout(300); pg.click("#ax-m6"); pg.wait_for_timeout(350)   # Plan tools now live in Plan > Manage (v144)
 try:
     with sync_playwright() as pw:
         try: b = pw.chromium.launch(channel="chrome")

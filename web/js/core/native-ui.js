@@ -23,12 +23,14 @@ function axDrawerFill(){var td=todayIdx(),inP=td>=0&&td<ND,nm=(P&&P.name)||"Your
   b("ax-dr-about",function(){go("set");var c=$("ax-credits");if(c){c.open=true;setTimeout(function(){c.scrollIntoView({behavior:"smooth",block:"start"})},140)}})}
 function axTopMore(){var td=todayIdx(),inP=td>=0&&td<ND,xs=st["x"+Dn()];
   axSheet("Quick actions",(inP?'<button class="ax-opt" id="ax-q1"><b>'+(xs?"Reopen today":"Close today")+'</b><span>'+(xs?"Day is closed":"Rest day or call it a day")+'</span></button>':'')
-   +'<button class="ax-opt" id="ax-q2"><b>Daily check-in</b><span>Sleep, energy and soreness</span></button><button class="ax-opt" id="ax-q3"><b>Add exercise</b><span>To a day of the current plan</span></button><button class="ax-opt" id="ax-q4"><b>Export backup</b><span>Save everything to a file</span></button>');
+   +'<button class="ax-opt" id="ax-q2"><b>Daily check-in</b><span>Sleep, energy and soreness</span></button>');
   var q=function(id,fn){var e=$(id);if(e)e.onclick=function(){axSheetX();setTimeout(fn,60)}};
   q("ax-q1",function(){cur=Dn();go("plan");render();axClose()});
   q("ax-q2",function(){go("home");window.axBrainOpen&&axBrainOpen();var e=$("ax-hbrain");if(e)e.scrollIntoView({behavior:"smooth",block:"center"})});
-  q("ax-q3",function(){cur=Dn();go("plan");render();axAdd()});q("ax-q4",function(){$("ex").click()})}
-$("ax-tmenu").onclick=function(){axDrawer(true)};$("ax-dscrim").onclick=function(){axDrawer(false)};
+}
+$("ax-tmenu").onclick=function(){axDrawer(true)};
+/* v144: the left drawer duplicated the tabs. Kept in the code for one release; flip AX_DRAWER to bring the button back. */
+var AX_DRAWER=false;if(!AX_DRAWER){var tm=$("ax-tmenu");tm.hidden=true;tm.style.display="none"}$("ax-dscrim").onclick=function(){axDrawer(false)};
 $("ax-tmore").onclick=axTopMore;
 function axSI(t,r,b,l){var st=document.documentElement.style;try{syncSystemBarStyle()}catch(e){}st.setProperty("--ax-si-t",(+t||0)+"px");st.setProperty("--ax-si-b",(+b||0)+"px");requestAnimationFrame(function(){try{axNavH()}catch(e){}})}
 function axSIPull(){try{if(window.AxInsets){var v=String(AxInsets.get()).split(",");axSI(v[0],v[1],v[2],v[3])}}catch(e){}}

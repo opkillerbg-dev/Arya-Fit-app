@@ -1014,3 +1014,18 @@ Reported on a real phone: cream cards with white text (Today steps card, Setting
 - `settings.js`: hub skips the `plan` row; the `ax-sp-plan` page is unchanged and opened by `axOpenPlanTools(from)`. `window.axSetFrom` makes the page's Back button and Android back (`axSetBack`) return to Plan; cleared when Settings hides. One-time card `.ax-mv` in the hub when `!PR.born && !PR.mvHint` (Open Manage / Got it sets `PR.mvHint=1`). The hub only repaints when entering Settings after it was hidden.
 - Tests: new `tests/v1_nav_test.py`; `coach_ui_test`, `onboard_entry_ui_test`, `retest_ui_test` now open plan tools via Plan > Manage. Full suite passes. Cache `arya-v144`, About v144.
 - Not checked on a phone. Known leftovers for later phases: Plans view still says "Ask Claude" (P7); Settings "Plan & exercises" page is still titled that and still has a Settings-style Back chevron (P5 can give it a Plan-style header).
+
+## V1 simplification P4: Move tab (Claude, v145)
+- Nav labels (index.html): Home->Today, Run->Move, Settings->Me. `data-v` values unchanged.
+- Free run: a plan without a run keeps `JKM=0`; nothing sets a fake goal. `timers-run.js`: `startIV0` no longer returns on `!JKM` (falls back to `IVS[lvl()]||[86400,0]`, label `JL||"Free run"`), `startIV` sheet says Run / Walk when `!JKM`, goal-reached toast guarded by `JKM&&` (also in `progress-share.js`), `gbar` 0% without a goal, `runBtn` says "Start free run". `sheets-views.js`: `#tvpanel` always visible, `#tvh` "Free run", `#gkm` "km" without goal, `tvu()` text "Track time, distance and route with GPS. No target...", `prog()` best time requires `JKM`. `addRun` already ticks nothing meaningful for JKM=0; `adapt()` already skips without JKM (no level changes).
+- Starter plan: removed the 2 km run/walk block added in v142 (free run replaces it).
+- Move view: intro "MOVE / Start moving."; tools are `<details id="ax-tools">` (collapsed) with ids unchanged; labels "Workout stopwatch", "Rest timer", "Add a run by hand". CSS appended to `base.css`.
+- Tests: new `tests/v1_move_test.py`; `coach_ui_test.py` missed-sessions check now switches to `defaultPlan()` first (it was calibrated on the 5-day Home Plan; the 3-day starter plan gives "easeback"). Full suite passes. Cache `arya-v145`, About v145.
+- Not checked on a phone. Free run with real GPS is the part to try outside: start, walk 2 minutes, save, check Progress shows the km and "Best run time" stays "--".
+
+## V1 simplification P5: Plan wording (Claude, v146)
+- Text only, ids unchanged. `#ax-pclose` "Finish day" (`plan-ui.js`, `index.html`); Finish sheet title/options in `sheets-views.js` (`ax-c1` "Rest day / Skip training, keep your streak", `ax-c2` "Finish with what I did"); top quick action "Finish today" (`native-ui.js`); `#ax-edit-workout` "Edit sets and reps", `#ax-reschedule` "Reschedule" (sheet title in `state.js`); `.ax-all summary` "See all days".
+- "Smart week" is now "Plan my next week": Manage item `ax-m5`, plan-tools row in `index.html`, coach card kicker "NEXT WEEK" / "NEXT WEEK · PLANNED", sheet title "Next week: ...", toasts in `coach.js`. Internal names (`axCoach`, `ax-coach-open`, `ax-coach-card`) unchanged.
+- Settings plan page title "Plan tools" (`settings.js` `pPl`).
+- Tests: new `tests/v1_plan_test.py`; `v1_nav_test.py` label updated. Full suite passes. Cache `arya-v146`, About v146.
+- Not checked on a phone.

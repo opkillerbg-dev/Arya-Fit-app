@@ -53,7 +53,7 @@ function engSync(){if(!ENG||!TM||!TM.eng||TM.sy||Date.now()-(TM.sat||0)<700)retu
   ENG.state().then(function(r){if(!TM)return;TM.sy=0;if(!r||!r.active)return;
     TM.dist=r.dist;TM.jt=r.jt;TM.wt=r.wt;TM.gavg=r.gavg;if(r.sens){TM.steps=r.steps;TM.nsens=1}if(r.gap)TM.gap=1;
     TM.gmsg=r.goff?"GPS is off. Turn on Location.":(!r.fx||r.gacc<0)?"Finding GPS...":r.gacc>30?"Weak GPS (about "+Math.round(r.gacc)+" m). Move to open sky.":"GPS good (about "+Math.round(r.gacc)+" m)";
-    if(!TM.hit&&TM.dist+(TM.base||0)>=JKM*1000){TM.hit=1;beep(3,988);toast(JKM+" km reached. Tap Save run time.")}
+    if(JKM&&!TM.hit&&TM.dist+(TM.base||0)>=JKM*1000){TM.hit=1;beep(3,988);toast(JKM+" km reached. Tap Save run time.")}
     if(r.rev!==TM.erev){TM.erev=r.rev;TM.acc=r.acc;TM.last=Date.now();TM.run=!r.paused;TM.ph=r.phase;TM.hold=r.hold;TM.pstart=r.pstart;TM.round=r.round;TM.lt=r.acc/1000;$("dpp").textContent=r.paused?"Resume":"Pause"}
     if(r.rn>(TM.rn||0)){var f=TM.rn||0;TM.rn=r.rn;ENG.route({from:f}).then(function(q){try{if(TM)TM.rt=(TM.rt||[]).concat(JSON.parse(q.pts))}catch(e){}})}
   }).catch(function(){if(TM)TM.sy=0})}

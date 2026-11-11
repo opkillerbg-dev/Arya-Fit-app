@@ -130,7 +130,7 @@
     co.last = { d0: p.d0, mode: rec.mode, title: rec.title, undo: { sched: oldMap, nd: oldND, edits: prevEdits, owned: prevOwned, logLen: co.log.length - 1 } };
     save(); try { hx("ok"); } catch (e) { /* no haptics */ }
     render(); try { if (typeof home === "function") home(); } catch (e) { /* ignore */ }
-    toast("Smart week applied. You can undo it in Smart week.");
+    toast("Next week planned. You can undo it in Plan > Manage > Plan my next week.");
   }
 
   function undo() {
@@ -140,7 +140,7 @@
     pe.schedMap = u.sched || undefined; ND = u.nd; co.owned = u.owned || {};
     co.log = co.log.slice(0, u.logLen); delete co.last;
     save(); render(); try { if (typeof home === "function") home(); } catch (e) { /* ignore */ }
-    toast("Smart week undone.");
+    toast("Next-week plan undone.");
   }
 
   function dayLine(p, x, idx) {
@@ -163,7 +163,7 @@
     var why = p.rec.reasons.map(function (r) { return "<p>" + esc(r) + "</p>"; }).join("");
     var rows = p.plan.map(function (x, i) { return dayLine(p, x, i); }).join("");
     var undoBtn = co.last && co.last.undo ? '<button class="ax-btn" type="button" id="ax-coach-undo" style="margin-top:8px">Undo the last smart week</button>' : "";
-    axSheet("Smart week: " + p.rec.title,
+    axSheet("Next week: " + p.rec.title,
       '<p class="ax-sub">Built from your past workouts, runs and logged sets. Nothing changes until you tap Apply.</p>' +
       '<div class="ax-card"><p class="ax-cap">WHY THIS WEEK</p>' + why + "</div>" +
       '<div class="ax-card"><p class="ax-cap">THE NEXT 7 DAYS, FROM ' + esc(ex[(START.getDay() + p.d0) % 7].toUpperCase() + " " + dl(p.d0).toUpperCase()) + "</p>" + rows + "</div>" +
@@ -198,11 +198,11 @@
       if (!box) { box = document.createElement("div"); box.id = "ax-coach-card"; box.className = "ax-card"; }
       if (box.nextSibling !== hb) hb.parentNode.insertBefore(box, hb);
       if (s.kind === "active") {
-        box.innerHTML = '<p class="ax-cap">SMART WEEK · ACTIVE</p><p style="margin:4px 0 10px"><b>' + esc(s.last.title) + "</b>. Your week was built from your history (from " + esc(dl(s.last.d0)) + ").</p>" +
+        box.innerHTML = '<p class="ax-cap">NEXT WEEK · PLANNED</p><p style="margin:4px 0 10px"><b>' + esc(s.last.title) + "</b>. Your week was built from your history (from " + esc(dl(s.last.d0)) + ").</p>" +
           '<div style="display:flex;gap:8px"><button class="ax-btn" type="button" id="ax-coach-det">Details</button><button class="ax-btn" type="button" id="ax-coach-un">Undo</button></div>';
         $("ax-coach-det").onclick = openSheet; $("ax-coach-un").onclick = undo;
       } else {
-        box.innerHTML = '<p class="ax-cap">SMART WEEK</p><p style="margin:4px 0 4px"><b>' + esc(s.p.rec.title) + "</b></p><p style=\"margin:0 0 10px\">" + esc(s.p.rec.reasons[0] || "") + "</p>" +
+        box.innerHTML = '<p class="ax-cap">NEXT WEEK</p><p style="margin:4px 0 4px"><b>' + esc(s.p.rec.title) + "</b></p><p style=\"margin:0 0 10px\">" + esc(s.p.rec.reasons[0] || "") + "</p>" +
           '<div style="display:flex;gap:8px"><button class="ax-btn" type="button" id="ax-coach-no2">Not now</button><button class="ax-btn a" type="button" id="ax-coach-see">See my week</button></div>';
         $("ax-coach-see").onclick = openSheet;
         $("ax-coach-no2").onclick = function () { var co = coachOf(axPlan()); co.dismiss = s.p.tN; save(); renderCard(); };

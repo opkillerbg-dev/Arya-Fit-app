@@ -24,7 +24,7 @@ try:
         check("Plan has a labelled Manage button", pg.evaluate("document.getElementById('ax-pmore').innerText.trim()==='Manage'"))
         pg.click("#ax-pmore"); pg.wait_for_timeout(300)
         t = pg.evaluate("document.getElementById('ax-shb').innerText")
-        for w in ["Add exercise", "Switch, import or export plan", "Personalise my plan", "Smart week", "More plan tools"]:
+        for w in ["Add exercise", "Switch, import or export plan", "Personalise my plan", "Plan my next week", "More plan tools"]:
             check("Manage lists: " + w, w in t, t)
         check("Manage has no duplicate 'Mark rest day'", "Mark rest day" not in t)
         # Add exercise opens the add sheet
@@ -38,7 +38,7 @@ try:
         check("Plans > Back returns to Plan", pg.evaluate("!document.getElementById('ax-v-plan').hidden"))
         # Smart week
         pg.click("#ax-pmore"); pg.wait_for_timeout(300); pg.click("#ax-m5"); pg.wait_for_timeout(700)
-        check("Manage > Smart week opens it", pg.evaluate("!document.getElementById('ax-sh').hidden||!!document.querySelector('#ax-coach-card,.ax-coach')"))
+        check("Manage > Plan my next week opens it", pg.evaluate("!document.getElementById('ax-sh').hidden||!!document.querySelector('#ax-coach-card,.ax-coach')"))
         pg.evaluate("axSheetX()")
         # Personalise opens the wizard
         pg.click("#ax-pmore"); pg.wait_for_timeout(300); pg.click("#ax-m4"); pg.wait_for_timeout(600)

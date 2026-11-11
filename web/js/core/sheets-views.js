@@ -8,18 +8,18 @@ function axClose(){
   var i=cur,td=todayIdx(),x=st["x"+i]||0;if(td<0||i>td)return;
   if(x){delete st["x"+i];save();render();toast("Day reopened");return}
   var R=calcM(),lg=Math.max(R.quads.f,R.hams.f,R.calves.f),sr=Object.keys(R).some(function(m){return R[m].s});
-  axSheet(i==td?"Close today":"Close "+dl(i),((sr||lg>.7)&&i==td?'<p class="ax-cap ax-tip">Legs still loaded. Rest or an easy walk is fine.</p>':'')+'<button class="ax-opt" id="ax-c1"><b>Rest day</b><span>Keeps your streak</span></button><button class="ax-opt" id="ax-c2"><b>Call it a day</b><span>Counts as done</span></button><button class="ax-opt" id="ax-c3"><b>Rest day, legs are sore</b><span>Eases next run one level</span></button>');
+  axSheet(i==td?"Finish today":"Finish "+dl(i),((sr||lg>.7)&&i==td?'<p class="ax-cap ax-tip">Legs still loaded. Rest or an easy walk is fine.</p>':'')+'<button class="ax-opt" id="ax-c1"><b>Rest day</b><span>Skip training, keep your streak</span></button><button class="ax-opt" id="ax-c2"><b>Finish with what I did</b><span>Counts as done</span></button><button class="ax-opt" id="ax-c3"><b>Rest day, legs are sore</b><span>Eases next run one level</span></button>');
   $("ax-c1").onclick=function(){axPut(i,1,"Rest day saved. Streak kept.")};
   $("ax-c2").onclick=function(){axPut(i,2,"Day closed with what you did.")};
   $("ax-c3").onclick=function(){PR.sore=PR.sore||{};["quads","hams","calves","glutes"].forEach(function(m){PR.sore[m]=Date.now()});PR.lvl=Math.max(0,lvl()-1);PR.lrd=i;axPut(i,1,"Rest day saved. Legs marked sore, next run eased one level.")}
 }
-/* v144 (V1 simplification P3): the ONE home for plan management. Rest day lives in the Close day sheet. */
+/* v144 (V1 simplification P3): the ONE home for plan management. Rest day lives in the Finish day sheet. */
 function axMore(){
   var nm=(P&&P.name)||"Your plan";
   axSheet("Manage plan",'<button class="ax-opt" id="ax-m2"><b>Add exercise</b><span>Adds to every matching weekday</span></button>'
    +'<button class="ax-opt" id="ax-m3"><b>Switch, import or export plan</b><span>'+esc(nm)+'</span></button>'
    +'<button class="ax-opt" id="ax-m4"><b>Personalise my plan</b><span>A few questions, a plan that fits you</span></button>'
-   +'<button class="ax-opt" id="ax-m5"><b>Smart week</b><span>Plan the next 7 days from what you have done</span></button>'
+   +'<button class="ax-opt" id="ax-m5"><b>Plan my next week</b><span>Builds the next 7 days from what you have done</span></button>'
    +'<button class="ax-opt" id="ax-m6"><b>More plan tools</b><span>Exercise library, profile, next plan, quick builder</span></button>');
   var m=function(id,fn){var e=$(id);if(e)e.onclick=function(){axSheetX();setTimeout(fn,60)}};
   m("ax-m2",axAdd);m("ax-m3",function(){go("plans")});
@@ -35,7 +35,7 @@ function axAdd(){
   $("ax-ceg").onclick=function(){var d=P.days[sl.value],n=$("ax-cen").value.trim().slice(0,40);if(!d||!n){toast("Enter an exercise name.");return}
     d.exercises.push({name:n,sets:Math.max(1,Math.min(8,Math.round(+$("ax-ces").value)||3)),reps:$("ax-cer").value.trim().slice(0,20)||"10",note:""});setPlan(P);save();render();["ax-cen","ax-ces","ax-cer"].forEach(function(q){$(q).value=""});ceUI();toast("Exercise added")}
 }
-function applyGoal(){var g=PR&&PR.goal,b=(P&&P.jog)?P.jog.km:0;JKM=g>0&&b>0?g:b;if($("gkm"))$("gkm").textContent="km of "+JKM;if(typeof tvu=="function")tvu()}
+function applyGoal(){var g=PR&&PR.goal,b=(P&&P.jog)?P.jog.km:0;JKM=g>0&&b>0?g:b;if($("gkm"))$("gkm").textContent=JKM?"km of "+JKM:"km";if(typeof tvu=="function")tvu()}
 var _sp=setPlan;setPlan=function(p){_sp(p);applyGoal()};
 /* v48 haptics: native Capacitor Haptics when present, else navigator.vibrate */
 var HXP=(window.Capacitor&&Capacitor.Plugins&&Capacitor.Plugins.Haptics)||null,HXL=0,HXR=0;
@@ -159,7 +159,7 @@ function prog(){
   var jts=0,wks=0,km=0,stp=0,work=0,best=0,done=0,chk=0,tot=0;
   for(var i=0;i<ND;i++){var c=cnt(i);chk+=c[0];tot+=c[1];if(c[0]==c[1])done++;
     var g=st["g"+i]||0,r=st["r"+i]||0,sp=st["s"+i]||0;km+=g;stp+=sp;jts+=st["jt"+i]||0;wks+=st["wk"+i]||0;work+=st["w"+i]||0;
-    if(r&&(!g||g>=JKM*980)&&(!best||r<best))best=r}
+    if(JKM&&r&&(!g||g>=JKM*980)&&(!best||r<best))best=r}
   var T6=[[done+"/"+ND,"Days done"],[Math.round(chk/tot*100)+"%","Tasks done"],[(km/1000).toFixed(1),"Total km"],[stp.toLocaleString(),"Steps counted"],[best?fmt(best):"--","Best run time"],[work?fmt(work):"--","Workout time"],[jts?fmt(jts):"--","Total jog time"],[jts+wks?Math.round(jts/(jts+wks)*100)+"%":"--","Jog share of runs"]];
   var h='<div class="tiles two" style="margin-top:0">'+T6.map(function(x){return '<div class="tile"><b class="disp">'+x[0]+'</b><span>'+x[1]+'</span></div>'}).join("")+'</div>';
   h+='<div class="panel" style="margin-top:12px"><h3 style="margin-top:0">By week</h3>';
@@ -167,7 +167,7 @@ function prog(){
     h+='<div class="pbar"><span style="width:58px;color:var(--ink)">Week '+(w+1)+'</span><i><u style="width:'+pp+'%"></u></i><span>'+pp+'%</span></div>'}
   h+='</div>';
   axClr();$("pgv").innerHTML=h+pextra();cup($("pgv"));bindProg();axPg()}
-function tvu(){runBtn();var r2=$("rprompt2");if(r2){r2.innerHTML=lastCard();bindLast(r2)}$("tvtxt").textContent=JKM?"This week: "+ivt(Math.floor(Dn()/7))+(IVS[Math.min(Math.floor(Dn()/7),IVS.length-1)][1]?", repeat until you reach ":", aim for ")+JKM+" km.":""}
+function tvu(){runBtn();var r2=$("rprompt2");if(r2){r2.innerHTML=lastCard();bindLast(r2)}$("tvtxt").textContent=!JKM?"Track time, distance and route with GPS. No target, go at your own pace.":"This week: "+ivt(Math.floor(Dn()/7))+(IVS[Math.min(Math.floor(Dn()/7),IVS.length-1)][1]?", repeat until you reach ":", aim for ")+JKM+" km."}
 function axCd(){
   axSheet("Countdown",'<div class="ax-chips"><button class="ax-chip" data-tq="30">30s</button><button class="ax-chip" data-tq="45">45s</button><button class="ax-chip" data-tq="60">60s</button><button class="ax-chip" data-tq="90">90s</button><button class="ax-chip" id="ax-rest60">Rest 60s</button></div><input class="ax-field" id="ax-tvn" type="number" inputmode="numeric" min="5" max="3600" placeholder="Custom seconds"><button class="ax-btn ax-pri" id="ax-tvg">Start</button>');
   document.querySelectorAll("#ax-shb [data-tq]").forEach(function(b){b.onclick=function(){axSheetX();unlock();startCD(+b.dataset.tq,"Countdown")}});
@@ -209,7 +209,6 @@ function starterPlan(){
     var pf=AxProfile.clean({done:true,units:"metric",health:"ok",goal:{main:"general"},xp:"beg",env:"home",equip:[],levels:{push:0,pull:0,legs:0,core:0,run:0},days:3,mins:30,weeks:4,start:"today"},{});
     var r=AxPlanGen.build(pf,AxExDb,{now:Date.now(),notes:{},athlete:"",level:AxLevel}),v=vplan(r.plan);
     if(v&&v.plan){v.plan.name="Starter plan";v.plan.athlete="";
-      if(!v.plan.jog){var jg=vplan(Object.assign({},r.plan,{name:"Starter plan",jog:{label:"2 km run and walk",km:2,weeks:AxPlanGen.intervals(2,r.plan.weeks||4,0)}}));if(jg&&jg.plan&&jg.plan.jog){jg.plan.athlete="";return jg.plan}}   /* keeps the Run tab's Start run button available (it is hidden when a plan has no run) */
       return v.plan}
   }catch(e){}
   var d=defaultPlan();d.athlete="";d.name="Starter plan";d.start=ymd();return d}
@@ -257,7 +256,7 @@ function setPlan(pl){P=pl;var m=/^(\d+)-(\d+)-(\d+)$/.exec(pl.start);START=new D
   var rng=dl(0)+" to "+dl(ND-1)+" "+dt(ND-1).getFullYear();
   document.title=pl.name;$("ax-name").textContent=pl.athlete||"Your plan";$("ax-plan").textContent=pl.name+", "+rng;
   $("sp-name").textContent=pl.name;$("sp-sub").textContent=NW+" weeks, "+rng;
-  $("tvh").textContent=JL||"Run";$("gkm").textContent="km of "+JKM;$("tvpanel").hidden=!JKM}
+  $("tvh").textContent=JL||"Free run";$("gkm").textContent=JKM?"km of "+JKM:"km";$("tvpanel").hidden=false}
 function activate(id){APP.active=id;var e=APP.plans[id];st=e.st;setPlan(e.plan);if(Array.isArray(e.schedMap)&&e.schedMap.length>ND)ND=e.schedMap.length;cur=Math.max(0,Math.min(ND-1,todayIdx()));$("ax-gall").innerHTML="";closeT();render();plans()}
 function loadApp(){var a=axStoreRead(),fresh=!a||!a.plans||!a.active||!a.plans[a.active];
   if(fresh){var old={};try{old=JSON.parse(localStorage.getItem(OLDK)||"{}")||{}}catch(e){old={}}

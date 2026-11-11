@@ -13,7 +13,7 @@
     {k:"alert",t:"Sound & feedback",s:function(){return (PR.voi===0?"Voice off":"Voice on")+" · "+(PR.hap===0?"haptics off":"haptics on")}},
     {k:"plan",t:"Plan & exercises",s:function(){var n=$("sp-name");return (n&&n.textContent)||"Plans, next plan, library"}},
     {k:"data",t:"Data & backup",s:function(){return PR.lbk?"Last backup "+Math.floor((Date.now()-PR.lbk)/864e5)+" d ago":"No backup yet"}},
-    {k:"about",t:"About",s:function(){var b=window.AXBUILD;return "AERUNO · v144"+(b&&b.run?" · build "+b.run:"")}}
+    {k:"about",t:"About",s:function(){var b=window.AXBUILD;return "AERUNO · v146"+(b&&b.run?" · build "+b.run:"")}}
   ];
   function cap(s){return s.charAt(0).toUpperCase()+s.slice(1)}
   function ic(n,c){return '<svg class="ax-ic'+(c?" "+c:"")+'"><use href="#'+n+'"/></svg>'}
@@ -47,7 +47,7 @@
     sec.appendChild(hub);sec.appendChild(pagesBox);
 
     var pLook=pageFrom("look","Appearance"),pRun=pageFrom("run","Run & tracking"),pAl=pageFrom("alert","Sound & feedback"),
-        pPl=pageFrom("plan","Plan & exercises"),pDa=pageFrom("data","Data & backup"),pAb=pageFrom("about","About");
+        pPl=pageFrom("plan","Plan tools"),pDa=pageFrom("data","Data & backup"),pAb=pageFrom("about","About");
 
     /* Exercise pictures belongs with looks, not voice */
     var exi=$("t-exi"),exiRow=exi&&exi.closest(".row");
@@ -95,7 +95,7 @@
   function paintHub(){
     if(!hub)return;
     var h="";
-    if(window.PR&&!PR.born&&!PR.mvHint)h+='<div class="ax-card ax-mv"><p class="ax-sub"><b>Plan tools moved.</b> Plans, Smart week, Personalise and the exercise library are now in Plan, under Manage.</p><div class="ax-chips"><button type="button" class="ax-btn ax-pri" data-mv="go">Open Manage</button><button type="button" class="ax-btn" data-mv="ok">Got it</button></div></div>';
+    if(window.PR&&!PR.born&&!PR.mvHint)h+='<div class="ax-card ax-mv"><p class="ax-sub"><b>Plan tools moved.</b> Plans, next-week planning, Personalise and the exercise library are now in Plan, under Manage.</p><div class="ax-chips"><button type="button" class="ax-btn ax-pri" data-mv="go">Open Manage</button><button type="button" class="ax-btn" data-mv="ok">Got it</button></div></div>';
     DEF.forEach(function(d){
       if(d.k==="plan")return;
       var sub="";try{sub=d.s()}catch(e){}

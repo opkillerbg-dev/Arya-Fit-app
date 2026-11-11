@@ -64,6 +64,7 @@ try:
         pg.evaluate("(function(){for(var i=12;i<17;i++){var h=items(i).filter(function(x){var id=String(x[1]);return id.charAt(0)!=='e'&&id!=='j'})[0];if(h)st[i+':'+h[1]]=1}axAutoClose();save()})()")
         r = pg.evaluate("(function(){var x=axCoach.compute();return {m:x.rec.mode,gap:x.a.gap,x12:st['x12']}})()")
         check("habit-only days (auto-closed as partly done) do not hide the break", r["m"] == "comeback" and r["gap"] >= 11, r)
+        pg.evaluate("APP.plans.default.plan=defaultPlan();activate('default')")   # this check was calibrated on the 5-day Home Plan; the fresh-install starter plan has 3 sessions a week (v145)
         pg.evaluate(SETUP + "(13,13)")
         pg.evaluate("(function(){for(var i=0;i<13;i++){if(i%2===1){Object.keys(st).forEach(function(k){if(k.indexOf(i+':')===0)delete st[k]})}}axAutoClose();save()})()")
         r = pg.evaluate("(function(){var x=axCoach.compute();return {m:x.rec.mode,adh:x.a.adh,planned:x.a.planned}})()")

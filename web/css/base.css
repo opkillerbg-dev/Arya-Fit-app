@@ -951,3 +951,11 @@ html.amo.gls .ax-card,html.amo.gls .panel,html.amo.gls .tile{box-shadow:0 10px 2
 /* v144: labelled Manage button on Plan */
 #ax-pmore{width:auto;min-width:56px;padding:0 18px;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:700}
 .ax-top .ax-tp{margin-left:auto}   /* keeps the quick-actions button on the right now that the menu button is hidden */
+
+/* v145 Move tab: collapsed Tools card */
+.ax-tools>summary{display:flex;flex-direction:column;gap:2px;cursor:pointer;list-style:none;padding:2px 2px}
+.ax-tools>summary::-webkit-details-marker{display:none}
+.ax-tools>summary b{font-size:var(--ax-t3,17px)}
+.ax-tools>summary em{font-style:normal;font-size:var(--ax-t1,12px);color:var(--mut)}
+.ax-tools[open]>summary{margin-bottom:8px}
+.ax-tools .ax-list{border:0;padding:0;margin:0;background:none;box-shadow:none}

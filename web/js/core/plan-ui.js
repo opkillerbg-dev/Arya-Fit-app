@@ -43,7 +43,7 @@ function grid(){
 function day(){
   var i=cur,si=axSrc(i),w=Math.floor(Math.max(0,si)/7),t=si<0?{n:"Planned rest",s:"Recovery day",ic:"moon",r:true,m:false,c:0,x:[]}:T[wdk(si)],a=items(i),c=cnt(i),td=todayIdx(),x=st["x"+i]||0,g="",h="",tg=[];
   h+='<div class="ax-session-kicker"><span class="ax-kicker">YOUR SESSION</span><span class="ax-session-index">DAY '+String(i+1).padStart(2,"0")+' / '+ND+'</span></div><div class="ax-dayrow"><div class="ax-dbadge"><small>'+DN[dt(i).getDay()]+'</small><b>'+dt(i).getDate()+'</b></div><div class="ax-dayx"><h2 class="ax-h2">'+ic(t.ic,"ax-ic")+esc(t.n)+'</h2><p class="ax-sub">Week '+(w+1)+', day '+(i+1)+' of '+ND+'</p></div></div>';
-  h+='<div style="display:flex;gap:8px;margin:10px 0 14px"><button class="ax-btn" id="ax-edit-workout">Edit sets / reps</button><button class="ax-btn" id="ax-reschedule">Preview schedule</button></div>';
+  h+='<div style="display:flex;gap:8px;margin:10px 0 14px"><button class="ax-btn" id="ax-edit-workout">Edit sets and reps</button><button class="ax-btn" id="ax-reschedule">Reschedule</button></div>';
   if(td<0)tg.push("Starts "+dl(0)+(td==-1?", tomorrow":", in "+(-td)+" days"));else if(td==i)tg.push("Today");
   if(isL(w))tg.push("Light week");
   if(x==1)tg.push("Rest day");else if(x==2)tg.push("Closed");
@@ -78,7 +78,7 @@ function day(){
       else burst(bx2,by,28);
     }
   }});
-  var pc=$("ax-pclose");pc.textContent=x?"Reopen day":"Close day";pc.disabled=!(td>=0&&i<=td);
+  var pc=$("ax-pclose");pc.textContent=x?"Reopen day":"Finish day";pc.disabled=!(td>=0&&i<=td);
 }
 function weekDone(w){for(var d=0;d<7;d++)if(!dayDone(w*7+d))return false;return true}
 function allDone(){for(var d=0;d<ND;d++)if(!dayDone(d))return false;return true}

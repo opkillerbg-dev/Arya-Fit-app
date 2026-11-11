@@ -18,8 +18,8 @@ function endT(){clearInterval(tk);tk=null;try{wlk&&wlk.release()}catch(e){}wlk=n
 function closeT(){if(TM){clrRun();nclr()}trkOff();endT();TM=null;$("dock").hidden=true;document.body.classList.remove("td")}
 function startCD(sec,lab){begin({mode:"cd",total:sec,label:lab})}
 function startSW(d){begin({mode:"sw",label:"Workout stopwatch",day:d})}
-function startIV0(d){if(!JKM)return;d=d==null?cur:d;brk();var q=IVS[lvl()];begin({mode:"iv",seq:q[1]?[q[0],q[1]]:[86400,86400],label:JL,day:d,trk:PR.gps!==0,dist:0,steps:0,base:st["g"+d]||0});if(TM.trk)trkOn()}
-function startIV(d){if(!JKM)return;axSheet("How today?",'<button class="ax-opt" id="ax-ivj"><b>Jog and walk</b><span>Follow the plan</span></button><button class="ax-opt" id="ax-ivw"><b>Walk only</b><span>Easy pace, no jogging</span></button>');
+function startIV0(d){d=d==null?cur:d;brk();var q=IVS[lvl()]||[86400,0];begin({mode:"iv",seq:q[1]?[q[0],q[1]]:[86400,86400],label:JL||"Free run",day:d,trk:PR.gps!==0,dist:0,steps:0,base:st["g"+d]||0});if(TM.trk)trkOn()}
+function startIV(d){axSheet("How today?",JKM?'<button class="ax-opt" id="ax-ivj"><b>Jog and walk</b><span>Follow the plan</span></button><button class="ax-opt" id="ax-ivw"><b>Walk only</b><span>Easy pace, no jogging</span></button>':'<button class="ax-opt" id="ax-ivj"><b>Run</b><span>Your pace, no target</span></button><button class="ax-opt" id="ax-ivw"><b>Walk</b><span>Easy pace</span></button>');
   $("ax-ivj").onclick=function(){axSheetX();startIV0(d)};
   $("ax-ivw").onclick=function(){axSheetX();startIV0(d);if(TM){TM.hold=1;TM.ph=1;TM.pstart=0;engPush()}}}
 function wl(){try{if(!navigator.wakeLock||(wlk&&!wlk.released))return;navigator.wakeLock.request("screen").then(function(l){wlk=l}).catch(function(){})}catch(e){}}
@@ -47,7 +47,7 @@ function onFix(p){if(!TM||TM.mode!="iv")return;var c=p.coords,acc=c.accuracy;TM.
   if(tr.gaps>g0){TM.gap=1;TM.sk=TM.steps}
   if(pt){TM.dist=(TM.dbase||0)+tr.dist;TM.lm=Date.now();TM.gavg=tr.avgAcc();var ds=TM.steps-(TM.sk||0);if(tr.lastInc>0&&ds>=2){TM.sdist=(TM.sdist||0)+tr.lastInc;TM.sst=(TM.sst||0)+ds}TM.sk=TM.steps;
     (TM.rt=TM.rt||[]).push([+tr.outLa.toFixed(5),+tr.outLo.toFixed(5),t]);
-    if(!TM.hit&&TM.dist+(TM.base||0)>=JKM*1000){TM.hit=1;beep(3,988);toast(JKM+" km reached. Tap Save run time.")}}
+    if(JKM&&!TM.hit&&TM.dist+(TM.base||0)>=JKM*1000){TM.hit=1;beep(3,988);toast(JKM+" km reached. Tap Save run time.")}}
   TM.gmsg="GPS good (about "+Math.round(acc)+" m)"}
 function onGerr(er){if(!TM)return;TM.gmsg=er.code==1?"Location permission denied. Allow it in site settings, or turn tracking off.":"GPS problem. Timer still works."}
 function trkOn(keep){if(!keep){TM.dist=0;TM.steps=0;TM.hit=0;TM.sdist=0;TM.sst=0;TM.sk=0}TM.tr=new AxRun.Track();TM.mv=new AxRun.Move(Date.now());if(ENG)apWatch();TM.dbase=keep?(TM.dist||0):0;TM.gmsg="Finding GPS...";SG=9.8;SF=0;SL=0;
@@ -66,7 +66,7 @@ function trkOff(){try{if(TM&&TM.awid!=null){navigator.geolocation.clearWatch(TM.
 function paintG(e){if(!TM||!TM.trk)return;var km=TM.dist/1000;
   $("gd").textContent=((TM.dist+(TM.base||0))/1000).toFixed(2);$("gst").textContent=TM.steps.toLocaleString();
   $("gp").textContent=km>0.2?fmt(e/km):"--";$("gc").textContent=e>30&&TM.steps?Math.round(TM.steps/(e/60)):"--";
-  $("gbar").style.width=Math.min(100,(TM.dist+(TM.base||0))/(JKM*10))+"%";
+  $("gbar").style.width=JKM?Math.min(100,(TM.dist+(TM.base||0))/(JKM*10))+"%":"0%";
   var m=TM.gmsg||"";if(TM.gap)m+=" Signal dropped for a while, so distance may be a little low.";if(e>12&&!TM.mev&&!TM.nsens)m+=" No step sensor found.";
   $("gmsg").textContent=m}
 function step(){
@@ -133,7 +133,7 @@ function undoSave(){var L=LAST;if(!L||L.pid!=APP.active||TM)return;var d=L.d,dy=
   var pre=L.pre;if(pre){if(pre.lvl==null)delete PR.lvl;else PR.lvl=pre.lvl;if(pre.lrd==null)delete PR.lrd;else PR.lrd=pre.lrd;var routes= axRoutes();if(routes[dy]){routes[dy].length=Math.min(routes[dy].length,pre.rl);if(!routes[dy].length)delete routes[dy]}}var rsA=axRsum();if(rsA[dy]){rsA[dy].length=Math.min(rsA[dy].length,(pre&&pre.rs)||0);if(!rsA[dy].length)delete rsA[dy]}clearTimeout(adT);
   save();clrLast();unlock();begin(L.s,1);if(TM.trk)trkOn(1);render();tvu();toast("Save undone. Tap Resume to continue.")}
 function runBtn(){var d=Dn(),g=st["g"+d]||0,c=JKM&&g>0&&g<JKM*980,t=$("tvrun");
-  if(t)t.textContent=c?"Continue run ("+(g/1000).toFixed(2)+" of "+JKM+" km logged)":"Start run - "+ivt(lvl())}
+  if(t)t.textContent=!JKM?"Start free run":c?"Continue run ("+(g/1000).toFixed(2)+" of "+JKM+" km logged)":"Start run - "+ivt(lvl())}
 function runPrompt(){var el=$("ax-hnote");el.innerHTML="";if(!PRUN||!APP||TM||PRUN.pid!=APP.active||Date.now()-PRUN.t>172800000)return;
   var o=PRUN.s;PRUN=null;clrRun();
   function fin(){if((o.acc||0)<60000)return;if(o.mode=="iv")commit(o,o.day);else{st["w"+o.day]=(st["w"+o.day]||0)+Math.round(o.acc/1000);save()}setTimeout(function(){render();toast("Your unfinished run was saved automatically")},300)}

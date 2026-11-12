@@ -1029,3 +1029,11 @@ Reported on a real phone: cream cards with white text (Today steps card, Setting
 - Settings plan page title "Plan tools" (`settings.js` `pPl`).
 - Tests: new `tests/v1_plan_test.py`; `v1_nav_test.py` label updated. Full suite passes. Cache `arya-v146`, About v146.
 - Not checked on a phone.
+
+## V1 simplification P6: Progress (Claude, v147)
+- `index.html`: `#ax-psg` buttons Overview (`data-ps=stats`), History (`hist`), Recovery (`body`); no Badges button.
+- `steps-progress.js`: `axPs()` maps `badges` -> `stats` and shows the stats and badges panes together; `head()` no longer inserts the icon "overview" card (only the section header; new copy: YOUR NUMBERS / At a glance, HISTORY, BADGES); the `#ax-body-overview` strip is no longer created; empty-state card `#ax-prog-empty` when the active plan has 0 ticks and no step days; `axStp()` chart now follows the folded numbers.
+- `sheets-views.js` `prog()`: first 4 tiles in `.tiles`, other 4 in `<details class="ax-more-nums">`; tile labels renamed (Days finished, Activities done, Time jogging, Jogging vs walking).
+- `progression.js` still renders badges into `#ax-ps-badges` (untouched). V2 progress enhancer untouched; V2 tests pass.
+- Tests: new `tests/v1_progress_test.py`. Full suite passes. Cache `arya-v147`, About v147.
+- Not checked on a phone.

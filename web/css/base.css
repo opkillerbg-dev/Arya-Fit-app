@@ -959,3 +959,7 @@ html.amo.gls .ax-card,html.amo.gls .panel,html.amo.gls .tile{box-shadow:0 10px 2
 .ax-tools>summary em{font-style:normal;font-size:var(--ax-t1,12px);color:var(--mut)}
 .ax-tools[open]>summary{margin-bottom:8px}
 .ax-tools .ax-list{border:0;padding:0;margin:0;background:none;box-shadow:none}
+
+/* v147 Progress: folded extra numbers */
+.ax-more-nums{margin-top:10px}.ax-more-nums>summary{cursor:pointer;font-weight:700;color:var(--ink);padding:10px 4px;list-style:none}
+.ax-more-nums>summary::-webkit-details-marker{display:none}

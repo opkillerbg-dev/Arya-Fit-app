@@ -160,8 +160,10 @@ function prog(){
   for(var i=0;i<ND;i++){var c=cnt(i);chk+=c[0];tot+=c[1];if(c[0]==c[1])done++;
     var g=st["g"+i]||0,r=st["r"+i]||0,sp=st["s"+i]||0;km+=g;stp+=sp;jts+=st["jt"+i]||0;wks+=st["wk"+i]||0;work+=st["w"+i]||0;
     if(JKM&&r&&(!g||g>=JKM*980)&&(!best||r<best))best=r}
-  var T6=[[done+"/"+ND,"Days done"],[Math.round(chk/tot*100)+"%","Tasks done"],[(km/1000).toFixed(1),"Total km"],[stp.toLocaleString(),"Steps counted"],[best?fmt(best):"--","Best run time"],[work?fmt(work):"--","Workout time"],[jts?fmt(jts):"--","Total jog time"],[jts+wks?Math.round(jts/(jts+wks)*100)+"%":"--","Jog share of runs"]];
-  var h='<div class="tiles two" style="margin-top:0">'+T6.map(function(x){return '<div class="tile"><b class="disp">'+x[0]+'</b><span>'+x[1]+'</span></div>'}).join("")+'</div>';
+  var T6=[[done+"/"+ND,"Days finished"],[Math.round(chk/tot*100)+"%","Activities done"],[(km/1000).toFixed(1),"Total km"],[stp.toLocaleString(),"Steps counted"],[best?fmt(best):"--","Best run time"],[work?fmt(work):"--","Workout time"],[jts?fmt(jts):"--","Time jogging"],[jts+wks?Math.round(jts/(jts+wks)*100)+"%":"--","Jogging vs walking"]];
+  var tl=function(a){return a.map(function(x){return '<div class="tile"><b class="disp">'+x[0]+'</b><span>'+x[1]+'</span></div>'}).join("")};
+  /* v147: four numbers a beginner understands up front, the rest one tap away */
+  var h='<div class="tiles two" style="margin-top:0">'+tl(T6.slice(0,4))+'</div><details class="ax-more-nums"><summary>More numbers</summary><div class="tiles two" style="margin-top:8px">'+tl(T6.slice(4))+'</div></details>';
   h+='<div class="panel" style="margin-top:12px"><h3 style="margin-top:0">By week</h3>';
   for(var w=0;w<NW;w++){var a=0,b=0;for(var d=0;d<7;d++){var cc=cnt(w*7+d);a+=cc[0];b+=cc[1]}var pp=Math.round(a/b*100);
     h+='<div class="pbar"><span style="width:58px;color:var(--ink)">Week '+(w+1)+'</span><i><u style="width:'+pp+'%"></u></i><span>'+pp+'%</span></div>'}

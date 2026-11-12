@@ -44,7 +44,7 @@ function axSl(){var e=$("ax-sline");if(!e)return;e.textContent=!STP?"Phone app o
 /* Step 6: Progress segments */
 var AXPS="stats";
 function axClr(){["ax-ps-stats","ax-ps-hist","ax-ps-badges","ax-pbody"].forEach(function(i){$(i).innerHTML=""})}
-function axPs(k){AXPS=k;["stats","body","hist","badges"].forEach(function(x){$("ax-ps-"+x).hidden=x!=k});[].forEach.call($("ax-psg").children,function(b){b.classList.toggle("on",b.dataset.ps==k);b.setAttribute("aria-pressed",b.dataset.ps==k)});if(k=="body")body()}
+function axPs(k){if(k=="badges")k="stats";AXPS=k;["stats","body","hist","badges"].forEach(function(x){$("ax-ps-"+x).hidden=!(x==k||(k=="stats"&&x=="badges"))});[].forEach.call($("ax-psg").children,function(b){b.classList.toggle("on",b.dataset.ps==k);b.setAttribute("aria-pressed",b.dataset.ps==k)});if(k=="body")body()}
 function axDt(n){var h=n.querySelector("h3"),d=document.createElement("details"),m=document.createElement("summary");d.className="ax-card ax-dt";m.textContent=h.textContent;h.remove();d.appendChild(m);while(n.firstChild)d.appendChild(n.firstChild);return d}
 function axStp(){var ds=PR.ds||{},g=sgoal(),now=new Date(),v=[],i,t=0,n=0,bs=0,mx=g,c="",bw=10;
  for(i=27;i>=0;i--){var x=ds[ymdOf(new Date(now.getFullYear(),now.getMonth(),now.getDate()-i))]||0;v.push(x);if(x){t+=x;n++;if(x>bs)bs=x}if(x>mx)mx=x}
@@ -64,16 +64,16 @@ function axPg(){var P={stats:$("ax-ps-stats"),hist:$("ax-ps-hist"),badges:$("ax-
   if(/^(Body log|Fitness test)/.test(t)){P.body.appendChild(axDt(n))}
   else if(/^Badges/.test(t))P.badges.appendChild(n);
   else if(/^(Run history|No runs yet|Run map)/.test(t))P.hist.appendChild(n);
-  else{P.stats.appendChild(n);if(/tiles/.test(n.className))P.stats.insertAdjacentHTML("beforeend",axStp())}});
+  else{P.stats.appendChild(n);if(/ax-more-nums/.test(n.className))P.stats.insertAdjacentHTML("beforeend",axStp())}});
   $("pgv").innerHTML="";
  /* Editorial section headers use only real locally stored records. */
- var head=function(target,kicker,title,note,icon){var el=$(target);if(!el)return;var subhead={stats:'The numbers',hist:'Run history',badges:'Unlocked milestones'}[icon]||title;var svg={stats:'<path d="M4 19V5M4 19H21M8 15v-4M13 15V7M18 15V3"/>',hist:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',badges:'<path d="M8 4h8l2 4-6 3-6-3 2-4Z"/><path d="m6 8-2 7 8-4 8 4-2-7M8 17l4 2 4-2"/>',body:'<path d="M12 3a3 3 0 1 0 0 6 3 3 0 0 0 0-6ZM6 12l3-2h6l3 2M9 10l-1 5 2 6M15 10l1 5-2 6M8 15h8"/>'}[icon]||'';el.insertAdjacentHTML('afterbegin','<div class="ax-prog-overview"><div class="ax-prog-orbit"><svg viewBox="0 0 24 24" aria-hidden="true">'+svg+'</svg></div><div><b>'+title+'</b><p>'+note+'</p></div></div><div class="ax-prog-sectionhead"><div><span>'+kicker+'</span><b>'+title+'</b></div><small>'+note+'</small></div>')};
- head('ax-ps-stats','YOUR BASELINE','Progress, in context','Your logged activity, not guesses','stats');
- head('ax-ps-hist','YOUR JOURNEY','Every session counts','Review, edit or share recorded runs','hist');
+ var head=function(target,kicker,title,note,icon){var el=$(target);if(!el)return;var subhead={stats:'The numbers',hist:'Run history',badges:'Unlocked milestones'}[icon]||title;var svg={stats:'<path d="M4 19V5M4 19H21M8 15v-4M13 15V7M18 15V3"/>',hist:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',badges:'<path d="M8 4h8l2 4-6 3-6-3 2-4Z"/><path d="m6 8-2 7 8-4 8 4-2-7M8 17l4 2 4-2"/>',body:'<path d="M12 3a3 3 0 1 0 0 6 3 3 0 0 0 0-6ZM6 12l3-2h6l3 2M9 10l-1 5 2 6M15 10l1 5-2 6M8 15h8"/>'}[icon]||'';el.insertAdjacentHTML('afterbegin','<div class="ax-prog-sectionhead"><div><span>'+kicker+'</span><b>'+title+'</b></div><small>'+note+'</small></div>')};
+ head('ax-ps-stats','YOUR NUMBERS','At a glance','From what you have logged','stats');
+ head('ax-ps-hist','HISTORY','Every session counts','Review, edit or share runs','hist');
  $("ax-ps-hist").insertAdjacentHTML("beforeend",axStepHistoryHTML());
- head('ax-ps-badges','MILESTONES','Small wins, earned','Only achievements you actually unlock','badges');
- /* Body has its own editorial intro; give it a compact status strip above the map. */
- var bd=$("ax-ps-body");if(bd&&!$("ax-body-overview")){var bdo=document.createElement('div');bdo.id='ax-body-overview';bdo.className='ax-prog-overview';bdo.innerHTML='<div class="ax-prog-orbit"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a3 3 0 1 0 0 6 3 3 0 0 0 0-6ZM6 12l3-2h6l3 2M9 10l-1 5 2 6M15 10l1 5-2 6M8 15h8"/></svg></div><div><b>Recovery atlas</b><p>Choose a muscle group to inspect recent load and soreness.</p></div>';bd.insertBefore(bdo,bd.firstChild)}
+ head('ax-ps-badges','BADGES','Small wins','Only the ones you unlock','badges');
+ /* v147: say what to do while there is nothing to show */
+ try{var pe=APP.plans[APP.active];if(pe&&ticksOf(pe)===0&&!Object.keys(PR.ds||{}).length&&$("ax-ps-stats")&&!$("ax-prog-empty"))$("ax-ps-stats").insertAdjacentHTML("afterbegin",'<div class="ax-card" id="ax-prog-empty"><p class="ax-sub"><b>Nothing here yet.</b> Finish today\'s session and your numbers, steps and badges start to fill in.</p></div>')}catch(e){}
  axPs(AXPS);body()}
 $("ax-psg").onclick=function(e){var b=e.target.closest("button");if(b)axPs(b.dataset.ps)};
 

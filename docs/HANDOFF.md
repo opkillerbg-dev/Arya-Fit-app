@@ -1037,3 +1037,10 @@ Reported on a real phone: cream cards with white text (Today steps card, Setting
 - `progression.js` still renders badges into `#ax-ps-badges` (untouched). V2 progress enhancer untouched; V2 tests pass.
 - Tests: new `tests/v1_progress_test.py`. Full suite passes. Cache `arya-v147`, About v147.
 - Not checked on a phone.
+
+## V1 simplification P7: Me / Settings (Claude, v148)
+- `index.html`: `#ax-v-set` heading "Me"; Plans view copy ("Load a plan file or paste its text here", "Copy guide for an AI assistant"; ids unchanged).
+- `settings.js`: hub titles Run & steps, Reminders & sound (subtitle uses `PR.rmt`); keys unchanged (`look`,`run`,`alert`,`data`,`about`). New `adv(page,labels)` moves rows whose `<b>` text matches into `<details class="ax-card ax-adv">` at the end of the page (direct children of `.ax-sp-card` only). Folded: look = Glass look, Smooth mode, New look (beta); run = Auto-pause, Cadence beat, Beats per minute, Auto rest timer; alert = Test voice, Voice engine and voice, Test haptics. CSS in the same file.
+- Side effect to remember: `voice.js` fills its engine list when `#ax-vx` becomes visible (IntersectionObserver), so the list now fills when Advanced is opened. The New look row (`#ax-v2-row`) is also inside Advanced.
+- Tests: new `tests/v1_me_test.py`; `voice_ui_test.py` and `v1_default_test.py` open the Advanced fold first. Full suite passes except `boot_ui_test`'s timing check ("a main-thread block during boot delays the go"), which also fails on the untouched original zip in this sandbox (timing flake).
+- Cache `arya-v148`, About v148. Not checked on a phone.

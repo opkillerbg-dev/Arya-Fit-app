@@ -9,11 +9,11 @@
   var ICON={look:"i-sun",run:"i-run",alert:"i-bolt",plan:"i-cal",data:"i-flag",about:"i-set"};
   var DEF=[
     {k:"look",t:"Appearance",s:function(){var sk=String((window.PR&&PR.skin)||"oldmoney").toLowerCase();var nm={oldmoney:"Old Money",classic:"Classic",modern:"Modern",professional:"Professional",midnight:"Midnight",sunset:"Sunset"};return (nm[sk]||cap(sk))+(PR.gls===0?"":" · glass")+(PR.amo?" · black":"")}},
-    {k:"run",t:"Run & tracking",s:function(){return (PR.gps===0?"GPS off":"GPS on")+" · goal "+(PR.goal?PR.goal+" km":"plan")}},
-    {k:"alert",t:"Sound & feedback",s:function(){return (PR.voi===0?"Voice off":"Voice on")+" · "+(PR.hap===0?"haptics off":"haptics on")}},
+    {k:"run",t:"Run & steps",s:function(){return (PR.gps===0?"GPS off":"GPS on")+" · goal "+(PR.goal?PR.goal+" km":"plan")}},
+    {k:"alert",t:"Reminders & sound",s:function(){return (PR.rmt?"Daily reminder "+PR.rmt:"No daily reminder")+" · "+(PR.voi===0?"voice off":"voice on")}},
     {k:"plan",t:"Plan & exercises",s:function(){var n=$("sp-name");return (n&&n.textContent)||"Plans, next plan, library"}},
     {k:"data",t:"Data & backup",s:function(){return PR.lbk?"Last backup "+Math.floor((Date.now()-PR.lbk)/864e5)+" d ago":"No backup yet"}},
-    {k:"about",t:"About",s:function(){var b=window.AXBUILD;return "AERUNO · v147"+(b&&b.run?" · build "+b.run:"")}}
+    {k:"about",t:"About",s:function(){var b=window.AXBUILD;return "AERUNO · v148"+(b&&b.run?" · build "+b.run:"")}}
   ];
   function cap(s){return s.charAt(0).toUpperCase()+s.slice(1)}
   function ic(n,c){return '<svg class="ax-ic'+(c?" "+c:"")+'"><use href="#'+n+'"/></svg>'}
@@ -46,7 +46,7 @@
     pagesBox=document.createElement("div");pagesBox.id="ax-sp-box";
     sec.appendChild(hub);sec.appendChild(pagesBox);
 
-    var pLook=pageFrom("look","Appearance"),pRun=pageFrom("run","Run & tracking"),pAl=pageFrom("alert","Sound & feedback"),
+    var pLook=pageFrom("look","Appearance"),pRun=pageFrom("run","Run & steps"),pAl=pageFrom("alert","Reminders & sound"),
         pPl=pageFrom("plan","Plan tools"),pDa=pageFrom("data","Data & backup"),pAb=pageFrom("about","About");
 
     /* Exercise pictures belongs with looks, not voice */
@@ -75,6 +75,17 @@
     drain(data,pDa);
     var crInner=cr.querySelector(".ax-cr");
     if(crInner){var c=document.createElement("div");c.className="ax-card ax-sp-card";c.appendChild(crInner);pAb.querySelector(".ax-sp-c").appendChild(c)}
+
+    /* v148: rarely used rows go under one "Advanced" fold per page; nothing is removed */
+    function adv(page,labels){
+      var card=page.querySelector(".ax-sp-card");if(!card)return;
+      var d=document.createElement("details");d.className="ax-card ax-adv";d.innerHTML="<summary>Advanced</summary>";var n=0;
+      Array.prototype.slice.call(card.querySelectorAll(".row")).forEach(function(r){var b=r.querySelector("b"),t=b&&b.textContent.trim();if(labels.indexOf(t)>=0&&r.parentNode===card){d.appendChild(r);n++}});
+      if(n)page.querySelector(".ax-sp-c").appendChild(d);
+    }
+    adv(pLook,["Glass look","Smooth mode","New look (beta)"]);
+    adv(pRun,["Auto-pause","Cadence beat","Beats per minute","Auto rest timer"]);
+    adv(pAl,["Test voice","Voice engine and voice","Test haptics"]);
 
     /* the original summaries are now empty shells; hide them. #ax-credits stays as an anchor for library.js */
     [look,run,voice,tools,data].forEach(function(d){d.remove()});
@@ -144,7 +155,8 @@
    ".ax-sp-b{width:var(--ax-tap,48px);height:var(--ax-tap,48px);border-radius:50%;border:1px solid var(--line);background:var(--card,transparent);color:var(--ink);display:grid;place-items:center;padding:0}"+
    ".ax-sp-bi{transform:rotate(180deg);width:20px;height:20px}"+
    ".ax-sp-c{display:flex;flex-direction:column;gap:var(--ax-s3)}"+
-   ".ax-sp-card{margin-top:0}";
+   ".ax-sp-card{margin-top:0}"+
+   ".ax-adv{margin-top:12px}.ax-adv>summary{cursor:pointer;font-weight:700;color:var(--ink);list-style:none;padding:2px}.ax-adv>summary::-webkit-details-marker{display:none}.ax-adv[open]>summary{margin-bottom:8px}";
   document.head.appendChild(css);
 
   function init(){build();if(built&&!sec.hidden)show(null)}

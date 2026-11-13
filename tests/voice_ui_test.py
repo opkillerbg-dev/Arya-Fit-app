@@ -31,7 +31,7 @@ try:
         pg.close()
         pg = b.new_page(viewport={"width": 412, "height": 915}); pg.on("pageerror", lambda e: errs.append(str(e)))
         pg.add_init_script(STUB); pg.goto(URL); pg.wait_for_timeout(2000)
-        pg.evaluate("go('set')"); pg.wait_for_timeout(300); pg.click('[data-sp="alert"]'); pg.wait_for_timeout(1200)
+        pg.evaluate("go('set')"); pg.wait_for_timeout(300); pg.click('[data-sp="alert"]'); pg.wait_for_timeout(400); pg.evaluate("document.querySelector('#ax-sp-alert .ax-adv').open=true"); pg.wait_for_timeout(1200)   # voice engine picker lives under Advanced (v148)
         check("picker visible in the phone app", pg.evaluate("getComputedStyle(document.getElementById('ax-vx')).display") != "none")
         eng = pg.evaluate("Array.from(document.getElementById('ax-ve').options).map(function(o){return o.text})")
         check("engines listed (default + installed)", len(eng) == 3 and "SherpaTTS" in eng, eng)

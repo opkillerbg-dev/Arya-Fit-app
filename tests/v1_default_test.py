@@ -23,7 +23,7 @@ try:
         pg.wait_for_timeout(3500)
         check("no 'A new way to train' popup", pg.evaluate("!/new way to train/i.test(document.body.innerText)"))
         pg.evaluate("go('set')"); pg.wait_for_timeout(500)
-        pg.evaluate("axSettingsHub&&axSettingsHub.show('look')"); pg.wait_for_timeout(500)
+        pg.evaluate("axSettingsHub&&axSettingsHub.show('look')"); pg.wait_for_timeout(500); pg.evaluate("document.querySelector('#ax-sp-look .ax-adv').open=true"); pg.wait_for_timeout(200)   # New look lives under Advanced (v148)
         check("Settings has 'New look (beta)', unchecked", pg.evaluate("(()=>{var r=document.getElementById('ax-v2-row'),t=document.getElementById('t-v2');return !!r&&/beta/i.test(r.innerText)&&!t.checked})()"))
         # opt in through the real toggle
         pg.evaluate("document.getElementById('t-v2').click()"); pg.wait_for_timeout(700)

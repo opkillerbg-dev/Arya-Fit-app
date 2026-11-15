@@ -70,7 +70,7 @@
           if(cur!==orig)h+='<button type="button" class="ax-btn" data-to="">Back to original: '+esc(orig)+'</button>';
           cs.forEach(function(x){h+='<button type="button" class="ax-btn" data-to="'+esc(x)+'">'+esc(x)+(EXI[exSlug(x)]?"":" (no picture)")+'</button>'});
           if(!h)h='<p class="ax-sub">No close alternatives for this one.</p>';
-          if(!lib())h+='<p class="ax-sub">Want more options? Download the online library in Settings.</p>';
+          if(!lib())h+='<p class="ax-sub">Want more options? Download the online library in Plan > Manage > More plan tools.</p>';
           list.innerHTML=h;list.hidden=false;
         };
         list.onclick=function(e){

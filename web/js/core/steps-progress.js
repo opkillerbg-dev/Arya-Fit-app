@@ -73,7 +73,7 @@ function axPg(){var P={stats:$("ax-ps-stats"),hist:$("ax-ps-hist"),badges:$("ax-
  $("ax-ps-hist").insertAdjacentHTML("beforeend",axStepHistoryHTML());
  head('ax-ps-badges','BADGES','Small wins','Only the ones you unlock','badges');
  /* v147: say what to do while there is nothing to show */
- try{var pe=APP.plans[APP.active];if(pe&&ticksOf(pe)===0&&!Object.keys(PR.ds||{}).length&&$("ax-ps-stats")&&!$("ax-prog-empty"))$("ax-ps-stats").insertAdjacentHTML("afterbegin",'<div class="ax-card" id="ax-prog-empty"><p class="ax-sub"><b>Nothing here yet.</b> Finish today\'s session and your numbers, steps and badges start to fill in.</p></div>')}catch(e){}
+ try{var pe=APP.plans[APP.active];if(pe&&ticksOf(pe)===0&&!Object.keys(PR.ds||{}).length&&$("ax-ps-stats")&&!$("ax-prog-empty"))$("ax-ps-stats").insertAdjacentHTML("afterbegin",'<div class="ax-card" id="ax-prog-empty"><p class="ax-sub"><b>Nothing here yet.</b> Finish today\'s session and your numbers, steps and badges start to fill in.</p><div class="ax-chips"><button type="button" class="ax-btn ax-pri" id="ax-prog-go">Open today</button></div></div>')}catch(e){}
  axPs(AXPS);body()}
 $("ax-psg").onclick=function(e){var b=e.target.closest("button");if(b)axPs(b.dataset.ps)};
 

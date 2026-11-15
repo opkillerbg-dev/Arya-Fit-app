@@ -13,7 +13,7 @@
     {k:"alert",t:"Reminders & sound",s:function(){return (PR.rmt?"Daily reminder "+PR.rmt:"No daily reminder")+" · "+(PR.voi===0?"voice off":"voice on")}},
     {k:"plan",t:"Plan & exercises",s:function(){var n=$("sp-name");return (n&&n.textContent)||"Plans, next plan, library"}},
     {k:"data",t:"Data & backup",s:function(){return PR.lbk?"Last backup "+Math.floor((Date.now()-PR.lbk)/864e5)+" d ago":"No backup yet"}},
-    {k:"about",t:"About",s:function(){var b=window.AXBUILD;return "AERUNO · v148"+(b&&b.run?" · build "+b.run:"")}}
+    {k:"about",t:"About & help",s:function(){var b=window.AXBUILD;return "AERUNO · v149"+(b&&b.run?" · build "+b.run:"")}}
   ];
   function cap(s){return s.charAt(0).toUpperCase()+s.slice(1)}
   function ic(n,c){return '<svg class="ax-ic'+(c?" "+c:"")+'"><use href="#'+n+'"/></svg>'}
@@ -47,7 +47,7 @@
     sec.appendChild(hub);sec.appendChild(pagesBox);
 
     var pLook=pageFrom("look","Appearance"),pRun=pageFrom("run","Run & steps"),pAl=pageFrom("alert","Reminders & sound"),
-        pPl=pageFrom("plan","Plan tools"),pDa=pageFrom("data","Data & backup"),pAb=pageFrom("about","About");
+        pPl=pageFrom("plan","Plan tools"),pDa=pageFrom("data","Data & backup"),pAb=pageFrom("about","About & help");
 
     /* Exercise pictures belongs with looks, not voice */
     var exi=$("t-exi"),exiRow=exi&&exi.closest(".row");
@@ -73,6 +73,16 @@
     drain(voice,pAl);
     drain(tools,pPl);
     drain(data,pDa);
+    /* v149: 60-second "How AERUNO works" at the top of About & help */
+    (function(){var hc=document.createElement("div");hc.className="ax-card ax-sp-card";hc.id="ax-help";
+      hc.innerHTML='<h3 style="margin:0 0 6px">How AERUNO works</h3>'
+       +'<div class="ax-help-row"><b>Today</b><span>What to do now. One big button starts your session.</span></div>'
+       +'<div class="ax-help-row"><b>Plan</b><span>Your week. Tap a day for its exercises, then Finish day. Manage has plans and extras.</span></div>'
+       +'<div class="ax-help-row"><b>Move</b><span>Start a run or walk any time, outside your plan too. Tools has timers and logging.</span></div>'
+       +'<div class="ax-help-row"><b>Progress</b><span>Your numbers, badges and the recovery map.</span></div>'
+       +'<div class="ax-help-row"><b>Me</b><span>Reminders, look, run settings and backup.</span></div>'
+       +'<div class="ax-chips" style="margin-top:8px"><button type="button" class="ax-btn" id="ax-tips-again">Show the tips again</button></div>';
+      pAb.querySelector(".ax-sp-c").appendChild(hc)})();
     var crInner=cr.querySelector(".ax-cr");
     if(crInner){var c=document.createElement("div");c.className="ax-card ax-sp-card";c.appendChild(crInner);pAb.querySelector(".ax-sp-c").appendChild(c)}
 

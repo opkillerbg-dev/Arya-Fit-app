@@ -43,7 +43,7 @@
     s(KEY,"1");s(AUTO,"auto");
     root.classList.add("ax-lite-glass");root.setAttribute("data-glass-mode","efficient");
     var t=document.getElementById("t-lite");if(t)t.checked=true;
-    try{toast("Smooth mode is on to keep scrolling fluid. Change it in Settings > Appearance.")}catch(e){}
+    try{toast("Smooth mode is on to keep scrolling fluid. Change it in Me > Appearance > Advanced.")}catch(e){}
   }
   window.addEventListener("scroll",function(){
     if(!on)start();

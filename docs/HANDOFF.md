@@ -1044,3 +1044,9 @@ Reported on a real phone: cream cards with white text (Today steps card, Setting
 - Side effect to remember: `voice.js` fills its engine list when `#ax-vx` becomes visible (IntersectionObserver), so the list now fills when Advanced is opened. The New look row (`#ax-v2-row`) is also inside Advanced.
 - Tests: new `tests/v1_me_test.py`; `voice_ui_test.py` and `v1_default_test.py` open the Advanced fold first. Full suite passes except `boot_ui_test`'s timing check ("a main-thread block during boot delays the go"), which also fails on the untouched original zip in this sandbox (timing flake).
 - Cache `arya-v148`, About v148. Not checked on a phone.
+
+## V1 simplification P8: help layer (Claude, v149)
+- New `web/js/ui/help.js` (loaded after `home.js`; V1 scripts are not in the sw.js SHELL, they are cached at runtime). Tips: `.ax-tip` card inserted above `#ax-htoday` (Today) or after `.ax-section-intro` (Plan, Move). Eligible when `PR.born` or `axTips.force`; counts in `localStorage axTips` ({home,plan,timers: shows, 9 = dismissed}); `window.go` is wrapped to remove other views' tips and show the new view's tip 500 ms later; skipped under `html.v2` or while the splash/wizard is open. `window.axTips.show/reset` exist for debugging.
+- Delegated clicks: `[data-tip-ok]`, `#ax-prog-go` (Progress empty -> Today), `#ax-hist-go` (History empty -> Move), `#ax-tips-again` (Me > About & help).
+- `settings.js`: About row/page titled "About & help"; `#ax-help` card at the top of that page. `progress-share.js`: empty History copy + button. `steps-progress.js`: Progress empty card button. `perf.js`, `swap.js`: tab names in copy.
+- Tests: new `tests/v1_help_test.py`; `v1_me_test.py` title list updated. Full suite passes. Cache `arya-v149`, About v149. Not checked on a phone.

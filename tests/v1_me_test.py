@@ -16,7 +16,7 @@ try:
         pg.evaluate("go('set')"); pg.wait_for_timeout(600)
         check("tab heading is Me", pg.evaluate("document.querySelector('#ax-v-set h1').textContent")=="Me")
         titles = pg.evaluate("Array.from(document.querySelectorAll('#ax-sm [data-sp] b')).map(b=>b.textContent.trim())")
-        check("five plain rows", titles == ["Appearance", "Run & steps", "Reminders & sound", "Data & backup", "About"] or sorted(titles)==sorted(["Appearance", "Run & steps", "Reminders & sound", "Data & backup", "About"]), titles)
+        check("five plain rows", titles == ["Appearance", "Run & steps", "Reminders & sound", "Data & backup", "About & help"] or sorted(titles)==sorted(["Appearance", "Run & steps", "Reminders & sound", "Data & backup", "About & help"]), titles)
         check("reminder subtitle shows state", "reminder" in pg.evaluate("document.getElementById('ax-sm').innerText").lower())
         # advanced folds
         for page, adv, vis in [("look", ["Glass look", "Smooth mode", "New look (beta)"], ["Theme", "Accent color", "Exercise pictures"]),

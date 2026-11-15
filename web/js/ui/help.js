@@ -21,8 +21,10 @@
     var d=TIPS[k];if(!d||v2()||busy())return;
     var o=get();if(!eligible(o)||(o[k]||0)>=2)return;
     var view=$(d.v);if(!view||view.hidden||view.querySelector(".ax-tip"))return;
+    var txt=d.t;
+    if(k==="home"){var ht=$("ax-htoday");if(ht&&/Rest day/.test(ht.textContent))txt="Today is a rest day, so there is nothing to start. The card shows your next workout. Check-in, readiness and weather are under More for today."}
     var c=document.createElement("div");c.className="ax-card ax-tip";c.setAttribute("data-tip",k);
-    c.innerHTML='<p class="ax-sub"><b>Tip.</b> '+d.t+'</p><div class="ax-chips"><button type="button" class="ax-btn" data-tip-ok="'+k+'">Got it</button></div>';
+    c.innerHTML='<p class="ax-sub"><b>Tip.</b> '+txt+'</p><div class="ax-chips"><button type="button" class="ax-btn" data-tip-ok="'+k+'">Got it</button></div>';
     if(k==="home"){var a=$("ax-htoday");if(a&&a.parentNode)a.parentNode.insertBefore(c,a);else view.insertBefore(c,view.children[1]||null)}
     else{var i=view.querySelector(".ax-section-intro");if(i&&i.nextSibling)view.insertBefore(c,i.nextSibling);else view.insertBefore(c,view.firstChild)}
     o[k]=(o[k]||0)+1;put(o);

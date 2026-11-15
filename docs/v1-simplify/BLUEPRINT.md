@@ -124,4 +124,18 @@ Also record: first tap, any "what is this?" comment, any screen where they went 
 - **P7 done (v148):** Settings tab is "Me". Five rows: Appearance, Run & steps, Reminders & sound, Data & backup, About. Each of Appearance / Run & steps / Reminders & sound has a collapsed "Advanced" fold holding the rarely used rows (Glass look, Smooth mode, New look (beta); Auto-pause, Cadence beat, BPM, Auto rest timer; Test voice, Voice engine, Test haptics). Rows are moved, never rebuilt, so all toggles keep working. Plans screen copy no longer names a product ("Copy guide for an AI assistant"). Test: `tests/v1_me_test.py`.
 - **Deliberately not done in P7:** a separate "Profile & goals" row (profile editing is reached from Plan > Manage > Personalise; adding a second path would break one-home-per-action) and renaming About to "About & help" (that happens in P8 together with the help page).
 - **P8 done (v149):** help layer in `web/js/ui/help.js`. (1) One-line dismissible tips on Today, Plan and Move: only for installs with `PR.born` or after "Show the tips again"; each shown at most twice, never after Got it; an ignored tip leaves with its view. State in `localStorage axTips`. (2) Me row "About" is now "About & help" and opens with a "How AERUNO works" card (five lines + "Show the tips again"). (3) Empty states have a button: Progress "Open today", History "Go to Move" (copy no longer says "Timers"). Stale tab names fixed in toasts/copy (perf.js, swap.js). Test: `tests/v1_help_test.py`.
-- **Next:** P9 stranger test (5 people, 5 tasks, section 7) and sign-off. Tasks 1-5 can be dry-run by script first.
+- **P9 done (v150), engineering side:** `tests/v1_stranger_test.py` dry-runs the five tasks from a fresh install using only visible taps: task 1 in 1 tap, task 2 in 3 taps (+ back to Today to see it counted), task 3 in 1 tap, task 4 in 2 taps + setting the time, task 5 in 2 taps to Export backup. Printable sheet for the real round: `docs/v1-simplify/STRANGER_TEST.md`. Today's tip now matches rest vs workout day. Final screenshots in `docs/v1-simplify/after_final/`.
+- **Open (needs people, not code):** the stranger round itself. Sign-off = 4 of 5 testers pass each task. Fix by moving/renaming, then a 3-person second round.
+
+## 11. Before / after (V1, fresh install)
+| | Before (v141) | After (v150) |
+|---|---|---|
+| First screen | owner's plan, owner's name, "Plan complete", backup nag, weather prompt, readiness, coach card | neutral Starter plan starting today, Today card first, tip, collapsed More |
+| Cards on Home | up to ~13 | Today, ring, one nudge, More (collapsed) |
+| Navigation systems | bottom tabs + left drawer + "..." sheet | bottom tabs + "..." with 2 items |
+| Add exercise / Export backup / Close day | 3 / 3 / 4 places | 1 / 1 / 1 |
+| Run tab | hidden Start run for non-run plans; 6 tool rows | always a Start card (Free run); tools collapsed |
+| Progress | 4 tabs, duplicate headers, 8 tiles | 3 tabs, 4 tiles + More numbers, empty state |
+| Settings | 6 rows incl. Plan & exercises; ~25 toggles on show | 5 rows; rarely used ones under Advanced |
+| Tab names | Home, Plan, Run, Progress, Settings | Today, Plan, Move, Progress, Me |
+| Help | none | tips, How AERUNO works, empty-state buttons |

@@ -13,7 +13,7 @@
     {k:"alert",t:"Reminders & sound",s:function(){return (PR.rmt?"Daily reminder "+PR.rmt:"No daily reminder")+" · "+(PR.voi===0?"voice off":"voice on")}},
     {k:"plan",t:"Plan & exercises",s:function(){var n=$("sp-name");return (n&&n.textContent)||"Plans, next plan, library"}},
     {k:"data",t:"Data & backup",s:function(){return PR.lbk?"Last backup "+Math.floor((Date.now()-PR.lbk)/864e5)+" d ago":"No backup yet"}},
-    {k:"about",t:"About & help",s:function(){var b=window.AXBUILD;return "AERUNO · v149"+(b&&b.run?" · build "+b.run:"")}}
+    {k:"about",t:"About & help",s:function(){var b=window.AXBUILD;return "AERUNO · v150"+(b&&b.run?" · build "+b.run:"")}}
   ];
   function cap(s){return s.charAt(0).toUpperCase()+s.slice(1)}
   function ic(n,c){return '<svg class="ax-ic'+(c?" "+c:"")+'"><use href="#'+n+'"/></svg>'}

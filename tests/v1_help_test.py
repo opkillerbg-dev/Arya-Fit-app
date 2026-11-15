@@ -20,6 +20,7 @@ try:
         tips = pg.evaluate("Array.from(document.querySelectorAll('.ax-tip')).map(t=>t.dataset.tip)")
         check("new install sees the Today tip", tips == ["home"], tips)
         check("tip is above Today card and is one line plus a button", pg.evaluate("(()=>{var t=document.querySelector('.ax-tip'),h=document.getElementById('ax-htoday');return !!t&&!!h&&(t.compareDocumentPosition(h)&4)>0&&t.innerText.length<200})()"))
+        check("Today tip matches the day (rest day vs workout day)", pg.evaluate("(()=>{var t=document.querySelector('.ax-tip').innerText,r=/Rest day/.test(document.getElementById('ax-htoday').textContent);return r?/rest day/i.test(t)&&!/Tap the big button/.test(t):/Tap the big button/.test(t)})()"))
         # Plan and Move tips
         pg.evaluate("go('plan')"); pg.wait_for_timeout(1200)
         check("Plan tip shows on first visit (Today tip is gone from view)", pg.evaluate("!!document.querySelector('#ax-v-plan .ax-tip')"))

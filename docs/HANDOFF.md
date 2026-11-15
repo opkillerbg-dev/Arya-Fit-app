@@ -1050,3 +1050,9 @@ Reported on a real phone: cream cards with white text (Today steps card, Setting
 - Delegated clicks: `[data-tip-ok]`, `#ax-prog-go` (Progress empty -> Today), `#ax-hist-go` (History empty -> Move), `#ax-tips-again` (Me > About & help).
 - `settings.js`: About row/page titled "About & help"; `#ax-help` card at the top of that page. `progress-share.js`: empty History copy + button. `steps-progress.js`: Progress empty card button. `perf.js`, `swap.js`: tab names in copy.
 - Tests: new `tests/v1_help_test.py`; `v1_me_test.py` title list updated. Full suite passes. Cache `arya-v149`, About v149. Not checked on a phone.
+
+## V1 simplification P9: stranger test prep (Claude, v150)
+- New `tests/v1_stranger_test.py` (visible-taps-only dry run of the five tasks; it moves START so today is a workout day) and `docs/v1-simplify/STRANGER_TEST.md` (sheet for 5 real testers, pass bar 4 of 5 per task, how to read results, round 2).
+- `help.js`: the Today tip text switches when today is a rest day. `tests/v1_help_test.py` checks it.
+- Screenshots: `docs/v1-simplify/before/` (v141) and `after_final/` (v150); older `after_p1`, `after_p2` removed.
+- Blueprint section 10 (progress log) and 11 (before/after) updated. Phases P0-P9 are done in code; the human stranger round is the remaining step. Cache `arya-v150`, About v150. Not checked on a phone.

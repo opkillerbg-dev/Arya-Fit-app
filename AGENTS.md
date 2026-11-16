@@ -1,8 +1,8 @@
 # Agent instructions: Arya Fit
 
-1. Read `AI_BRIEF.md` first (rules, map, how the owner applies updates), then `docs/HANDOFF.md` (newest entries at the bottom).
-2. Current job: **V2 UI rebuild**. The full spec is `docs/v2/V2_UI_SPEC.md`; reference screenshots are in `docs/v2/reference/`. Read its section 0.5 first: technical and performance rules are LOCKED, the visual design is GUIDED and you are expected to improve it with the installed UI/UX Pro Max skill and your own judgment. Record changes in `docs/v2/DESIGN_DECISIONS.md`. Default phase order: one phase per delivery.
+1. Read, in this order: this file, `docs/CURRENT.md` (current facts), `docs/WORKFLOW.md` (how several assistants share the work), then your task card in `docs/tasks/BACKLOG.md`. `AI_BRIEF.md` is background only.
+2. Current job: **stability and release hardening, then product work**, as task cards in `docs/tasks/BACKLOG.md`. One card per session, inside its lane. The V2 look spec (`docs/v2/`) and the V1 simplification (`docs/v1-simplify/`) are finished reference material.
 3. Hard rules (locked): classic ES5 scripts, no libraries or build step, engines untouched, existing ids kept, everything V2 scoped under `html.v2`, animate only transform/opacity, bump the cache name in `web/sw.js`, list every new file in `web/index.html` and the `SHELL` list.
 4. Before delivering run `python3 tools/check-web.py`, all `tests/*.test.js` with node and all `tests/*_test.py` with Python (Playwright + Chromium).
-5. Add a dated entry to `docs/HANDOFF.md` after each step. Keep replies to the owner short.
+5. Write `docs/log/YYYY-MM-DD_<task-id>.md` after each task (do not append to `docs/HANDOFF.md`). Keep replies to the owner short.
 6. **Save usage (token budget is limited):** do NOT read `docs/HANDOFF.md` whole (about 150 KB); read only its last 3 entries (`tail -n 60`). Do not open `web/css/base.css` or `web/index.html` whole; use `grep -n` and read only the lines you need. Skip `docs/onboarding/*` and `exercises.seed.json` unless the task touches them. Work one phase per session, write all files of a phase in as few tool calls as possible, run only the tests for the screens you changed while iterating, and run the full test suite once before delivering.

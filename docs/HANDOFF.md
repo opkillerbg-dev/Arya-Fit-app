@@ -1056,3 +1056,6 @@ Reported on a real phone: cream cards with white text (Today steps card, Setting
 - `help.js`: the Today tip text switches when today is a rest day. `tests/v1_help_test.py` checks it.
 - Screenshots: `docs/v1-simplify/before/` (v141) and `after_final/` (v150); older `after_p1`, `after_p2` removed.
 - Blueprint section 10 (progress log) and 11 (before/after) updated. Phases P0-P9 are done in code; the human stranger round is the remaining step. Cache `arya-v150`, About v150. Not checked on a phone.
+
+## Workflow change (2026-11-15)
+New work is tracked in `docs/tasks/BACKLOG.md`, rules in `docs/WORKFLOW.md`, state in `docs/CURRENT.md`, per-task logs in `docs/log/`. Do not append here any more.

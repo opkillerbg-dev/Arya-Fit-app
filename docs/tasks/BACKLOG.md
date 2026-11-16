@@ -6,7 +6,7 @@ Status key: [ ] open, [~] in progress (write who/when), [x] done (write log file
 
 ## Phase 1: no identity, key or data changes (safe to start now)
 
-### [ ] T01 Record the baseline facts  (OWNER, S, lane DOCS)
+### [x] T01 Record the baseline facts  (OWNER, S, lane DOCS)  DONE 2026-11-16, see docs/CURRENT.md "Baseline facts" and docs/log/2026-11-16_baseline.md. Open leftover: confirm the phone app is the same id/key (update-over-old keeps data).
 Goal: fill in what only the owner can see so nobody guesses.
 Steps: (1) open the latest green run of "Build APK" in GitHub Actions and copy the summary lines "package: ..." and "signing key sha256: ..."; (2) on the phone: Settings > Apps > AERUNO, note the version; (3) note the last APK that worked well and the commit/version (e.g. v150); (4) send these 4 lines to any assistant, which writes them into `docs/CURRENT.md` under "Baseline facts".
 Done when: CURRENT.md has installed app id (if known), signing fingerprint, last known-good version and where that APK is saved.
@@ -67,5 +67,10 @@ After the 5-person round (`docs/v1-simplify/STRANGER_TEST.md`), one card per fai
 ### [ ] T14 Make `ui-tests` required in CI  (ANY, S, lane CI)
 After 5 green CI runs of the optional job (T03), remove `continue-on-error` and make the APK build `needs` it.
 
+### [ ] T15 Update deprecated GitHub Actions  (ANY writes, OWNER runs, S, lane CI)
+Why: the Build APK run shows 4 warnings. GitHub forced Node-20 actions onto Node 24 on 2026-06-02 and removed Node 20 from runners on 2026-09-16, so builds still work today but depend on that forcing; `setup-java@v4` is flagged as deprecated.
+Steps: in `.github/workflows/build.yml` and `apply-update.yml` bump `actions/checkout`, `actions/setup-node`, `actions/setup-java`, `actions/upload-artifact` to the first major version whose release notes say Node 24 (look them up on each action's GitHub releases page; do not guess). Change only version tags. Leave the project's own `node-version: 20` and `java-version: 17` alone (different thing: the app toolchain; review separately later).
+Acceptance: one Build APK run, all jobs green, the Node/setup-java warnings gone, the APK still reports package `com.arya.fit3` and the same signing sha256. Needs the `ARYA_PAT` secret to apply workflow edits. Do together with T03 (same file).
+
 ## Suggested order
-T01 and T02a (owner, 10 minutes) -> T03, T04, T05, T06, T07 in parallel in different lanes -> T02b -> T08, T09 -> T10 -> T11 -> decision -> T12 -> T14. T13 whenever stranger results arrive.
+T02a (owner, 10 minutes) -> T03+T15 (same workflow file, one assistant), T04, T05, T06, T07 in parallel in different lanes -> T02b -> T08, T09 -> T10 -> T11 -> decision -> T12 -> T14. T13 whenever stranger results arrive.

@@ -6,7 +6,7 @@ Status key: [ ] open, [~] in progress (write who/when), [x] done (write log file
 
 ## Phase 1: no identity, key or data changes (safe to start now)
 
-### [x] T01 Record the baseline facts  (OWNER, S, lane DOCS)  DONE 2026-11-16, see docs/CURRENT.md "Baseline facts" and docs/log/2026-11-16_baseline.md. Open leftover: confirm the phone app is the same id/key (update-over-old keeps data).
+### [x] T01 Record the baseline facts  (OWNER, S, lane DOCS)  DONE 2026-11-16, see docs/CURRENT.md "Baseline facts" and docs/log/2026-11-16_baseline.md. Leftover closed 2026-11-16: the owner confirmed new builds install over the old app as an update (same id and key).
 Goal: fill in what only the owner can see so nobody guesses.
 Steps: (1) open the latest green run of "Build APK" in GitHub Actions and copy the summary lines "package: ..." and "signing key sha256: ..."; (2) on the phone: Settings > Apps > AERUNO, note the version; (3) note the last APK that worked well and the commit/version (e.g. v150); (4) send these 4 lines to any assistant, which writes them into `docs/CURRENT.md` under "Baseline facts".
 Done when: CURRENT.md has installed app id (if known), signing fingerprint, last known-good version and where that APK is saved.
@@ -35,7 +35,7 @@ Acceptance: every declared permission has a purpose line; unknowns listed.
 Steps: (1) move `docs/HANDOFF.md` to `docs/archive/HANDOFF_through_v150.md`; (2) new short `docs/HANDOFF.md` = pointer to CURRENT.md, WORKFLOW.md, BACKLOG.md, `docs/log/` and the archive; (3) fix stale text in `README.md`, `AI_BRIEF.md`, `START_HERE_V2.md`, `CHATGPT_START.md` (version numbers, "current job = V2 rebuild", old package ids) by pointing them to CURRENT.md instead of repeating facts; (4) keep every rule from AGENTS.md that is still true.
 Acceptance: a new assistant needs only AGENTS.md, CURRENT.md, WORKFLOW.md, one task card. No file claims a different app id than CURRENT.md.
 
-### [ ] T07 Device test checklist (write)  (ANY, S, lane DOCS)
+### [x] T07 Device test checklist (write)  (ANY, S, lane DOCS)  DONE 2026-11-16, see docs/DEVICE_TEST.md
 Goal: `docs/DEVICE_TEST.md` the owner can follow on the OnePlus in about 30 minutes, with tick boxes and "what to note". Cover: fresh install; update over an old build; backup export/import round trip; free run with screen locked for 10 min; run while using another app; GPS loss (tunnel/airplane mode); stop run; no duplicate run saved; location/activity permission denied and revoked later; battery saver on; step count after closing the app, after reboot, across midnight, after a time-zone change; **step counting with the hidden notification (channel `arya_steps_off`) still rising after 1 hour with screen off**; Play Protect pop-up behaviour; widgets if present.
 Acceptance: each test has steps, expected result, a place to write the result.
 
@@ -54,7 +54,7 @@ Write `docs/decisions/SIGNING_AND_PLAY.md` with options, costs and a recommendat
 Acceptance: the owner can pick A, B or C from the paper alone.
 
 ### [ ] T11 Run the device checklist  (OWNER + DEVICE, M)
-Run `docs/DEVICE_TEST.md` (T07) and send the filled results to an assistant, which writes `docs/log/` and opens new cards for each failure.
+Run `docs/DEVICE_TEST.md` (T07: D1 to D16, about 30 minutes now plus checks over a day) and send the filled results to an assistant, which writes `docs/log/` and opens new cards for each failure.
 
 ## Phase 3: only after Phase 1 and the decision
 

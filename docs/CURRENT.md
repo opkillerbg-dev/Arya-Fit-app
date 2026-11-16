@@ -13,7 +13,7 @@ Web app in `web/` (plain HTML/CSS/ES5 JavaScript, no framework, no build step) w
 ## Baseline facts (from the owner's Actions screenshot, 2026-11-16)
 - Latest known-good build: **Build APK #128**, commit `c2009d6` on `main`, file `Arya-Fit-build128.apk`, versionCode 29913562, all three jobs green (test, browser-test, build, 2 min 15 s total).
 - Summary printed: package `com.arya.fit3`; signing key sha256 `3c1ec75f1f379a9a6d5fe80751665f3c53618edeb0e1f2bfde215fe02040a180`, "matches expected" and identical to `signing/EXPECTED_SHA256.txt` (checked).
-- So the live build uses `com.arya.fit3` and the public debug key. Still UNVERIFIED: that the owner's installed phone app is that same id/key. Easy proof: installing a newer build over the old one keeps the data and does not ask to uninstall.
+- So the live build uses `com.arya.fit3` and the public debug key. Confirmed by the owner 2026-11-16: new builds install over the old app as an update, so the phone app has the same id and key.
 - Warnings on that run (not failures): GitHub is forcing Node-20 actions to run on Node 24 (`checkout@v4`, `setup-node@v4`, `upload-artifact@v4`) and `setup-java@v4` is deprecated. See task T15.
 
 ## How a change reaches the phone

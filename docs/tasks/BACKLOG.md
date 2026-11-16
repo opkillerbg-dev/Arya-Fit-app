@@ -26,7 +26,7 @@ Goal: no accidental second app.
 Steps: add `tools/check-ids.py` that reads `capacitor.config.json` (namespace `com.arya.fit`, allowed), `APP_ID` default in `build.yml`, and the line `CANONICAL_APP_ID_IN_CI=...` in `docs/CURRENT.md`; exits 1 if build.yml's default differs from CURRENT.md or if the Gradle `sed` target no longer matches. Run it in the required `test` job. Print both values, never secrets.
 Acceptance: passes now; fails if someone edits only one of the two files (show the failing output). Frozen: do not change the app id.
 
-### [ ] T05 Permissions inventory  (ANY, S, lane DOCS)
+### [x] T05 Permissions inventory  (ANY, S, lane DOCS)  DONE 2026-11-16, see docs/PERMISSIONS.md and docs/log/2026-11-16_T05.md
 Goal: `docs/PERMISSIONS.md`: one table of every Android permission/service/receiver the built APK declares, why it exists, which feature uses it, when the app asks, what happens if denied.
 Steps: read `tools/patch-manifest.sh`, `tools/android-setup.sh`, `tools/patch_widgets.py`, `native/` (grep `uses-permission`, `foregroundServiceType`, `requestPermissions`). Mark anything you cannot find a user for as "check before removing". Do NOT remove any permission.
 Acceptance: every declared permission has a purpose line; unknowns listed.
@@ -72,5 +72,10 @@ Why: the Build APK run shows 4 warnings. GitHub forced Node-20 actions onto Node
 Steps: in `.github/workflows/build.yml` and `apply-update.yml` bump `actions/checkout`, `actions/setup-node`, `actions/setup-java`, `actions/upload-artifact` to the first major version whose release notes say Node 24 (look them up on each action's GitHub releases page; do not guess). Change only version tags. Leave the project's own `node-version: 20` and `java-version: 17` alone (different thing: the app toolchain; review separately later).
 Acceptance: one Build APK run, all jobs green, the Node/setup-java warnings gone, the APK still reports package `com.arya.fit3` and the same signing sha256. Needs the `ARYA_PAT` secret to apply workflow edits. Do together with T03 (same file).
 
+### [ ] T16 Print the merged manifest in CI  (ANY writes, OWNER runs, S, lane CI)
+Why: `docs/PERMISSIONS.md` could not list permissions added by Capacitor and the plugins (they are only visible in the built APK).
+Steps: in the `build` job, after the APK exists, add a step that runs `$ANDROID_HOME/build-tools/*/aapt2 dump permissions <apk>` (or `aapt dump permissions`) and appends the list, plus `aapt2 dump badging` lines for services/receivers if available, to `$GITHUB_STEP_SUMMARY`. Do this in the same edit as T03/T15 (same file).
+Acceptance: the run summary shows the full permission list; the owner pastes it to an assistant, which fills section B of `docs/PERMISSIONS.md` and removes "NOT VERIFIED".
+
 ## Suggested order
-T02a (owner, 10 minutes) -> T03+T15 (same workflow file, one assistant), T04, T05, T06, T07 in parallel in different lanes -> T02b -> T08, T09 -> T10 -> T11 -> decision -> T12 -> T14. T13 whenever stranger results arrive.
+T02a (owner, 10 minutes) -> T03+T15+T16 (same workflow file, one assistant), T04, T05, T06, T07 in parallel in different lanes -> T02b -> T08, T09 -> T10 -> T11 -> decision -> T12 -> T14. T13 whenever stranger results arrive.

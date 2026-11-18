@@ -1,4 +1,4 @@
-# AERUNO / Arya Fit: current state (read this instead of HANDOFF.md)
+# AERUNO / Arya Fit: current state (read this first)
 
 Updated 2026-11-15, repo v150. Keep this file under 100 lines. When a fact changes, change it here.
 
@@ -33,8 +33,8 @@ Known flake: `tests/boot_ui_test.py` timing check ("a main-thread block during b
 ## Where things are
 - `web/js/core` engines and views, `web/js/features`, `web/js/ui` (Home, Settings, help, V2 look), `web/css`.
 - `web/sw.js` service worker: bump the cache name (`arya-vNNN`) and the About version (`web/js/ui/settings.js`) on every change under `web/`.
-- `docs/v1-simplify/BLUEPRINT.md` V1 simplification (P0-P9 done, stranger test pending). `docs/v2/` V2 look spec (opt-in beta "New look").
-- `docs/HANDOFF.md` very long history (about 180 KB). Do NOT read it whole. New log entries go in `docs/log/`.
+- `docs/v1-simplify/BLUEPRINT.md` V1 simplification (P0-P9 done, stranger test pending). `docs/archive/v2/` V2 look specs (opt-in beta "New look").
+- `docs/archive/HANDOFF_through_v150.md` old history (about 190 KB). Do NOT read it whole; `grep -n` it. `docs/HANDOFF.md` is a pointer. New log entries go in `docs/log/`.
 
 ## Product state
 V1 tabs: Today, Plan, Move, Progress, Me. Step-counting notification is hidden (blocked channel `arya_steps_off`). New installs get a Starter plan and a calm first week. Not yet tested by real new users (Diwali). Native Java edits since v141 were never compiled by an assistant; the first CI build is their test.

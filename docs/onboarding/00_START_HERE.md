@@ -1,3 +1,5 @@
+> Workflow note 2026-11-17: current rules are in `docs/WORKFLOW.md`. Log work in `docs/log/`, not in `docs/HANDOFF.md` (now only a pointer).
+
 # Onboarding + Personalised Plan: START HERE
 
 **Goal.** First launch asks short, tap-based questions (body, goal, home or gym, what he can do now, weak points, schedule), then builds a plan that fits him. No account, no network, all on the phone. Re-runnable later; retests every 4 weeks.

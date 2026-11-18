@@ -26,7 +26,8 @@ tools/                CI helpers: check-web.py, android-setup.sh, patch-manifest
                       icons/ = logo generator (make_icons.py + variants.json), run it to rebuild all icons
 signing/debug.keystore  fixed debug key so every build has the same signature (do not delete or replace)
 signing/EXPECTED_SHA256.txt  fingerprint of that key; the build fails if the APK is signed with anything else
-docs/                 HANDOFF.md (state, rules, change log), THIRD-PARTY-NOTICES.md
+docs/                 CURRENT.md (start here), WORKFLOW.md, tasks/ (backlog), log/, PERMISSIONS.md, DEVICE_TEST.md,
+                      v1-simplify/, onboarding/, archive/ (old history), THIRD-PARTY-NOTICES.md
 .github/workflows/build.yml   builds the APK on every push
 ```
 

@@ -31,7 +31,7 @@ Goal: `docs/PERMISSIONS.md`: one table of every Android permission/service/recei
 Steps: read `tools/patch-manifest.sh`, `tools/android-setup.sh`, `tools/patch_widgets.py`, `native/` (grep `uses-permission`, `foregroundServiceType`, `requestPermissions`). Mark anything you cannot find a user for as "check before removing". Do NOT remove any permission.
 Acceptance: every declared permission has a purpose line; unknowns listed.
 
-### [ ] T06 Docs cleanup  (ANY, M, lane DOCS)
+### [x] T06 Docs cleanup  (ANY, M, lane DOCS)  DONE 2026-11-17 together with the repo cleanup, see docs/log/2026-11-17_repo-cleanup.md
 Steps: (1) move `docs/HANDOFF.md` to `docs/archive/HANDOFF_through_v150.md`; (2) new short `docs/HANDOFF.md` = pointer to CURRENT.md, WORKFLOW.md, BACKLOG.md, `docs/log/` and the archive; (3) fix stale text in `README.md`, `AI_BRIEF.md`, `START_HERE_V2.md`, `CHATGPT_START.md` (version numbers, "current job = V2 rebuild", old package ids) by pointing them to CURRENT.md instead of repeating facts; (4) keep every rule from AGENTS.md that is still true.
 Acceptance: a new assistant needs only AGENTS.md, CURRENT.md, WORKFLOW.md, one task card. No file claims a different app id than CURRENT.md.
 

@@ -1,3 +1,5 @@
+> Workflow note 2026-11-17: current rules are in `docs/WORKFLOW.md`. Log work in `docs/log/`, not in `docs/HANDOFF.md` (now only a pointer).
+
 # 07 Prompt to hand to another AI (copy everything below)
 
 You are continuing the Arya Fit app (Capacitor Android app, plain JavaScript in `web/`, no build step, no ES modules). I upload the latest repo zip. Work ONLY on the next unfinished step of `docs/onboarding/06_ROADMAP_STEPS.md` (check the status list in `00_START_HERE.md`; if unsure ask me which step).

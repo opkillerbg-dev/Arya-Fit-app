@@ -9,7 +9,7 @@ Why this exists: the owner has no paid plan, so each account hits its usage limi
 | Lane | Files it may change |
 |---|---|
 | CI | `.github/`, `tools/` (except `shots-v1.py`), `package.json`, `package-lock.json` |
-| DOCS | `docs/`, `README.md`, `AGENTS.md`, `AI_BRIEF.md`, `START_HERE_V2.md` |
+| DOCS | `docs/`, `README.md`, `AGENTS.md` |
 | TESTS | `tests/` |
 | APP | `web/` |
 | NATIVE | `native/`, `signing/` |
@@ -18,7 +18,7 @@ Why this exists: the owner has no paid plan, so each account hits its usage limi
 4. **Logs do not collide.** Do not append to `docs/HANDOFF.md`. Write `docs/log/YYYY-MM-DD_<task-id>.md` (max 25 lines: what changed, tests run and results, what is untested, next step).
 5. **Version bump only for APP or NATIVE work** (`web/sw.js` cache name and the About version in `web/js/ui/settings.js`). Check the current number first. Other lanes never bump.
 6. **Frozen without the owner's explicit OK:** application id, signing key/keystore, storage key `aryaApp2`, storage schema, backup format, native service architecture, UI redesign, removing features. Ask first, in the log under "Needs owner".
-7. **Save usage:** read `AGENTS.md`, `docs/CURRENT.md`, `docs/WORKFLOW.md`, your task card. Do not read `docs/HANDOFF.md` whole or open `web/index.html` / `web/css/base.css` whole; use `grep -n` and `sed -n`.
+7. **Save usage:** read `AGENTS.md`, `docs/CURRENT.md`, `docs/WORKFLOW.md`, your task card. Do not read `docs/archive/HANDOFF_through_v150.md` whole or open `web/index.html` / `web/css/base.css` whole; use `grep -n` and `sed -n`.
 
 ## 2. Session protocol
 Start

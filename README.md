@@ -1,4 +1,4 @@
-# Arya Fit
+# AERUNO 
 
 A personal workout app: plans, strength days, run/walk intervals, step counter, progress, and a plan builder.
 Plain HTML/CSS/JS (no framework) wrapped as an Android app with Capacitor 6. GitHub Actions builds the APK.
